@@ -111,6 +111,11 @@ else()
     set(BUILD_ARCH ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
+find_package(SeetaNet REQUIRED)
+find_package(SeetaFaceDetector REQUIRED)
+find_package(SeetaFaceLandmarker REQUIRED)
+find_package(SeetaFaceRecognizer REQUIRED)
+
 set(SRC_FILES
     main.cpp
     MainWindow.cpp    
@@ -130,10 +135,14 @@ set(UI_FILES
     )
 
 add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES} ${UI_FILES})
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES}) 
-
+target_link_libraries(${PROJECT_NAME}
+    ${QT_LIBRARIES}
+    SeetaNet
+    SeetaFaceDetector
+    SeetaFaceLandmarker
+    SeetaFaceRecognizer)
 # 设置安装前缀
-SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/${PROJECT_NAME}/install CACHE STRING "Install path prefix.") 
+SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Install path prefix." FORCE)
 
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")

@@ -4,6 +4,11 @@
 #include <QGuiApplication>
 #include <QScreen>
 
+#include <seeta/FaceDetector.h>
+#include <seeta/FaceLandmarker.h>
+#include <seeta/FaceDatabase.h>
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -29,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
         m_Display.SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
         Q_ASSERT(check);
     }
-    
 }
 
 MainWindow::~MainWindow()
