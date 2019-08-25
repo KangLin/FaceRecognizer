@@ -3,6 +3,12 @@
 
 #include <QWidget>
 #include <QVideoFrame>
+#include <QSharedPointer>
+#include <QImage>
+
+#include <seeta/FaceDetector.h>
+#include <seeta/FaceLandmarker.h>
+#include <seeta/FaceDatabase.h>
 
 namespace Ui {
 class CFrmDisplay;
@@ -17,6 +23,7 @@ public:
     ~CFrmDisplay();
     
     int SetCameraAngle(int rotation);
+    int SetModelPath(const QString &szPath);
     
 public Q_SLOTS:
     void slotDisplay(const QVideoFrame &frame);
@@ -25,11 +32,21 @@ protected:
     void paintEvent(QPaintEvent *event);
     
 private:
-    Ui::CFrmDisplay *ui;
+    int InitSeeta(const QString &szPath = QString());
+    int Detecetor(QImage &image);
     
-    QVideoFrame m_VideoFrame;
+private:
+    Ui::CFrmDisplay *ui;
+
+    QImage m_Image;
     int m_Rotation;
 
+    seeta::ModelSetting::Device m_Device;
+    QSharedPointer<seeta::ModelSetting> m_FD_model;
+    QSharedPointer<seeta::ModelSetting> m_FL_model;
+    
+    QSharedPointer<seeta::FaceDetector> m_FD;
+    QSharedPointer<seeta::FaceLandmarker> m_FL;
 };
 
 #endif // CFRMDISPLAY_H

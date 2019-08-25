@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
@@ -29,8 +29,20 @@
     </property>
     <addaction name="actionStart"/>
     <addaction name="actionStop"/>
+    <addaction name="separator"/>
+    <addaction name="actionDetector"/>
+    <addaction name="actionLandmarker"/>
+    <addaction name="actionRecognizer"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionSet_model_path"/>
    </widget>
    <addaction name="menuTools"/>
+   <addaction name="menuOptions"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -54,6 +66,35 @@
   <action name="actionStop">
    <property name="text">
     <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionDetector">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Detector</string>
+   </property>
+  </action>
+  <action name="actionLandmarker">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Landmarker</string>
+   </property>
+  </action>
+  <action name="actionRecognizer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Recognizer</string>
+   </property>
+  </action>
+  <action name="actionSet_model_path">
+   <property name="text">
+    <string>Set model path</string>
    </property>
   </action>
  </widget>

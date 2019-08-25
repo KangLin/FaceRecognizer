@@ -141,8 +141,26 @@ target_link_libraries(${PROJECT_NAME}
     SeetaFaceDetector
     SeetaFaceLandmarker
     SeetaFaceRecognizer)
+
 # 设置安装前缀
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Install path prefix." FORCE)
+
+IF(ANDROID)
+    GENERATED_DEPLOYMENT_SETTINGS()
+    find_program(ANT NAMES ant) # PATHS  "/usr/bin")
+    MESSAGE("ant:${ANT}\n")
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PROJECT_BINARY_DIR}/libRabbitIm.so ${PROJECT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/lib${PROJECT_NAME}.so
+        #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
+        COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
+            --input ${PROJECT_BINARY_DIR}/android-libRabbitIm.so-deployment-settings.json
+            --output ${PROJECT_BINARY_DIR}/android-build
+            --verbose
+            #--ant /usr/bin/ant
+            #--jdk $ENV{JAVA_HOME}
+    )
+ENDIF(ANDROID)
 
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")

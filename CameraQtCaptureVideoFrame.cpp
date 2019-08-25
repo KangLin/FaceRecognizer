@@ -21,13 +21,19 @@ CCameraQtCaptureVideoFrame::supportedPixelFormats(
         QAbstractVideoBuffer::HandleType handleType) const
 {
     if (handleType == QAbstractVideoBuffer::NoHandle) {
-        return QList<QVideoFrame::PixelFormat>()
+        return QList<QVideoFrame::PixelFormat>()                   
                 << QVideoFrame::Format_RGB32  //windows 平台、linux 平台默认都支持 RGB32 格式  
                 << QVideoFrame::Format_RGB24
                 << QVideoFrame::Format_ARGB32
                 << QVideoFrame::Format_ARGB32_Premultiplied
                 << QVideoFrame::Format_RGB565
                 << QVideoFrame::Format_RGB555
+                
+                << QVideoFrame::Format_BGR32
+                << QVideoFrame::Format_BGR24
+                << QVideoFrame::Format_BGR565
+                << QVideoFrame::Format_BGR555
+
                 //android支持的格式   
                 << QVideoFrame::Format_NV21
                 << QVideoFrame::Format_YV12
