@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QCamera>
 
-#include "FrmDisplay.h"
 #include "CameraQtCaptureVideoFrame.h"
 
 namespace Ui {
@@ -22,11 +21,13 @@ public:
 private slots:
     void on_actionStart_triggered();
     void on_actionStop_triggered();
-    void on_actionDetector_triggered();
-    void on_actionLandmarker_triggered();
     void on_actionRecognizer_triggered();
-
+    void on_actionRegister_triggered();
     void on_actionSet_model_path_triggered();
+
+    void on_actionAbout_A_triggered();
+    
+    void on_actionUpdate_U_triggered();
     
 private:
     int CamerOrientation(const QCamera camera);
@@ -36,15 +37,9 @@ private:
     Ui::MainWindow *ui;
     
     CCameraQtCaptureVideoFrame m_CaptureFrame;
-    CFrmDisplay m_Display;
     QCamera* m_pCamera;
     
-    enum OPERATE{
-        DETECETOR,
-        LANDMARKERE,
-        RECONGNIZER
-    };
-    OPERATE m_Operate;
+    QString m_szModelFile;
 };
 
 #endif // MAINWINDOW_H

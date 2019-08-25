@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/image">
+        <file alias="FaceRecognizer">image/FaceRecognizer.png</file>
+    </qresource>
+</RCC>

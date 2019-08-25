@@ -1,14 +1,145 @@
 ## 人脸识别
+## 1. 简介
+人脸识别
 
-### 编译
-+ android
-  - 主机是windows
+### 支持平台  
 
-        cmake .. -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake  -DANDROID_ABI="armeabi-v7a with NEON" -DANDROID_PLATFORM=android-18 -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe -DQt5_DIR=${Qt_ROOT}/lib/cmake/Qt5
+  + [x] windows
+  + [x] linux
+  + [ ] android
+  + [ ] mac
 
+## 2. 编译
+### 2.1 编译依赖
++ 编译工具
+  + [Qt](http://qt.io/)
+  + 编译器
+    -  For linux
+      + GNU Make 工具
+      + GCC 或者 Clang 编译器
+    - For windows
+      + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio) 或者 MinGW. 
+      
+  + [CMake](http://www.cmake.org/)
++ 依赖库
+  - [必选] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
+
+### 2.2 编译参数
+  - CMAKE_INSTALL_PREFIX: 安装前缀
+  - Qt5_DIR: qt 安装位置
+  - SeetaNet_DIR： SeetaNet 库安装位置
+  - SeetaFaceDetector_DIR： SeetaFaceDetector 库安装位置
+  - SeetaFaceLandmarker_DIR： SeetaFaceLandmarker 库安装位置
+  - SeetaFaceRecognizer_DIR： SeetaFaceRecognizer 库安装位置
+   
+### 2.3 各平台编译
+#### 2.3.1 linux平台编译说明
+  - 编译
+
+        cd FaceRecongnizer
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+                 -DQt5_DIR= \
+                 -DSeetaNet_DIR= \
+                 -DSeetaFaceDetector_DIR= \
+                 -DSeetaFaceLandmarker_DIR= \
+                 -DSeetaFaceRecognizer_DIR=
+        cmake --build .
+
+  - 安装
+
+        cmake --build . --target install
+
+  - 运行例子
+    + 把生成库的目录加入到变量 LD_LIBRARY_PATH 中
+ 
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/lib
+
+    + 拷贝模型文件到程序执行目录的 model 目录下
+
+            cd FaceRecongnizer
+            cd build
+            cd bin
+            mkdir model
+            cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
+
+    + 执行 bin 目录下的程序
+
+            cd FaceRecongnizer
+            cd build
+            cd bin
+            ./FaceRecongnizer
+
+
+#### 2.3.2 windows平台编译说明
+  - 使用 cmake-gui.exe 工具编译。打开 cmake-gui.exe
+  - 命令行编译
+    + 把 cmake 命令所在目录加入到环境变量 PATH 中
+    + 从开始菜单打开 “VS2015开发人员命令提示”，进入命令行
+
+      - 编译
+
+            cd FaceRecongnizer
+            mkdir build
+            cd build
+            cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+                 -DQt5_DIR= \
+                 -DSeetaNet_DIR= \
+                 -DSeetaFaceDetector_DIR= \
+                 -DSeetaFaceLandmarker_DIR= \
+                 -DSeetaFaceRecognizer_DIR=
+            cmake --build .
+
+      - 安装
+
+            cmake --build . --target install
+
+      - 运行例子
+        + 拷贝模型文件到程序执行目录的 model 目录下
+
+                cd FaceRecongnizer
+                cd build
+                cd bin
+                mkdir model
+                cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
+
+        + 执行 bin 目录下的程序
+          - FaceRecongnizer
+
+#### 2.3.3 Android平台编译说明
++ 安装 ndk 编译工具
+  - 从  https://developer.android.com/ndk/downloads 下载 ndk，并安装到：/home/android-ndk
+  - 设置环境变量：
+
+        export ANDROID_NDK=/home/android-ndk
+
++ 编译
   - 主机是linux
 
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a with NEON" -DANDROID_PLATFORM=android-18
+        cd FaceRecongnizer
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a with NEON" -DANDROID_PLATFORM=android-18 \
+                 -DQt5_DIR= \
+                 -DSeetaNet_DIR= \
+                 -DSeetaFaceDetector_DIR= \
+                 -DSeetaFaceLandmarker_DIR= \
+                 -DSeetaFaceRecognizer_DIR=
+        cmake --build .
+
+  - 主机是windows
+
+        cd FaceRecongnizer
+        mkdir build
+        cd build
+        cmake .. -G"Unix Makefiles"  -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake  -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}\prebuilt\windows-x86_64\bin\make.exe -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=ON \
+                 -DQt5_DIR= \
+                 -DSeetaNet_DIR= \
+                 -DSeetaFaceDetector_DIR= \
+                 -DSeetaFaceLandmarker_DIR= \
+                 -DSeetaFaceRecognizer_DIR=
+        cmake --build .
 
   - 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：
@@ -24,5 +155,20 @@
     + ANDROID_PLATFORM: 如需平台名称和对应 Android 系统映像的完整列表，请参阅 [Android NDK 原生 API](https://developer.android.google.cn/ndk/guides/stable_apis.html)
     + ANDROID_ARM_MODE
     + ANDROID_ARM_NEON
-    + ANDROID_STL:指定 CMake 应使用的 STL。 
+    + ANDROID_STL:指定 CMake 应使用的 STL。
 
+### 2.4 捐赠
+本软件如果对你有用，或者你喜欢它，请你捐赠，支持作者。谢谢！
+
+- 捐赠(大于￥20)：  
+![捐赠( 大于 ￥20 )](https://github.com/KangLin/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠(大于￥20)")
+
+- 捐赠￥20  
+![捐赠￥20](https://github.com/KangLin/RabbitCommon/raw/master/Src/Resource/image/Contribute20.png "捐赠￥20")
+
+### 2.5 贡献
+
+问题：https://github.com/KangLin/FaceRecognizer/issues  
+项目位置：https://github.com/KangLin/FaceRecognizer
+
+### 2.6 [许可协议](License.md "License.md")

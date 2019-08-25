@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(Face)
+project(FaceRecognizer)
 
 # 建立要删除的文件
 CONFIGURE_FILE(
@@ -111,56 +111,36 @@ else()
     set(BUILD_ARCH ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
-find_package(SeetaNet REQUIRED)
-find_package(SeetaFaceDetector REQUIRED)
-find_package(SeetaFaceLandmarker REQUIRED)
-find_package(SeetaFaceRecognizer REQUIRED)
-
-set(SRC_FILES
-    main.cpp
-    MainWindow.cpp    
-    FrmDisplay.cpp
-    CameraQtCaptureVideoFrame.cpp
-    )
-
-set(HEADER_FILES
-    MainWindow.h    
-    FrmDisplay.h
-    CameraQtCaptureVideoFrame.h
-    )
-
-set(UI_FILES
-    MainWindow.ui
-    FrmDisplay.ui
-    )
-
-add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES} ${UI_FILES})
-target_link_libraries(${PROJECT_NAME}
-    ${QT_LIBRARIES}
-    SeetaNet
-    SeetaFaceDetector
-    SeetaFaceLandmarker
-    SeetaFaceRecognizer)
-
 # 设置安装前缀
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Install path prefix." FORCE)
 
-IF(ANDROID)
-    GENERATED_DEPLOYMENT_SETTINGS()
-    find_program(ANT NAMES ant) # PATHS  "/usr/bin")
-    MESSAGE("ant:${ANT}\n")
+if(NOT RabbitCommon_DIR)
+    set(RabbitCommon_DIR $ENV{RabbitCommon_DIR})
+    if(NOT RabbitCommon_DIR)
+        set(RabbitCommon_DIR ${CMAKE_SOURCE_DIR}/../RabbitCommon)
+    endif()
+endif()
+if(DEFINED RabbitCommon_DIR AND EXISTS ${RabbitCommon_DIR}/Src)
+    add_subdirectory(${RabbitCommon_DIR}/Src ${CMAKE_BINARY_DIR}/RabbitCommon)
+else()
+    message("1. Please download RabbitCommon source code from https://github.com/KangLin/RabbitCommon")
+    message("   ag:")
+    message("       git clone https://github.com/KangLin/RabbitCommon.git")
+    message("2. Then set cmake value or environment variable RabbitCommon_DIR to download root dirctory.")
+    message("   ag:")
+    message(FATAL_ERROR "       cmake -DRabbitCommon_DIR= ")
+endif()
+add_subdirectory(App)
 
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PROJECT_BINARY_DIR}/libRabbitIm.so ${PROJECT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/lib${PROJECT_NAME}.so
-        #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
-        COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
-            --input ${PROJECT_BINARY_DIR}/android-libRabbitIm.so-deployment-settings.json
-            --output ${PROJECT_BINARY_DIR}/android-build
-            --verbose
-            #--ant /usr/bin/ant
-            #--jdk $ENV{JAVA_HOME}
-    )
-ENDIF(ANDROID)
+INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}")
+set(OTHER_FILES
+    License.md
+    Authors.md
+    ChangeLog.md
+    Authors_zh_CN.md
+    ChangeLog_zh_CN.md)
+# Install other files
+INSTALL(FILES ${OTHER_FILES} DESTINATION ".")
 
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")

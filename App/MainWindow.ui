@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Face recognizer</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../Resource/Resource.qrc">
+    <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -30,8 +34,7 @@
     <addaction name="actionStart"/>
     <addaction name="actionStop"/>
     <addaction name="separator"/>
-    <addaction name="actionDetector"/>
-    <addaction name="actionLandmarker"/>
+    <addaction name="actionRegister"/>
     <addaction name="actionRecognizer"/>
     <addaction name="separator"/>
    </widget>
@@ -41,8 +44,16 @@
     </property>
     <addaction name="actionSet_model_path"/>
    </widget>
+   <widget class="QMenu" name="menuHelp_H">
+    <property name="title">
+     <string>Help(&amp;H)</string>
+    </property>
+    <addaction name="actionAbout_A"/>
+    <addaction name="actionUpdate_U"/>
+   </widget>
    <addaction name="menuTools"/>
    <addaction name="menuOptions"/>
+   <addaction name="menuHelp_H"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -97,7 +108,24 @@
     <string>Set model path</string>
    </property>
   </action>
+  <action name="actionRegister">
+   <property name="text">
+    <string>Register</string>
+   </property>
+  </action>
+  <action name="actionAbout_A">
+   <property name="text">
+    <string>About(&amp;A)</string>
+   </property>
+  </action>
+  <action name="actionUpdate_U">
+   <property name="text">
+    <string>Update(&amp;U)</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Resource/Resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
