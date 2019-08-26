@@ -61,8 +61,9 @@ int CFrmRecognizer::InitSeeta(const QString& szPath)
         //set face detector's min face size
         m_FD->set( seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, 80 );
     } catch (...) {
-        QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
-        msg.exec();
+        //QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
+        //msg.exec();
+        qCritical() << "Load model file exception, please set model file path";
     }
     
     return 0;
