@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "FaceRecognizer"
 !define PRODUCT_APP_NAME "FaceRecognizer"
-!define PRODUCT_VERSION "v0.2.4"
+!define PRODUCT_VERSION "v0.0.3"
 !define PRODUCT_PUBLISHER "KangLin studio"
 !define PRODUCT_WEB_SITE "https://github.com/KangLin/${PRODUCT_NAME}"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe"
@@ -43,8 +43,6 @@ SetCompressor lzma
 ; Finish page
 !define MUI_FINISHPAGE_RUN "$INSTDIR\bin\${PRODUCT_APP_NAME}.exe"
 !define MUI_FINISHPAGE_SHOWREADME
-!define MUI_FINISHPAGE_SHOWREADME_Function AutoBoot
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "Start from boot"
 !insertmacro MUI_PAGE_FINISH
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -61,9 +59,6 @@ LangString LANG_UNINSTALL_CONFIRM ${LANG_SIMPCHINESE} "非常感谢您的使用�
 
 LangString LANG_REMOVE_COMPONENT ${LANG_ENGLISH} "You sure you want to completely remove $ (^ Name), and all of its components?"
 LangString LANG_REMOVE_COMPONENT ${LANG_SIMPCHINESE} "你确实要完全移除 $(^Name) ，其及所有的组件？"
-
-LangString LANG_AUTO_BOOT ${LANG_ENGLISH} "Start from reboot"
-LangString LANG_AUTO_BOOT ${LANG_SIMPCHINESE} "开机自启动"
 
 LangString LANG_DIRECTORY_PERMISSION ${LANG_ENGLISH} "Don't directory permission"
 LangString LANG_DIRECTORY_PERMISSION ${LANG_SIMPCHINESE} "无目录访问权限"
@@ -184,10 +179,6 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "$(LANG_PRODUCT_NAME)"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
-
-Function AutoBoot
-    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "Software\Microsoft\Windows\CurrentVersion\Run" "${PRODUCT_NAME}" "$INSTDIR\bin\${PRODUCT_APP_NAME}.exe"
-FunctionEnd
 
 Function un.onUninstSuccess
   ;HideWindow

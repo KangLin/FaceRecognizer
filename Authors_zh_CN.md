@@ -3,8 +3,9 @@
 
 第三方库：
 
+Qt (LGPL v2.1)
+http://qt.io/
+
 SeetaFace2
 https://github.com/seetafaceengine/SeetaFace2
 
-Qt (LGPL v2.1)
-http://qt.io/

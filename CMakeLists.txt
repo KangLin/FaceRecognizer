@@ -11,7 +11,7 @@ CONFIGURE_FILE(
 ADD_CUSTOM_TARGET(uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake")
 
-SET(BUILD_VERSION "v0.2.4")
+SET(BUILD_VERSION "v0.0.3")
 # Find Git Version Patch
 IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     if(NOT GIT)
@@ -112,7 +112,7 @@ else()
 endif()
 
 # 设置安装前缀
-SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Install path prefix." FORCE)
+#SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Install path prefix." FORCE)
 
 if(NOT RabbitCommon_DIR)
     set(RabbitCommon_DIR $ENV{RabbitCommon_DIR})
@@ -141,6 +141,9 @@ set(OTHER_FILES
     ChangeLog_zh_CN.md)
 # Install other files
 INSTALL(FILES ${OTHER_FILES} DESTINATION ".")
-
+if(UNIX)
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop DESTINATION "share/applications")
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/Resource/image/FaceRecognizer.png DESTINATION "share/pixmaps")
+endif()
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")

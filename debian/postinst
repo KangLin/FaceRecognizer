@@ -39,6 +39,7 @@ case "$1" in
         rm -fr /usr/share/applications/FaceRecognizer.desktop
         rm -fr /etc/ld.so.conf.d/FaceRecognizer.conf
         rm -fr /usr/share/pixmaps/FaceRecognizer.png
+        ldconfig
     ;;
 
     *)

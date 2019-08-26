@@ -1,6 +1,7 @@
 #include "FrmRecognizer.h"
 #include "ui_FrmRecognizer.h"
 
+#include <QSettings>
 #include <QPainter>
 #include <QDebug>
 #include <QMessageBox>
@@ -16,7 +17,11 @@ CFrmRecognizer::CFrmRecognizer(QWidget *parent) :
     ui->setupUi(this);
     m_Rotation = 0;
     m_Threshold = 0.7f;
-    InitSeeta("d:\\Source\\build-FaceRecongnizer-Desktop_Qt_5_12_4_MSVC2017_64bit-Release\\bin\\model");
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    QString szFile = set.value("ModuleDir").toString();
+    if(!szFile.isEmpty())
+        InitSeeta(szFile);
     Register();
 }
 
@@ -61,8 +66,8 @@ int CFrmRecognizer::InitSeeta(const QString& szPath)
         //set face detector's min face size
         m_FD->set( seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, 80 );
     } catch (...) {
-        //QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
-        //msg.exec();
+        QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
+        msg.exec();
         qCritical() << "Load model file exception, please set model file path";
     }
     

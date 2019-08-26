@@ -1,14 +1,27 @@
 #!/bin/bash
-set -ev
+set -e
 
 SOURCE_DIR=`pwd`
 if [ -n "$1" ]; then
     SOURCE_DIR=$1
 fi
 
-export SeetaFace2_DIR=${SOURCE_DIR}/../SeetaFace2
+echo "Build SeetaFace2 ......"
+export SeetaFace2_SOURCE=${SOURCE_DIR}/../SeetaFace2
+export SeetaFace2_DIR=${SeetaFace2_SOURCE}/install
+git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_SOURCE}
+cd ${SeetaFace2_SOURCE}
 
-git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_DIR}
+if [ -n "${STATIC}" ]; then
+    CONFIG_PARA="-DBUILD_SHARED_LIBS=${STATIC}"
+fi
+echo "PWD:`pwd`"
+cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
+     -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
+     -DCMAKE_VERBOSE=ON \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DBUILD_EXAMPLE=OFF
+cmake --build . --target install --config Release
 
 cd ${SOURCE_DIR}
 
@@ -89,7 +102,7 @@ case ${BUILD_TARGERT} in
         ;;
 esac
 
-export VERSION="v0.2.4"
+export VERSION="v0.0.3"
 if [ "${BUILD_TARGERT}" = "unix" ]; then
     cd $SOURCE_DIR
     bash build_debpackage.sh ${QT_ROOT}
@@ -99,7 +112,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     ./test/test_linux.sh
 
     #因为上面 dpgk 已安装好了，所以不需要设置下面的环境变量
-    #export LD_LIBRARY_PATH=`pwd`/debian/facerecognizer/opt/FaceRecognizer/bin:`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:${QT_ROOT}/bin:${QT_ROOT}/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${SeetaFace2_DIR}/lib:${QT_ROOT}/bin:${QT_ROOT}/lib:$LD_LIBRARY_PATH
     
     cd debian/facerecognizer/opt
     
@@ -141,7 +154,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
         #export UPLOADTOOL_PR_BODY=
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
         chmod u+x upload.sh
-        ./upload.sh $SOURCE_DIR/..facerecognizer_*_amd64.deb 
+        ./upload.sh $SOURCE_DIR/../facerecognizer_*_amd64.deb 
         ./upload.sh update_linux.xml update_linux_appimage.xml
         ./upload.sh FaceRecognizer_${VERSION}.tar.gz
     fi
@@ -153,16 +166,6 @@ if [ -n "$GENERATORS" ]; then
         CONFIG_PARA="-DBUILD_SHARED_LIBS=${STATIC}"
     fi
 
-    echo "Build SeetaFace2 ......"
-    cd ${SeetaFace2_DIR}
-    echo "PWD:`pwd`"
-    cmake -G"${GENERATORS}" ${SeetaFace2_DIR} ${CONFIG_PARA} \
-         -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
-	 -DBUILD_EXAMPLE=OFF
-    cmake --build . --target install
-
     echo "Build FaceRecognizer ......"
     cd ${SOURCE_DIR}
     echo "PWD:`pwd`"
@@ -171,13 +174,13 @@ if [ -n "$GENERATORS" ]; then
          -DCMAKE_VERBOSE=ON \
          -DCMAKE_BUILD_TYPE=Release \
          -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-         -DSeetaNet_DIR=${SeetaFace2_DIR}/install/lib/cmake \
-         -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/install/lib/cmake \
-         -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/install/lib/cmake \
-         -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/install/lib/cmake
+         -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
+         -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
+         -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
+         -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
     cmake --build . --target install --config Release -- ${RABBIT_MAKE_JOB_PARA}
 
-    cp ${SeetaFace2_DIR}/install/bin/* ${SOURCE_DIR}/install/bin/.
+    cp ${SeetaFace2_DIR}/bin/* ${SOURCE_DIR}/install/bin/.
 else
     if [ "ON" = "${STATIC}" ]; then
         CONFIG_PARA="CONFIG*=static"

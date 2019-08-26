@@ -24,15 +24,13 @@ private slots:
     void on_actionRecognizer_triggered();
     void on_actionRegister_triggered();
     void on_actionSet_model_path_triggered();
-
     void on_actionAbout_A_triggered();
-    
     void on_actionUpdate_U_triggered();
-    
+
 private:
     int CamerOrientation(const QCamera camera);
     int CamerOrientation(const QCameraInfo cameraInfo);
-    
+
 private:
     Ui::MainWindow *ui;
     

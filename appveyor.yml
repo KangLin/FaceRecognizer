@@ -1,5 +1,5 @@
 #TODO: Change version
-version: 'v0.2.4.{build}'
+version: 'v0.0.3.{build}'
 
 environment:
   matrix: 
@@ -121,24 +121,24 @@ build_script:
   - C:\msys64\usr\bin\bash.exe %APPVEYOR_BUILD_FOLDER%\ci\build.sh
 
 artifacts:
-  - path: build_${BUILD_TARGERT}/Tasks-Setup-*.exe
-    name: Tasks_$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
+  - path: FaceRecognizer-Setup-*.exe
+    name: FaceRecognizer_$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     type: zip
     
-  - path: build_${BUILD_TARGERT}/update_windows.xml
+  - path: update_windows.xml
 
 test: off
 
 #See:https://www.appveyor.com/docs/deployment/github/
 deploy:
   - provider: GitHub
-    #release: Tasks$(appveyor_build_version)
-    description: 'Release Tasks $(APPVEYOR_REPO_TAG_NAME) on windows'
+    #release: FaceRecognizer$(appveyor_build_version)
+    description: 'Release FaceRecognizer $(APPVEYOR_REPO_TAG_NAME) on windows'
     #token : https://github.com/settings/tokens
     #password encrypt: https://ci.appveyor.com/tools/encrypt
     auth_token:
-      secure: I/iPgcw0IPuy66OiIjBSK33ZTrLDAlnnmfEpNo8q2DT6X3z1XJvYECnXGvef0C9y
-    #artifact: Tasks$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
+      secure: 2eZXTfGhgCiW9GRLbg9nq7Uz8BVEw4nLzYmgBdvdUIfeEXmlHvC8Xeabsi7yumSx
+    #artifact: FaceRecognizer$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     #draft: true
     #prerelease: true
     on:

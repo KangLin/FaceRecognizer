@@ -7,7 +7,7 @@ find_package(SeetaFaceDetector REQUIRED)
 find_package(SeetaFaceLandmarker REQUIRED)
 find_package(SeetaFaceRecognizer REQUIRED)
 
-set(SRC_FILES
+set(SOURCES_FILES
     main.cpp
     MainWindow.cpp    
     FrmDisplay.cpp
@@ -24,16 +24,30 @@ set(HEADER_FILES
     CameraQtCaptureVideoFrame.h
     )
 
-set(UI_FILES
+set(SOURCE_UI_FILES
     MainWindow.ui
     FrmDisplay.ui
     FrmRegister.ui
     FrmRecognizer.ui
     )
+
+
+#翻译
+SET(TRANSLATIONS_NAME ${PROJECT_NAME})
+include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Utils.cmake)
+
+add_definitions(-DBUILD_VERSION="${BUILD_VERSION}")
+add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
+add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
+
 SET(RCC_FILES
     ../Resource/Resource.qrc
     )
-add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES} ${UI_FILES} ${RCC_FILES})
+if(WIN32)
+    SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
+endif()
+add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 target_link_libraries(${PROJECT_NAME}
     ${QT_LIBRARIES}
     RabbitCommon
@@ -54,18 +68,25 @@ INSTALL(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         )
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico DESTINATION .)
-
+IF(WIN32)
+    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico DESTINATION .)
+ENDIF()
+INSTALL(FILES $<TARGET_FILE:SeetaNet>
+    $<TARGET_FILE:SeetaFaceDetector>
+    $<TARGET_FILE:SeetaFaceLandmarker>
+    $<TARGET_FILE:SeetaFaceRecognizer>
+    DESTINATION "${CMAKE_INSTALL_BINDIR}")
 IF(ANDROID)
+    include(${CMAKE_SOURCE_DIR}/cmake/Utils.cmake)
     GENERATED_DEPLOYMENT_SETTINGS()
     find_program(ANT NAMES ant) # PATHS  "/usr/bin")
     MESSAGE("ant:${ANT}\n")
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PROJECT_BINARY_DIR}/libRabbitIm.so ${PROJECT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/lib${PROJECT_NAME}.so
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PROJECT_BINARY_DIR}/libFaceRecognizer.so ${PROJECT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/lib${PROJECT_NAME}.so
         #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
         COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
-            --input ${PROJECT_BINARY_DIR}/android-libRabbitIm.so-deployment-settings.json
+            --input ${PROJECT_BINARY_DIR}/android-libFaceRecognizer.so-deployment-settings.json
             --output ${PROJECT_BINARY_DIR}/android-build
             --verbose
             #--ant /usr/bin/ant
@@ -88,5 +109,5 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
         --verbose 7
         "$<TARGET_FILE:${PROJECT_NAME}>"
         )
-    #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()

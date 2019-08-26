@@ -5,10 +5,13 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QSettings>
 
 #ifdef RABBITCOMMON
     #include "FrmUpdater/FrmUpdater.h"
     #include "DlgAbout/DlgAbout.h"
+    #include "RabbitCommonDir.h"
 #endif
 
 #include "FrmRecognizer.h"
@@ -20,19 +23,23 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pCamera(nullptr)
 {
     ui->setupUi(this);
-    
+
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    m_szModelFile = set.value("ModuleDir").toString();
+    qDebug() << "Model files:" << m_szModelFile;
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
     foreach (const QCameraInfo &cameraInfo, cameras) {
         qDebug() << "Camer name:" << cameraInfo.deviceName();
     }
-    
+
     if(QCameraInfo::availableCameras().size() > 0)
     {
         m_pCamera = new QCamera(QCameraInfo::availableCameras().at(0));
         QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
-       
+
         m_pCamera->load();
-        
+
         qInfo() << "Camera support:";
         qInfo() << "Resolutions:" << m_pCamera->supportedViewfinderResolutions(m_pCamera->viewfinderSettings());
         QList<QCamera::FrameRateRange> ranges =  m_pCamera->supportedViewfinderFrameRateRanges();
@@ -41,23 +48,25 @@ MainWindow::MainWindow(QWidget *parent) :
             qInfo() << "Frame rate range:" << rang.maximumFrameRate << rang.maximumFrameRate;
         }
         qInfo() << "Pixel formate:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
-        
+
 //        viewfinderSettings.setResolution(640, 480);
 //        viewfinderSettings.setMinimumFrameRate(10.0);
 //        viewfinderSettings.setMaximumFrameRate(30.0);
 //        m_pCamera->setViewfinderSettings(viewfinderSettings);
         m_pCamera->unload();
-        
+
         qInfo() << "Current:";
         qInfo() << "Resolutions:" << viewfinderSettings.resolution();
         qInfo() << "Frame rate:" << viewfinderSettings.minimumFrameRate() << viewfinderSettings.maximumFrameRate();
         qInfo() << "Pixel formate:" << viewfinderSettings.pixelFormat();
         qInfo() << "" << viewfinderSettings.pixelAspectRatio();
-        
+
         //*/
         m_pCamera->setViewfinder(&m_CaptureFrame);
+    } else {
+        QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
     }
-    
+
     on_actionRecognizer_triggered();
 }
 
@@ -98,13 +107,17 @@ int MainWindow::CamerOrientation(const QCameraInfo cameraInfo)
 int MainWindow::CamerOrientation(const QCamera camera)
 {
     QCameraInfo cameraInfo(camera); // needed to get the camera sensor position and orientation
-    
+
     return CamerOrientation(cameraInfo);
 }
 
 void MainWindow::on_actionSet_model_path_triggered()
 {
-   m_szModelFile = QFileDialog::getExistingDirectory(this, tr("Open model file path"), qApp->applicationDirPath());
+   m_szModelFile = QFileDialog::getExistingDirectory(this,
+                        tr("Open model file path"), qApp->applicationDirPath());
+   QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                 QSettings::IniFormat);
+   set.setValue("ModuleDir", m_szModelFile);
 }
 
 void MainWindow::on_actionRecognizer_triggered()
