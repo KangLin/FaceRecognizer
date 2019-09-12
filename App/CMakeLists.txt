@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 2.8)
 
 project(FaceRecognizer)
 
-find_package(SeetaNet REQUIRED)
-find_package(SeetaFaceDetector REQUIRED)
-find_package(SeetaFaceLandmarker REQUIRED)
-find_package(SeetaFaceRecognizer REQUIRED)
+find_package(SeetaFace
+    REQUIRED COMPONENTS 
+        SeetaNet
+        SeetaFaceDetector
+        SeetaFaceLandmarker
+        SeetaFaceRecognizer)
 
 set(SOURCES_FILES
     main.cpp
@@ -31,7 +33,6 @@ set(SOURCE_UI_FILES
     FrmRecognizer.ui
     )
 
-
 #翻译
 SET(TRANSLATIONS_NAME ${PROJECT_NAME})
 include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
@@ -47,7 +48,11 @@ SET(RCC_FILES
 if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
 endif()
-add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+if(ANDROID)
+    add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+else()
+    add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+endif()
 target_link_libraries(${PROJECT_NAME}
     ${QT_LIBRARIES}
     RabbitCommon
@@ -60,14 +65,31 @@ target_compile_definitions(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PRIVATE ${RabbitCommon_DIR}/Src
     ${CMAKE_BINARY_DIR})
+set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+if(${CMAKE_CXX_COMPILER} MATCHES ".*/(g\\+\\+)(\\..*)")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "-mwindows")
+elseif(${CMAKE_CXX_COMPILER} MATCHES ".*/(cl)(\\..*)")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE
+        "/SUBSYSTEM:WINDOWS\",5.01\" /ENTRY:mainCRTStartup")
+endif()
 
-# Install target
-INSTALL(TARGETS ${PROJECT_NAME}
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        )
+if(ANDROID)
+    # Install target
+    INSTALL(TARGETS ${PROJECT_NAME}
+            RUNTIME DESTINATION "libs/${ANDROID_ABI}"
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+            LIBRARY DESTINATION "libs/${ANDROID_ABI}"
+            )
+else()
+    # Install target
+    INSTALL(TARGETS ${PROJECT_NAME}
+            RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+            )
+endif()
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico DESTINATION .)
 ENDIF()
@@ -76,20 +98,31 @@ INSTALL(FILES $<TARGET_FILE:SeetaNet>
     $<TARGET_FILE:SeetaFaceLandmarker>
     $<TARGET_FILE:SeetaFaceRecognizer>
     DESTINATION "${CMAKE_INSTALL_BINDIR}")
-IF(ANDROID)
-    include(${CMAKE_SOURCE_DIR}/cmake/Utils.cmake)
-    GENERATED_DEPLOYMENT_SETTINGS()
-    find_program(ANT NAMES ant) # PATHS  "/usr/bin")
-    MESSAGE("ant:${ANT}\n")
 
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PROJECT_BINARY_DIR}/libFaceRecognizer.so ${PROJECT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/lib${PROJECT_NAME}.so
+IF(ANDROID)
+    Set(JSON_FILE ${CMAKE_BINARY_DIR}/android_deployment_settings.json)
+    GENERATED_DEPLOYMENT_SETTINGS(NAME ${JSON_FILE}
+        APPLACTION "${CMAKE_BINARY_DIR}/bin/lib${PROJECT_NAME}.so")
+
+    set(ANDROID_DELOP_PARA --gradle)
+    if(Qt5_VERSION VERSION_LESS 5.8.0)
+        find_program(ANT NAMES ant) # PATHS  "/usr/bin")
+        MESSAGE("ant:${ANT}\n")
+        if(ANT_FOUND)
+            set(ANDROID_DELOP_PARA --ant ${ANT})
+        endif()
+    endif()
+    
+    add_custom_target(ANDROID_DEPLOY #TARGET ${PROJECT_NAME} POST_BUILD
+        #COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" ${CMAKE_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/$<TARGET_FILE_NAME:${PROJECT_NAME}>
+        #COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/android-build/libs/${ANDROID_ABI}
+        #COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE_DIR:${PROJECT_NAME}>/*" ${CMAKE_BINARY_DIR}/android-build/libs/${ANDROID_ABI}
         #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
         COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
-            --input ${PROJECT_BINARY_DIR}/android-libFaceRecognizer.so-deployment-settings.json
-            --output ${PROJECT_BINARY_DIR}/android-build
+            --output ${CMAKE_BINARY_DIR}/android-build
+            --input ${JSON_FILE}
             --verbose
-            #--ant /usr/bin/ant
+            ${ANDROID_DELOP_PARA}
             #--jdk $ENV{JAVA_HOME}
     )
 ENDIF(ANDROID)

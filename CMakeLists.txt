@@ -58,7 +58,7 @@ FOREACH(_COMPONENT ${QT_COMPONENTS})
     SET(QT_LIBRARIES ${QT_LIBRARIES} ${Qt5${_COMPONENT}_LIBRARIES})
 ENDFOREACH()
 
-SET(QT_INSTALL_DIR "${Qt5_DIR}/../../..")
+get_filename_component(QT_INSTALL_DIR "${Qt5_DIR}/../../.." ABSOLUTE)
 
 IF(MSVC)
     # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
@@ -112,7 +112,11 @@ else()
 endif()
 
 # 设置安装前缀
-#SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Install path prefix." FORCE)
+if(ANDROID)
+    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/android-build CACHE STRING "Install path prefix" FORCE)
+else()
+    SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/${PROJECT_NAME}/install CACHE STRING "Install path prefix.")
+endif()
 
 if(NOT RabbitCommon_DIR)
     set(RabbitCommon_DIR $ENV{RabbitCommon_DIR})
@@ -139,8 +143,13 @@ set(OTHER_FILES
     ChangeLog.md
     Authors_zh_CN.md
     ChangeLog_zh_CN.md)
-# Install other files
-INSTALL(FILES ${OTHER_FILES} DESTINATION ".")
+if(ANDROID)
+    # Install other files
+    INSTALL(FILES ${OTHER_FILES} DESTINATION "assets")
+else()
+    # Install other files
+    INSTALL(FILES ${OTHER_FILES} DESTINATION ".")
+endif()
 if(UNIX)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop DESTINATION "share/applications")
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/Resource/image/FaceRecognizer.png DESTINATION "share/pixmaps")

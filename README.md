@@ -52,10 +52,10 @@
   + [Qt](http://qt.io/)
   + 编译器
     -  For linux
-      + GNU Make 工具
-      + GCC 或者 Clang 编译器
+        + GNU Make 工具
+        + GCC 或者 Clang 编译器
     - For windows
-      + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio) 或者 MinGW. 
+        + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio) 或者 MinGW. 
       
   + [CMake](http://www.cmake.org/)
 + 依赖库
@@ -177,7 +177,7 @@
         cd FaceRecognizer
         mkdir build
         cd build
-        cmake .. -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake  -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}\prebuilt\windows-x86_64\bin\make.exe -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=ON \
+        cmake .. -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake  -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=ON \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
                  -DSeetaNet_DIR= \

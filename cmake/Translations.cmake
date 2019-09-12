@@ -9,6 +9,7 @@
 #
 #      例子：
 #      set(TRANSLATIONS_NAME ${PROJECT_NAME})
+#      include(${CMAKE_SOURCE_DIR}/cmake/Qt5CorePatches.cmake) 
 #      include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
 #      add_executable(${PROJECT_NAME} ${TRANSLATIONS_RESOURCE_FILES})
 #      add_dependencies(${TRANSLATIONS_NAME} translations_${TRANSLATIONS_NAME})
@@ -36,16 +37,16 @@
 #   SourceRoot |
 #              |- App
 #              |   |- Resource
-#              |         |-Translations
-#              |                |- ${TRANSLATIONS_NAME}_zh_CN.ts
-#              |                |- ${TRANSLATIONS_NAME}_zh_TW.ts
+#              |        |-Translations
+#              |        |- ${TRANSLATIONS_NAME}_zh_CN.ts
+#              |        |- ${TRANSLATIONS_NAME}_zh_TW.ts
 #              |- cmake
 #              |   |- Translations.cmake
 #              |- Src
 #                  |- Resource
-#                        |-Translations
-#                               |- ${TRANSLATIONS_NAME}_zh_CN.ts
-#                               |- ${TRANSLATIONS_NAME}_zh_TW.ts
+#                       |-Translations
+#                       |- ${TRANSLATIONS_NAME}_zh_CN.ts
+#                       |- ${TRANSLATIONS_NAME}_zh_TW.ts
 
 if(NOT TRANSLATIONS_NAME)
     SET(TRANSLATIONS_NAME ${PROJECT_NAME})
@@ -63,7 +64,7 @@ IF(OPTION_TRANSLATIONS)
     IF(NOT Qt5_LRELEASE_EXECUTABLE)
         MESSAGE(WARNING "Could not find lrelease. Your build won't contain translations.")
     ELSE(NOT Qt5_LRELEASE_EXECUTABLE)
-        #qt5_create_translation(QM_FILES ${SOURCES_FILES} ${SOURCE_UI_FILES} ${TS_FILES}) #生成 .ts 文件与 .qm 文件，w仅当没有TS文件的时候用。
+        #qt5_create_translation(QM_FILES ${SOURCES_FILES} ${SOURCE_UI_FILES} ${TS_FILES}) #生成 .ts 文件与 .qm 文件，仅当没有TS文件的时候用。
         qt5_add_translation(QM_FILES ${TS_FILES}) #生成翻译资源 .qm 文件
         
         ADD_CUSTOM_TARGET(translations_${TRANSLATIONS_NAME} ALL DEPENDS ${QM_FILES})
