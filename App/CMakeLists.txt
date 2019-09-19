@@ -82,6 +82,11 @@ if(ANDROID)
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             LIBRARY DESTINATION "libs/${ANDROID_ABI}"
             )
+    INSTALL(FILES $<TARGET_FILE:SeetaNet>
+        $<TARGET_FILE:SeetaFaceDetector>
+        $<TARGET_FILE:SeetaFaceLandmarker>
+        $<TARGET_FILE:SeetaFaceRecognizer>
+        DESTINATION "libs/${ANDROID_ABI}")
 else()
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
@@ -89,15 +94,15 @@ else()
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             )
+    INSTALL(FILES $<TARGET_FILE:SeetaNet>
+        $<TARGET_FILE:SeetaFaceDetector>
+        $<TARGET_FILE:SeetaFaceLandmarker>
+        $<TARGET_FILE:SeetaFaceRecognizer>
+        DESTINATION "${CMAKE_INSTALL_BINDIR}")
 endif()
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico DESTINATION .)
 ENDIF()
-INSTALL(FILES $<TARGET_FILE:SeetaNet>
-    $<TARGET_FILE:SeetaFaceDetector>
-    $<TARGET_FILE:SeetaFaceLandmarker>
-    $<TARGET_FILE:SeetaFaceRecognizer>
-    DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
 IF(ANDROID)
     Set(JSON_FILE ${CMAKE_BINARY_DIR}/android_deployment_settings.json)

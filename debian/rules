@@ -21,7 +21,7 @@
 # This is example for Cmake (See https://bugs.debian.org/641051 )
 override_dh_auto_configure:
     ifdef GENERATORS
-	dh_auto_configure -- -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/FaceRecognizer -DQt5_DIR=$(QT_ROOT)/lib/cmake/Qt5 -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
+	dh_auto_configure -- -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/FaceRecognizer -DQt5_DIR=$(QT_ROOT)/lib/cmake/Qt5 -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake
     else
 	$(QT_ROOT)/bin/qmake PREFIX=/opt/FaceRecognizer
     endif

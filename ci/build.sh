@@ -169,18 +169,26 @@ if [ -n "$GENERATORS" ]; then
     echo "Build FaceRecognizer ......"
     cd ${SOURCE_DIR}
     echo "PWD:`pwd`"
-    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
-         -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
-         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-         -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
-         -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
-         -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
-         -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
+    if [ "${BUILD_TARGERT}" = "android" ]; then
+    	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
+		 -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+		 -DCMAKE_VERBOSE=ON \
+		 -DCMAKE_BUILD_TYPE=Release \
+		 -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
+		 -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
+                 -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}"
+    else
+	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
+		 -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+		 -DCMAKE_VERBOSE=ON \
+		 -DCMAKE_BUILD_TYPE=Release \
+		 -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
+		 -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake 
+    fi
     cmake --build . --target install --config Release -- ${RABBIT_MAKE_JOB_PARA}
-
-    cp ${SeetaFace2_DIR}/bin/* ${SOURCE_DIR}/install/bin/.
+    if [ "${BUILD_TARGERT}" = "android" ]; then
+        cmake --build . --target APK  
+    fi
 else
     if [ "ON" = "${STATIC}" ]; then
         CONFIG_PARA="CONFIG*=static"
