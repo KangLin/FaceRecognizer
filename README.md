@@ -82,10 +82,7 @@
                  -DCMAKE_BUILD_TYPE=Release \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaNet_DIR= \
-                 -DSeetaFaceDetector_DIR= \
-                 -DSeetaFaceLandmarker_DIR= \
-                 -DSeetaFaceRecognizer_DIR=
+                 -DSeetaFace_DIR= 
         cmake --build .  --config Release 
 
   - 安装
@@ -128,10 +125,7 @@
                  -DCMAKE_BUILD_TYPE=Release \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaNet_DIR= \
-                 -DSeetaFaceDetector_DIR= \
-                 -DSeetaFaceLandmarker_DIR= \
-                 -DSeetaFaceRecognizer_DIR=
+                 -DSeetaFace_DIR= 
             cmake --build . --config Release 
 
       - 安装
@@ -166,11 +160,9 @@
         cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a with NEON" -DANDROID_PLATFORM=android-18 \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaNet_DIR= \
-                 -DSeetaFaceDetector_DIR= \
-                 -DSeetaFaceLandmarker_DIR= \
-                 -DSeetaFaceRecognizer_DIR=
+                 -DSeetaFace_DIR= 
         cmake --build . --config Release --target install
+	cmake --build . --target APK
 
   - 主机是windows
 
@@ -180,11 +172,9 @@
         cmake .. -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake  -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe -DANDROID_ABI=arm64-v8a -DANDROID_ARM_NEON=ON \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaNet_DIR= \
-                 -DSeetaFaceDetector_DIR= \
-                 -DSeetaFaceLandmarker_DIR= \
-                 -DSeetaFaceRecognizer_DIR=
+                 -DSeetaFace_DIR= 
         cmake --build . --config Release --target install
+	cmake --build . --target APK
 
   - 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：
@@ -201,6 +191,10 @@
     + ANDROID_ARM_MODE
     + ANDROID_ARM_NEON
     + ANDROID_STL:指定 CMake 应使用的 STL。
+
+  - 安装 apk 到设备
+
+       adb install android-build-debug.apk 
 
 ### 捐赠
 本软件如果对你有用，或者你喜欢它，请你捐赠，支持作者。谢谢！
