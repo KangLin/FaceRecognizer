@@ -58,7 +58,7 @@ add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
 SET(RCC_FILES
     ../Resource/Resource.qrc
-    )
+    ${TRANSLATIONS_RESOURCE_FILES})
 if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
 endif()
