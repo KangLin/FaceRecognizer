@@ -13,25 +13,39 @@ set(SOURCES_FILES
     main.cpp
     MainWindow.cpp    
     FrmDisplay.cpp
-    FrmRegister.cpp
-    FrmRecognizer.cpp
     CameraQtCaptureVideoFrame.cpp
     )
 
 set(HEADER_FILES
     MainWindow.h    
     FrmDisplay.h
-    FrmRegister.h
-    FrmRecognizer.h
     CameraQtCaptureVideoFrame.h
     )
 
 set(SOURCE_UI_FILES
     MainWindow.ui
     FrmDisplay.ui
-    FrmRegister.ui
-    FrmRecognizer.ui
     )
+
+if(SeetaFace_FOUND)
+    set(SOURCES_FILES
+        ${SOURCES_FILES}
+        FrmRegister.cpp
+        FrmRecognizer.cpp
+        )
+    
+    set(HEADER_FILES
+        ${HEADER_FILES}
+        FrmRegister.h
+        FrmRecognizer.h
+        )
+    
+    set(SOURCE_UI_FILES
+        ${SOURCE_UI_FILES}
+        FrmRegister.ui
+        FrmRecognizer.ui
+        )
+endif()
 
 #翻译
 SET(TRANSLATIONS_NAME ${PROJECT_NAME})
@@ -53,18 +67,7 @@ if(ANDROID)
 else()
     add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 endif()
-target_link_libraries(${PROJECT_NAME}
-    ${QT_LIBRARIES}
-    RabbitCommon
-    SeetaNet
-    SeetaFaceDetector
-    SeetaFaceLandmarker
-    SeetaFaceRecognizer)
-target_compile_definitions(${PROJECT_NAME}
-                    PRIVATE -DRABBITCOMMON)
-target_include_directories(${PROJECT_NAME}
-    PRIVATE ${RabbitCommon_DIR}/Src
-    ${CMAKE_BINARY_DIR})
+
 set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -75,6 +78,39 @@ elseif(${CMAKE_CXX_COMPILER} MATCHES ".*/(cl)(\\..*)")
         "/SUBSYSTEM:WINDOWS\",5.01\" /ENTRY:mainCRTStartup")
 endif()
 
+target_compile_definitions(${PROJECT_NAME} PRIVATE RABBITCOMMON)
+target_link_libraries(${PROJECT_NAME} PRIVATE RabbitCommon ${QT_LIBRARIES})
+target_include_directories(${PROJECT_NAME}
+    PRIVATE ${RabbitCommon_DIR}/Src
+    ${CMAKE_BINARY_DIR})
+
+if(SeetaFace_FOUND)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE SEETA_FACE)
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        SeetaNet
+        SeetaFaceDetector
+        SeetaFaceLandmarker
+        SeetaFaceRecognizer)
+    
+    if(ANDROID)
+        if(SeetaFace_FOUND)
+            INSTALL(FILES $<TARGET_FILE:SeetaNet>
+                $<TARGET_FILE:SeetaFaceDetector>
+                $<TARGET_FILE:SeetaFaceLandmarker>
+                $<TARGET_FILE:SeetaFaceRecognizer>
+                DESTINATION "libs/${ANDROID_ABI}")
+        endif()
+    else()
+        if(SeetaFace_FOUND)
+            INSTALL(FILES $<TARGET_FILE:SeetaNet>
+                $<TARGET_FILE:SeetaFaceDetector>
+                $<TARGET_FILE:SeetaFaceLandmarker>
+                $<TARGET_FILE:SeetaFaceRecognizer>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}")
+        endif()
+    endif()
+endif()
+
 if(ANDROID)
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
@@ -82,11 +118,6 @@ if(ANDROID)
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             LIBRARY DESTINATION "libs/${ANDROID_ABI}"
             )
-    INSTALL(FILES $<TARGET_FILE:SeetaNet>
-        $<TARGET_FILE:SeetaFaceDetector>
-        $<TARGET_FILE:SeetaFaceLandmarker>
-        $<TARGET_FILE:SeetaFaceRecognizer>
-        DESTINATION "libs/${ANDROID_ABI}")
 else()
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
@@ -94,11 +125,6 @@ else()
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             )
-    INSTALL(FILES $<TARGET_FILE:SeetaNet>
-        $<TARGET_FILE:SeetaFaceDetector>
-        $<TARGET_FILE:SeetaFaceLandmarker>
-        $<TARGET_FILE:SeetaFaceRecognizer>
-        DESTINATION "${CMAKE_INSTALL_BINDIR}")
 endif()
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico DESTINATION .)

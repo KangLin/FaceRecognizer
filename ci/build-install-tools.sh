@@ -60,17 +60,18 @@ function function_android()
 
     #下载android ndk  
     if [ ! -d "`pwd`/android-ndk" ]; then
-        if [ "$QT_VERSION_DIR" = "5.12" ]; then
-            wget -c -nv https://dl.google.com/android/repository/android-ndk-r19c-linux-x86_64.zip
-            unzip android-ndk-r19c-linux-x86_64.zip
-            mv android-ndk-r19c android-ndk
-            rm android-ndk-r19c-linux-x86_64.zip
-        else
+        if [ "$QT_VERSION_DIR" = "5.9" ]; then
             wget -c -nv http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
             chmod u+x android-ndk-r10e-linux-x86_64.bin
             ./android-ndk-r10e-linux-x86_64.bin > /dev/null
             mv android-ndk-r10e android-ndk
             rm android-ndk-r10e-linux-x86_64.bin
+        else
+            NDK_VERSION=android-ndk-r20-linux-x86_64.zip
+            wget -c -nv https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip
+            unzip android-ndk-${NDK_VERSION}-linux-x86_64.zip
+            mv android-ndk-${NDK_VERSION} android-ndk
+            rm android-ndk-${NDK_VERSION}-linux-x86_64.zip
         fi
     fi
 

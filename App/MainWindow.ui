@@ -34,6 +34,7 @@
     <addaction name="actionStart"/>
     <addaction name="actionStop"/>
     <addaction name="separator"/>
+    <addaction name="actionCamera"/>
     <addaction name="actionRegister"/>
     <addaction name="actionRecognizer"/>
     <addaction name="separator"/>
@@ -109,6 +110,9 @@
    </property>
   </action>
   <action name="actionRegister">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Register</string>
    </property>
@@ -121,6 +125,19 @@
   <action name="actionUpdate_U">
    <property name="text">
     <string>Update(&amp;U)</string>
+   </property>
+  </action>
+  <action name="actionSelect_camera">
+   <property name="text">
+    <string>Select camera</string>
+   </property>
+  </action>
+  <action name="actionCamera">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Camera</string>
    </property>
   </action>
  </widget>

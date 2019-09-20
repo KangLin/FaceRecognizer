@@ -26,6 +26,9 @@ private slots:
     void on_actionSet_model_path_triggered();
     void on_actionAbout_A_triggered();
     void on_actionUpdate_U_triggered();
+    void on_actionCamera_triggered();
+
+    void slotCameraChanged(int index);
 
 private:
     int CamerOrientation(const QCamera camera);

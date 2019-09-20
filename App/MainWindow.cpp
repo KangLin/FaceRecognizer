@@ -7,6 +7,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
+#include <QComboBox>
+#include <QActionGroup>
 
 #ifdef RABBITCOMMON
     #include "FrmUpdater/FrmUpdater.h"
@@ -14,8 +16,12 @@
     #include "RabbitCommonDir.h"
 #endif
 
-#include "FrmRecognizer.h"
-#include "FrmRegister.h"
+#include "FrmDisplay.h"
+
+#ifdef SEETA_FACE
+    #include "FrmRecognizer.h"
+    #include "FrmRegister.h"
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,14 +34,45 @@ MainWindow::MainWindow(QWidget *parent) :
                   QSettings::IniFormat);
     m_szModelFile = set.value("ModuleDir").toString();
     qDebug() << "Model files:" << m_szModelFile;
-    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-    foreach (const QCameraInfo &cameraInfo, cameras) {
-        qDebug() << "Camer name:" << cameraInfo.deviceName();
+    
+    QComboBox *cmbCameras = new QComboBox(ui->toolBar);
+    if(cmbCameras)
+    {
+        ui->toolBar->addWidget(cmbCameras);
+        connect(cmbCameras, SIGNAL(currentIndexChanged(int)),
+                this, SLOT(slotCameraChanged(int)));
+        QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+        foreach (const QCameraInfo &cameraInfo, cameras) {
+            //qDebug() << "Camer name:" << cameraInfo.deviceName();
+            cmbCameras->addItem(cameraInfo.deviceName());
+        }
     }
 
-    if(QCameraInfo::availableCameras().size() > 0)
+    //Init menu
+    QActionGroup *pViewGroup = new QActionGroup(this);
+    pViewGroup->addAction(ui->actionCamera);
+    pViewGroup->addAction(ui->actionRegister);
+    pViewGroup->addAction(ui->actionRecognizer);
+    ui->actionCamera->setChecked(true);
+    //on_actionCamera_triggered();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::slotCameraChanged(int index)
+{
+    if(QCameraInfo::availableCameras().size() > 0 && index >= 0)
     {
-        m_pCamera = new QCamera(QCameraInfo::availableCameras().at(0));
+        if(m_pCamera)
+        {
+            m_pCamera->unload();
+            delete m_pCamera;
+        }
+
+        m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
         QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
 
         m_pCamera->load();
@@ -66,19 +103,16 @@ MainWindow::MainWindow(QWidget *parent) :
     } else {
         QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
     }
-
-    on_actionRecognizer_triggered();
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::on_actionStart_triggered()
 {
     if(m_pCamera)
+    {
+        if(m_pCamera->isAvailable())
+            m_pCamera->stop();
         m_pCamera->start();
+    }
 }
 
 void MainWindow::on_actionStop_triggered()
@@ -113,19 +147,23 @@ int MainWindow::CamerOrientation(const QCamera camera)
 
 void MainWindow::on_actionSet_model_path_triggered()
 {
+#ifdef RABBITCOMMON
    m_szModelFile = QFileDialog::getExistingDirectory(this,
                         tr("Open model file path"), qApp->applicationDirPath());
    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                  QSettings::IniFormat);
    set.setValue("ModuleDir", m_szModelFile);
+#endif
 }
 
 void MainWindow::on_actionRecognizer_triggered()
 {
+    qDebug() << "on_actionRecognizer_triggered";
+#ifdef SEETA_FACE
     CFrmRecognizer *pRecognizer = new CFrmRecognizer(this);
     if(!pRecognizer)
         return;
-    
+
     if(!m_szModelFile.isEmpty())
         pRecognizer->SetModelPath(m_szModelFile);
     this->setCentralWidget(pRecognizer);
@@ -134,13 +172,17 @@ void MainWindow::on_actionRecognizer_triggered()
     Q_ASSERT(check);
 #if defined (Q_OS_ANDROID)
     pRecognizer->SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
-#else           
+#else
     pRecognizer->SetCameraAngle(180);
+#endif
+
 #endif
 }
 
 void MainWindow::on_actionRegister_triggered()
 {
+    qDebug() << "on_actionRegister_triggered";
+#ifdef SEETA_FACE
     CFrmRegister *pRegister = new CFrmRegister(this);
     if(!pRegister)
         return;
@@ -155,6 +197,25 @@ void MainWindow::on_actionRegister_triggered()
     pRegister->SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
 #else           
     pRegister->SetCameraAngle(180);
+#endif
+    
+#endif
+}
+
+void MainWindow::on_actionCamera_triggered()
+{
+    qDebug() << "on_actionCamera_triggered";
+    CFrmDisplay *pDisplay = new CFrmDisplay();
+    if(!pDisplay)
+        return;
+    this->setCentralWidget(pDisplay);
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QVideoFrame &)),
+                          pDisplay, SLOT(slotDisplay(const QVideoFrame &)));
+    Q_ASSERT(check);
+#if defined (Q_OS_ANDROID)
+    pDisplay->SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
+#else           
+    pDisplay->SetCameraAngle(180);
 #endif
 }
 
