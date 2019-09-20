@@ -54,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRegister);
     pViewGroup->addAction(ui->actionRecognizer);
     ui->actionCamera->setChecked(true);
-    //on_actionCamera_triggered();
+    on_actionCamera_triggered();
 }
 
 MainWindow::~MainWindow()
