@@ -1,12 +1,13 @@
 #include "FrmRegister.h"
 #include "ui_FrmRegister.h"
+#include "FrmDisplay.h"
+#include "RabbitCommonDir.h"
+#include "Tool.h"
 
 #include <QPainter>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
-
-#include "RabbitCommonDir.h"
 
 CFrmRegister::CFrmRegister(QWidget *parent) :
     QWidget(parent),
@@ -72,28 +73,11 @@ int CFrmRegister::InitSeeta(const QString& szPath)
 void CFrmRegister::slotDisplay(const QVideoFrame &frame)
 {
     QPainter painter(this);
-    QVideoFrame videoFrame = frame;
-    if(!videoFrame.isValid())
-        return;
-    if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
-        return;
-    do{
-        QImage::Format f = QVideoFrame::imageFormatFromPixelFormat(
-                    videoFrame.pixelFormat());
-        if(QImage::Format_Invalid == f)
-            break;
-        QImage image(videoFrame.bits(),
-                     videoFrame.width(),
-                     videoFrame.height(),
-                     videoFrame.width() << 2,
-                     f);
-        if(m_Rotation)
-            image = image.transformed(QTransform().rotate(m_Rotation));
+    QImage image = CTool::ConverFormat(frame);
+    if(m_Rotation)
+        image = image.transformed(QTransform().rotate(m_Rotation));
 
-        m_Image = image;
-        m_ImageOut = image.convertToFormat(QImage::Format_RGB888);
-    }while(0);
-    videoFrame.unmap();
+    m_ImageOut = image.convertToFormat(QImage::Format_RGB888);
     
     QImage out = m_ImageOut.rgbSwapped();
     Detecetor(out);

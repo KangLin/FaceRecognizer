@@ -1,12 +1,13 @@
 #include "FrmRecognizer.h"
 #include "ui_FrmRecognizer.h"
+#include "Tool.h"
+#include "RabbitCommonDir.h"
 
 #include <QSettings>
 #include <QPainter>
 #include <QDebug>
 #include <QMessageBox>
 #include <QTime>
-#include "RabbitCommonDir.h"
 
 #define DEBUG_DISPLAY_TIME 1
 
@@ -78,28 +79,11 @@ void CFrmRecognizer::slotDisplay(const QVideoFrame &frame)
 {
     QPainter painter(this);
     //QTime t = QTime::currentTime();
-    QVideoFrame videoFrame = frame;
-    if(!videoFrame.isValid())
-        return;
-    if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
-        return;
-    do{
-        QImage::Format f = QVideoFrame::imageFormatFromPixelFormat(
-                    videoFrame.pixelFormat());
-        if(QImage::Format_Invalid == f)
-            break;
-        QImage image(videoFrame.bits(),
-                     videoFrame.width(),
-                     videoFrame.height(),
-                     videoFrame.width() << 2,
-                     f);
-        if(m_Rotation)
-            image = image.transformed(QTransform().rotate(m_Rotation));
+    QImage image = CTool::ConverFormat(frame);
+    if(m_Rotation)
+        image = image.transformed(QTransform().rotate(m_Rotation));
 
-        m_Image = image;
-        m_ImageOut = image.convertToFormat(QImage::Format_RGB888);
-    }while(0);
-    videoFrame.unmap();
+    m_ImageOut = image.convertToFormat(QImage::Format_RGB888);
     
     QImage out = m_ImageOut.rgbSwapped();
     Recognizer(out);

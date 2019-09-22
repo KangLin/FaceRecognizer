@@ -18,7 +18,7 @@
 
 #include "FrmDisplay.h"
 
-#ifdef SEETA_FACE
+#ifdef HAVE_SEETA_FACE
     #include "FrmRecognizer.h"
     #include "FrmRegister.h"
 #endif
@@ -54,7 +54,12 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRegister);
     pViewGroup->addAction(ui->actionRecognizer);
     ui->actionCamera->setChecked(true);
+    
+#ifdef HAVE_SEETA_FACE
+    on_actionRecognizer_triggered();
+#else
     on_actionCamera_triggered();
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -158,7 +163,7 @@ void MainWindow::on_actionSet_model_path_triggered()
 
 void MainWindow::on_actionRecognizer_triggered()
 {
-#ifdef SEETA_FACE
+#ifdef HAVE_SEETA_FACE
     CFrmRecognizer *pRecognizer = new CFrmRecognizer(this);
     if(!pRecognizer)
         return;
@@ -180,7 +185,7 @@ void MainWindow::on_actionRecognizer_triggered()
 
 void MainWindow::on_actionRegister_triggered()
 {
-#ifdef SEETA_FACE
+#ifdef HAVE_SEETA_FACE
     CFrmRegister *pRegister = new CFrmRegister(this);
     if(!pRegister)
         return;
@@ -202,8 +207,7 @@ void MainWindow::on_actionRegister_triggered()
 
 void MainWindow::on_actionCamera_triggered()
 {
-    qDebug() << "on_actionCamera_triggered";
-    CFrmDisplay *pDisplay = new CFrmDisplay();
+    CFrmDisplay *pDisplay = new CFrmDisplay(this);
     if(!pDisplay)
         return;
     this->setCentralWidget(pDisplay);

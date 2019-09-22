@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(FaceRecognizer)
 
 find_package(LIBYUV)
+find_package(FFMPEG)
 find_package(SeetaFace
     COMPONENTS 
         SeetaNet
@@ -15,12 +16,16 @@ set(SOURCES_FILES
     MainWindow.cpp    
     FrmDisplay.cpp
     CameraQtCaptureVideoFrame.cpp
+    Tool.cpp
+    Log.cpp
     )
 
 set(HEADER_FILES
     MainWindow.h    
     FrmDisplay.h
     CameraQtCaptureVideoFrame.h
+    Tool.h
+    Log.h
     )
 
 set(SOURCE_UI_FILES
@@ -86,7 +91,7 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_BINARY_DIR})
 
 if(SeetaFace_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE SEETA_FACE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_SEETA_FACE)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         SeetaNet
         SeetaFaceDetector
@@ -113,9 +118,15 @@ if(SeetaFace_FOUND)
 endif()
 
 if(LIBYUV_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE LIBYUV)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LIBYUV_DEFINITIONS})
     target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBYUV_LIBRARIES})
     target_include_directories(${PROJECT_NAME} PRIVATE ${LIBYUV_INCLUDE_DIRS})
+endif()
+
+if(FFMPEG_FOUND)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ${FFMPEG_DEFINITIONS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${FFMPEG_LIBRARIES})
+    target_include_directories(${PROJECT_NAME} PRIVATE ${FFMPEG_INCLUDE_DIRS})
 endif()
 
 if(ANDROID)
@@ -183,5 +194,6 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
     INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
 
+message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${LIBYUV_FOUND}")
 message("== SeetaFac:${SeetaFace_FOUND}")
