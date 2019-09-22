@@ -158,7 +158,6 @@ void MainWindow::on_actionSet_model_path_triggered()
 
 void MainWindow::on_actionRecognizer_triggered()
 {
-    qDebug() << "on_actionRecognizer_triggered";
 #ifdef SEETA_FACE
     CFrmRecognizer *pRecognizer = new CFrmRecognizer(this);
     if(!pRecognizer)
@@ -181,7 +180,6 @@ void MainWindow::on_actionRecognizer_triggered()
 
 void MainWindow::on_actionRegister_triggered()
 {
-    qDebug() << "on_actionRegister_triggered";
 #ifdef SEETA_FACE
     CFrmRegister *pRegister = new CFrmRegister(this);
     if(!pRegister)

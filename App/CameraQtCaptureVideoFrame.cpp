@@ -41,7 +41,8 @@ CCameraQtCaptureVideoFrame::supportedPixelFormats(
                 << QVideoFrame::Format_YUV420P
                 << QVideoFrame::Format_YUYV
                 << QVideoFrame::Format_AYUV444
-                //<< QVideoFrame::Format_Jpeg
+                << QVideoFrame::Format_Jpeg
+                << QVideoFrame::Format_CameraRaw
                 ;
     } else {
         return QList<QVideoFrame::PixelFormat>();

@@ -19,6 +19,7 @@ public:
     
     int SetCameraAngle(int rotation);
     static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
+    QImage ConverFormat(const QVideoFrame &frame);
     
 public Q_SLOTS:
     void slotDisplay(const QImage &frame);

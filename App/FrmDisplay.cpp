@@ -3,6 +3,10 @@
 #include <QPainter>
 #include <QDebug>
 
+#ifdef LIBYUV
+    #include "libyuv.h"
+#endif
+
 CFrmDisplay::CFrmDisplay(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFrmDisplay)
@@ -30,6 +34,9 @@ void CFrmDisplay::slotDisplay(const QImage &frame)
 void CFrmDisplay::slotDisplay(const QVideoFrame& frame)
 {
     qDebug() << "CFrmDisplay::slotDisplay(const QVideoFrame& frame)";
+    m_Image = ConverFormat(frame);
+    update();
+    return;
     QVideoFrame videoFrame = frame;
     if(!videoFrame.isValid())
         return;
@@ -61,6 +68,57 @@ void CFrmDisplay::paintEvent(QPaintEvent *event)
         return;
     QPainter painter(this);
     painter.drawImage(this->rect(), m_Image);
+}
+
+QImage CFrmDisplay::ConverFormat(const QVideoFrame &frame)
+{
+    QImage img;
+    QVideoFrame videoFrame = frame;
+    if(!videoFrame.isValid())
+        return img;
+    if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
+        return img;
+    do{
+        QImage::Format f = QVideoFrame::imageFormatFromPixelFormat(
+                    videoFrame.pixelFormat());
+        if(QImage::Format_Invalid != f)
+        {
+            QImage image(videoFrame.bits(),
+                         videoFrame.width(),
+                         videoFrame.height(),
+                         videoFrame.width() << 2,
+                         f);
+            if(m_Rotation)
+                img = image.transformed(QTransform().rotate(m_Rotation));
+        } else {
+            switch(videoFrame.pixelFormat())
+            {
+            case QVideoFrame::Format_Jpeg:
+                {
+                    img = QImage(videoFrame.width(),
+                                 videoFrame.height(),
+                                 QImage::Format_ARGB32);
+                    libyuv::MJPGToARGB(videoFrame.bits(),
+                                       videoFrame.mappedBytes(),
+                                       img.bits(),
+                   #if (QT_VERSION > QT_VERSION_CHECK(5, 10, 0))
+                                       img.sizeInBytes(),
+                   #else
+                                       img.byteCount(),
+                   #endif
+                                       videoFrame.width(),
+                                       videoFrame.height(),
+                                       img.width(),
+                                       img.height());
+                }
+                break;
+            default:
+                qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
+            }
+        }
+    }while(0);
+    videoFrame.unmap();
+    return img;
 }
 
 //参见： https://blog.csdn.net/junzia/article/details/76315120

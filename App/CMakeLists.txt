@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 
 project(FaceRecognizer)
 
+find_package(LIBYUV)
 find_package(SeetaFace
-    REQUIRED COMPONENTS 
+    COMPONENTS 
         SeetaNet
         SeetaFaceDetector
         SeetaFaceLandmarker
@@ -111,6 +112,12 @@ if(SeetaFace_FOUND)
     endif()
 endif()
 
+if(LIBYUV_FOUND)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE LIBYUV)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBYUV_LIBRARIES})
+    target_include_directories(${PROJECT_NAME} PRIVATE ${LIBYUV_INCLUDE_DIRS})
+endif()
+
 if(ANDROID)
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
@@ -175,3 +182,6 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
         )
     INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
+
+message("== LIBYUV:${LIBYUV_FOUND}")
+message("== SeetaFac:${SeetaFace_FOUND}")
