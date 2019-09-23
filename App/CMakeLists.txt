@@ -4,12 +4,7 @@ project(FaceRecognizer)
 
 find_package(LIBYUV)
 find_package(FFMPEG)
-find_package(SeetaFace
-    COMPONENTS 
-        SeetaNet
-        SeetaFaceDetector
-        SeetaFaceLandmarker
-        SeetaFaceRecognizer)
+find_package(SeetaFace)
 
 set(SOURCES_FILES
     main.cpp

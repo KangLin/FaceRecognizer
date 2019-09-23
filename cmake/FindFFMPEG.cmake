@@ -5,7 +5,7 @@
 #   FFMPEG_LIBRARIES
 #   FFMPEG_DEFINITIONS
 #
-# Author: Matt Coffin <mcoffin13@gmail.com>
+# Author: Kang Lin <kl222@126.com>
 
 include(FindPackageHandleStandardArgs)
 
