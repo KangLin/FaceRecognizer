@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
         foreach (const QCameraInfo &cameraInfo, cameras) {
             //qDebug() << "Camer name:" << cameraInfo.deviceName();
-            cmbCameras->addItem(cameraInfo.deviceName());
+            cmbCameras->addItem(cameraInfo.description());
         }
     }
 
@@ -78,6 +78,8 @@ void MainWindow::slotCameraChanged(int index)
         }
 
         m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
+        
+        /*
         QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
 
         m_pCamera->load();

@@ -13,6 +13,8 @@ set(SOURCES_FILES
     CameraQtCaptureVideoFrame.cpp
     Tool.cpp
     Log.cpp
+    yuv2rgb.cpp
+    bmp_utils.cpp
     )
 
 set(HEADER_FILES
@@ -21,6 +23,8 @@ set(HEADER_FILES
     CameraQtCaptureVideoFrame.h
     Tool.h
     Log.h
+    yuv2rgb.h
+    bmp_utils.h
     )
 
 set(SOURCE_UI_FILES

@@ -46,7 +46,6 @@
 #endif
 #include <QCamera>
 
-class CCameraQt;
 /**
  * @brief The CCameraQtCaptureVideoFrame class
  * @ingroup RABBITIM_IMPLEMENT_CAMERA_QT
@@ -74,7 +73,6 @@ private:
 #ifdef ANDROID
      QVideoProbe m_Probe;//android下,目前只能用probe捕获视频  
 #endif
-     CCameraQt* m_pCamera;
 };
 
 #endif // CAPTUREVIDEOFRAME_H

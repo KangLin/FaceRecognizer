@@ -1,5 +1,6 @@
 #include "Tool.h"
 #include "Log.h"
+#include "yuv2rgb.h"
 
 #include <QFileInfo>
 #include <QDir>
@@ -529,6 +530,22 @@ QImage CTool::ConverFormat(const QVideoFrame &frame)
                                        videoFrame.height(),
                                        img.width(),
                                        img.height());
+#endif
+                }
+                break;
+            case QVideoFrame::Format_YUV420P:
+                {
+#if HAVE_LIBYUV
+                    
+#else
+                    img = QImage(videoFrame.width(),
+                                 videoFrame.height(),
+                                 QImage::Format_RGB888);
+                    yuv420p_to_rgb24(videoFrame.bits(),
+                                 img.bits(),
+                                 videoFrame.width(),
+                                 videoFrame.height()
+                                 );
 #endif
                 }
                 break;
