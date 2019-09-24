@@ -1,58 +1,19 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(FaceRecognizer)
-
-find_package(LIBYUV)
-find_package(FFMPEG)
-find_package(SeetaFace)
+project(FaceRecognizerApp)
 
 set(SOURCES_FILES
     main.cpp
-    MainWindow.cpp    
-    FrmDisplay.cpp
-    CameraQtCaptureVideoFrame.cpp
-    Tool.cpp
-    Log.cpp
-    yuv2rgb/yuv2rgb.cpp
-    yuv2rgb/bmp_utils.cpp
-    yuv2rgb/rgb2yuv.cpp
+    MainWindow.cpp
     )
 
 set(HEADER_FILES
-    MainWindow.h    
-    FrmDisplay.h
-    CameraQtCaptureVideoFrame.h
-    Tool.h
-    Log.h
-    yuv2rgb/yuv2rgb.h
-    yuv2rgb/bmp_utils.h
-    yuv2rgb/rgb2yuv.h
+    MainWindow.h
     )
 
 set(SOURCE_UI_FILES
     MainWindow.ui
-    FrmDisplay.ui
     )
-
-if(SeetaFace_FOUND)
-    set(SOURCES_FILES
-        ${SOURCES_FILES}
-        FrmRegister.cpp
-        FrmRecognizer.cpp
-        )
-    
-    set(HEADER_FILES
-        ${HEADER_FILES}
-        FrmRegister.h
-        FrmRecognizer.h
-        )
-    
-    set(SOURCE_UI_FILES
-        ${SOURCE_UI_FILES}
-        FrmRegister.ui
-        FrmRecognizer.ui
-        )
-endif()
 
 #翻译
 SET(TRANSLATIONS_NAME ${PROJECT_NAME})
@@ -64,7 +25,7 @@ add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
 add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
 SET(RCC_FILES
-    ../Resource/Resource.qrc
+    #../Resource/Resource.qrc
     ${TRANSLATIONS_RESOURCE_FILES})
 if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
@@ -74,7 +35,7 @@ if(ANDROID)
 else()
     add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 endif()
-
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} FaceRecognizer)
 set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -85,50 +46,10 @@ elseif(${CMAKE_CXX_COMPILER} MATCHES ".*/(cl)(\\..*)")
         "/SUBSYSTEM:WINDOWS\",5.01\" /ENTRY:mainCRTStartup")
 endif()
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE RABBITCOMMON)
-target_link_libraries(${PROJECT_NAME} PRIVATE RabbitCommon ${QT_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Src)
 target_include_directories(${PROJECT_NAME}
     PRIVATE ${RabbitCommon_DIR}/Src
     ${CMAKE_BINARY_DIR})
-
-if(SeetaFace_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE HAVE_SEETA_FACE)
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        SeetaNet
-        SeetaFaceDetector
-        SeetaFaceLandmarker
-        SeetaFaceRecognizer)
-    
-    if(ANDROID)
-        if(SeetaFace_FOUND)
-            INSTALL(FILES $<TARGET_FILE:SeetaNet>
-                $<TARGET_FILE:SeetaFaceDetector>
-                $<TARGET_FILE:SeetaFaceLandmarker>
-                $<TARGET_FILE:SeetaFaceRecognizer>
-                DESTINATION "libs/${ANDROID_ABI}")
-        endif()
-    else()
-        if(SeetaFace_FOUND)
-            INSTALL(FILES $<TARGET_FILE:SeetaNet>
-                $<TARGET_FILE:SeetaFaceDetector>
-                $<TARGET_FILE:SeetaFaceLandmarker>
-                $<TARGET_FILE:SeetaFaceRecognizer>
-                DESTINATION "${CMAKE_INSTALL_BINDIR}")
-        endif()
-    endif()
-endif()
-
-if(LIBYUV_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LIBYUV_DEFINITIONS})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBYUV_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PRIVATE ${LIBYUV_INCLUDE_DIRS})
-endif()
-
-if(FFMPEG_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE ${FFMPEG_DEFINITIONS})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${FFMPEG_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PRIVATE ${FFMPEG_INCLUDE_DIRS})
-endif()
 
 if(ANDROID)
     # Install target
@@ -194,7 +115,3 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
         )
     INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
-
-message("== FFMPGE:${FFMPEG_FOUND}")
-message("== LIBYUV:${LIBYUV_FOUND}")
-message("== SeetaFac:${SeetaFace_FOUND}")

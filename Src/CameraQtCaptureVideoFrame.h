@@ -46,11 +46,13 @@
 #endif
 #include <QCamera>
 
+#include "facerecognizer_export.h"
+
 /**
  * @brief The CCameraQtCaptureVideoFrame class
  * @ingroup RABBITIM_IMPLEMENT_CAMERA_QT
  */
-class CCameraQtCaptureVideoFrame : public QAbstractVideoSurface
+class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame : public QAbstractVideoSurface
 {
     Q_OBJECT
 public:

@@ -2,14 +2,24 @@
 作者：康林（kl222@126.com)
 
 ## 简介
-人脸识别
+
+- 人脸识别框架
+- 人脸识别应用（考勤）
+- 人脸识别开源库测试比较
+  + [opencv](https://github.com/opencv/opencv)
+  + [dlib](https://github.com/davisking/dlib)
+  + [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
+  + [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
 
 ### 支持平台  
 
   + [x] windows
   + [x] linux
-  + [ ] android
+  + [x] android
   + [ ] mac
+  + [ ] ios
+  
+  mac 和 ios我没有设备，请有设备的同学自行编译测试。
 
 [![Windows build status](https://ci.appveyor.com/api/projects/status/n50nxc7d8mm9bdpb/branch/master?svg=true)](https://ci.appveyor.com/project/KangLin/facerecognizer/branch/master)
 [![Linux build Status](https://travis-ci.org/KangLin/FaceRecognizer.svg?branch=master)](https://travis-ci.org/KangLin/FaceRecognizer)

@@ -13,6 +13,8 @@ extern "C" {
 }
 #endif
 
+#include "facerecognizer_export.h"
+
 #include <QObject>
 #include <memory>
 #include <string>
@@ -24,7 +26,7 @@ extern "C" {
  * @brief 工具类。提供一此工具函数  
  * @ingroup RABBITIM_TOOL
  */
-class CTool : public QObject
+class FACERECOGNIZER_EXPORT CTool : public QObject
 {
     Q_OBJECT
 public:

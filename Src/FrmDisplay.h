@@ -5,11 +5,13 @@
 #include <QImage>
 #include <QVideoFrame>
 
+#include "facerecognizer_export.h"
+
 namespace Ui {
 class CFrmDisplay;
 }
 
-class CFrmDisplay : public QWidget
+class FACERECOGNIZER_EXPORT CFrmDisplay : public QWidget
 {
     Q_OBJECT
     

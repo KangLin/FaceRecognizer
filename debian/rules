@@ -31,7 +31,7 @@ override_dh_auto_build:
 
 override_dh_shlibdeps:
     ifdef GENERATORS
-	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:${SeetaFace2_DIR}/lib
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:${SeetaFace2_DIR}/bin
     else
-	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:${SeetaFace2_DIR}/lib
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:${SeetaFace2_DIR}/bin
     endif

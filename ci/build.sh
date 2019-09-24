@@ -137,7 +137,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     # Create update.xml
     MD5=`md5sum $SOURCE_DIR/../facerecognizer_*_amd64.deb|awk '{print $1}'`
     echo "MD5:${MD5}"
-    ./bin/FaceRecognizer \
+    ./bin/FaceRecognizerApp \
         -f "`pwd`/update_linux.xml" \
         --md5 ${MD5}
     cat update_linux.xml
@@ -250,7 +250,7 @@ if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
         "/C/Program Files (x86)/NSIS/makensis.exe" "Install.nsi"
         MD5=`md5sum FaceRecognizer-Setup-*.exe|awk '{print $1}'`
         echo "MD5:${MD5}"
-        install/bin/FaceRecognizer.exe -f "`pwd`/update_windows.xml" --md5 ${MD5}
+        install/bin/FaceRecognizerApp.exe -f "`pwd`/update_windows.xml" --md5 ${MD5}
         
         cat update_windows.xml
     fi

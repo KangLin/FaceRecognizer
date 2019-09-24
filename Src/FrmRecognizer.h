@@ -10,11 +10,13 @@
 #include "seeta/FaceLandmarker.h"
 #include "seeta/FaceDatabase.h"
 
+#include "facerecognizer_export.h"
+
 namespace Ui {
 class CFrmRecognizer;
 }
 
-class CFrmRecognizer : public QWidget
+class FACERECOGNIZER_EXPORT CFrmRecognizer : public QWidget
 {
     Q_OBJECT
     

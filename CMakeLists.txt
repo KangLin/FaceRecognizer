@@ -48,6 +48,7 @@ if("Debug" STREQUAL CMAKE_BUILD_TYPE)
 endif()
 
 #需要的QT组件
+get_filename_component(QT_INSTALL_DIR "${Qt5_DIR}/../../.." ABSOLUTE)
 SET(QT_COMPONENTS Core Gui Widgets Xml Network Multimedia)
 find_package(Qt5 COMPONENTS ${QT_COMPONENTS})
 FOREACH(_COMPONENT ${QT_COMPONENTS})
@@ -60,8 +61,6 @@ SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTORCC ON)
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
-
-get_filename_component(QT_INSTALL_DIR "${Qt5_DIR}/../../.." ABSOLUTE)
 
 IF(MSVC)
     # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
@@ -137,6 +136,7 @@ else()
     message("   ag:")
     message(FATAL_ERROR "       cmake -DRabbitCommon_DIR= ")
 endif()
+add_subdirectory(Src)
 add_subdirectory(App)
 
 INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}")

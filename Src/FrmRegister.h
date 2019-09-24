@@ -7,6 +7,8 @@
 #include "seeta/FaceLandmarker.h"
 #include "seeta/FaceDatabase.h"
 
+#include "facerecognizer_export.h"
+
 #include <QVideoFrame>
 #include <QSharedPointer>
 #include <QMap>
@@ -15,7 +17,7 @@ namespace Ui {
 class CFrmRegister;
 }
 
-class CFrmRegister : public QWidget
+class FACERECOGNIZER_EXPORT CFrmRegister : public QWidget
 {
     Q_OBJECT
     
