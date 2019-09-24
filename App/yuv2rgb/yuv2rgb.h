@@ -6,26 +6,26 @@
  * @home   https://github.com/latelee/yuv2rgb
  * 
  * @brief  
- *         YUV422P/YUV420P/YUV422SP×ªRGB24ÊµÏÖ´úÂë
+ *         YUV422P/YUV420P/YUV422SPè½¬RGB24å®ç°ä»£ç 
  *
  * @note
- *         1¡¢ÔÚWindows±àÒë²âÊÔ
- *         2¡¢´úÂëÖĞÊ¹ÓÃµÄYUV420P¡¢YUV422PÊÇÆ½Ãæ(planar)¸ñÊ½£¬²»ÊÇ´ò°ü(packed)¸ñÊ½
+ *         1ã€åœ¨Windowsç¼–è¯‘æµ‹è¯•
+ *         2ã€ä»£ç ä¸­ä½¿ç”¨çš„YUV420Pã€YUV422Pæ˜¯å¹³é¢(planar)æ ¼å¼ï¼Œä¸æ˜¯æ‰“åŒ…(packed)æ ¼å¼
  *
- *         3¡¢qcif: 176*144
+ *         3ã€qcif: 176*144
               cif: 352*288
- * @todo  È·¶¨ºÃRGBÅÅĞòµ½µ×ÊÇÊ²Ã´
+ * @todo  ç¡®å®šå¥½RGBæ’åºåˆ°åº•æ˜¯ä»€ä¹ˆ
  *
- * @log   2013-10-26 ²Î¿¼422pº¯Êı£¬ÊµÏÖ422sp×ª»»422p¸ñÊ½º¯Êı¡£½«³õÊ¼»¯½Ó¿ÚÒş²Ø£¬²»¶ÔÍâ¹«¿ª
- *        2014-02-10 ·â×°Í³Ò»Ò»¸öº¯Êı¡£
+ * @log   2013-10-26 å‚è€ƒ422på‡½æ•°ï¼Œå®ç°422spè½¬æ¢422pæ ¼å¼å‡½æ•°ã€‚å°†åˆå§‹åŒ–æ¥å£éšè—ï¼Œä¸å¯¹å¤–å…¬å¼€
+ *        2014-02-10 å°è£…ç»Ÿä¸€ä¸€ä¸ªå‡½æ•°ã€‚
  *
- * ±Ê¼Ç£º
-            Ã¿¸öY¡¢U¡¢V¡¢R¡¢G¡¢B¾ùÕ¼ÓÃ1¸ö×Ö½Ú
-            YUV422PÆ½Ãæ¸ñÊ½
-            Y¡¢U¡¢V·Ö¿ª´æ´¢£¬YÕ¼w*h£¬U¡¢V·Ö±ğÕ¼w*h/2¡£Ã¿ĞĞYÓĞw¸ö£¬U¡¢V¸÷w/2¸ö¡£
-            Á½¸öY¹²ÓÃÒ»¸öUºÍV£¬Á½¸öÏñËØÓĞY·ÖÁ¿2¸ö£¬U¡¢V·ÖÁ¿¸÷Ò»¸ö£¬¹²4×Ö½Ú£¬Òò´ËÒ»¸öÏñËØÕ¼2×Ö½Ú¡£
+ * ç¬”è®°ï¼š
+            æ¯ä¸ªYã€Uã€Vã€Rã€Gã€Bå‡å ç”¨1ä¸ªå­—èŠ‚
+            YUV422På¹³é¢æ ¼å¼
+            Yã€Uã€Våˆ†å¼€å­˜å‚¨ï¼ŒYå w*hï¼ŒUã€Våˆ†åˆ«å w*h/2ã€‚æ¯è¡ŒYæœ‰wä¸ªï¼ŒUã€Vå„w/2ä¸ªã€‚
+            ä¸¤ä¸ªYå…±ç”¨ä¸€ä¸ªUå’ŒVï¼Œä¸¤ä¸ªåƒç´ æœ‰Yåˆ†é‡2ä¸ªï¼ŒUã€Våˆ†é‡å„ä¸€ä¸ªï¼Œå…±4å­—èŠ‚ï¼Œå› æ­¤ä¸€ä¸ªåƒç´ å 2å­—èŠ‚ã€‚
 
-            ÄÚ´æ·Ö²¼ÈçÏÂ£º
+            å†…å­˜åˆ†å¸ƒå¦‚ä¸‹ï¼š
                     w
             +--------------------+
             |Y0Y1Y2Y3...         |
@@ -45,12 +45,12 @@
             +----------+
                 w/2
 
-            µÚÒ»¸öÏñËØ£ºY0 U0 V0
-            µÚ¶ş¸öÏñËØ£ºY1 U0 V0
-            µÚÈı¸öÏñËØ£ºY2 U1 V1
-            µÚËÄ¸öÏñËØ£ºY3 U1 V1
+            ç¬¬ä¸€ä¸ªåƒç´ ï¼šY0 U0 V0
+            ç¬¬äºŒä¸ªåƒç´ ï¼šY1 U0 V0
+            ç¬¬ä¸‰ä¸ªåƒç´ ï¼šY2 U1 V1
+            ç¬¬å››ä¸ªåƒç´ ï¼šY3 U1 V1
 
-			Ã¿ÖÖ¸ñÊ½·Ö²¼¼û×ª»»º¯Êı´¦
+			æ¯ç§æ ¼å¼åˆ†å¸ƒè§è½¬æ¢å‡½æ•°å¤„
  */
 
 #ifndef _YUV2RGB_H_
@@ -61,52 +61,52 @@ extern "C" {
 #endif
 
 /**
- * @brief  YUV422P×ª»»ÎªRGB24(²é±í·¨)
+ * @brief  YUV422Pè½¬æ¢ä¸ºRGB24(æŸ¥è¡¨æ³•)
  * 
- * @param  yuvbuffer[IN]    YUV422PÆ½Ãæ¸ñÊ½»º³åÇø
- * @param  rgbbuffer[OUT]   RGB»º³åÇø
- * @param  width[IN]        Í¼Ïñ¿í
- * @param  height[IN]       Í¼Ïñ¸ß
+ * @param  yuvbuffer[IN]    YUV422På¹³é¢æ ¼å¼ç¼“å†²åŒº
+ * @param  rgbbuffer[OUT]   RGBç¼“å†²åŒº
+ * @param  width[IN]        å›¾åƒå®½
+ * @param  height[IN]       å›¾åƒé«˜
  * 
  * @return no
  *
  * @note
- *         1.YUV422P¸ñÊ½YUV»º³åÇø´óĞ¡Îªw * h * 2
- *         2.rgbbufferÊı¾İÅÅĞòÎªRGB£¬Èç±£´æBMP£¬ĞèÒªµ÷ÕûÎªBGR
+ *         1.YUV422Pæ ¼å¼YUVç¼“å†²åŒºå¤§å°ä¸ºw * h * 2
+ *         2.rgbbufferæ•°æ®æ’åºä¸ºRGBï¼Œå¦‚ä¿å­˜BMPï¼Œéœ€è¦è°ƒæ•´ä¸ºBGR
  */
 void yuv422p_to_rgb24(unsigned char* yuvbuffer, unsigned char* rgbbuffer, int width, int height);
 
 /** 
- * @brief YUV420P×ªRGB24(²é±í·¨)
+ * @brief YUV420Pè½¬RGB24(æŸ¥è¡¨æ³•)
  * 
- * @param yuvbuffer  YUV420P¸ñÊ½»º³åÇø
- * @param rgbbuffer  RGB24¸ñÊ½»º³åÇø
- * @param width      Í¼Ïñ¿í
- * @param height     Í¼Ïñ¸ß
+ * @param yuvbuffer  YUV420Pæ ¼å¼ç¼“å†²åŒº
+ * @param rgbbuffer  RGB24æ ¼å¼ç¼“å†²åŒº
+ * @param width      å›¾åƒå®½
+ * @param height     å›¾åƒé«˜
  *
  *
  * @note
- *        1¡¢YUV420P¸ñÊ½YUV»º³åÇø´óĞ¡Îªw * h * 3 / 2
- *        2¡¢rgbbufferÊı¾İÅÅĞòÎªRGB£¬Èç±£´æBMP£¬ĞèÒªµ÷ÕûÎªBGR
+ *        1ã€YUV420Pæ ¼å¼YUVç¼“å†²åŒºå¤§å°ä¸ºw * h * 3 / 2
+ *        2ã€rgbbufferæ•°æ®æ’åºä¸ºRGBï¼Œå¦‚ä¿å­˜BMPï¼Œéœ€è¦è°ƒæ•´ä¸ºBGR
  */
 void yuv420p_to_rgb24(unsigned char* yuvbuffer,unsigned char* rgbbuffer, int width, int height);
 
 /** 
- * @brief YUV422SP×ªRGB24(²é±í·¨)
+ * @brief YUV422SPè½¬RGB24(æŸ¥è¡¨æ³•)
  * 
- * @param yuvbuffer  YUV422SP¸ñÊ½»º³åÇø
- * @param rgbbuffer  RGB24¸ñÊ½»º³åÇø
- * @param width      Í¼Ïñ¿í
- * @param height     Í¼Ïñ¸ß
+ * @param yuvbuffer  YUV422SPæ ¼å¼ç¼“å†²åŒº
+ * @param rgbbuffer  RGB24æ ¼å¼ç¼“å†²åŒº
+ * @param width      å›¾åƒå®½
+ * @param height     å›¾åƒé«˜
  *
  *
  * @note
- *        1¡¢YUV422SP¸ñÊ½YUV»º³åÇø´óĞ¡Îªw * h * 2
- *        2¡¢rgbbufferÊı¾İÅÅĞòÎªRGB£¬Èç±£´æBMP£¬ĞèÒªµ÷ÕûÎªBGR
+ *        1ã€YUV422SPæ ¼å¼YUVç¼“å†²åŒºå¤§å°ä¸ºw * h * 2
+ *        2ã€rgbbufferæ•°æ®æ’åºä¸ºRGBï¼Œå¦‚ä¿å­˜BMPï¼Œéœ€è¦è°ƒæ•´ä¸ºBGR
  */
 void yuv422sp_to_rgb24(unsigned char* yuvbuffer,unsigned char* rgbbuffer, int width, int height);
 
-// TODO£º¶¨Òå¸öºÃÒ»µãµÄÖµ
+// TODOï¼šå®šä¹‰ä¸ªå¥½ä¸€ç‚¹çš„å€¼
 typedef enum
 {
     YUV420P = 0xffff0001,
@@ -115,19 +115,19 @@ typedef enum
 }YUV_TYPE;
 
 /** 
- * @brief YUV×ªRGB24(²é±í·¨)
+ * @brief YUVè½¬RGB24(æŸ¥è¡¨æ³•)
  * 
- * @param type       YUV¸ñÊ½ÀàĞÍ
- * @param yuvbuffer  YUV¸ñÊ½»º³åÇø
- * @param rgbbuffer  RGB24¸ñÊ½»º³åÇø
- * @param width      Í¼Ïñ¿í
- * @param height     Í¼Ïñ¸ß
+ * @param type       YUVæ ¼å¼ç±»å‹
+ * @param yuvbuffer  YUVæ ¼å¼ç¼“å†²åŒº
+ * @param rgbbuffer  RGB24æ ¼å¼ç¼“å†²åŒº
+ * @param width      å›¾åƒå®½
+ * @param height     å›¾åƒé«˜
  *
  * @return 0: OK -1: failed
  *
  * @note
- *        1¡¢YUV422 buffer: w * h * 2 YUV420 buffer: w * h * 3 / 2
- *        2¡¢rgbbufferÊı¾İÅÅĞòÎªRGB£¬Èç±£´æBMP£¬ĞèÒªµ÷ÕûÎªBGR
+ *        1ã€YUV422 buffer: w * h * 2 YUV420 buffer: w * h * 3 / 2
+ *        2ã€rgbbufferæ•°æ®æ’åºä¸ºRGBï¼Œå¦‚ä¿å­˜BMPï¼Œéœ€è¦è°ƒæ•´ä¸ºBGR
  */
 int yuv_to_rgb24(YUV_TYPE type, unsigned char* yuvbuffer,unsigned char* rgbbuffer, int width, int height);
 

@@ -13,8 +13,9 @@ set(SOURCES_FILES
     CameraQtCaptureVideoFrame.cpp
     Tool.cpp
     Log.cpp
-    yuv2rgb.cpp
-    bmp_utils.cpp
+    yuv2rgb/yuv2rgb.cpp
+    yuv2rgb/bmp_utils.cpp
+    yuv2rgb/rgb2yuv.cpp
     )
 
 set(HEADER_FILES
@@ -23,8 +24,9 @@ set(HEADER_FILES
     CameraQtCaptureVideoFrame.h
     Tool.h
     Log.h
-    yuv2rgb.h
-    bmp_utils.h
+    yuv2rgb/yuv2rgb.h
+    yuv2rgb/bmp_utils.h
+    yuv2rgb/rgb2yuv.h
     )
 
 set(SOURCE_UI_FILES

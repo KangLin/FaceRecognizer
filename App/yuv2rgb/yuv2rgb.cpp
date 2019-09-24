@@ -27,7 +27,7 @@ void init_yuv422p_table(void)
 }
 
 /**
-ÄÚ´æ·Ö²¼
+å†…å­˜åˆ†å¸ƒ
                     w
             +--------------------+
             |Y0Y1Y2Y3...         |
@@ -79,8 +79,8 @@ void yuv422p_to_rgb24(unsigned char* yuv422p, unsigned char* rgb, int width, int
         b = MAX (0, MIN (255, (U[cb] + Y1[y])/10000));   //B value
         g = MAX (0, MIN (255, (Y2[y] - 5094*(r) - 1942*(b))/10000)); //G value
 
-        // ´Ë´¦¿Éµ÷ÕûRGBÅÅÐò£¬BMPÍ¼Æ¬ÅÅÐòÎªBGR
-        // Ä¬ÈÏÅÅÐòÎª£ºRGB
+        // æ­¤å¤„å¯è°ƒæ•´RGBæŽ’åºï¼ŒBMPå›¾ç‰‡æŽ’åºä¸ºBGR
+        // é»˜è®¤æŽ’åºä¸ºï¼šRGB
         p_rgb[0] = r;
         p_rgb[1] = g;
         p_rgb[2] = b;
@@ -104,8 +104,8 @@ void yuv422p_to_rgb24(unsigned char* yuv422p, unsigned char* rgb, int width, int
 }
 
 /*
-//×ª»»Ê±´Ó»º³åÇø×îºóÏòÇ°×ª»»£¬RGBÅÅÐòÎªB¡¢G¡¢R£¬
-//×ª»»µÃµ½µÄÍ¼ÏñÊÇµ¹Á¢µÄ£¬Ö±½Ó½«×ª»»ºó»º³åÇøÐ´ÈëBMPÎÄ¼þ¼´¿ÉÕý³£²é¿´
+//è½¬æ¢æ—¶ä»Žç¼“å†²åŒºæœ€åŽå‘å‰è½¬æ¢ï¼ŒRGBæŽ’åºä¸ºBã€Gã€Rï¼Œ
+//è½¬æ¢å¾—åˆ°çš„å›¾åƒæ˜¯å€’ç«‹çš„ï¼Œç›´æŽ¥å°†è½¬æ¢åŽç¼“å†²åŒºå†™å…¥BMPæ–‡ä»¶å³å¯æ­£å¸¸æŸ¥çœ‹
 void yuv422p_to_rgb24(unsigned char *yuvbuffer, unsigned char *rgbbuffer, int width, int height)
 {
     unsigned char *pY, *pU, *pV, *pUbase, *pVbase;
@@ -190,7 +190,7 @@ void init_yuv420p_table()
 }
 
 /**
-ÄÚ´æ·Ö²¼
+å†…å­˜åˆ†å¸ƒ
                     w
             +--------------------+
             |Y0Y1Y2Y3...         |
@@ -277,7 +277,7 @@ void yuv420p_to_rgb24(unsigned char* yuvbuffer,unsigned char* rgbbuffer, int wid
 }
 
 /**
-ÄÚ´æ·Ö²¼
+å†…å­˜åˆ†å¸ƒ
                     w
             +--------------------+
             |Y0Y1Y2Y3...         |
@@ -303,7 +303,7 @@ void yuv422sp_to_rgb24(unsigned char* yuv422sp, unsigned char* rgb, int width, i
     static int init_yuv422sp = 0;    // just do it once
 
     p_y = yuv422sp;
-    p_uv = p_y + width * height;    // uv·ÖÁ¿ÔÚYºóÃæ
+    p_uv = p_y + width * height;    // uvåˆ†é‡åœ¨YåŽé¢
     p_rgb = rgb;
 
     if (init_yuv422sp == 0)
@@ -316,14 +316,14 @@ void yuv422sp_to_rgb24(unsigned char* yuv422sp, unsigned char* rgb, int width, i
     {
         y  = p_y[0];
         cb = p_uv[0];
-        cr = p_uv[1];    // v½ô¸úu£¬ÔÚuµÄÏÂÒ»¸öÎ»ÖÃ
+        cr = p_uv[1];    // vç´§è·Ÿuï¼Œåœ¨uçš„ä¸‹ä¸€ä¸ªä½ç½®
 
         r = MAX (0, MIN (255, (V[cr] + Y1[y])/10000));   //R value
         b = MAX (0, MIN (255, (U[cb] + Y1[y])/10000));   //B value
         g = MAX (0, MIN (255, (Y2[y] - 5094*(r) - 1942*(b))/10000)); //G value
 
-        // ´Ë´¦¿Éµ÷ÕûRGBÅÅÐò£¬BMPÍ¼Æ¬ÅÅÐòÎªBGR
-        // Ä¬ÈÏÅÅÐòÎª£ºRGB
+        // æ­¤å¤„å¯è°ƒæ•´RGBæŽ’åºï¼ŒBMPå›¾ç‰‡æŽ’åºä¸ºBGR
+        // é»˜è®¤æŽ’åºä¸ºï¼šRGB
         p_rgb[0] = r;
         p_rgb[1] = g;
         p_rgb[2] = b;
@@ -444,7 +444,7 @@ void yuv420sp_to_yuv420p(unsigned char* yuv420sp, unsigned char* yuv420p, int wi
 /////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
-// ×Ô¼ºÑÐ¾¿µÄ
+// è‡ªå·±ç ”ç©¶çš„
 
 int rgb2yuv(int r, int g, int b, int* Y, int* Cb, int* Cr)
 {
@@ -465,14 +465,14 @@ int rgb2yuv(int r, int g, int b, int* Y, int* Cb, int* Cr)
     return 0;
 }
 
-// TODO£º¸ÄÎªÕûÊýÔËËã
+// TODOï¼šæ”¹ä¸ºæ•´æ•°è¿ç®—
 int yuv2rgb(int Y, int Cb, int Cr, int* r, int* g, int* b)
 {
     unsigned int r_tmp, g_tmp, b_tmp;
     unsigned char r_t, g_t, b_t;
 
     // OK
-    // Í¼Æ¬±íÃæÓÐ¡°°×É´¡±
+    // å›¾ç‰‡è¡¨é¢æœ‰â€œç™½çº±â€
 #if 0
     // YUV(0~255) JFIF
     //r_t = (unsigned char)(Y + 1.402 * (Cr - 128));
@@ -490,7 +490,7 @@ int yuv2rgb(int Y, int Cb, int Cr, int* r, int* g, int* b)
 #endif
 
     // YCbCr(16~235)
-    // ÓÐ¸ö±ðÑÕÉ«³ö´í¡£µ«ÎÞ¡°°×É´¡±
+    // æœ‰ä¸ªåˆ«é¢œè‰²å‡ºé”™ã€‚ä½†æ— â€œç™½çº±â€
 #if 01
     //r_t = (unsigned char)(1.164 * (Y - 16) + 1.596 * (Cr - 128));
     //g_t = (unsigned char)(1.164 * (Y - 16) - 0.813 * (Cr - 128) - 0.391 * (Cb - 128));
@@ -549,8 +549,8 @@ void YCbCrConvertToRGB(int Y, int Cb, int Cr, int* R, int* G, int* B)
 y - y
 u - cb
 v - cr
-¿ÉÔÚ´Ëº¯ÊýÖÐµ÷ÕûRGBµÄÅÅÐò
-TODO£ºÕâÖÖ·½·¨×ª»»µÃµ½µÄÍ¼Æ¬±È²é±í·¨µÃµ½µÄÐ§¹û²îÒ»Ð©
+å¯åœ¨æ­¤å‡½æ•°ä¸­è°ƒæ•´RGBçš„æŽ’åº
+TODOï¼šè¿™ç§æ–¹æ³•è½¬æ¢å¾—åˆ°çš„å›¾ç‰‡æ¯”æŸ¥è¡¨æ³•å¾—åˆ°çš„æ•ˆæžœå·®ä¸€äº›
 */
 void yuv422_to_rgb24_1(unsigned char* yuv422, unsigned char* rgb, int width, int height)
 {
@@ -574,7 +574,7 @@ void yuv422_to_rgb24_1(unsigned char* yuv422, unsigned char* rgb, int width, int
         cr = p_v[0];
         //yuv2rgb(y, cb, cr, &r, &g, &b);
         YCbCrConvertToRGB(y, cb, cr, &r, &g, &b);
-        // ´Ë´¦¿Éµ÷ÕûRGBÅÅÐò£¬BMPÍ¼Æ¬ÅÅÐòÎªBGR
+        // æ­¤å¤„å¯è°ƒæ•´RGBæŽ’åºï¼ŒBMPå›¾ç‰‡æŽ’åºä¸ºBGR
         p_rgb[0] = r;
         p_rgb[1] = g;
         p_rgb[2] = b;
@@ -599,8 +599,8 @@ void yuv422_to_rgb24_1(unsigned char* yuv422, unsigned char* rgb, int width, int
 y - y
 u - cb
 v - cr
-Q:ÎªºÎ²»ÊÇ4¸öY¹²Í¬Ò»¸öU¡¢Ò»¸öV£¿
-not ok£¬Í¼Æ¬ÏÂ°ë²¿·ÖÊÇºÚÉ«µÄ
+Q:ä¸ºä½•ä¸æ˜¯4ä¸ªYå…±åŒä¸€ä¸ªUã€ä¸€ä¸ªVï¼Ÿ
+not okï¼Œå›¾ç‰‡ä¸‹åŠéƒ¨åˆ†æ˜¯é»‘è‰²çš„
 */
 void yuv420_to_rgb24_1(unsigned char* yuv420, unsigned char* rgb, int width, int height)
 {
@@ -624,7 +624,7 @@ void yuv420_to_rgb24_1(unsigned char* yuv420, unsigned char* rgb, int width, int
         cr = p_v[0];
         yuv2rgb(y, cb, cr, &r, &g, &b);
         //YCbCrConvertToRGB(y, cb, cr, &r, &g, &b);
-        // ´Ë´¦¿Éµ÷ÕûRGBÅÅÐò£¬BMPÍ¼Æ¬ÅÅÐòÎªBGR
+        // æ­¤å¤„å¯è°ƒæ•´RGBæŽ’åºï¼ŒBMPå›¾ç‰‡æŽ’åºä¸ºBGR
         p_rgb[0] = r;
         p_rgb[1] = g;
         p_rgb[2] = b;
@@ -651,7 +651,7 @@ void yuv420_to_rgb24_1(unsigned char* yuv420, unsigned char* rgb, int width, int
 //};
 
 // OK
-// ×ª»»µÄÍ¼Æ¬ÓÐÒ»²ã¡°°×É´¡±(Óë²é±í·¨¶Ô±È)£¬Ó¦¸ÃÊÇY²¿·Ö·¶Î§²»ÕýÈ·µ¼ÖÂ¡£
+// è½¬æ¢çš„å›¾ç‰‡æœ‰ä¸€å±‚â€œç™½çº±â€(ä¸ŽæŸ¥è¡¨æ³•å¯¹æ¯”)ï¼Œåº”è¯¥æ˜¯Yéƒ¨åˆ†èŒƒå›´ä¸æ­£ç¡®å¯¼è‡´ã€‚
 void yuv420_to_rgb24_2(unsigned char *yuv420, unsigned char *rgb24, int width, int height) 
 {
     //  int begin = GetTickCount();
@@ -660,7 +660,7 @@ void yuv420_to_rgb24_2(unsigned char *yuv420, unsigned char *rgb24, int width, i
     unsigned char* p_v;
     int R,G,B,Y,U,V;
     int x,y;
-    int nWidth = width>>1; //É«¶ÈÐÅºÅ¿í¶È
+    int nWidth = width>>1; //è‰²åº¦ä¿¡å·å®½åº¦
 
     p_y = yuv420;
     p_u = p_y + width * height;
@@ -681,7 +681,7 @@ void yuv420_to_rgb24_2(unsigned char *yuv420, unsigned char *rgb24, int width, i
 
             yuv2rgb(Y, U, V, &R, &G, &B);
             //YCbCrConvertToRGB(Y, U, V, &R, &G, &B);
-            //·ÀÖ¹Ô½½ç
+            //é˜²æ­¢è¶Šç•Œ
             if (R>255)R=255;
             if (R<0)R=0;
             if (G>255)G=255;
@@ -689,11 +689,11 @@ void yuv420_to_rgb24_2(unsigned char *yuv420, unsigned char *rgb24, int width, i
             if (B>255)B=255;
             if (B<0)B=0;
 
-            // Í¼Æ¬µ¹Á¢
+            // å›¾ç‰‡å€’ç«‹
             //*(rgb24 + ((height-y-1)*width + x)*3) = R;  //B;
             //*(rgb24 + ((height-y-1)*width + x)*3 + 1) = G;
             //*(rgb24 + ((height-y-1)*width + x)*3 + 2) = B;  //R;
-            // Í¼ÏñÕý³£
+            // å›¾åƒæ­£å¸¸
             *(rgb24 + (y*width + x)*3) = R; //B;
             *(rgb24 + (y*width + x)*3 + 1) = G;
             *(rgb24 + (y*width + x)*3 + 2) = B; //R;   
@@ -794,11 +794,11 @@ void yuv_to_rgb24_1(unsigned char* yuv, unsigned char* rgb, int width, int heigh
     unsigned char* p_u;
     unsigned char* p_v;
     unsigned char* p_rgb;
-    int chroma_v;       // ´¹Ö±ÁÁ¶È²ÉÑù
-    int chroma_h;       // Ë®Æ½ÁÁ¶È²ÉÑù
-    int cbcr_width;     // É«¶È¿í
-    int cbcr_height;    // É«¶È¸ß
-    int cbcr_size;      // É«¶È´óÐ¡
+    int chroma_v;       // åž‚ç›´äº®åº¦é‡‡æ ·
+    int chroma_h;       // æ°´å¹³äº®åº¦é‡‡æ ·
+    int cbcr_width;     // è‰²åº¦å®½
+    int cbcr_height;    // è‰²åº¦é«˜
+    int cbcr_size;      // è‰²åº¦å¤§å°
 
     switch(type)
     {
