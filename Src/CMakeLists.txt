@@ -9,7 +9,7 @@ find_package(SeetaFace)
 set(SOURCES_FILES
     FrmDisplay.cpp
     CameraQtCaptureVideoFrame.cpp
-    Tool.cpp
+    ImageTool.cpp
     Log.cpp
     yuv2rgb/yuv2rgb.cpp
     yuv2rgb/bmp_utils.cpp
@@ -19,7 +19,7 @@ set(SOURCES_FILES
 set(HEADER_FILES 
     FrmDisplay.h
     CameraQtCaptureVideoFrame.h
-    Tool.h
+    ImageTool.h
     Log.h
     yuv2rgb/yuv2rgb.h
     yuv2rgb/bmp_utils.h
@@ -138,7 +138,7 @@ else()
             EXPORT ${PROJECT_NAME}Config
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+            LIBRARY DESTINATION "${CMAKE_INSTALL_BINDIR}"
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )

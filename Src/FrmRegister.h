@@ -24,12 +24,11 @@ class FACERECOGNIZER_EXPORT CFrmRegister : public QWidget
 public:
     explicit CFrmRegister(QWidget *parent = nullptr);
     virtual ~CFrmRegister() override;
-    
-    int SetCameraAngle(int rotation);
+
     int SetModelPath(const QString &szPath);
     
 public Q_SLOTS:
-    virtual void slotDisplay(const QVideoFrame &frame);
+    virtual void slotDisplay(const QImage &frame);
     
 private slots:
     void on_pbRegister_clicked();
@@ -60,7 +59,6 @@ private:
     
     QImage m_Image;
     QImage m_ImageOut;
-    int m_Rotation;
 };
 
 #endif // CFRMREGISTER_H

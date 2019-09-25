@@ -26,12 +26,12 @@ extern "C" {
  * @brief 工具类。提供一此工具函数  
  * @ingroup RABBITIM_TOOL
  */
-class FACERECOGNIZER_EXPORT CTool : public QObject
+class FACERECOGNIZER_EXPORT CImageTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit CTool(QObject *parent = 0);
-    ~CTool();
+    explicit CImageTool(QObject *parent = 0);
+    ~CImageTool();
 
 public:
 #ifdef HAVE_FFMPEG
@@ -164,7 +164,7 @@ public:
     static bool isImageFile(const QString& szFile);///<判断文件是否是图片，根据扩展名进行判断  
 
     static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
-    static QImage ConverFormat(const QVideoFrame &frame);
+    static QImage ConverFormatToRGB888(const QVideoFrame &frame);
     
 signals:
 

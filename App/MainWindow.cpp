@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRecognizer);
     ui->actionCamera->setChecked(true);
     
+    on_actionCamera_triggered();
+    return;
 #ifdef HAVE_SEETA_FACE
     on_actionRecognizer_triggered();
 #else
@@ -78,8 +80,8 @@ void MainWindow::slotCameraChanged(int index)
         }
 
         m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
-        
-        /*
+
+        /*        
         QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
 
         m_pCamera->load();
@@ -106,6 +108,8 @@ void MainWindow::slotCameraChanged(int index)
         qInfo() << "" << viewfinderSettings.pixelAspectRatio();
 
         //*/
+        
+        m_CaptureFrame.SetCameraAngle(CamerOrientation(index));
         m_pCamera->setViewfinder(&m_CaptureFrame);
     } else {
         QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
@@ -128,8 +132,13 @@ void MainWindow::on_actionStop_triggered()
         m_pCamera->stop();
 }
 
-int MainWindow::CamerOrientation(const QCameraInfo cameraInfo)
+int MainWindow::CamerOrientation(int index)
 {
+    if(index < 0 || index >= QCameraInfo::availableCameras().length())
+        return -1;
+    
+    QCameraInfo cameraInfo = QCameraInfo::availableCameras().at(index);
+
     // Get the current display orientation
     const QScreen *screen = QGuiApplication::primaryScreen();
     const int screenAngle = screen->angleBetween(screen->nativeOrientation(), screen->orientation());
@@ -143,13 +152,6 @@ int MainWindow::CamerOrientation(const QCameraInfo cameraInfo)
     int a = cameraInfo.orientation();
     qDebug() << "Camer angle:" << a << rotation;
     return rotation;
-}
-
-int MainWindow::CamerOrientation(const QCamera camera)
-{
-    QCameraInfo cameraInfo(camera); // needed to get the camera sensor position and orientation
-
-    return CamerOrientation(cameraInfo);
 }
 
 void MainWindow::on_actionSet_model_path_triggered()
@@ -173,15 +175,9 @@ void MainWindow::on_actionRecognizer_triggered()
     if(!m_szModelFile.isEmpty())
         pRecognizer->SetModelPath(m_szModelFile);
     this->setCentralWidget(pRecognizer);
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QVideoFrame &)),
-                         pRecognizer, SLOT(slotDisplay(const QVideoFrame &)));
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
+                         pRecognizer, SLOT(slotDisplay(const QImage &)));
     Q_ASSERT(check);
-#if defined (Q_OS_ANDROID)
-    pRecognizer->SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
-#else
-    pRecognizer->SetCameraAngle(180);
-#endif
-
 #endif
 }
 
@@ -195,15 +191,9 @@ void MainWindow::on_actionRegister_triggered()
     if(!m_szModelFile.isEmpty())
         pRegister->SetModelPath(m_szModelFile);
     this->setCentralWidget(pRegister);
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QVideoFrame &)),
-                         pRegister, SLOT(slotDisplay(const QVideoFrame &)));
-    Q_ASSERT(check);
-#if defined (Q_OS_ANDROID)
-    pRegister->SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
-#else           
-    pRegister->SetCameraAngle(180);
-#endif
-    
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
+                         pRegister, SLOT(slotDisplay(const QImage &)));
+    Q_ASSERT(check);    
 #endif
 }
 
@@ -213,14 +203,9 @@ void MainWindow::on_actionCamera_triggered()
     if(!pDisplay)
         return;
     this->setCentralWidget(pDisplay);
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QVideoFrame &)),
-                          pDisplay, SLOT(slotDisplay(const QVideoFrame &)));
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
+                          pDisplay, SLOT(slotDisplay(const QImage &)));
     Q_ASSERT(check);
-#if defined (Q_OS_ANDROID)
-    pDisplay->SetCameraAngle(CamerOrientation(QCameraInfo::availableCameras().at(0)));
-#else           
-    pDisplay->SetCameraAngle(180);
-#endif
 }
 
 void MainWindow::on_actionAbout_A_triggered()

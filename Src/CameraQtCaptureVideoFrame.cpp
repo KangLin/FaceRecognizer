@@ -1,4 +1,6 @@
 #include "CameraQtCaptureVideoFrame.h"
+#include "ImageTool.h"
+
 #include <QThread>
 #include <QTime>
 #include <QVideoFrame>
@@ -9,6 +11,7 @@
 CCameraQtCaptureVideoFrame::CCameraQtCaptureVideoFrame(QObject *parent) :
     QAbstractVideoSurface(parent)
 {
+    m_Rotation = 0;
 }
 
 CCameraQtCaptureVideoFrame::~CCameraQtCaptureVideoFrame()
@@ -63,5 +66,15 @@ bool CCameraQtCaptureVideoFrame::isFormatSupported(const QVideoSurfaceFormat &fo
 bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
 {
     emit sigCaptureFrame(frame);
+    QImage img = CImageTool::ConverFormatToRGB888(frame);
+    if(m_Rotation)
+        img.transformed(QTransform().rotate(-1 * m_Rotation));
+    emit sigCaptureFrame(img);
     return true;
+}
+
+int CCameraQtCaptureVideoFrame::SetCameraAngle(int rotation)
+{
+    m_Rotation = rotation;
+    return 0;
 }

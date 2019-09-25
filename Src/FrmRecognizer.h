@@ -23,12 +23,11 @@ class FACERECOGNIZER_EXPORT CFrmRecognizer : public QWidget
 public:
     explicit CFrmRecognizer(QWidget *parent = nullptr);
     virtual ~CFrmRecognizer();
-    
-    int SetCameraAngle(int rotation);
+
     int SetModelPath(const QString &szPath);
     
 public Q_SLOTS:
-    virtual void slotDisplay(const QVideoFrame &frame);
+    virtual void slotDisplay(const QImage &frame);
     
 private:
     virtual int InitSeeta(const QString &szPath = QString());
@@ -65,7 +64,6 @@ private:
     
     QImage m_Image;
     QImage m_ImageOut;
-    int m_Rotation;
     
     float m_Threshold;  // recognization threshold
 };

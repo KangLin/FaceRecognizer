@@ -45,6 +45,7 @@
 #include <QVideoProbe>
 #endif
 #include <QCamera>
+#include <QImage>
 
 #include "facerecognizer_export.h"
 
@@ -56,7 +57,7 @@ class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame : public QAbstractVideoSu
 {
     Q_OBJECT
 public:
-    explicit CCameraQtCaptureVideoFrame(QObject *parent = 0);
+    explicit CCameraQtCaptureVideoFrame(QObject *parent = nullptr);
     virtual ~CCameraQtCaptureVideoFrame();
 
     //设置支持的捕获格式  
@@ -64,9 +65,12 @@ public:
             QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const;
     //bool isFormatSupported(const QVideoSurfaceFormat &format) const;
 
+    int SetCameraAngle(int rotation);
+    
 signals:
     //从摄像头捕获的原始帧  
     void sigCaptureFrame(const QVideoFrame &frame);
+    void sigCaptureFrame(const QImage &frame);
 
 private slots:
     virtual bool present(const QVideoFrame &frame);
@@ -75,6 +79,8 @@ private:
 #ifdef ANDROID
      QVideoProbe m_Probe;//android下,目前只能用probe捕获视频  
 #endif
+     
+     int m_Rotation;
 };
 
 #endif // CAPTUREVIDEOFRAME_H

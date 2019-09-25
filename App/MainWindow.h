@@ -31,8 +31,7 @@ private slots:
     void slotCameraChanged(int index);
 
 private:
-    int CamerOrientation(const QCamera camera);
-    int CamerOrientation(const QCameraInfo cameraInfo);
+    int CamerOrientation(int index);
 
 private:
     Ui::MainWindow *ui;

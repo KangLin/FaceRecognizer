@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setApplicationName("FaceRecognizer");
+    a.setApplicationName("FaceRecognizerApp");
     
 #ifdef RABBITCOMMON
     RabbitCommon::CTools::Instance()->Init();

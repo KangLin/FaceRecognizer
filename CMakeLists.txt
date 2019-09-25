@@ -8,7 +8,7 @@ cmake_policy(SET CMP0020 NEW)
 
 # 建立要删除的文件
 CONFIGURE_FILE(
-    "${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake.in"
+    "${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
     "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
 # 建立删除目标

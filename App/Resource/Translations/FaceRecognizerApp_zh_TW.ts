@@ -6,97 +6,97 @@
     <message>
         <location filename="../../MainWindow.ui" line="14"/>
         <source>Face recognizer</source>
-        <translation type="unfinished"></translation>
+        <translation>人臉識別</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="32"/>
         <source>Operate</source>
-        <translation type="unfinished"></translation>
+        <translation>操作</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="44"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>選項</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="50"/>
         <source>Help(&amp;H)</source>
-        <translation type="unfinished"></translation>
+        <translation>幫助(&amp;H)</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="62"/>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="75"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>開始</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="80"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="88"/>
         <source>Detector</source>
-        <translation type="unfinished"></translation>
+        <translation>探測</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="96"/>
         <source>Landmarker</source>
-        <translation type="unfinished"></translation>
+        <translation>標定</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="104"/>
         <source>Recognizer</source>
-        <translation type="unfinished"></translation>
+        <translation>識別</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="109"/>
         <source>Set model path</source>
-        <translation type="unfinished"></translation>
+        <translation>設置模型文件路徑</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="117"/>
         <source>Register</source>
-        <translation type="unfinished"></translation>
+        <translation>註冊</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="122"/>
         <source>About(&amp;A)</source>
-        <translation type="unfinished"></translation>
+        <translation>關於(&amp;A)</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="127"/>
         <source>Update(&amp;U)</source>
-        <translation type="unfinished"></translation>
+        <translation>更新(&amp;U)</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="132"/>
         <source>Select camera</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇攝像頭</translation>
     </message>
     <message>
         <location filename="../../MainWindow.ui" line="140"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>攝像頭</translation>
     </message>
     <message>
         <location filename="../../MainWindow.cpp" line="111"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../MainWindow.cpp" line="111"/>
         <source>The devices is not camera</source>
-        <translation type="unfinished"></translation>
+        <translation>此設備無攝像頭</translation>
     </message>
     <message>
         <location filename="../../MainWindow.cpp" line="159"/>
         <source>Open model file path</source>
-        <translation type="unfinished"></translation>
+        <translation>打開模型文件路徑</translation>
     </message>
 </context>
 <context>
@@ -104,7 +104,7 @@
     <message>
         <location filename="../../main.cpp" line="25"/>
         <source>FaceRecognizer</source>
-        <translation type="unfinished"></translation>
+        <translation>人臉識別</translation>
     </message>
 </context>
 </TS>

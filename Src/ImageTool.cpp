@@ -1,4 +1,4 @@
-#include "Tool.h"
+#include "ImageTool.h"
 #include "Log.h"
 #include "yuv2rgb/yuv2rgb.h"
 
@@ -17,12 +17,12 @@
 #include <QPainter>
 #include <QtDebug>
 
-CTool::CTool(QObject *parent) :
+CImageTool::CImageTool(QObject *parent) :
     QObject(parent)
 {
 }
 
-CTool::~CTool()
+CImageTool::~CImageTool()
 {
 }
 
@@ -33,14 +33,14 @@ void Log(void*, int, const char* fmt, va_list vl)
 }
 
 #ifdef HAVE_FFMPEG
-int CTool::SetFFmpegLog()
+int CImageTool::SetFFmpegLog()
 {
     //在程序初始化时设置ffmpeg日志的回调函数  
     av_log_set_callback(Log);
     return 0;
 }
 
-AVPixelFormat CTool::QVideoFrameFormatToFFMpegPixFormat(
+AVPixelFormat CImageTool::QVideoFrameFormatToFFMpegPixFormat(
         const QVideoFrame::PixelFormat format)
 {
     if(QVideoFrame::Format_RGB32 == format)
@@ -63,7 +63,7 @@ AVPixelFormat CTool::QVideoFrameFormatToFFMpegPixFormat(
     return AV_PIX_FMT_NONE;
 }
 
-AVPixelFormat CTool::QImageFormatToFFMpegPixFormat(const QImage::Format format)
+AVPixelFormat CImageTool::QImageFormatToFFMpegPixFormat(const QImage::Format format)
 {
     if(QImage::Format_RGB32 == format)
         return AV_PIX_FMT_RGB32;
@@ -164,7 +164,7 @@ int CTool::ConvertFormat(const QXmppVideoFrame &inFrame,
 
 //如果转换成功，则调用者使用完 pOutFrame 后，需要调用 avpicture_free(pOutFrame) 释放内存  
 //成功返回0，不成功返回非0  
-int CTool::ConvertFormat(/*[in]*/ const AVPicture &inFrame,
+int CImageTool::ConvertFormat(/*[in]*/ const AVPicture &inFrame,
                          /*[in]*/ int nInWidth,
                          /*[in]*/ int nInHeight,
                          /*[in]*/ AVPixelFormat inPixelFormat,
@@ -248,7 +248,7 @@ cv::Mat CTool::ImageRotate(cv::Mat & src, const cv::Point &_center,
 }
 #endif
 
-void CTool::YUV420spRotate90(uchar *dst, const uchar *src,
+void CImageTool::YUV420spRotate90(uchar *dst, const uchar *src,
                              int srcWidth, int srcHeight)
 {
     static int nWidth = 0, nHeight = 0;
@@ -285,7 +285,7 @@ void CTool::YUV420spRotate90(uchar *dst, const uchar *src,
     return;
 }
 
-void CTool::YUV420spRotateNegative90(uchar *dst, const uchar *src,
+void CImageTool::YUV420spRotateNegative90(uchar *dst, const uchar *src,
                                      int srcWidth, int height)
 {
     static int nWidth = 0, nHeight = 0;
@@ -324,7 +324,7 @@ void CTool::YUV420spRotateNegative90(uchar *dst, const uchar *src,
     return;
 }
 
-void CTool::YUV420spRotate90(uchar *dst, const uchar *src, int srcWidth,
+void CImageTool::YUV420spRotate90(uchar *dst, const uchar *src, int srcWidth,
                              int height, int mode)
 {
     switch (mode) {
@@ -341,7 +341,7 @@ void CTool::YUV420spRotate90(uchar *dst, const uchar *src, int srcWidth,
 }
 
 //以Y轴做镜像  
-void CTool::YUV420spMirrorY(uchar *dst, const uchar *src, int srcWidth,
+void CImageTool::YUV420spMirrorY(uchar *dst, const uchar *src, int srcWidth,
                             int srcHeight)
 {
     //镜像Y  
@@ -369,7 +369,7 @@ void CTool::YUV420spMirrorY(uchar *dst, const uchar *src, int srcWidth,
 }
 
 //以XY轴做镜像  
-void CTool::YUV420spMirrorXY(uchar *dst, const uchar *src,
+void CImageTool::YUV420spMirrorXY(uchar *dst, const uchar *src,
                              int width, int srcHeight)
 {
     static int nWidth = 0, nHeight = 0;
@@ -411,7 +411,7 @@ void CTool::YUV420spMirrorXY(uchar *dst, const uchar *src,
 }
 
 //以X轴做镜像  
-void CTool::YUV420spMirrorX(uchar *dst, const uchar *src,
+void CImageTool::YUV420spMirrorX(uchar *dst, const uchar *src,
                             int width, int srcHeight)
 {
     static int nWidth = 0, nHeight = 0;
@@ -452,7 +452,7 @@ void CTool::YUV420spMirrorX(uchar *dst, const uchar *src,
     }
 }
 
-void CTool::YUV420spMirror(uchar *dst, const uchar *src, int srcWidth,
+void CImageTool::YUV420spMirror(uchar *dst, const uchar *src, int srcWidth,
                            int srcHeight, int mode)
 {
     switch (mode) {
@@ -468,7 +468,7 @@ void CTool::YUV420spMirror(uchar *dst, const uchar *src, int srcWidth,
     }
 }
 
-bool CTool::isImageFile(const QString &szFile)
+bool CImageTool::isImageFile(const QString &szFile)
 {
     QStringList imgSuffix;
     imgSuffix << "png" << "gif" << "ico" << "bmp" << "jpg";
@@ -486,7 +486,7 @@ uchar RGBtoGRAY(uchar r, uchar g, uchar b)
                     + (qint32)((b << 4) - b)) >> 7);  
 }  
 
-QImage CTool::ConverFormat(const QVideoFrame &frame)
+QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
 {
     QImage img;
     QVideoFrame videoFrame = frame;
@@ -516,7 +516,7 @@ QImage CTool::ConverFormat(const QVideoFrame &frame)
 
                     img = QImage(videoFrame.width(),
                                  videoFrame.height(),
-                                 QImage::Format_ARGB32);
+                                 QImage::Format_RGB888);
 #if HAVE_LIBYUV && HAVE_JPEG
                     libyuv::MJPGToARGB(videoFrame.bits(),
                                        videoFrame.mappedBytes(),
@@ -559,7 +559,7 @@ QImage CTool::ConverFormat(const QVideoFrame &frame)
 }
 
 //参见： https://blog.csdn.net/junzia/article/details/76315120
-void CTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height)
+void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height)
 {
 	//找到Y、U、V在内存中的首地址  
 	unsigned char* pY = pYUV;

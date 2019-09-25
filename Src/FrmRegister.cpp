@@ -2,7 +2,6 @@
 #include "ui_FrmRegister.h"
 #include "FrmDisplay.h"
 #include "RabbitCommonDir.h"
-#include "Tool.h"
 
 #include <QPainter>
 #include <QDebug>
@@ -15,12 +14,14 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_Rotation = 0;
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
-    QString szFile = set.value("ModuleDir").toString();
-    if(!szFile.isEmpty())
-        InitSeeta(szFile);
+    QString szPath = set.value("ModuleDir").toString();
+    if(!szPath.isEmpty() && (szPath.right(1) != QDir::separator()))
+    {
+        szPath += QDir::separator();
+    }
+    InitSeeta(szPath);
 }
 
 CFrmRegister::~CFrmRegister()
@@ -30,7 +31,12 @@ CFrmRegister::~CFrmRegister()
 
 int CFrmRegister::SetModelPath(const QString &szPath)
 {
-    return InitSeeta(szPath);
+    QString szFile = szPath;
+    if(!szFile.isEmpty() && (szFile.right(1) != QDir::separator()))
+    {
+        szFile += QDir::separator();
+    }
+    return InitSeeta(szFile);
 }
 
 int CFrmRegister::InitSeeta(const QString& szPath)
@@ -47,13 +53,13 @@ int CFrmRegister::InitSeeta(const QString& szPath)
     m_Device = seeta::ModelSetting::CPU;
     int id = 0;
     try {
-        QString szFD = szPath + "/fd_2_00.dat";
+        QString szFD = szPath + QDir::separator() + "fd_2_00.dat";
         m_FD_model = QSharedPointer<seeta::ModelSetting>(new seeta::ModelSetting(
                                             szFD.toStdString(), m_Device, id));
-        QString szFL = szPath + "/pd_2_00_pts81.dat";
+        QString szFL = szPath + QDir::separator() + "pd_2_00_pts81.dat";
         m_FL_model = QSharedPointer<seeta::ModelSetting>(new seeta::ModelSetting(
                                             szFL.toStdString(), m_Device, id));
-        QString szFDB= szPath + "/fr_2_10.dat";
+        QString szFDB= szPath + QDir::separator() + "fr_2_10.dat";
         m_FDB_model = QSharedPointer<seeta::ModelSetting>(new seeta::ModelSetting(
                                             szFDB.toStdString(), m_Device, id));
         m_FD = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(*m_FD_model));
@@ -70,25 +76,15 @@ int CFrmRegister::InitSeeta(const QString& szPath)
     return 0;
 }
 
-void CFrmRegister::slotDisplay(const QVideoFrame &frame)
+void CFrmRegister::slotDisplay(const QImage &frame)
 {
     QPainter painter(this);
-    QImage image = CTool::ConverFormat(frame);
-    if(m_Rotation)
-        image = image.transformed(QTransform().rotate(m_Rotation));
 
-    m_ImageOut = image.convertToFormat(QImage::Format_RGB888);
-    
-    QImage out = m_ImageOut.rgbSwapped();
+    m_ImageOut = frame;
+    QImage out = frame.rgbSwapped();
     Detecetor(out);
     MarkFace(m_ImageOut);
     ui->frmDisplay->slotDisplay(m_ImageOut);
-}
-
-int CFrmRegister::SetCameraAngle(int rotation)
-{
-    m_Rotation = rotation;
-    return 0;
 }
 
 int CFrmRegister::MarkFace(QImage &image)
