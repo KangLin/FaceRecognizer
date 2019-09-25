@@ -2,6 +2,10 @@
 #include "Log.h"
 #include "yuv2rgb/yuv2rgb.h"
 
+#ifdef HAVE_LIBYUV
+    #include "libyuv.h"
+#endif
+
 #include <QFileInfo>
 #include <QDir>
 #include <QGuiApplication>
@@ -535,12 +539,22 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                 break;
             case QVideoFrame::Format_YUV420P:
                 {
-#if HAVE_LIBYUV
-                    
-#else
                     img = QImage(videoFrame.width(),
                                  videoFrame.height(),
                                  QImage::Format_RGB888);
+
+#if HAVE_LIBYUV
+                    libyuv::I420ToRGB24(videoFrame.bits(),
+                                        videoFrame.width(),
+                                        videoFrame.bits() + videoFrame.width() * videoFrame.height(),
+                                        videoFrame.width() / 2,
+                                        videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4,
+                                        videoFrame.width() / 2,
+                                        img.bits(),
+                                        videoFrame.width() * 3,
+                                        videoFrame.width(),
+                                        videoFrame.height());
+#else
                     yuv420p_to_rgb24(videoFrame.bits(),
                                  img.bits(),
                                  videoFrame.width(),
@@ -549,6 +563,12 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
 #endif
                 }
                 break;
+            case QVideoFrame::Format_YV12:
+                
+            case QVideoFrame::Format_NV12:
+                
+            case QVideoFrame::Format_NV21:
+                
             default:
                 qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
             }

@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(FaceRecognizer)
 
-find_package(LIBYUV)
+#Use: https://github.com/KangLin/libyuv
+find_package(YUV)
 find_package(FFMPEG)
 find_package(SeetaFace)
 
@@ -110,10 +111,10 @@ if(SeetaFace_FOUND)
     endif()
 endif()
 
-if(LIBYUV_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC ${LIBYUV_DEFINITIONS})
-    target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBYUV_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PUBLIC ${LIBYUV_INCLUDE_DIRS})
+if(YUV_FOUND)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_LIBYUV)
+    target_link_libraries(${PROJECT_NAME} PUBLIC YUV)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${YUV_INCLUDE_DIRS})
 endif()
 
 if(FFMPEG_FOUND)
@@ -178,5 +179,5 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
 ENDIF()
 
 message("== FFMPGE:${FFMPEG_FOUND}")
-message("== LIBYUV:${LIBYUV_FOUND}")
+message("== LIBYUV:${YUV_FOUND}")
 message("== SeetaFac:${SeetaFace_FOUND}")
