@@ -4,34 +4,46 @@ project(FaceRecognizer)
 
 #Use: https://github.com/KangLin/libyuv
 find_package(YUV)
+if(YUV_FOUND)
+    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBYUV)
+    set(LIBS ${LIBS} YUV)
+    if(ANDROID)
+        INSTALL(FILES $<TARGET_FILE:YUV>
+                DESTINATION "libs/${ANDROID_ABI}")
+    else()
+        INSTALL(FILES $<TARGET_FILE:YUV>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    endif()
+endif()
+
 #find_package(FFMPEG)
+
+find_package(OpenCV)
+if(OpenCV_FOUND)
+    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV)
+    set(LIBS ${LIBS} ${OpenCV_LIBS})
+    set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
+endif()
+
 find_package(SeetaFace)
-
-set(SOURCES_FILES
-    FrmDisplay.cpp
-    CameraQtCaptureVideoFrame.cpp
-    ImageTool.cpp
-    Log.cpp
-    yuv2rgb/yuv2rgb.cpp
-    yuv2rgb/bmp_utils.cpp
-    yuv2rgb/rgb2yuv.cpp
-    )
-
-set(HEADER_FILES 
-    FrmDisplay.h
-    CameraQtCaptureVideoFrame.h
-    ImageTool.h
-    Log.h
-    yuv2rgb/yuv2rgb.h
-    yuv2rgb/bmp_utils.h
-    yuv2rgb/rgb2yuv.h
-    )
-
-set(SOURCE_UI_FILES
-    FrmDisplay.ui
-    )
-
 if(SeetaFace_FOUND)
+    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_SEETA_FACE)
+    set(LIBS ${LIBS} SeetaFace)
+    
+    if(ANDROID)
+        INSTALL(FILES $<TARGET_FILE:SeetaNet>
+                $<TARGET_FILE:SeetaFaceDetector>
+                $<TARGET_FILE:SeetaFaceLandmarker>
+                $<TARGET_FILE:SeetaFaceRecognizer>
+                DESTINATION "libs/${ANDROID_ABI}")
+    else()
+        INSTALL(FILES $<TARGET_FILE:SeetaNet>
+                $<TARGET_FILE:SeetaFaceDetector>
+                $<TARGET_FILE:SeetaFaceLandmarker>
+                $<TARGET_FILE:SeetaFaceRecognizer>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    endif()
+    
     set(SOURCES_FILES
         ${SOURCES_FILES}
         FrmRegister.cpp
@@ -49,7 +61,35 @@ if(SeetaFace_FOUND)
         FrmRegister.ui
         FrmRecognizer.ui
         )
+    
 endif()
+
+set(SOURCES_FILES
+    ${SOURCES_FILES}
+    FrmDisplay.cpp
+    CameraQtCaptureVideoFrame.cpp
+    ImageTool.cpp
+    Log.cpp
+    yuv2rgb/yuv2rgb.cpp
+    yuv2rgb/bmp_utils.cpp
+    yuv2rgb/rgb2yuv.cpp
+    )
+
+set(HEADER_FILES
+    ${HEADER_FILES}
+    FrmDisplay.h
+    CameraQtCaptureVideoFrame.h
+    ImageTool.h
+    Log.h
+    yuv2rgb/yuv2rgb.h
+    yuv2rgb/bmp_utils.h
+    yuv2rgb/rgb2yuv.h
+    )
+
+set(SOURCE_UI_FILES
+    ${SOURCE_UI_FILES}
+    FrmDisplay.ui
+    )
 
 #翻译
 SET(TRANSLATIONS_NAME ${PROJECT_NAME})
@@ -64,11 +104,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAK
 set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC RABBITCOMMON)
-target_link_libraries(${PROJECT_NAME} PUBLIC RabbitCommon ${QT_LIBRARIES})
+target_compile_definitions(${PROJECT_NAME} PUBLIC RABBITCOMMON ${LIBS_DEFINES})
+target_link_libraries(${PROJECT_NAME} PUBLIC RabbitCommon ${QT_LIBRARIES} ${LIBS})
 target_include_directories(${PROJECT_NAME}
     PRIVATE ${RabbitCommon_DIR}/Src
-    ${CMAKE_BINARY_DIR})
+    ${CMAKE_BINARY_DIR}
+    ${INCLUDE_DIRS})
 
 GENERATE_EXPORT_HEADER(${PROJECT_NAME})
 string(TOLOWER ${PROJECT_NAME} LOWER_PROJECT_NAME)
@@ -83,43 +124,6 @@ set_property(
     PROPERTY
         PUBLIC_HEADER "${INSTALLHEADER_FILES}"
 )
-
-if(SeetaFace_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_SEETA_FACE)
-    target_link_libraries(${PROJECT_NAME} PUBLIC
-        SeetaNet
-        SeetaFaceDetector
-        SeetaFaceLandmarker
-        SeetaFaceRecognizer)
-    
-    if(ANDROID)
-        INSTALL(FILES $<TARGET_FILE:SeetaNet>
-                $<TARGET_FILE:SeetaFaceDetector>
-                $<TARGET_FILE:SeetaFaceLandmarker>
-                $<TARGET_FILE:SeetaFaceRecognizer>
-                DESTINATION "libs/${ANDROID_ABI}")
-    else()
-        INSTALL(FILES $<TARGET_FILE:SeetaNet>
-                $<TARGET_FILE:SeetaFaceDetector>
-                $<TARGET_FILE:SeetaFaceLandmarker>
-                $<TARGET_FILE:SeetaFaceRecognizer>
-                DESTINATION "${CMAKE_INSTALL_BINDIR}")
-    endif()
-endif()
-
-if(YUV_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_LIBYUV)
-    target_link_libraries(${PROJECT_NAME} PUBLIC YUV)
-    target_include_directories(${PROJECT_NAME} PUBLIC ${YUV_INCLUDE_DIRS})
-    
-    if(ANDROID)
-        INSTALL(FILES $<TARGET_FILE:YUV>
-                DESTINATION "libs/${ANDROID_ABI}")
-    else()
-        INSTALL(FILES $<TARGET_FILE:YUV>
-                DESTINATION "${CMAKE_INSTALL_BINDIR}")
-    endif()
-endif()
 
 if(FFMPEG_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
@@ -182,6 +186,7 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
     #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
 
+message("== OpenCV:${OpenCV_FOUND}")
 message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
 message("== SeetaFac:${SeetaFace_FOUND}")

@@ -2,7 +2,9 @@
 #include "Log.h"
 #include "yuv2rgb/yuv2rgb.h"
 
-#ifdef HAVE_LIBYUV
+#ifdef HAVE_OPENCV
+    #include "opencv/cv.hpp"
+#elif HAVE_LIBYUV
     #include "libyuv.h"
 #endif
 
@@ -498,7 +500,10 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_NV21:
     case QVideoFrame::Format_NV12:
     case QVideoFrame::Format_YV12:
-#if HAVE_LIBYUV
+        
+#ifdef HAVE_OPENCV
+        return OpenCVConverFormatToRGB888(frame);
+#elif HAVE_LIBYUV
         return  LibyuvConverFormatToRGB888(frame);
 #endif
     default:
@@ -540,7 +545,54 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     return img;
 }
 
-#if HAVE_LIBYUV
+#ifdef HAVE_OPENCV
+QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
+{
+    QImage img;
+    QVideoFrame videoFrame = frame;
+    if(!videoFrame.isValid())
+        return img;
+    if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
+        return img;
+    do{
+        img = QImage(videoFrame.width(),
+                     videoFrame.height(),
+                     QImage::Format_RGB888);
+        cv::Mat out(videoFrame.height(), videoFrame.width(), CV_8UC3, img.bits());
+        switch(videoFrame.pixelFormat())
+        {
+        case QVideoFrame::Format_YUV420P:
+        {
+            cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
+                       videoFrame.width(), CV_8UC1, videoFrame.bits());
+            cv::cvtColor(in, out, CV_YUV420p2BGR);
+        }
+            break;
+        case QVideoFrame::Format_NV21:
+        {
+            cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
+                       videoFrame.width(), CV_8UC1, videoFrame.bits());
+            cv::cvtColor(in, out, CV_YUV420sp2BGR);
+        }
+            break;
+        case QVideoFrame::Format_NV12:
+        {
+           
+        }
+            break;
+        case QVideoFrame::Format_YV12:
+        
+        default:
+            qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
+        }
+        
+    }while(0);
+    videoFrame.unmap();
+    return img;
+
+}
+
+#elif HAVE_LIBYUV
 QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
 {
     QImage img;
@@ -561,7 +613,7 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.width(),
                                 videoFrame.bits() + videoFrame.width() * videoFrame.height(),
                                 videoFrame.width() / 2,
-                                videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4, //videoFrame.bits() + videoFrame.width() * videoFrame.height() + videoFrame.width() * videoFrame.height() / 4,
+                                videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4,
                                 videoFrame.width() / 2,
                                 img.bits(),
                                 videoFrame.width() * 3,
