@@ -14,7 +14,7 @@
    <string>Face recognizer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../Resource/Resource.qrc">
+   <iconset>
     <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
@@ -74,9 +74,15 @@
    <property name="text">
     <string>Start</string>
    </property>
+   <property name="statusTip">
+    <string>Start</string>
+   </property>
   </action>
   <action name="actionStop">
    <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="statusTip">
     <string>Stop</string>
    </property>
   </action>
@@ -87,12 +93,18 @@
    <property name="text">
     <string>Detector</string>
    </property>
+   <property name="statusTip">
+    <string>Detector</string>
+   </property>
   </action>
   <action name="actionLandmarker">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
+    <string>Landmarker</string>
+   </property>
+   <property name="statusTip">
     <string>Landmarker</string>
    </property>
   </action>
@@ -103,9 +115,15 @@
    <property name="text">
     <string>Recognizer</string>
    </property>
+   <property name="statusTip">
+    <string>Recognizer</string>
+   </property>
   </action>
   <action name="actionSet_model_path">
    <property name="text">
+    <string>Set model path</string>
+   </property>
+   <property name="statusTip">
     <string>Set model path</string>
    </property>
   </action>
@@ -116,20 +134,36 @@
    <property name="text">
     <string>Register</string>
    </property>
+   <property name="statusTip">
+    <string>Register</string>
+   </property>
   </action>
   <action name="actionAbout_A">
    <property name="text">
     <string>About(&amp;A)</string>
+   </property>
+   <property name="iconText">
+    <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>About</string>
+   </property>
+   <property name="statusTip">
+    <string>About</string>
    </property>
   </action>
   <action name="actionUpdate_U">
    <property name="text">
     <string>Update(&amp;U)</string>
    </property>
-  </action>
-  <action name="actionSelect_camera">
-   <property name="text">
-    <string>Select camera</string>
+   <property name="iconText">
+    <string>Update</string>
+   </property>
+   <property name="toolTip">
+    <string>Update</string>
+   </property>
+   <property name="statusTip">
+    <string>Update</string>
    </property>
   </action>
   <action name="actionCamera">
@@ -137,12 +171,19 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Camera</string>
+    <string>Display Camera</string>
+   </property>
+   <property name="iconText">
+    <string>Display Camera</string>
+   </property>
+   <property name="toolTip">
+    <string>Display Camera</string>
+   </property>
+   <property name="statusTip">
+    <string>Display Camera</string>
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../Resource/Resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

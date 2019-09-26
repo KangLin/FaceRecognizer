@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QComboBox *cmbCameras = new QComboBox(ui->toolBar);
     if(cmbCameras)
     {
+        cmbCameras->setToolTip(tr("Select camera"));
+        cmbCameras->setStatusTip(tr("Select camera"));
         ui->toolBar->addWidget(cmbCameras);
         connect(cmbCameras, SIGNAL(currentIndexChanged(int)),
                 this, SLOT(slotCameraChanged(int)));
