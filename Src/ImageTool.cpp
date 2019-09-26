@@ -492,6 +492,19 @@ uchar RGBtoGRAY(uchar r, uchar g, uchar b)
 
 QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
 {
+    switch(frame.pixelFormat())
+    {
+    case QVideoFrame::Format_YUV420P:
+    case QVideoFrame::Format_NV21:
+    case QVideoFrame::Format_NV12:
+    case QVideoFrame::Format_YV12:
+#if HAVE_LIBYUV
+        return  LibyuvConverFormatToRGB888(frame);
+#endif
+    default:
+        break;
+    }
+
     QImage img;
     QVideoFrame videoFrame = frame;
     if(!videoFrame.isValid())
@@ -503,7 +516,7 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                     videoFrame.pixelFormat());
         if(QImage::Format_Invalid != f)
         {
-            QImage image(videoFrame.bits(),
+            img = QImage(videoFrame.bits(),
                          videoFrame.width(),
                          videoFrame.height(),
                          videoFrame.width() << 2,
@@ -516,59 +529,8 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                     img.loadFromData(videoFrame.bits(),
                                      videoFrame.mappedBytes(),
                                      "JPEG");
-                    break;
-
-                    img = QImage(videoFrame.width(),
-                                 videoFrame.height(),
-                                 QImage::Format_RGB888);
-#if HAVE_LIBYUV && HAVE_JPEG
-                    libyuv::MJPGToARGB(videoFrame.bits(),
-                                       videoFrame.mappedBytes(),
-                                       img.bits(),
-                   #if (QT_VERSION > QT_VERSION_CHECK(5, 10, 0))
-                                       img.sizeInBytes(),
-                   #else
-                                       img.byteCount(),
-                   #endif
-                                       videoFrame.width(),
-                                       videoFrame.height(),
-                                       img.width(),
-                                       img.height());
-#endif
                 }
                 break;
-            case QVideoFrame::Format_YUV420P:
-                {
-                    img = QImage(videoFrame.width(),
-                                 videoFrame.height(),
-                                 QImage::Format_RGB888);
-
-#if HAVE_LIBYUV
-                    libyuv::I420ToRGB24(videoFrame.bits(),
-                                        videoFrame.width(),
-                                        videoFrame.bits() + videoFrame.width() * videoFrame.height(),
-                                        videoFrame.width() / 2,
-                                        videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4,
-                                        videoFrame.width() / 2,
-                                        img.bits(),
-                                        videoFrame.width() * 3,
-                                        videoFrame.width(),
-                                        videoFrame.height());
-#else
-                    yuv420p_to_rgb24(videoFrame.bits(),
-                                 img.bits(),
-                                 videoFrame.width(),
-                                 videoFrame.height()
-                                 );
-#endif
-                }
-                break;
-            case QVideoFrame::Format_YV12:
-                
-            case QVideoFrame::Format_NV12:
-                
-            case QVideoFrame::Format_NV21:
-                
             default:
                 qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
             }
@@ -577,6 +539,73 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     videoFrame.unmap();
     return img;
 }
+
+#if HAVE_LIBYUV
+QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
+{
+    QImage img;
+    QVideoFrame videoFrame = frame;
+    if(!videoFrame.isValid())
+        return img;
+    if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
+        return img;
+    do{
+        img = QImage(videoFrame.width(),
+                     videoFrame.height(),
+                     QImage::Format_RGB888);
+        switch(videoFrame.pixelFormat())
+        {
+        case QVideoFrame::Format_YUV420P:
+        {
+            libyuv::I420ToRGB24(videoFrame.bits(),
+                                videoFrame.width(),
+                                videoFrame.bits() + videoFrame.width() * videoFrame.height(),
+                                videoFrame.width() / 2,
+                                videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4, //videoFrame.bits() + videoFrame.width() * videoFrame.height() + videoFrame.width() * videoFrame.height() / 4,
+                                videoFrame.width() / 2,
+                                img.bits(),
+                                videoFrame.width() * 3,
+                                videoFrame.width(),
+                                videoFrame.height());
+            img = img.rgbSwapped();
+        }
+            break;
+        case QVideoFrame::Format_NV21:
+        {
+            libyuv::NV21ToRGB24(videoFrame.bits(),
+                                videoFrame.width(),
+                                videoFrame.bits() + videoFrame.width() * videoFrame.height(),
+                                videoFrame.width(),
+                                img.bits(),
+                                videoFrame.width() * 3,
+                                videoFrame.width(),
+                                videoFrame.height());
+            img = img.rgbSwapped();
+        }
+            break;
+        case QVideoFrame::Format_NV12:
+        {
+            libyuv::NV12ToRGB24(videoFrame.bits(),
+                                videoFrame.width(),
+                                videoFrame.bits() + videoFrame.width() * videoFrame.height(),
+                                videoFrame.width(),
+                                img.bits(),
+                                videoFrame.width() * 3,
+                                videoFrame.width(),
+                                videoFrame.height());
+            img = img.rgbSwapped();
+        }
+            break;
+        case QVideoFrame::Format_YV12:
+        default:
+            qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
+        }
+        
+    }while(0);
+    videoFrame.unmap();
+    return img;
+}
+#endif
 
 //参见： https://blog.csdn.net/junzia/article/details/76315120
 void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height)

@@ -4,7 +4,7 @@ project(FaceRecognizer)
 
 #Use: https://github.com/KangLin/libyuv
 find_package(YUV)
-find_package(FFMPEG)
+#find_package(FFMPEG)
 find_package(SeetaFace)
 
 set(SOURCES_FILES
@@ -93,21 +93,17 @@ if(SeetaFace_FOUND)
         SeetaFaceRecognizer)
     
     if(ANDROID)
-        if(SeetaFace_FOUND)
-            INSTALL(FILES $<TARGET_FILE:SeetaNet>
+        INSTALL(FILES $<TARGET_FILE:SeetaNet>
                 $<TARGET_FILE:SeetaFaceDetector>
                 $<TARGET_FILE:SeetaFaceLandmarker>
                 $<TARGET_FILE:SeetaFaceRecognizer>
                 DESTINATION "libs/${ANDROID_ABI}")
-        endif()
     else()
-        if(SeetaFace_FOUND)
-            INSTALL(FILES $<TARGET_FILE:SeetaNet>
+        INSTALL(FILES $<TARGET_FILE:SeetaNet>
                 $<TARGET_FILE:SeetaFaceDetector>
                 $<TARGET_FILE:SeetaFaceLandmarker>
                 $<TARGET_FILE:SeetaFaceRecognizer>
                 DESTINATION "${CMAKE_INSTALL_BINDIR}")
-        endif()
     endif()
 endif()
 
@@ -115,6 +111,14 @@ if(YUV_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC HAVE_LIBYUV)
     target_link_libraries(${PROJECT_NAME} PUBLIC YUV)
     target_include_directories(${PROJECT_NAME} PUBLIC ${YUV_INCLUDE_DIRS})
+    
+    if(ANDROID)
+        INSTALL(FILES $<TARGET_FILE:YUV>
+                DESTINATION "libs/${ANDROID_ABI}")
+    else()
+        INSTALL(FILES $<TARGET_FILE:YUV>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    endif()
 endif()
 
 if(FFMPEG_FOUND)

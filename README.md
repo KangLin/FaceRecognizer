@@ -1,11 +1,33 @@
 ## 人脸识别
 作者：康林（kl222@126.com)
 
+[![Windows build status](https://ci.appveyor.com/api/projects/status/n50nxc7d8mm9bdpb/branch/master?svg=true)](https://ci.appveyor.com/project/KangLin/facerecognizer/branch/master)
+[![Linux build Status](https://travis-ci.org/KangLin/FaceRecognizer.svg?branch=master)](https://travis-ci.org/KangLin/FaceRecognizer)
+
+================================================================================
+
+- [简介](#简介)
+  - [支持平台](#支持平台)
+  - [下载安装包](#下载安装包)
+- [编译](#编译)
+  - [依赖](#依赖)
+  - [编译参数](#编译参数)
+  - [各平台编译](#各平台编译)
+    - [linux平台编译说明](#linux平台编译说明)
+    - [windows平台编译说明](#windows平台编译说明)
+    - [Android平台编译说明](#Android平台编译说明)
+- [捐赠](#捐赠)
+- [贡献](#贡献)
+- [许可协议](#许可协议)
+
+--------------------------------------------------------------------------------
+
 ## 简介
 
-- 人脸识别框架
-- 人脸识别应用（考勤）
-- 人脸识别开源库测试比较
+- [x] 人脸识别框架
+- [ ] 人脸特效
+- [x] 人脸识别应用（考勤）
+- [ ] 人脸识别开源库测试比较
   + [opencv](https://github.com/opencv/opencv)
   + [dlib](https://github.com/davisking/dlib)
   + [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
@@ -20,9 +42,6 @@
   + [ ] ios
   
   mac 和 ios我没有设备，请有设备的同学自行编译测试。
-
-[![Windows build status](https://ci.appveyor.com/api/projects/status/n50nxc7d8mm9bdpb/branch/master?svg=true)](https://ci.appveyor.com/project/KangLin/facerecognizer/branch/master)
-[![Linux build Status](https://travis-ci.org/KangLin/FaceRecognizer.svg?branch=master)](https://travis-ci.org/KangLin/FaceRecognizer)
 
 ### [下载安装包](https://github.com/KangLin/FaceRecognizer/releases/latest)
 
@@ -57,7 +76,7 @@
     + [android-build-debug.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/android-build-debug.apk)
 
 ## 编译
-### 编译依赖
+### 依赖
 + 编译工具
   + [Qt](http://qt.io/)
   + 编译器
@@ -69,18 +88,20 @@
       
   + [CMake](http://www.cmake.org/)
 + 依赖库
-  - [必选] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
-  - [必选] [RabbitCommon](https://github.com/KangLin/RabbitCommon) Rabbit 公共库
-
+  - [必选] Rabbit 公共库: https://github.com/KangLin/RabbitCommon
+  - [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
+  - [可选] libyuv: https://github.com/KangLin/libyuv
+  - [可选] ffmpeg: https://ffmpeg.org/
+  - [可选] opencv: https://opencv.org/
+  
 ### 编译参数
   - CMAKE_INSTALL_PREFIX: 安装前缀
   - Qt5_DIR: qt 安装位置
   - RabbitCommon_DIR: RabbitCommon源码位置
-  - SeetaNet_DIR： SeetaNet 库安装位置
-  - SeetaFaceDetector_DIR： SeetaFaceDetector 库安装位置
-  - SeetaFaceLandmarker_DIR： SeetaFaceLandmarker 库安装位置
-  - SeetaFaceRecognizer_DIR： SeetaFaceRecognizer 库安装位置
-   
+  - SeetaFace_DIR: SeetaFace 库安装位置
+  - YUV_DIR: libyuv 库安装位置
+  - OpenCV_DIR: OpenCV 库安装位置
+ 
 ### 各平台编译
 #### linux平台编译说明
   - 编译
@@ -206,14 +227,14 @@
 
        adb install android-build-debug.apk 
 
-### 捐赠
+## 捐赠
 本软件如果对你有用，或者你喜欢它，请你捐赠，支持作者。谢谢！
 
 ![捐赠](https://github.com/KangLin/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠")
 
-### 贡献
+## 贡献
 
 问题：https://github.com/KangLin/FaceRecognizer/issues  
 项目位置：https://github.com/KangLin/FaceRecognizer
 
-### [许可协议](License.md "License.md")
+## [许可协议](License.md "License.md")
