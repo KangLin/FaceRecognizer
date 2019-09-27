@@ -4,7 +4,7 @@ set -e
 SOURCE_DIR=`pwd`
 
 if [ -n "$1" ]; then
-    VERSION=`git describe --tags`
+    VERSION="v0.0.1" #`git describe --tags`
     if [ -z "$VERSION" ]; then
         VERSION=` git rev-parse HEAD`
     fi
