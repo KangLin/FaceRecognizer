@@ -18,7 +18,7 @@ endif()
 
 find_package(FFMPEG)
 
-#find_package(OpenCV)
+find_package(OpenCV)
 if(OpenCV_FOUND)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
     set(LIBS ${LIBS} ${OpenCV_LIBS})
@@ -115,6 +115,11 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE ${RabbitCommon_DIR}/Src
     ${CMAKE_BINARY_DIR}
     ${INCLUDE_DIRS})
+
+if(BUILD_VERSION)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
+    set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+endif()
 
 GENERATE_EXPORT_HEADER(${PROJECT_NAME})
 string(TOLOWER ${PROJECT_NAME} LOWER_PROJECT_NAME)

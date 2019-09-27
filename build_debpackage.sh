@@ -1,39 +1,29 @@
 #!/bin/bash
 
 if [ -n "$1" -a -z "$QT_ROOT" ]; then
-    QT_ROOT=$1
+	QT_ROOT=$1
 fi
 
 if [ ! -f /usr/bin/qmake -a -z "$QT_ROOT" ]; then
-    echo "$0 QT_ROOT SeetaFace2_DIR RabbitCommon_DIR"
+	echo "$0 QT_ROOT RabbitCommon_DIR"
     exit -1
 fi
 
-if [ -n "$2" -a -z "${SeetaFace2_DIR}" ]; then
-    SeetaFace2_DIR=$2
-fi
-
-if [ ! -d $SeetaFace2_DIR ]; then
-    echo "$0 QT_ROOT SeetaFace2_DIR RabbitCommon_DIR"
-fi
-
-if [ -n "$3" -a -z "$RabbitCommon_DIR" ]; then
-    RabbitCommon_DIR=$3
+if [ -n "$2" -a -z "$RabbitCommon_DIR" ]; then
+	RabbitCommon_DIR=$2
 fi
 
 if [ -z "$RabbitCommon_DIR" ]; then
-    RabbitCommon_DIR=`pwd`/../RabbitCommon
+	RabbitCommon_DIR=`pwd`/../RabbitCommon
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
-    echo "$0 QT_ROOT SeetaFace2_DIR RabbitCommon_DIR"
-    exit -2
+	echo "$0 QT_ROOT RabbitCommon_DIR"
+        exit -2
 fi
 
-export GENERATORS="Unix Makefiles"
 export RabbitCommon_DIR=$RabbitCommon_DIR
 export QT_ROOT=$QT_ROOT
-export SeetaFace2_DIR=$SeetaFace2_DIR
 export PATH=$QT_ROOT/bin:$PATH
 export LD_LIBRARY_PATH=$QT_ROOT/lib/i386-linux-gnu:$QT_ROOT/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=$QT_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH

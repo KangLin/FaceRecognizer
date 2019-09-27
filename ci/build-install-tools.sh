@@ -113,7 +113,8 @@ function function_unix()
         libpulse-mainloop-glib0 \
         libgstreamer0.10-dev \
         libgstreamer-plugins-base0.10-dev \
-        gstreamer1.0-pulseaudio
+        gstreamer1.0-pulseaudio \
+        libopencv-dev
 
     if [ "$BUILD_DOWNLOAD" != "TRUE" ]; then
         sudo apt-get install -y -qq qt${QT_VERSION_DIR}base \
