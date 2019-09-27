@@ -16,7 +16,7 @@ if(YUV_FOUND)
     endif()
 endif()
 
-#find_package(FFMPEG)
+find_package(FFMPEG)
 
 find_package(OpenCV)
 if(OpenCV_FOUND)
@@ -37,21 +37,17 @@ endif()
 find_package(SeetaFace)
 if(SeetaFace_FOUND)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_SEETA_FACE)
-    set(LIBS ${LIBS} SeetaFace)
-    
-    if(ANDROID)
-        INSTALL(FILES $<TARGET_FILE:SeetaNet>
-                $<TARGET_FILE:SeetaFaceDetector>
-                $<TARGET_FILE:SeetaFaceLandmarker>
-                $<TARGET_FILE:SeetaFaceRecognizer>
+    set(LIBS ${LIBS} ${SeetaFace_LIBRARIES})
+    foreach(componet ${SeetaFace_LIBRARIES})
+        if(ANDROID)
+            
+            INSTALL(FILES $<TARGET_FILE:${componet}>
                 DESTINATION "libs/${ANDROID_ABI}")
-    else()
-        INSTALL(FILES $<TARGET_FILE:SeetaNet>
-                $<TARGET_FILE:SeetaFaceDetector>
-                $<TARGET_FILE:SeetaFaceLandmarker>
-                $<TARGET_FILE:SeetaFaceRecognizer>
+        else()
+            INSTALL(FILES $<TARGET_FILE:${componet}>
                 DESTINATION "${CMAKE_INSTALL_BINDIR}")
-    endif()
+        endif()
+    endforeach()
     
     set(SOURCES_FILES
         ${SOURCES_FILES}
