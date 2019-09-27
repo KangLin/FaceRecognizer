@@ -25,7 +25,6 @@
 #include <QCryptographicHash>
 #include <QFile>
 #include <QPainter>
-#include <QtDebug>
 
 CImageTool::CImageTool(QObject *parent) :
     QObject(parent)
@@ -53,24 +52,26 @@ int CImageTool::SetFFmpegLog()
 AVPixelFormat CImageTool::QVideoFrameFormatToFFMpegPixFormat(
         const QVideoFrame::PixelFormat format)
 {
-    if(QVideoFrame::Format_RGB32 == format)
+    switch (format) {
+    case QVideoFrame::Format_RGB32:
         return AV_PIX_FMT_RGB32;
-    else if(QVideoFrame::Format_BGR24 == format)
-        return AV_PIX_FMT_BGR24;
-    else if(QVideoFrame::Format_RGB24 == format)
+    case QVideoFrame::Format_RGB24:
         return AV_PIX_FMT_RGB24;
-    else if(QVideoFrame::Format_YUYV == format)
+    case QVideoFrame::Format_YUYV:
         return AV_PIX_FMT_YUYV422;
-    else if(QVideoFrame::Format_UYVY == format)
+    case QVideoFrame::Format_UYVY:
         return AV_PIX_FMT_UYVY422;
-    else if(QVideoFrame::Format_NV21 == format)
+    case QVideoFrame::Format_NV21:
         return AV_PIX_FMT_NV21;
-    else if(QVideoFrame::Format_NV12 == format)
-        return AV_PIX_FMT_NV12;
-    else if(QVideoFrame::Format_YUV444 == format)
-        return AV_PIX_FMT_YUYV422;
-
-    return AV_PIX_FMT_NONE;
+    case QVideoFrame::Format_NV12:
+        return AV_PIX_FMT_NV12; 
+    case QVideoFrame::Format_YUV420P:
+        return AV_PIX_FMT_YUV420P;
+    case QVideoFrame::Format_YV12:
+    default:
+        LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d", format);
+        return AV_PIX_FMT_NONE;
+    }
 }
 
 AVPixelFormat CImageTool::QImageFormatToFFMpegPixFormat(const QImage::Format format)
@@ -79,98 +80,6 @@ AVPixelFormat CImageTool::QImageFormatToFFMpegPixFormat(const QImage::Format for
         return AV_PIX_FMT_RGB32;
     return AV_PIX_FMT_NONE;
 }
-
-#ifdef RABBITIM_USE_QXMPP
-AVPixelFormat CTool::QXmppVideoFrameFormatToFFMpegPixFormat(
-        const QXmppVideoFrame::PixelFormat format)
-{
-    if(QXmppVideoFrame::Format_RGB32 == format)
-        return AV_PIX_FMT_RGB32;
-    else if(QXmppVideoFrame::Format_RGB24 == format)
-        return AV_PIX_FMT_RGB24;
-    else if(QXmppVideoFrame::Format_YUYV == format)
-        return AV_PIX_FMT_YUYV422;
-    else if(QXmppVideoFrame::Format_UYVY == format)
-        return AV_PIX_FMT_UYVY422;
-    else if(QXmppVideoFrame::Format_YUV420P == format)
-        return AV_PIX_FMT_YUV420P;
-    else
-        return AV_PIX_FMT_NONE;
-}
-
-QXmppVideoFrame::PixelFormat CTool::QVideoFrameFormatToQXmppVideoFrameFormat(
-        const QVideoFrame::PixelFormat format)
-{
-    if(QXmppVideoFrame::Format_RGB32 == format)
-        return QXmppVideoFrame::Format_RGB32;
-    else if(QXmppVideoFrame::Format_RGB24 == format)
-        return QXmppVideoFrame::Format_RGB24;
-    else if(QXmppVideoFrame::Format_YUYV == format)
-        return QXmppVideoFrame::Format_YUYV;
-    else if(QXmppVideoFrame::Format_UYVY == format)
-        return QXmppVideoFrame::Format_UYVY;
-    else if(QXmppVideoFrame::Format_YUV420P == format)
-        return QXmppVideoFrame::Format_YUV420P;
-    else
-        return QXmppVideoFrame::Format_Invalid;
-}
-
-int CTool::ConvertFormat(const QXmppVideoFrame &inFrame,
-                         QVideoFrame &outFrame,
-                         int nOutWidth,
-                         int nOutHeight,
-                         QVideoFrame::PixelFormat outPixelFormat)
-{
-    int nRet = 0;
-    AVPicture inPic, outPic;
-    nRet = avpicture_fill(&inPic, (uint8_t*)inFrame.bits(),
-                          QXmppVideoFrameFormatToFFMpegPixFormat(inFrame.pixelFormat()),
-                          inFrame.width(),
-                          inFrame.height());
-    if(nRet < 0)
-    {
-        LOG_MODEL_ERROR("CTool", "avpicture_fill is fail");
-        return nRet;
-    }
-
-    int nByte = avpicture_fill(&outPic, NULL,
-                          QVideoFrameFormatToFFMpegPixFormat(outPixelFormat),
-                          nOutWidth,
-                          nOutHeight);
-    if(nByte < 0)
-    {
-        LOG_MODEL_ERROR("CTool", "avpicture_get_size fail:%d", nByte);
-        return -2;
-    }
-    QVideoFrame out(nByte, QSize(nOutWidth, nOutHeight), outPic.linesize[0], outPixelFormat);
-    if(!out.map(QAbstractVideoBuffer::WriteOnly))
-    {
-        LOG_MODEL_ERROR("CTool", "outFrame map is fail");
-        return -3;
-    }
-    do{
-        nRet = avpicture_fill(&outPic, out.bits(),
-                              QVideoFrameFormatToFFMpegPixFormat(out.pixelFormat()),
-                              out.width(),
-                              out.height());
-        if(nRet < 0)
-        {
-            LOG_MODEL_ERROR("CTool", "avpicture_file is fail:%d", nRet);
-            nRet = -4;
-            break;
-        }
-        nRet = ConvertFormat(inPic, inFrame.width(), inFrame.height(),
-                             QXmppVideoFrameFormatToFFMpegPixFormat(inFrame.pixelFormat()),
-                             outPic, out.width(), out.height(),
-                             QVideoFrameFormatToFFMpegPixFormat(outPixelFormat));
-        if(!nRet)
-            outFrame = out;
-    }while(0);
-    out.unmap();
-    return nRet;
-}
-
-#endif
 
 //如果转换成功，则调用者使用完 pOutFrame 后，需要调用 avpicture_free(pOutFrame) 释放内存  
 //成功返回0，不成功返回非0  
@@ -239,13 +148,6 @@ int CImageTool::ConvertFormat(/*[in]*/ const AVPicture &inFrame,
 
 #endif
 
-uchar RGBtoGRAY(uchar r, uchar g, uchar b)  
-{  
-    return (uchar)((((qint32)((r << 5) + (r << 2) + (r << 1)))
-                    + (qint32)((g << 6) + (g << 3) + (g << 1) + g) 
-                    + (qint32)((b << 4) - b)) >> 7);  
-}  
-
 QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
 {
     switch(frame.pixelFormat())
@@ -254,9 +156,11 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_NV21:
     case QVideoFrame::Format_NV12:
     case QVideoFrame::Format_YV12:
-        
-#ifdef HAVE_OPENCV
+
+#if HAVE_OPENCV
         return OpenCVConverFormatToRGB888(frame);
+#elif HAVE_FFMPEG
+        return FFMpegConverFormatToRGB888(frame);
 #elif HAVE_LIBYUV
         return  LibyuvConverFormatToRGB888(frame);
 #endif
@@ -291,7 +195,8 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                 }
                 break;
             default:
-                qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
+                LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
+                                videoFrame.pixelFormat());
             }
         }
     }while(0);
@@ -299,7 +204,8 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     return img;
 }
 
-#ifdef HAVE_OPENCV
+#if HAVE_OPENCV
+
 QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
 {
     QImage img;
@@ -351,13 +257,59 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         case QVideoFrame::Format_YV12:
         
         default:
-            qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
+            LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
+                            videoFrame.pixelFormat());
         }
         
     }while(0);
     videoFrame.unmap();
     return img;
 
+}
+
+#elif HAVE_FFMPEG
+
+QImage CImageTool::FFMpegConverFormatToRGB888(const QVideoFrame &frame)
+{
+    int nRet = 0;
+    AVPicture inPic, outPic;
+    QImage img;
+    QVideoFrame videoFrame = frame;
+    if(!videoFrame.isValid())
+        return img;
+    if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
+        return img;
+
+    do{
+        img = QImage(videoFrame.width(),
+                     videoFrame.height(),
+                     QImage::Format_RGB888);
+        nRet = avpicture_fill(&outPic, img.bits(),
+                              AV_PIX_FMT_RGB24,
+                              img.width(),
+                              img.height());
+        if(nRet < 0)
+        {
+            LOG_MODEL_ERROR("CImageTool", "avpicture_get_size fail:%d", nRet);
+            break;
+        }
+        nRet = avpicture_fill(&inPic, videoFrame.bits(),
+                              QVideoFrameFormatToFFMpegPixFormat(videoFrame.pixelFormat()),
+                              videoFrame.width(),
+                              videoFrame.height());
+        if(nRet < 0)
+        {
+            LOG_MODEL_ERROR("CImageTool", "avpicture_fill is fail");
+            break;
+        }
+
+        nRet = ConvertFormat(inPic, videoFrame.width(), videoFrame.height(),
+                             QVideoFrameFormatToFFMpegPixFormat(videoFrame.pixelFormat()),
+                             outPic, img.width(), img.height(),
+                             AV_PIX_FMT_RGB24);
+    }while (0);
+    videoFrame.unmap();
+    return img;
 }
 
 #elif HAVE_LIBYUV
@@ -415,7 +367,8 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
             break;
         case QVideoFrame::Format_YV12:
         default:
-            qDebug() << "Don't conver format:" << videoFrame.pixelFormat();
+            LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
+                            videoFrame.pixelFormat());
         }
         
     }while(0);

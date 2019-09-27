@@ -26,7 +26,6 @@ else()
 	set(_lib_suffix 32)
 endif()
 
-set(FFMPEG_PATH_ARCH FFMPEG_PATH${_lib_suffix})
 # Find libraries
 find_package(PkgConfig QUIET)
 foreach(comp ${FFMPEG_FIND_COMPONENTS})
@@ -38,14 +37,11 @@ foreach(comp ${FFMPEG_FIND_COMPONENTS})
 		find_path(FFMPEG_${comp}_INCLUDE_DIR
 			NAMES "lib${comp}/${comp}.h"
 			HINTS
-				${_${comp}_INCLUDE_DIRS}
                 ${FFMPEG_DIR}
                 ENV FFMPEG_DIR
-				ENV FFMPEG_PATH
-				ENV ${FFMPEG_PATH_ARCH}
 			PATHS
 				/usr /usr/local /opt/local /sw
-			PATH_SUFFIXES FFMPEG libav include
+			PATH_SUFFIXES FFMPEG libav include lib${comp} include/lib${comp}
 			DOC "FFMPEG include directory")
 	else()
 		SET(FFMPEG_${comp}_INCLUDE_DIR ${_${comp}_INCLUDE_DIRS})
@@ -55,16 +51,11 @@ foreach(comp ${FFMPEG_FIND_COMPONENTS})
 		find_library(FFMPEG_${comp}_LIBRARY
 			NAMES ${comp} ${comp}-FFMPEG ${_${comp}_LIBRARIES}
 			HINTS
+                ${FFMPEG_DIR}
                 ENV FFMPEG_DIR
-				${_${comp}_LIBRARY_DIRS}
-				"${FFMPEG_${comp}_INCLUDE_DIR}/../lib"
-				"${FFMPEG_${comp}_INCLUDE_DIR}/../lib${_lib_suffix}"
-				"${FFMPEG_${comp}_INCLUDE_DIR}/../libs${_lib_suffix}"
-				"${FFMPEG_${comp}_INCLUDE_DIR}/lib"
-				"${FFMPEG_${comp}_INCLUDE_DIR}/lib${_lib_suffix}"
 			PATHS
 				/usr /usr/local /opt/local /sw
-			PATH_SUFFIXES ${comp} lib${comp} lib
+			PATH_SUFFIXES ${comp} lib${comp}
 			DOC "FFMPEG ${comp} library")
 	else()
 		SET(FFMPEG_${comp}_LIBRARY ${_${comp}_LIBRARIES})

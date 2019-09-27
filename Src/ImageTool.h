@@ -50,7 +50,7 @@ public:
 
 private:
     /**
-     * @brief 格式转换，这个函数只CTool内部调用    
+     * @brief 格式转换，这个函数只内部调用    
      *        
      * @param inFrame：要转换的帧（注意：需要调用者用 avpicture_fill 初始化。）  
      * @param nInWidth：转换帧的宽度  
@@ -77,8 +77,11 @@ public:
 
     void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
     static QImage ConverFormatToRGB888(const QVideoFrame &frame);
+
 #ifdef HAVE_OPENCV
-    static QImage OpenCVConverFormatToRGB888(const QVideoFrame &frame);
+    static QImage OpenCVConverFormatToRGB888(const QVideoFrame &frame);    
+#elif HAVE_FFMPEG
+    static QImage FFMpegConverFormatToRGB888(const QVideoFrame &frame);
 #elif HAVE_LIBYUV
     static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);
 #endif

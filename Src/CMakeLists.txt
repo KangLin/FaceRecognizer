@@ -18,7 +18,7 @@ endif()
 
 find_package(FFMPEG)
 
-find_package(OpenCV)
+#find_package(OpenCV)
 if(OpenCV_FOUND)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
     set(LIBS ${LIBS} ${OpenCV_LIBS})
