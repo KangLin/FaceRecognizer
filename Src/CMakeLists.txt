@@ -23,6 +23,8 @@ if(OpenCV_FOUND)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV)
     set(LIBS ${LIBS} ${OpenCV_LIBS})
     set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
+    message("OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
+    message("OpenCV libs: ${OpenCV_LIBS}")
 endif()
 
 find_package(SeetaFace)

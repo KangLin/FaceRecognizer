@@ -25,15 +25,17 @@
 ## 简介
 
 - [x] 人脸识别框架
-- [ ] 人脸特效
-- [x] 人脸识别应用（考勤）
+- [x] 人脸识别应用
+  - [ ] 考勤
+  - [ ] 人脸特效
+- [ ] 测试比较工具框架
 - [ ] 人脸识别开源库测试比较
-  + [opencv](https://github.com/opencv/opencv)
-  + [dlib](https://github.com/davisking/dlib)
-  + [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
-  + [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
+  + [x] [opencv](https://github.com/opencv/opencv)
+  + [ ] [dlib](https://github.com/davisking/dlib)
+  + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
+  + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
 
-### 支持平台  
+### 支持平台
 
   + [x] windows
   + [x] linux
