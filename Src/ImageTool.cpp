@@ -3,7 +3,11 @@
 #include "yuv2rgb/yuv2rgb.h"
 
 #ifdef HAVE_OPENCV
-    #include "opencv/cv.hpp"
+    #if OpenCV_VERSION_MAJOR == 3 || OpenCV_VERSION_MAJOR == 2
+        #include "opencv/cv.hpp"
+    #else
+        #include "opencv2/opencv.hpp"
+    #endif
 #elif HAVE_LIBYUV
     #include "libyuv.h"
 #endif
@@ -315,19 +319,33 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-            cv::cvtColor(in, out, CV_YUV420p2BGR);
+#if OpenCV_VERSION_MAJOR == 3
+            cv::cvtColor(in, out, CV_YUV420p2RGB);
+#else
+            cv::cvtColor(in, out, cv::COLOR_YUV420p2RGB);
+#endif
         }
             break;
         case QVideoFrame::Format_NV21:
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-            cv::cvtColor(in, out, CV_YUV420sp2BGR);
+#if OpenCV_VERSION_MAJOR == 3 
+            cv::cvtColor(in, out, CV_YUV420sp2RGB);
+#else
+            cv::cvtColor(in, out, cv::COLOR_YUV420sp2RGB);
+#endif
         }
             break;
         case QVideoFrame::Format_NV12:
         {
-           
+            cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
+                       videoFrame.width(), CV_8UC1, videoFrame.bits());
+#if OpenCV_VERSION_MAJOR == 3 
+            cv::cvtColor(in, out, CV_YUV2RGB_NV12);
+#else
+            cv::cvtColor(in, out, cv::COLOR_YUV2RGB_NV12);
+#endif
         }
             break;
         case QVideoFrame::Format_YV12:
@@ -369,7 +387,6 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.width() * 3,
                                 videoFrame.width(),
                                 videoFrame.height());
-            img = img.rgbSwapped();
         }
             break;
         case QVideoFrame::Format_NV21:
@@ -382,7 +399,6 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.width() * 3,
                                 videoFrame.width(),
                                 videoFrame.height());
-            img = img.rgbSwapped();
         }
             break;
         case QVideoFrame::Format_NV12:
@@ -395,7 +411,6 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.width() * 3,
                                 videoFrame.width(),
                                 videoFrame.height());
-            img = img.rgbSwapped();
         }
             break;
         case QVideoFrame::Format_YV12:

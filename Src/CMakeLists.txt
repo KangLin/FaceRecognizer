@@ -20,11 +20,18 @@ endif()
 
 find_package(OpenCV)
 if(OpenCV_FOUND)
-    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV)
+    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
     set(LIBS ${LIBS} ${OpenCV_LIBS})
     set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
-    message("OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
-    message("OpenCV libs: ${OpenCV_LIBS}")
+
+#    #android 编译出来的是静态库
+#    foreach(component ${OpenCV_LIBS})
+#        if(ANDROID)
+#            INSTALL(FILES $<TARGET_FILE:${component}>
+#                DESTINATION "libs/${ANDROID_ABI}")
+#        endif()
+#    endforeach()
+    
 endif()
 
 find_package(SeetaFace)
