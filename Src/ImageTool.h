@@ -75,7 +75,7 @@ public:
 
 #endif
 
-    void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
+    static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
     static QImage ConverFormatToRGB888(const QVideoFrame &frame);
 
 #ifdef HAVE_OPENCV

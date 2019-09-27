@@ -194,6 +194,10 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                                      "JPEG");
                 }
                 break;
+            case QVideoFrame::Format_YUV420P:
+                YUV420_2_RGB(videoFrame.bits(), img.bits(),
+                             videoFrame.width(), videoFrame.height());
+                break;
             default:
                 LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
                                 videoFrame.pixelFormat());
