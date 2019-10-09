@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setApplicationName("FaceRecognizerApp");
+    a.setApplicationName("FaceRecognizer");
     
 #ifdef RABBITCOMMON
     RabbitCommon::CTools::Instance()->Init();
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     
 #ifdef RABBITCOMMON 
     CFrmUpdater *pUpdate = new CFrmUpdater();
-    pUpdate->SetTitle(QPixmap(":/icon/App"));
+    pUpdate->SetTitle(QPixmap(":/image/FaceRecognizer"));
     if(!pUpdate->GenerateUpdateXml()) 
         return 0; 
 #endif

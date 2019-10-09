@@ -56,9 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRegister);
     pViewGroup->addAction(ui->actionRecognizer);
     ui->actionCamera->setChecked(true);
-    
-    on_actionCamera_triggered();
-    return;
+
 #ifdef HAVE_SEETA_FACE
     on_actionRecognizer_triggered();
 #else
@@ -214,7 +212,7 @@ void MainWindow::on_actionAbout_A_triggered()
 {
 #ifdef RABBITCOMMON
     CDlgAbout about(this);
-    //about.m_AppIcon = QPixmap(":/icon/App");
+    about.m_AppIcon = QPixmap(":/image/FaceRecognizer");
     about.m_szHomePage = "https://github.com/KangLin/FaceRecognizer";
     if(about.isHidden())
 #if defined (Q_OS_ANDROID)
@@ -228,7 +226,7 @@ void MainWindow::on_actionUpdate_U_triggered()
 {
 #ifdef RABBITCOMMON
     CFrmUpdater* m_pfrmUpdater = new CFrmUpdater();
-    //m_pfrmUpdater->SetTitle(QPixmap(":/icon/App"));
+    m_pfrmUpdater->SetTitle(QPixmap(":/image/FaceRecognizer"));
     #if defined (Q_OS_ANDROID)
         m_pfrmUpdater->showMaximized();
     #else

@@ -234,6 +234,7 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
 #else
             cv::cvtColor(in, out, cv::COLOR_YUV420p2RGB);
 #endif
+            img = img.rgbSwapped();
         }
             break;
         case QVideoFrame::Format_NV21:
@@ -344,6 +345,7 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.width(),
                                 videoFrame.height());
         }
+            img = img.rgbSwapped();
             break;
         case QVideoFrame::Format_NV21:
         {
