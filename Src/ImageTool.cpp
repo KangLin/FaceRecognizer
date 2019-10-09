@@ -148,6 +148,9 @@ int CImageTool::ConvertFormat(/*[in]*/ const AVPicture &inFrame,
 
 #endif
 
+// 图像格式介绍：
+//    https://blog.csdn.net/byhook/article/details/84037338
+//    https://blog.csdn.net/cgwang_1580/article/details/79595958
 QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
 {
     switch(frame.pixelFormat())
@@ -156,13 +159,20 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_NV21:
     case QVideoFrame::Format_NV12:
     case QVideoFrame::Format_YV12:
-
+    case QVideoFrame::Format_YUYV:
+    case QVideoFrame::Format_UYVY:
 #if HAVE_OPENCV
         return OpenCVConverFormatToRGB888(frame);
 #elif HAVE_FFMPEG
         return FFMpegConverFormatToRGB888(frame);
 #elif HAVE_LIBYUV
         return  LibyuvConverFormatToRGB888(frame);
+#else
+        if(QVideoFrame::Format_YUV420P != frame.pixelFormat())
+        {
+            LOG_MODEL_WARNING("CImageTool", "Please use one of opencv, ffmpeg, libyuv");
+        }
+        break;
 #endif
     default:
         break;
@@ -199,7 +209,7 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                              videoFrame.width(), videoFrame.height());
                 break;
             default:
-                LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
+                LOG_MODEL_ERROR("CImageTool",  "Don't implement conver format: %d",
                                 videoFrame.pixelFormat());
             }
         }
@@ -217,7 +227,10 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
     if(!videoFrame.isValid())
         return img;
     if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
+    {
+        LOG_MODEL_ERROR("CImageTool", "videoFrame.map fail");
         return img;
+    }
     do{
         img = QImage(videoFrame.width(),
                      videoFrame.height(),
@@ -229,10 +242,12 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-#if OpenCV_VERSION_MAJOR == 3
+#if OpenCV_VERSION_MAJOR == 4
+            cv::cvtColor(in, out, cv::COLOR_YUV420p2RGB);
+#elif OpenCV_VERSION_MAJOR == 3
             cv::cvtColor(in, out, CV_YUV420p2RGB);
 #else
-            cv::cvtColor(in, out, cv::COLOR_YUV420p2RGB);
+            
 #endif
             img = img.rgbSwapped();
         }
@@ -241,10 +256,12 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-#if OpenCV_VERSION_MAJOR == 3 
+#if OpenCV_VERSION_MAJOR == 4
+            cv::cvtColor(in, out, cv::COLOR_YUV420sp2RGB);
+#elif OpenCV_VERSION_MAJOR == 3 
             cv::cvtColor(in, out, CV_YUV420sp2RGB);
 #else
-            cv::cvtColor(in, out, cv::COLOR_YUV420sp2RGB);
+   
 #endif
         }
             break;
@@ -252,17 +269,41 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-#if OpenCV_VERSION_MAJOR == 3 
-            cv::cvtColor(in, out, CV_YUV2RGB_NV12);
-#else
+#if OpenCV_VERSION_MAJOR >= 4
             cv::cvtColor(in, out, cv::COLOR_YUV2RGB_NV12);
+#else
+            cv::cvtColor(in, out, CV_YUV2RGB_NV12);            
+#endif
+        }
+            break;
+        case QVideoFrame::Format_YUYV:
+        {
+            //TODO： Test it
+            cv::Mat in(videoFrame.height(),
+                       videoFrame.width(), CV_8UC2, videoFrame.bits());
+#if OpenCV_VERSION_MAJOR >= 4
+            cv::cvtColor(in, out, cv::COLOR_YUV2RGB_YUYV);
+#else
+            cv::cvtColor(in, out, CV_YUV2RGB_YUYV);
+#endif
+        }
+            break;
+        case QVideoFrame::Format_UYVY:
+        {
+            //TODO： Test it
+            cv::Mat in(videoFrame.height(),
+                       videoFrame.width(), CV_8UC2, videoFrame.bits());
+#if OpenCV_VERSION_MAJOR >= 4
+            cv::cvtColor(in, out, cv::COLOR_YUV2RGB_UYVY);
+#else
+            cv::cvtColor(in, out, CV_YUV2RGB_UYVY);       
 #endif
         }
             break;
         case QVideoFrame::Format_YV12:
         
         default:
-            LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
+            LOG_MODEL_WARNING("CImageTool",  "OpenCVConverFormatToRGB888 Don't conver format: %d",
                             videoFrame.pixelFormat());
         }
         
@@ -373,7 +414,7 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
             break;
         case QVideoFrame::Format_YV12:
         default:
-            LOG_MODEL_ERROR("CImageTool",  "Don't conver format: %d",
+            LOG_MODEL_WARNING("CImageTool",  "LibyuvConverFormatToRGB888 Don't implement conver format: %d",
                             videoFrame.pixelFormat());
         }
         
