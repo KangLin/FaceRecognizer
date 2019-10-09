@@ -55,11 +55,12 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionCamera);
     pViewGroup->addAction(ui->actionRegister);
     pViewGroup->addAction(ui->actionRecognizer);
-    ui->actionCamera->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
+    ui->actionRecognizer->setChecked(true);
     on_actionRecognizer_triggered();
 #else
+    ui->actionCamera->setChecked(true);
     on_actionCamera_triggered();
 #endif
 }
