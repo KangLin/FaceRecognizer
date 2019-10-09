@@ -3,7 +3,7 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "FaceRecognizer"
 !define PRODUCT_APP_NAME "FaceRecognizerApp"
-!define PRODUCT_VERSION "v0.0.2"
+!define PRODUCT_VERSION "v0.0.1"
 !define PRODUCT_PUBLISHER "KangLin studio"
 !define PRODUCT_WEB_SITE "https://github.com/KangLin/${PRODUCT_NAME}"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe"

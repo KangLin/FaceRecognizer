@@ -48,15 +48,15 @@
 ### [下载安装包](https://github.com/KangLin/FaceRecognizer/releases/latest)
 
 - linux
-    - [FaceRecognizer_v0.0.2.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer_v0.0.2.tar.gz)  
+    - [FaceRecognizer_v0.0.1.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.1/FaceRecognizer_v0.0.1.tar.gz)  
       AppImage格式的执行程序，可直接运行在linux系统，详见：https://appimage.org/  
       使用:    
-      1. 解压。复制FaceRecognizer_v0.0.2.tar.gz到安装目录，然后解压：
+      1. 解压。复制FaceRecognizer_v0.0.1.tar.gz到安装目录，然后解压：
 
                 mkdir FaceRecognizer
                 cd FaceRecognizer
-                cp $DOWNLOAD/FaceRecognizer_v0.0.2.tar.gz .
-                tar xvfz FaceRecognizer_v0.0.2.tar.gz
+                cp $DOWNLOAD/FaceRecognizer_v0.0.1.tar.gz .
+                tar xvfz FaceRecognizer_v0.0.1.tar.gz
 
       2. 安装
         
@@ -67,15 +67,15 @@
                 ./install.sh remove
 
 - ubuntu
-    - [FaceRecognizer_0.0.2_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer_0.0.2_amd64.deb)  
+    - [FaceRecognizer_0.0.1_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.1/FaceRecognizer_0.0.1_amd64.deb)  
   deb 安装包,可用于　Ubuntu
   
 - windows
-    - [FaceRecognizer-Setup-v0.0.2.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer-Setup-v0.0.2.exe)  
+    - [FaceRecognizer-Setup-v0.0.1.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.1/FaceRecognizer-Setup-v0.0.1.exe)  
   Windows安装包，支持 Windows xp 以上系统 
 
 - android
-    + [android-build-debug.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/android-build-debug.apk)
+    + [android-build-debug.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.1/android-build-debug.apk)
 
 ## 编译
 ### 依赖
