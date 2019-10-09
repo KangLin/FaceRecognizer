@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     QTranslator translator;
     translator.load(RabbitCommon::CDir::Instance()->GetDirTranslations()
                     + "/" + qApp->applicationName()
-                    + "_" + QLocale::system().name() + ".qm");
+                    + "App_" + QLocale::system().name() + ".qm");
     a.installTranslator(&translator);
 #endif
     
