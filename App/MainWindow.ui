@@ -32,7 +32,6 @@
      <string>Operate</string>
     </property>
     <addaction name="actionStart"/>
-    <addaction name="actionStop"/>
     <addaction name="separator"/>
     <addaction name="actionCamera"/>
     <addaction name="actionRegister"/>
@@ -68,22 +67,16 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionStart"/>
-   <addaction name="actionStop"/>
   </widget>
   <action name="actionStart">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Start</string>
    </property>
    <property name="statusTip">
     <string>Start</string>
-   </property>
-  </action>
-  <action name="actionStop">
-   <property name="text">
-    <string>Stop</string>
-   </property>
-   <property name="statusTip">
-    <string>Stop</string>
    </property>
   </action>
   <action name="actionDetector">

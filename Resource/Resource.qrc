@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/image">
         <file alias="FaceRecognizer">image/FaceRecognizer.png</file>
+        <file alias="Start">image/Start.png</file>
+        <file alias="Stop">image/Stop.png</file>
     </qresource>
 </RCC>

@@ -51,6 +51,11 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     //Init menu
+    ui->actionStart->setIcon(QIcon(":/image/Start"));
+    ui->actionStart->setText(tr("Start"));
+    ui->actionStart->setToolTip(tr("Start"));
+    ui->actionStart->setStatusTip(tr("Start"));
+    
     QActionGroup *pViewGroup = new QActionGroup(this);
     pViewGroup->addAction(ui->actionCamera);
     pViewGroup->addAction(ui->actionRegister);
@@ -119,18 +124,31 @@ void MainWindow::slotCameraChanged(int index)
 
 void MainWindow::on_actionStart_triggered()
 {
-    if(m_pCamera)
+    if(ui->actionStart->isChecked())
     {
-        if(m_pCamera->isAvailable())
+        if(m_pCamera)
+        {
+            if(m_pCamera->isAvailable())
+                m_pCamera->stop();
+            m_pCamera->start();
+        }
+        ui->actionStart->setText(tr("Stop"));
+        ui->actionStart->setToolTip(tr("Stop"));
+        ui->actionStart->setStatusTip(tr("Stop"));
+        ui->actionStart->setIcon(QIcon(":/image/Stop"));
+    } else {
+        if(m_pCamera)
             m_pCamera->stop();
-        m_pCamera->start();
+        ui->actionStart->setIcon(QIcon(":/image/Start"));
+        ui->actionStart->setText(tr("Start"));
+        ui->actionStart->setToolTip(tr("Start"));
+        ui->actionStart->setStatusTip(tr("Start"));
     }
 }
 
 void MainWindow::on_actionStop_triggered()
 {
-    if(m_pCamera)
-        m_pCamera->stop();
+    
 }
 
 int MainWindow::CamerOrientation(int index)
