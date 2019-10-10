@@ -16,6 +16,7 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
     ui->setupUi(this);
     ui->lbInformation->setText(QString());
     ui->lbID->setText(QString::number(0));
+    ui->pbCancle->setVisible(false);
     
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
