@@ -57,7 +57,7 @@ private:
     SeetaFaceInfoArray m_Faces;
     QMap<int, std::vector<SeetaPointF> > m_LandmarksPoints;
 
-    QImage m_Image, m_ImageOut;
+    QImage m_Image;
 };
 
 #endif // CFRMREGISTER_H

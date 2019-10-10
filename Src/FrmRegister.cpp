@@ -15,6 +15,7 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lbInformation->setText(QString());
+    ui->lbID->setText(QString::number(0));
     
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
@@ -82,11 +83,12 @@ void CFrmRegister::slotDisplay(const QImage &frame)
 {
     QPainter painter(this);
 
-    m_Image = m_ImageOut = frame;
+    m_Image = frame;
+    QImage img = frame;
     QImage out = frame.rgbSwapped();
     Detecetor(out);
-    MarkFace(m_ImageOut);
-    ui->frmDisplay->slotDisplay(m_ImageOut);
+    MarkFace(img);
+    ui->frmDisplay->slotDisplay(img);
 }
 
 int CFrmRegister::MarkFace(QImage &image)
@@ -148,14 +150,13 @@ qint64 CFrmRegister::Register(QImage &image)
     imageData.data = image.bits();
     imageData.channels = 3;
 
-    if(m_LandmarksPoints.isEmpty())
+    if(m_LandmarksPoints.size() != 1)
     {
         LOG_MODEL_DEBUG("CFrmRegister", "Don't detecetor face");
         return -1;
     }
     qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
     ui->lbID->setText(QString::number(id));
-    
     QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage() 
             + QDir::separator()
             + ui->leName->text() + "_" + ui->lbID->text() + ".jpg";
@@ -167,7 +168,7 @@ qint64 CFrmRegister::Register(QImage &image)
 
 void CFrmRegister::on_pbRegister_clicked()
 {
-    qint64 id = Register(m_ImageOut);
+    qint64 id = Register(m_Image);
     if(id >= 0)
         ui->lbInformation->setText("Id: " + QString::number(id)
                                    + " " + tr("Name: ") + ui->leName->text()

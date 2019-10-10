@@ -231,6 +231,7 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         LOG_MODEL_ERROR("CImageTool", "videoFrame.map fail");
         return img;
     }
+    
     do{
         img = QImage(videoFrame.width(),
                      videoFrame.height(),
@@ -310,7 +311,6 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
     }while(0);
     videoFrame.unmap();
     return img;
-
 }
 
 #elif HAVE_FFMPEG

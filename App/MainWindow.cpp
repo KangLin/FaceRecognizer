@@ -142,7 +142,8 @@ int MainWindow::CamerOrientation(int index)
 
     // Get the current display orientation
     const QScreen *screen = QGuiApplication::primaryScreen();
-    const int screenAngle = screen->angleBetween(screen->nativeOrientation(), screen->orientation());
+    const int screenAngle = screen->angleBetween(screen->nativeOrientation(),
+                                                 screen->orientation());
     int rotation;
     if (cameraInfo.position() == QCamera::BackFace) {
         rotation = (cameraInfo.orientation() - screenAngle) % 360;

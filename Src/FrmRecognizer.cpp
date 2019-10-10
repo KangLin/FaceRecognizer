@@ -236,7 +236,7 @@ int CFrmRecognizer::Recognizer(QImage &image)
         auto &face = m_Faces.data[i];
         if(!m_FL) 
         {
-            qCritical() << "seeta::FaceLandmarker isn't init";
+            qCritical() << "seeta::FaceLandmarker isn't initialization";
             return -2;
         }
         auto points = m_FL->mark(imageData, face.pos);
