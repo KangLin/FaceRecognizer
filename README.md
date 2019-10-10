@@ -32,7 +32,7 @@
 - [ ] 人脸识别开源库测试比较
   + [x] [opencv](https://github.com/opencv/opencv)
   + [ ] [dlib](https://github.com/davisking/dlib)
-  + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
+  + [x] [SeetaFace2](https://github.com/KangLin/SeetaFace2/tree/develop)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
 
 ### 支持平台
@@ -91,7 +91,7 @@
   + [CMake](http://www.cmake.org/)
 + 依赖库
   - [必选] Rabbit 公共库: https://github.com/KangLin/RabbitCommon
-  - [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
+  - [可选] SeetaFace2: https://github.com/KangLin/SeetaFace2/tree/develop
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
   - [可选] opencv: https://opencv.org/
@@ -116,11 +116,11 @@
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
                  -DSeetaFace_DIR= 
-        cmake --build .  --config Release 
+        cmake --build . --config Release 
 
   - 安装
 
-        cmake --build . --target install --config Release 
+        cmake --build . --config Release --target install 
 
   - 运行例子
     + 把生成库的目录加入到变量 LD_LIBRARY_PATH 中
@@ -199,7 +199,7 @@
                  -DRabbitCommon_DIR= \
                  -DSeetaFace_DIR= 
         cmake --build . --config Release --target install
-	cmake --build . --target APK
+	    cmake --build . --target APK
 
   - 主机是windows
 
@@ -216,7 +216,7 @@
                  -DRabbitCommon_DIR= \
                  -DSeetaFace_DIR= 
         cmake --build . --config Release --target install
-	cmake --build . --target APK
+	    cmake --build . --target APK
 
   - 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：
