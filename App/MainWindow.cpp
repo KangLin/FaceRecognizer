@@ -62,9 +62,15 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRecognizer);
 
 #ifdef HAVE_SEETA_FACE
+    ui->actionRegister->setVisible(true);
+    ui->actionRecognizer->setVisible(true);
+    
     ui->actionRecognizer->setChecked(true);
     on_actionRecognizer_triggered();
 #else
+    ui->actionRegister->setVisible(false);
+    ui->actionRecognizer->setVisible(false);
+    
     ui->actionCamera->setChecked(true);
     on_actionCamera_triggered();
 #endif
@@ -144,11 +150,6 @@ void MainWindow::on_actionStart_triggered()
         ui->actionStart->setToolTip(tr("Start"));
         ui->actionStart->setStatusTip(tr("Start"));
     }
-}
-
-void MainWindow::on_actionStop_triggered()
-{
-    
 }
 
 int MainWindow::CamerOrientation(int index)

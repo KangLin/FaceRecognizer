@@ -20,7 +20,6 @@ public:
     
 private slots:
     void on_actionStart_triggered();
-    void on_actionStop_triggered();
     void on_actionRecognizer_triggered();
     void on_actionRegister_triggered();
     void on_actionSet_model_path_triggered();
