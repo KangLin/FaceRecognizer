@@ -2,6 +2,7 @@
 #include "ui_FrmRegister.h"
 #include "FrmDisplay.h"
 #include "RabbitCommonDir.h"
+#include "Log.h"
 
 #include <QPainter>
 #include <QDebug>
@@ -13,7 +14,8 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
     ui(new Ui::CFrmRegister)
 {
     ui->setupUi(this);
-
+    ui->lbInformation->setText(QString());
+    
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
     QString szPath = set.value("ModuleDir").toString();
@@ -80,7 +82,7 @@ void CFrmRegister::slotDisplay(const QImage &frame)
 {
     QPainter painter(this);
 
-    m_ImageOut = frame;
+    m_Image = m_ImageOut = frame;
     QImage out = frame.rgbSwapped();
     Detecetor(out);
     MarkFace(m_ImageOut);
@@ -146,19 +148,32 @@ qint64 CFrmRegister::Register(QImage &image)
     imageData.data = image.bits();
     imageData.channels = 3;
 
+    if(m_LandmarksPoints.isEmpty())
+    {
+        LOG_MODEL_DEBUG("CFrmRegister", "Don't detecetor face");
+        return -1;
+    }
     qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
     ui->lbID->setText(QString::number(id));
     
     QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage() 
             + QDir::separator()
             + ui->leName->text() + "_" + ui->lbID->text() + ".jpg";
-    m_Image.save(szFile);
+    if(!m_Image.save(szFile))
+        LOG_MODEL_ERROR("CFrmRegister", "Save register picture fail: %s",
+                        szFile.toStdString().c_str());
     return id;
 }
 
 void CFrmRegister::on_pbRegister_clicked()
 {
-    Register(m_ImageOut);
+    qint64 id = Register(m_ImageOut);
+    if(id >= 0)
+        ui->lbInformation->setText("Id: " + QString::number(id)
+                                   + " " + tr("Name: ") + ui->leName->text()
+                                   + " " + tr("register success"));
+    else
+        ui->lbInformation->setText(tr("Register fail"));
 }
 
 void CFrmRegister::on_pbCancle_clicked()
