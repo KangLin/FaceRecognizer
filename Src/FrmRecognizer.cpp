@@ -73,86 +73,18 @@ int CFrmRecognizer::InitSeeta(const QString& szPath)
         //m_FD->set(seeta::FaceDetector::PROPERTY_VIDEO_STABLE, 1); 
         //set face detector's min face size
         m_FD->set( seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, 80 );
+        
+        LoadDatabase();
     } catch (...) {
         QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
         msg.exec();
         qCritical() << "Load model file exception, please set model file path";
     }
     
-    Register();
-    
     return 0;
 }
 
-void CFrmRecognizer::slotDisplay(const QImage &frame)
-{
-    QPainter painter(this);
-    //QTime t = QTime::currentTime();   
-    m_ImageOut = frame;
-    QImage out = frame.rgbSwapped();
-    Recognizer(out);
-    MarkFace(m_ImageOut);
-    //qDebug() << "Process time:" << t.msecsTo(QTime::currentTime()) << "ms";
-    ui->frmDisplay->slotDisplay(m_ImageOut);
-}
-
-int CFrmRecognizer::MarkFace(QImage &image)
-{
-    QPainter painter(&image);
-    QPen pen(Qt::green);
-    pen.setWidth(2);
-    
-    painter.setPen(pen);
-    for (int i = 0; i < m_Faces.size; i++)
-    {
-        auto &face = m_Faces.data[i];
-        _FACE f = m_Face[i];
-        
-        painter.drawRect(face.pos.x, face.pos.y, face.pos.width, face.pos.height);
-        painter.drawText(face.pos.x, face.pos.y, f.szName);
-        
-        for (auto &point : f.LandmarkPoints)
-        {
-            {
-                painter.drawPoint(point.x, point.y);
-                //painter.drawEllipse(point.x - 1, point.y - 1, 2, 2);
-            }
-        }
-    }
-  
-    return 0;
-}
-
-int CFrmRecognizer::Detecetor(QImage &image)
-{   
-    SeetaImageData imageData;
-    imageData.width = image.width();
-    imageData.height = image.height();
-    imageData.data = image.bits();
-    imageData.channels = 3;
-    
-    if(!m_FD)
-    {
-        qCritical() << "seeta::FaceDetector isn't init";
-        return -1;
-    }
-    m_Face.clear();
-    m_Faces = m_FD->detect(imageData);
-    for (int i = 0; i < m_Faces.size; i++)
-    {
-        auto &face = m_Faces.data[i];
-        if(!m_FL) 
-        {
-            qCritical() << "seeta::FaceLandmarker isn't init";
-            return -2;
-        }
-        auto points = m_FL->mark(imageData, face.pos);
-        m_Face[i].LandmarkPoints = points;
-    }
-    return 0;
-}
-
-qint64 CFrmRecognizer::Register()
+qint64 CFrmRecognizer::LoadDatabase()
 {
     qint64 id = 0;
     
@@ -207,6 +139,18 @@ qint64 CFrmRecognizer::Register()
     return id;
 }
 
+void CFrmRecognizer::slotDisplay(const QImage &frame)
+{
+    QPainter painter(this);
+    //QTime t = QTime::currentTime();   
+    m_ImageOut = frame;
+    QImage out = frame.rgbSwapped();
+    Recognizer(out);
+    MarkFace(m_ImageOut);
+    //qDebug() << "Process time:" << t.msecsTo(QTime::currentTime()) << "ms";
+    ui->frmDisplay->slotDisplay(m_ImageOut);
+}
+
 int CFrmRecognizer::Recognizer(QImage &image)
 {
     SeetaImageData imageData;
@@ -220,7 +164,7 @@ int CFrmRecognizer::Recognizer(QImage &image)
         qCritical() << "seeta::FaceDetector isn't init";
         return -1;
     }
-    m_Face.clear();
+    m_FaceInfo.clear();
 #if DEBUG_DISPLAY_TIME
     QTime t1 = QTime::currentTime();
 #endif
@@ -245,8 +189,8 @@ int CFrmRecognizer::Recognizer(QImage &image)
         QTime t3 = QTime::currentTime();
         qDebug() << "Landmark time:" << t2.msecsTo(t3) << "ms";
 #endif
-        _FACE &f = m_Face[i];
-        m_Face[i].LandmarkPoints = points;
+        _FACE &f = m_FaceInfo[i];
+        m_FaceInfo[i].LandmarkPoints = points;
         
         // Query top 1
         int64_t index = -1;
@@ -267,5 +211,32 @@ int CFrmRecognizer::Recognizer(QImage &image)
             qDebug() << f.szName << f.similarity;
         }
     }
+    return 0;
+}
+
+int CFrmRecognizer::MarkFace(QImage &image)
+{
+    QPainter painter(&image);
+    QPen pen(Qt::green);
+    pen.setWidth(2);
+    
+    painter.setPen(pen);
+    for (int i = 0; i < m_Faces.size; i++)
+    {
+        auto &face = m_Faces.data[i];
+        _FACE f = m_FaceInfo[i];
+        
+        painter.drawRect(face.pos.x, face.pos.y, face.pos.width, face.pos.height);
+        painter.drawText(face.pos.x, face.pos.y, f.szName);
+        
+        for (auto &point : f.LandmarkPoints)
+        {
+            {
+                painter.drawPoint(point.x, point.y);
+                //painter.drawEllipse(point.x - 1, point.y - 1, 2, 2);
+            }
+        }
+    }
+
     return 0;
 }

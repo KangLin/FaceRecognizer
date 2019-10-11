@@ -31,8 +31,7 @@ public Q_SLOTS:
     
 private:
     virtual int InitSeeta(const QString &szPath = QString());
-    virtual int Detecetor(QImage &image);
-    qint64 Register();
+    qint64 LoadDatabase();
     int Recognizer(QImage &image);
     virtual int MarkFace(QImage &image);
     
@@ -58,7 +57,7 @@ private:
     };
 
     SeetaFaceInfoArray m_Faces;
-    QMap<int, _FACE> m_Face;
+    QMap<int, _FACE> m_FaceInfo;
     
     QMap<int, QString> m_Database;
     
