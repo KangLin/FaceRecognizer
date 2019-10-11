@@ -15,9 +15,8 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lbInformation->setText(QString());
-    ui->lbID->setText(QString::number(0));
     ui->pbCancle->setVisible(false);
-    
+
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
     QString szPath = set.value("ModuleDir").toString();
@@ -45,6 +44,7 @@ int CFrmRegister::SetModelPath(const QString &szPath)
 
 int CFrmRegister::InitSeeta(const QString& szPath)
 {
+    m_nId = -1;
     m_FD_model.reset();
     m_FL_model.reset();
     m_FR_model.reset();
@@ -60,7 +60,7 @@ int CFrmRegister::InitSeeta(const QString& szPath)
         QString szFD = szPath + QDir::separator() + "fd_2_00.dat";
         m_FD_model = QSharedPointer<seeta::ModelSetting>(new seeta::ModelSetting(
                                             szFD.toStdString(), m_Device, id));
-        QString szFL = szPath + QDir::separator() + "pd_2_00_pts81.dat";
+        QString szFL = szPath + QDir::separator() + "pd_2_00_pts5.dat";
         m_FL_model = QSharedPointer<seeta::ModelSetting>(new seeta::ModelSetting(
                                             szFL.toStdString(), m_Device, id));
         QString szFDB= szPath + QDir::separator() + "fr_2_10.dat";
@@ -70,14 +70,68 @@ int CFrmRegister::InitSeeta(const QString& szPath)
         m_FL = QSharedPointer<seeta::FaceLandmarker>(new seeta::FaceLandmarker(*m_FL_model));
         m_FDB = QSharedPointer<seeta::FaceDatabase>(new seeta::FaceDatabase(*m_FDB_model));
         
-        m_FD->set(seeta::FaceDetector::PROPERTY_VIDEO_STABLE, 1);     
+        m_FD->set(seeta::FaceDetector::PROPERTY_VIDEO_STABLE, 1);
+        
+        LoadDatabase();
     } catch (...) {
         QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
         msg.exec();
         qCritical() << "Load model file exception, please set model file path";
     }
-    
+
     return 0;
+}
+
+qint64 CFrmRegister::LoadDatabase()
+{   
+    QDir d(RabbitCommon::CDir::Instance()->GetDirUserImage());
+    QFileInfoList fileInfoList = d.entryInfoList();
+    foreach(QFileInfo fileInfo, fileInfoList)
+    {
+        if(fileInfo.fileName() == "."|| fileInfo.fileName() == "..")
+            continue;
+        if(fileInfo.isFile())
+        {
+            QImage image;
+            if(!image.load(fileInfo.filePath()))
+                continue;
+            if(image.format() != QImage::Format_RGB888)
+            {                
+                image = image.convertToFormat(QImage::Format_RGB888);
+            }
+            image = image.rgbSwapped();
+
+            SeetaImageData imageData;
+            imageData.width = image.width();
+            imageData.height = image.height();
+            imageData.data = image.bits();
+            imageData.channels = 3;
+            auto faces = m_FD->detect(imageData);
+            //qDebug() << "face:" << faces.size;
+            for (int i = 0; i < faces.size; i++)
+            {
+                auto &face = faces.data[i];
+                if(!m_FL) 
+                {
+                    qCritical() << "seeta::FaceLandmarker isn't init";
+                    return -2;
+                }
+                auto points = m_FL->mark(imageData, face.pos);
+                try
+                {
+					m_nId = m_FDB->Register( imageData, points.data() );
+                    qDebug() << "Register: id =" << m_nId << "; file name:" << fileInfo.fileName();
+                }
+                catch (...)
+                {
+					continue;
+                }
+            }
+        }
+    }
+    m_nId++;
+    ui->lbID->setText(QString::number(m_nId));
+    return m_nId;
 }
 
 void CFrmRegister::slotDisplay(const QImage &frame)
@@ -85,33 +139,11 @@ void CFrmRegister::slotDisplay(const QImage &frame)
     QPainter painter(this);
 
     m_Image = frame;
-    QImage img = frame;
-    QImage out = frame.rgbSwapped();
+    QImage img = m_Image;
+    QImage out = img.rgbSwapped();
     Detecetor(out);
     MarkFace(img);
     ui->frmDisplay->slotDisplay(img);
-}
-
-int CFrmRegister::MarkFace(QImage &image)
-{
-    QPainter painter(&image);
-    QPen pen(Qt::green);
-    pen.setWidth(2);
-    
-    painter.setPen(pen);
-    for (int i = 0; i < m_Faces.size; i++)
-    {
-        auto &face = m_Faces.data[i];
-        painter.drawRect(face.pos.x, face.pos.y, face.pos.width, face.pos.height);
-    }
-    
-    for (auto &v : m_LandmarksPoints)
-    {
-        for(auto &point: v)
-            painter.drawPoint(point.x, point.y);
-            //painter.drawEllipse(point.x - 1, point.y - 1, 2, 2);
-    }
-    return 0;
 }
 
 int CFrmRegister::Detecetor(QImage &image)
@@ -143,6 +175,28 @@ int CFrmRegister::Detecetor(QImage &image)
     return 0;
 }
 
+int CFrmRegister::MarkFace(QImage &image)
+{
+    QPainter painter(&image);
+    QPen pen(Qt::green);
+    pen.setWidth(2);
+    
+    painter.setPen(pen);
+    for (int i = 0; i < m_Faces.size; i++)
+    {
+        auto &face = m_Faces.data[i];
+        painter.drawRect(face.pos.x, face.pos.y, face.pos.width, face.pos.height);
+    }
+    
+    for (auto &v : m_LandmarksPoints)
+    {
+        for(auto &point: v)
+            painter.drawPoint(point.x, point.y);
+            //painter.drawEllipse(point.x - 1, point.y - 1, 2, 2);
+    }
+    return 0;
+}
+
 qint64 CFrmRegister::Register(QImage &image)
 {
     SeetaImageData imageData;
@@ -156,15 +210,17 @@ qint64 CFrmRegister::Register(QImage &image)
         LOG_MODEL_DEBUG("CFrmRegister", "Don't detecetor face");
         return -1;
     }
-    qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
-    ui->lbID->setText(QString::number(id));
-    QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage() 
+    //qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
+    
+    QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
             + QDir::separator()
-            + ui->leName->text() + "_" + ui->lbID->text() + ".jpg";
+            + ui->lbID->text() + "_" + ui->leName->text() + ".jpg";
     if(!m_Image.save(szFile))
         LOG_MODEL_ERROR("CFrmRegister", "Save register picture fail: %s",
                         szFile.toStdString().c_str());
-    return id;
+    
+    ui->lbID->setText(QString::number(++m_nId));
+    return m_nId;
 }
 
 void CFrmRegister::on_pbRegister_clicked()

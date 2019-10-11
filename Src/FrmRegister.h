@@ -35,6 +35,7 @@ private slots:
     void on_pbCancle_clicked();
 
 protected:
+    qint64 LoadDatabase();
     virtual int InitSeeta(const QString &szPath = QString());
     virtual int Detecetor(QImage &image);
     qint64 Register(QImage &image);
@@ -58,6 +59,7 @@ private:
     QMap<int, std::vector<SeetaPointF> > m_LandmarksPoints;
 
     QImage m_Image;
+    qint64 m_nId;
 };
 
 #endif // CFRMREGISTER_H
