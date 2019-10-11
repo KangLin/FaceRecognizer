@@ -42,13 +42,11 @@ private:
     QSharedPointer<seeta::ModelSetting> m_FD_model;
     QSharedPointer<seeta::ModelSetting> m_FL_model;
     QSharedPointer<seeta::ModelSetting> m_FDB_model;
-    QSharedPointer<seeta::ModelSetting> m_FR_model;
-     
+
     QSharedPointer<seeta::FaceDetector> m_FD;
     QSharedPointer<seeta::FaceLandmarker> m_FL;
     QSharedPointer<seeta::FaceDatabase> m_FDB;
-    QSharedPointer<seeta::FaceRecognizer> m_FR;
-    
+
     struct _FACE{
         qint64 id;
         std::vector<SeetaPointF> LandmarkPoints;
@@ -60,9 +58,8 @@ private:
     QMap<int, _FACE> m_FaceInfo;
     
     QMap<int, QString> m_Database;
-    
+
     QImage m_Image;
-    QImage m_ImageOut;
     
     float m_Threshold;  // recognization threshold
 };

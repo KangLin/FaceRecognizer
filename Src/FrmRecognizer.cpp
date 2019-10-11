@@ -9,7 +9,7 @@
 #include <QMessageBox>
 #include <QTime>
 
-#define DEBUG_DISPLAY_TIME 1
+#define DEBUG_DISPLAY_TIME 0
 
 CFrmRecognizer::CFrmRecognizer(QWidget *parent) :
     QWidget(parent),
@@ -47,13 +47,11 @@ int CFrmRecognizer::InitSeeta(const QString& szPath)
 {
     m_FD_model.reset();
     m_FL_model.reset();
-    m_FR_model.reset();
     m_FDB_model.reset();
     m_FD.reset();
     m_FL.reset();
     m_FDB.reset();
-    m_FR.reset();
-    
+
     m_Device = seeta::ModelSetting::CPU;
     int id = 0;
     try {
@@ -69,25 +67,25 @@ int CFrmRecognizer::InitSeeta(const QString& szPath)
         m_FD = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(*m_FD_model));
         m_FL = QSharedPointer<seeta::FaceLandmarker>(new seeta::FaceLandmarker(*m_FL_model));
         m_FDB = QSharedPointer<seeta::FaceDatabase>(new seeta::FaceDatabase(*m_FDB_model));
-        
+
         //m_FD->set(seeta::FaceDetector::PROPERTY_VIDEO_STABLE, 1); 
         //set face detector's min face size
-        m_FD->set( seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, 80 );
-        
+        m_FD->set( seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, 40 );
+
         LoadDatabase();
     } catch (...) {
         QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
         msg.exec();
         qCritical() << "Load model file exception, please set model file path";
     }
-    
+
     return 0;
 }
 
 qint64 CFrmRecognizer::LoadDatabase()
 {
     qint64 id = 0;
-    
+
     m_Database.clear();
     QDir d(RabbitCommon::CDir::Instance()->GetDirUserImage());
     QFileInfoList fileInfoList = d.entryInfoList();
@@ -142,13 +140,17 @@ qint64 CFrmRecognizer::LoadDatabase()
 void CFrmRecognizer::slotDisplay(const QImage &frame)
 {
     QPainter painter(this);
-    //QTime t = QTime::currentTime();   
-    m_ImageOut = frame;
+#if DEBUG_DISPLAY_TIME
+    QTime t = QTime::currentTime();
+#endif
+    m_Image = frame;
     QImage out = frame.rgbSwapped();
     Recognizer(out);
-    MarkFace(m_ImageOut);
-    //qDebug() << "Process time:" << t.msecsTo(QTime::currentTime()) << "ms";
-    ui->frmDisplay->slotDisplay(m_ImageOut);
+    MarkFace(m_Image);
+#if DEBUG_DISPLAY_TIME
+    qDebug() << "Process time:" << t.msecsTo(QTime::currentTime()) << "ms";
+#endif
+    ui->frmDisplay->slotDisplay(m_Image);
 }
 
 int CFrmRecognizer::Recognizer(QImage &image)
@@ -219,7 +221,7 @@ int CFrmRecognizer::MarkFace(QImage &image)
     QPainter painter(&image);
     QPen pen(Qt::green);
     pen.setWidth(2);
-    
+
     painter.setPen(pen);
     for (int i = 0; i < m_Faces.size; i++)
     {
