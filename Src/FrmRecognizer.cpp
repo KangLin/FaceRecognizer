@@ -9,7 +9,7 @@
 #include <QMessageBox>
 #include <QTime>
 
-#define DEBUG_DISPLAY_TIME 0
+#define DEBUG_DISPLAY_TIME 1
 
 CFrmRecognizer::CFrmRecognizer(QWidget *parent) :
     QWidget(parent),
@@ -175,7 +175,8 @@ int CFrmRecognizer::Recognizer(QImage &image)
     
 #if DEBUG_DISPLAY_TIME
     QTime t2 = QTime::currentTime();
-    qDebug() << "detect time:" << t1.msecsTo(t2) << "ms";
+    if(m_Faces.size > 0)
+        qDebug() << "detect time:" << t1.msecsTo(t2) << "ms";
 #endif
     for (int i = 0; i < m_Faces.size; i++)
     {
@@ -189,7 +190,8 @@ int CFrmRecognizer::Recognizer(QImage &image)
         
 #if DEBUG_DISPLAY_TIME
         QTime t3 = QTime::currentTime();
-        qDebug() << "Landmark time:" << t2.msecsTo(t3) << "ms";
+        if(points.size() > 0)
+            qDebug() << "Landmark time:" << t2.msecsTo(t3) << "ms";
 #endif
         _FACE &f = m_FaceInfo[i];
         m_FaceInfo[i].LandmarkPoints = points;
