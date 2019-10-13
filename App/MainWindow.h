@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QCamera>
+#include <QMediaPlayer>
 
 #include "CameraQtCaptureVideoFrame.h"
 
@@ -29,6 +30,8 @@ private slots:
 
     void slotCameraChanged(int index);
 
+    void on_actionFile_triggered();
+    
 private:
     int CamerOrientation(int index);
 
@@ -37,6 +40,7 @@ private:
     
     CCameraQtCaptureVideoFrame m_CaptureFrame;
     QCamera* m_pCamera;
+    QMediaPlayer m_Player;
     
     QString m_szModelFile;
 };

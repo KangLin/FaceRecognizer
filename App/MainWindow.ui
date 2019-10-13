@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
@@ -51,7 +51,15 @@
     <addaction name="actionAbout_A"/>
     <addaction name="actionUpdate_U"/>
    </widget>
+   <widget class="QMenu" name="menuSource">
+    <property name="title">
+     <string>Source</string>
+    </property>
+    <addaction name="actionCarmera"/>
+    <addaction name="actionFile"/>
+   </widget>
    <addaction name="menuTools"/>
+   <addaction name="menuSource"/>
    <addaction name="menuOptions"/>
    <addaction name="menuHelp_H"/>
   </widget>
@@ -174,6 +182,22 @@
    </property>
    <property name="statusTip">
     <string>Display Camera</string>
+   </property>
+  </action>
+  <action name="actionCarmera">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Carmera</string>
+   </property>
+  </action>
+  <action name="actionFile">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>File</string>
    </property>
   </action>
  </widget>

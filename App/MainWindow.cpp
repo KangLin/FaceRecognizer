@@ -60,6 +60,12 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionCamera);
     pViewGroup->addAction(ui->actionRegister);
     pViewGroup->addAction(ui->actionRecognizer);
+    
+    QActionGroup *pViewGroup1 = new QActionGroup(this);
+    pViewGroup1->addAction(ui->actionFile);
+    pViewGroup1->addAction(ui->actionCamera);
+    
+    ui->actionCamera->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
     ui->actionRegister->setVisible(true);
@@ -254,4 +260,12 @@ void MainWindow::on_actionUpdate_U_triggered()
         m_pfrmUpdater->show();
     #endif
 #endif
+}
+
+void MainWindow::on_actionFile_triggered()
+{
+    QUrl url = QFileDialog::getOpenFileUrl(this);
+    if(url.isEmpty())
+        return;
+    m_Player.setMedia(url);
 }
