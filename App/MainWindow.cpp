@@ -34,22 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
                   QSettings::IniFormat);
     m_szModelFile = set.value("ModuleDir").toString();
     qDebug() << "Model files:" << m_szModelFile;
-    
-    QComboBox *cmbCameras = new QComboBox(ui->toolBar);
-    if(cmbCameras)
-    {
-        cmbCameras->setToolTip(tr("Select camera"));
-        cmbCameras->setStatusTip(tr("Select camera"));
-        ui->toolBar->addWidget(cmbCameras);
-        connect(cmbCameras, SIGNAL(currentIndexChanged(int)),
-                this, SLOT(slotCameraChanged(int)));
-        QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-        foreach (const QCameraInfo &cameraInfo, cameras) {
-            //qDebug() << "Camer name:" << cameraInfo.deviceName();
-            cmbCameras->addItem(cameraInfo.description());
-        }
-    }
-
+        
     //Init menu
     ui->actionStart->setIcon(QIcon(":/image/Start"));
     ui->actionStart->setText(tr("Start"));
@@ -57,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionStart->setStatusTip(tr("Start"));
     
     QActionGroup *pViewGroup = new QActionGroup(this);
-    pViewGroup->addAction(ui->actionCamera);
+    pViewGroup->addAction(ui->actionDisplay);
     pViewGroup->addAction(ui->actionRegister);
     pViewGroup->addAction(ui->actionRecognizer);
     
@@ -65,7 +50,25 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup1->addAction(ui->actionFile);
     pViewGroup1->addAction(ui->actionCamera);
     
-    ui->actionCamera->setChecked(true);
+    if(!QCameraInfo::availableCameras().isEmpty())
+    {
+        QComboBox *cmbCameras = new QComboBox(ui->toolBar);
+        if(cmbCameras)
+        {
+            ui->actionCamera->setChecked(true);
+            cmbCameras->setToolTip(tr("Select camera"));
+            cmbCameras->setStatusTip(tr("Select camera"));
+            ui->toolBar->addWidget(cmbCameras);
+            connect(cmbCameras, SIGNAL(currentIndexChanged(int)),
+                    this, SLOT(slotCameraChanged(int)));
+            QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+            foreach (const QCameraInfo &cameraInfo, cameras) {
+                //qDebug() << "Camer name:" << cameraInfo.deviceName();
+                cmbCameras->addItem(cameraInfo.description());
+            }
+        }
+    } else 
+        ui->actionFile->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
     ui->actionRegister->setVisible(true);
@@ -78,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionRecognizer->setVisible(false);
     
     ui->actionCamera->setChecked(true);
-    on_actionCamera_triggered();
+    on_actionDisplay_triggered();
 #endif
 }
 
@@ -134,23 +137,39 @@ void MainWindow::slotCameraChanged(int index)
     }
 }
 
+void MainWindow::on_actionFile_triggered()
+{
+    QUrl url = QFileDialog::getOpenFileUrl(this);
+    if(url.isEmpty())
+        return;
+    m_Player.setMedia(url);
+    m_Player.setVideoOutput(&m_CaptureFrame);
+}
+
 void MainWindow::on_actionStart_triggered()
 {
     if(ui->actionStart->isChecked())
     {
-        if(m_pCamera)
+        if(m_pCamera && ui->actionCamera->isChecked())
         {
             if(m_pCamera->isAvailable())
                 m_pCamera->stop();
             m_pCamera->start();
+        } else {
+            m_Player.stop();
+            m_Player.play();
         }
+            
         ui->actionStart->setText(tr("Stop"));
         ui->actionStart->setToolTip(tr("Stop"));
         ui->actionStart->setStatusTip(tr("Stop"));
         ui->actionStart->setIcon(QIcon(":/image/Stop"));
     } else {
-        if(m_pCamera)
+        if(m_pCamera && ui->actionCamera->isChecked())
             m_pCamera->stop();
+        else
+            m_Player.play();
+        
         ui->actionStart->setIcon(QIcon(":/image/Start"));
         ui->actionStart->setText(tr("Start"));
         ui->actionStart->setToolTip(tr("Start"));
@@ -224,7 +243,7 @@ void MainWindow::on_actionRegister_triggered()
 #endif
 }
 
-void MainWindow::on_actionCamera_triggered()
+void MainWindow::on_actionDisplay_triggered()
 {
     CFrmDisplay *pDisplay = new CFrmDisplay(this);
     if(!pDisplay)
@@ -260,12 +279,4 @@ void MainWindow::on_actionUpdate_U_triggered()
         m_pfrmUpdater->show();
     #endif
 #endif
-}
-
-void MainWindow::on_actionFile_triggered()
-{
-    QUrl url = QFileDialog::getOpenFileUrl(this);
-    if(url.isEmpty())
-        return;
-    m_Player.setMedia(url);
 }

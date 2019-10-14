@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
@@ -33,7 +33,7 @@
     </property>
     <addaction name="actionStart"/>
     <addaction name="separator"/>
-    <addaction name="actionCamera"/>
+    <addaction name="actionDisplay"/>
     <addaction name="actionRegister"/>
     <addaction name="actionRecognizer"/>
     <addaction name="separator"/>
@@ -55,7 +55,7 @@
     <property name="title">
      <string>Source</string>
     </property>
-    <addaction name="actionCarmera"/>
+    <addaction name="actionCamera"/>
     <addaction name="actionFile"/>
    </widget>
    <addaction name="menuTools"/>
@@ -167,29 +167,32 @@
     <string>Update</string>
    </property>
   </action>
+  <action name="actionDisplay">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display</string>
+   </property>
+   <property name="iconText">
+    <string>Display</string>
+   </property>
+   <property name="toolTip">
+    <string>Display</string>
+   </property>
+   <property name="statusTip">
+    <string>Display</string>
+   </property>
+  </action>
   <action name="actionCamera">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Display Camera</string>
-   </property>
-   <property name="iconText">
-    <string>Display Camera</string>
-   </property>
-   <property name="toolTip">
-    <string>Display Camera</string>
-   </property>
-   <property name="statusTip">
-    <string>Display Camera</string>
-   </property>
-  </action>
-  <action name="actionCarmera">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Carmera</string>
+    <string>Camera</string>
    </property>
   </action>
   <action name="actionFile">

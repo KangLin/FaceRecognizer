@@ -20,18 +20,17 @@ public:
     ~MainWindow();
     
 private slots:
+    void slotCameraChanged(int index);
+    
     void on_actionStart_triggered();
     void on_actionRecognizer_triggered();
     void on_actionRegister_triggered();
     void on_actionSet_model_path_triggered();
     void on_actionAbout_A_triggered();
     void on_actionUpdate_U_triggered();
-    void on_actionCamera_triggered();
-
-    void slotCameraChanged(int index);
-
+    void on_actionDisplay_triggered();
     void on_actionFile_triggered();
-    
+
 private:
     int CamerOrientation(int index);
 
