@@ -67,7 +67,7 @@ function function_android()
             mv android-ndk-r10e android-ndk
             rm android-ndk-r10e-linux-x86_64.bin
         else
-            NDK_VERSION=android-ndk-r20-linux-x86_64.zip
+            NDK_VERSION=r20
             wget -c -nv https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip
             unzip android-ndk-${NDK_VERSION}-linux-x86_64.zip
             mv android-ndk-${NDK_VERSION} android-ndk

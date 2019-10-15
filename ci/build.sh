@@ -11,6 +11,8 @@ cd ${SOURCE_DIR}
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${SOURCE_DIR}/Tools/android-sdk
     export ANDROID_NDK_ROOT=${SOURCE_DIR}/Tools/android-ndk
+    export ANDROID_SDK=${ANDROID_SDK_ROOT}
+    export ANDROID_NDK=${ANDROID_NDK_ROOT}
     if [ -n "$APPVEYOR" ]; then
         export JAVA_HOME="/C/Program Files (x86)/Java/jdk1.8.0"
     fi
@@ -181,22 +183,22 @@ if [ -n "$GENERATORS" ]; then
     cd ${SOURCE_DIR}
     echo "PWD:`pwd`"
     if [ "${BUILD_TARGERT}" = "android" ]; then
-    	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
-		 -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-		 -DCMAKE_VERBOSE=ON \
-		 -DCMAKE_BUILD_TYPE=Release \
-		 -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-		 -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
-                 -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}"
+    	 cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
+            -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+            -DCMAKE_VERBOSE=ON \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
+            -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}"
     else
 	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
-		 -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-		 -DCMAKE_VERBOSE=ON \
-		 -DCMAKE_BUILD_TYPE=Release \
-		 -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-		 -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake 
+            -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+            -DCMAKE_VERBOSE=ON \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
+            -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake 
     fi
-    cmake --build . --target install --config Release -- ${RABBIT_MAKE_JOB_PARA}
+    cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
     if [ "${BUILD_TARGERT}" = "android" ]; then
         cmake --build . --target APK  
     fi

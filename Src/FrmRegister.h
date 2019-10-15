@@ -49,7 +49,7 @@ private:
     QSharedPointer<seeta::ModelSetting> m_FL_model;
     QSharedPointer<seeta::ModelSetting> m_FDB_model;
     QSharedPointer<seeta::ModelSetting> m_FR_model;
-     
+
     QSharedPointer<seeta::FaceDetector> m_FD;
     QSharedPointer<seeta::FaceLandmarker> m_FL;
     QSharedPointer<seeta::FaceDatabase> m_FDB;
