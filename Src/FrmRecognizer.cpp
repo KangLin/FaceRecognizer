@@ -143,14 +143,14 @@ void CFrmRecognizer::slotDisplay(const QImage &frame)
 #if DEBUG_DISPLAY_TIME
     QTime t = QTime::currentTime();
 #endif
-    m_Image = frame;
-    QImage out = frame.rgbSwapped();
+    QImage img = frame;
+    QImage out = img.rgbSwapped();
     Recognizer(out);
-    MarkFace(m_Image);
+    MarkFace(img);
 #if DEBUG_DISPLAY_TIME
     qDebug() << "Process time:" << t.msecsTo(QTime::currentTime()) << "ms";
 #endif
-    ui->frmDisplay->slotDisplay(m_Image);
+    ui->frmDisplay->slotDisplay(img);
 }
 
 int CFrmRecognizer::Recognizer(QImage &image)
@@ -194,7 +194,7 @@ int CFrmRecognizer::Recognizer(QImage &image)
             qDebug() << "Landmark time:" << t2.msecsTo(t3) << "ms";
 #endif
         _FACE &f = m_FaceInfo[i];
-        m_FaceInfo[i].LandmarkPoints = points;
+        f.LandmarkPoints = points;
         
         // Query top 1
         int64_t index = -1;
@@ -231,7 +231,8 @@ int CFrmRecognizer::MarkFace(QImage &image)
         _FACE f = m_FaceInfo[i];
         
         painter.drawRect(face.pos.x, face.pos.y, face.pos.width, face.pos.height);
-        painter.drawText(face.pos.x, face.pos.y, f.szName);
+        if(!f.szName.isEmpty())
+            painter.drawText(face.pos.x, face.pos.y, f.szName);
         
         for (auto &point : f.LandmarkPoints)
         {

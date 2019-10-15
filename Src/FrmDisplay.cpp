@@ -23,6 +23,7 @@ void CFrmDisplay::slotDisplay(const QImage &frame)
 
 void CFrmDisplay::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event)
     if(this->isHidden())
         return;
     QPainter painter(this);

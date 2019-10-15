@@ -59,7 +59,7 @@ private:
     
     QMap<int, QString> m_Database;
 
-    QImage m_Image;
+    //QImage m_Image;
     
     float m_Threshold;  // recognization threshold
 };
