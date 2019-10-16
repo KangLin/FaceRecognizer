@@ -59,7 +59,8 @@ private:
     QMap<int, std::vector<SeetaPointF> > m_LandmarksPoints;
 
     QImage m_Image;
-    qint64 m_nId;
+    
+    QString m_szDb;
 };
 
 #endif // CFRMREGISTER_H

@@ -13,6 +13,8 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFrmRegister)
 {
+    m_szDb = RabbitCommon::CDir::Instance()->GetDirUserData()
+            + QDir::separator() + "Feature.db";
     ui->setupUi(this);
     ui->lbInformation->setText(QString());
     ui->pbCancle->setVisible(false);
@@ -29,6 +31,7 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
 
 CFrmRegister::~CFrmRegister()
 {
+    m_FDB->Save(m_szDb.toStdString().c_str());
     delete ui;
 }
 
@@ -44,13 +47,14 @@ int CFrmRegister::SetModelPath(const QString &szPath)
 
 int CFrmRegister::InitSeeta(const QString& szPath)
 {
-    m_nId = -1;
     m_FD_model.reset();
     m_FL_model.reset();
     m_FR_model.reset();
     m_FDB_model.reset();
     m_FD.reset();
     m_FL.reset();
+    if(m_FDB)
+        m_FDB->Save(m_szDb.toStdString().c_str());
     m_FDB.reset();
     m_FR.reset();
     
@@ -72,7 +76,14 @@ int CFrmRegister::InitSeeta(const QString& szPath)
         
         m_FD->set(seeta::FaceDetector::PROPERTY_VIDEO_STABLE, 1);
         
-        LoadDatabase();
+        if(m_FDB->Load(m_szDb.toStdString().c_str()))
+        {
+            size_t id = 0;
+            if(m_FDB->Count() > 0)
+                id = m_FDB->Count() - 1;
+            ui->lbID->setText(QString::number(id));
+        }
+        //LoadDatabase();
     } catch (...) {
         QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
         msg.exec();
@@ -84,6 +95,7 @@ int CFrmRegister::InitSeeta(const QString& szPath)
 
 qint64 CFrmRegister::LoadDatabase()
 {   
+    qint64 m_nId = 0;
     QDir d(RabbitCommon::CDir::Instance()->GetDirUserImage());
     QFileInfoList fileInfoList = d.entryInfoList();
     foreach(QFileInfo fileInfo, fileInfoList)
@@ -210,17 +222,17 @@ qint64 CFrmRegister::Register(QImage &image)
         LOG_MODEL_DEBUG("CFrmRegister", "Don't detecetor face");
         return -1;
     }
-    //qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
-    
+    qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
+    /*
     QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
             + QDir::separator()
             + ui->lbID->text() + "_" + ui->leName->text() + ".jpg";
     if(!m_Image.save(szFile))
         LOG_MODEL_ERROR("CFrmRegister", "Save register picture fail: %s",
                         szFile.toStdString().c_str());
-    
-    ui->lbID->setText(QString::number(++m_nId));
-    return m_nId;
+    //*/
+    ui->lbID->setText(QString::number(id));
+    return id;
 }
 
 void CFrmRegister::on_pbRegister_clicked()
