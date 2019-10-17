@@ -243,12 +243,10 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-#if OpenCV_VERSION_MAJOR == 4
+#if OpenCV_VERSION_MAJOR >= 4
             cv::cvtColor(in, out, cv::COLOR_YUV420p2RGB);
-#elif OpenCV_VERSION_MAJOR == 3
-            cv::cvtColor(in, out, CV_YUV420p2RGB);
 #else
-            
+            cv::cvtColor(in, out, CV_YUV420p2RGB);
 #endif
             img = img.rgbSwapped();
         }
@@ -257,12 +255,10 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         {
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
-#if OpenCV_VERSION_MAJOR == 4
+#if OpenCV_VERSION_MAJOR >= 4
             cv::cvtColor(in, out, cv::COLOR_YUV420sp2RGB);
-#elif OpenCV_VERSION_MAJOR == 3 
-            cv::cvtColor(in, out, CV_YUV420sp2RGB);
 #else
-   
+            cv::cvtColor(in, out, CV_YUV420sp2RGB);   
 #endif
         }
             break;
@@ -431,8 +427,7 @@ void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int widt
 	unsigned char* pY = pYUV;
 	unsigned char* pU = pYUV + height * width;
 	unsigned char* pV = pU + (height * width / 4);
- 
- 
+
 	unsigned char* pBGR = nullptr;
 	unsigned char R = 0;
 	unsigned char G = 0;
@@ -447,12 +442,12 @@ void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int widt
 		{
 			//找到相应的RGB首地址  
 			pBGR = pRGB + i * width * 3 + j * 3;
- 
+
 			//取Y、U、V的数据值  
 			Y = *(pY + i*width + j);
 			U = *pU;
 			V = *pV;
- 
+
 			//yuv转rgb公式  
 			//yuv转rgb公式  
 			temp = Y + ((1.773) * (U - 128));
@@ -468,8 +463,7 @@ void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int widt
 			*pBGR = B;
 			*(pBGR + 1) = G;
 			*(pBGR + 2) = R;
- 
- 
+  
 			if (j % 2 != 0)
 			{
 				*pU++;
