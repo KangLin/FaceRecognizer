@@ -168,7 +168,7 @@ void MainWindow::on_actionStart_triggered()
         if(m_pCamera && ui->actionCamera->isChecked())
             m_pCamera->stop();
         else
-            m_Player.play();
+            m_Player.stop();
         
         ui->actionStart->setIcon(QIcon(":/image/Start"));
         ui->actionStart->setText(tr("Start"));
