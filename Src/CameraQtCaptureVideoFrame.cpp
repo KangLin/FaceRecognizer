@@ -24,7 +24,7 @@ CCameraQtCaptureVideoFrame::supportedPixelFormats(
         QAbstractVideoBuffer::HandleType handleType) const
 {
     if (handleType == QAbstractVideoBuffer::NoHandle) {
-        return QList<QVideoFrame::PixelFormat>()                   
+        return QList<QVideoFrame::PixelFormat>()
                 << QVideoFrame::Format_RGB32  //windows 平台、linux 平台默认都支持 RGB32 格式  
                 << QVideoFrame::Format_RGB24
                 << QVideoFrame::Format_ARGB32
@@ -36,17 +36,21 @@ CCameraQtCaptureVideoFrame::supportedPixelFormats(
                 << QVideoFrame::Format_BGR24
                 << QVideoFrame::Format_BGR565
                 << QVideoFrame::Format_BGR555
+                << QVideoFrame::Format_BGRA32
 
-                //android支持的格式   
+                //android支持的格式
+                << QVideoFrame::Format_NV12
                 << QVideoFrame::Format_NV21
                 << QVideoFrame::Format_YV12
                 << QVideoFrame::Format_RGB565
                 << QVideoFrame::Format_YUV420P
+                << QVideoFrame::Format_UYVY
                 << QVideoFrame::Format_YUYV
+                << QVideoFrame::Format_YUV444
                 << QVideoFrame::Format_AYUV444
                 << QVideoFrame::Format_Jpeg
                 << QVideoFrame::Format_CameraRaw
-                << QVideoFrame::Format_User
+                //<< QVideoFrame::Format_User
                 ;
     } else {
         return QList<QVideoFrame::PixelFormat>();
@@ -57,12 +61,12 @@ bool CCameraQtCaptureVideoFrame::isFormatSupported(const QVideoSurfaceFormat &fo
 {
     const QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());
     const QSize size = format.frameSize();
-    LOG_MODEL_DEBUG("CCameraQtCaptureVideoFrame", "format:%d;size:%s;handleType:%d", imageFormat, size, format.handleType());
+    qDebug() <<  "format:" << format.pixelFormat();
     return imageFormat != QImage::Format_Invalid
             && !size.isEmpty()
             && format.handleType() == QAbstractVideoBuffer::NoHandle;
-}
-*/
+}//*/
+
 bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
 {
     emit sigCaptureFrame(frame);

@@ -213,7 +213,7 @@ int CFrmRecognizer::Recognizer(QImage &image)
         {
             f.szName = m_Database[index];
             f.similarity = similarity;
-            qDebug() << f.szName << f.similarity;
+            qDebug() << "recognizer name:" <<  f.szName << f.similarity;
         }
     }
     return 0;
