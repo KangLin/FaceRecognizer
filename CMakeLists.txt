@@ -30,7 +30,7 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
             COMMAND ${GIT} describe --tags
             OUTPUT_VARIABLE GIT_VERSION  OUTPUT_STRIP_TRAILING_WHITESPACE
         )
-	    if(NOT GIT_VERSION)
+        if(NOT GIT_VERSION)
             EXECUTE_PROCESS(
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                 COMMAND ${GIT} rev-parse --short HEAD
