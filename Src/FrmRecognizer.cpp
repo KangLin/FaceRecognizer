@@ -175,8 +175,8 @@ int CFrmRecognizer::Recognizer(QImage &image)
     
 #if DEBUG_DISPLAY_TIME
     QTime t2 = QTime::currentTime();
-    if(m_Faces.size > 0)
-        qDebug() << "detect time:" << t1.msecsTo(t2) << "ms";
+    qDebug() << "detect time:" << t1.msecsTo(t2) << "ms"
+                << "; faces:" << m_Faces.size;
 #endif
     for (int i = 0; i < m_Faces.size; i++)
     {
@@ -190,8 +190,9 @@ int CFrmRecognizer::Recognizer(QImage &image)
         
 #if DEBUG_DISPLAY_TIME
         QTime t3 = QTime::currentTime();
-        if(points.size() > 0)
-            qDebug() << "Landmark time:" << t2.msecsTo(t3) << "ms";
+        qDebug() << "Landmark time:" << t2.msecsTo(t3) << "ms"
+                 << "; points:" << points.size();
+                 
 #endif
         _FACE &f = m_FaceInfo[i];
         f.LandmarkPoints = points;

@@ -193,7 +193,7 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                          videoFrame.width(),
                          videoFrame.height(),
                          videoFrame.width() << 2,
-                         f);
+                         f).copy();
         } else {
             switch(videoFrame.pixelFormat())
             {
