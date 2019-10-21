@@ -5,14 +5,26 @@ project(FaceRecognizerApp)
 set(SOURCES_FILES
     main.cpp
     MainWindow.cpp
+    FrmRegisterImage.cpp
+    FrmDisplay.cpp
+    FrmRegister.cpp
+    FrmRecognizer.cpp
     )
 
 set(HEADER_FILES
     MainWindow.h
+    FrmRegisterImage.h
+    FrmDisplay.h
+    FrmRegister.h
+    FrmRecognizer.h
     )
 
 set(SOURCE_UI_FILES
     MainWindow.ui
+    FrmRegisterImage.ui
+    FrmDisplay.ui
+    FrmRegister.ui
+    FrmRecognizer.ui
     )
 
 #翻译

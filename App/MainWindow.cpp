@@ -9,6 +9,9 @@
 #include <QSettings>
 #include <QComboBox>
 #include <QActionGroup>
+#include <QFileDialog>
+
+#include "FrmRegisterImage.h"
 
 #ifdef RABBITCOMMON
     #include "FrmUpdater/FrmUpdater.h"
@@ -23,17 +26,14 @@
     #include "FrmRegister.h"
 #endif
 
+#include "ParameterFactory.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_pCamera(nullptr)
 {
     ui->setupUi(this);
-
-    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                  QSettings::IniFormat);
-    m_szModelFile = set.value("ModuleDir").toString();
-    qDebug() << "Model files:" << m_szModelFile;
         
     //Init menu
     ui->actionStart->setIcon(QIcon(":/image/Start"));
@@ -203,12 +203,30 @@ int MainWindow::CamerOrientation(int index)
 void MainWindow::on_actionSet_model_path_triggered()
 {
 #ifdef RABBITCOMMON
-   m_szModelFile = QFileDialog::getExistingDirectory(this,
-                        tr("Open model file path"), qApp->applicationDirPath());
+   QString szFile = RabbitCommon::CDir::GetOpenDirectory(this,
+                        tr("Open model file path"),
+                        qApp->applicationDirPath());
    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                  QSettings::IniFormat);
-   set.setValue("ModuleDir", m_szModelFile);
+   set.setValue("ModuleDir", szFile);
+   CParameterFactory::Instance()->SetModelPath(szFile);
 #endif
+}
+
+void MainWindow::on_actionRegisterImage_triggered()
+{
+    CFrmRegisterImage* pImage = new CFrmRegisterImage(this);
+    setCentralWidget(pImage);
+}
+
+void MainWindow::on_actionRegisterImage_directory_triggered()
+{
+    
+}
+
+void MainWindow::on_actionRecognizerImage_triggered()
+{
+    
 }
 
 void MainWindow::on_actionRecognizerVideo_triggered()
@@ -218,8 +236,6 @@ void MainWindow::on_actionRecognizerVideo_triggered()
     if(!pRecognizer)
         return;
 
-    if(!m_szModelFile.isEmpty())
-        pRecognizer->SetModelPath(m_szModelFile);
     this->setCentralWidget(pRecognizer);
     bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
                          pRecognizer, SLOT(slotDisplay(const QImage &)));
@@ -233,9 +249,6 @@ void MainWindow::on_actionRegisterVideo_triggered()
     CFrmRegister *pRegister = new CFrmRegister(this);
     if(!pRegister)
         return;
-    
-    if(!m_szModelFile.isEmpty())
-        pRegister->SetModelPath(m_szModelFile);
     this->setCentralWidget(pRegister);
     bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
                          pRegister, SLOT(slotDisplay(const QImage &)));

@@ -21,9 +21,11 @@ public:
     
 private slots:
     void slotCameraChanged(int index);
-    
     void on_actionStart_triggered();
+    void on_actionRegisterImage_triggered();
     void on_actionRegisterVideo_triggered();
+    void on_actionRegisterImage_directory_triggered();
+    void on_actionRecognizerImage_triggered();
     void on_actionRecognizerVideo_triggered();
     void on_actionSet_model_path_triggered();
     void on_actionAbout_A_triggered();
@@ -40,8 +42,7 @@ private:
     CCameraQtCaptureVideoFrame m_CaptureFrame;
     QCamera* m_pCamera;
     QMediaPlayer m_Player;
-    
-    QString m_szModelFile;
+
 };
 
 #endif // MAINWINDOW_H

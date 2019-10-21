@@ -51,49 +51,70 @@ if(SeetaFace_FOUND)
     
     set(SOURCES_FILES
         ${SOURCES_FILES}
-        FrmRegister.cpp
-        FrmRecognizer.cpp
+        Seeta/FaceSeeta.cpp
+        Seeta/DetectorSeeta.cpp
+        Seeta/LandmarkerSeeta.cpp
+        Seeta/RecognizerSeeta.cpp
         )
     
     set(HEADER_FILES
         ${HEADER_FILES}
-        FrmRegister.h
-        FrmRecognizer.h
+        Seeta/FaceSeeta.h
+        Seeta/DetectorSeeta.h
+        Seeta/LandmarkerSeeta.h
+        Seeta/RecognizerSeeta.h
         )
     
     set(SOURCE_UI_FILES
         ${SOURCE_UI_FILES}
-        FrmRegister.ui
-        FrmRecognizer.ui
         )
     
 endif()
 
 set(SOURCES_FILES
     ${SOURCES_FILES}
-    FrmDisplay.cpp
+    ParameterFactory.cpp
+    Parameter.cpp
+    ParameterDetector.cpp
+    ParameterLandmark.cpp
+    ParameterRecognizer.cpp
+    Factory.cpp
+    Face.cpp
+    Detector.cpp
+    Landmarker.cpp
+    Recognizer.cpp
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     Log.cpp
     yuv2rgb/yuv2rgb.cpp
     yuv2rgb/bmp_utils.cpp
     yuv2rgb/rgb2yuv.cpp
+
     )
 
 set(HEADER_FILES
     ${HEADER_FILES}
-    FrmDisplay.h
+    ParameterFactory.h
+    Parameter.h
+    ParameterDetector.h
+    ParameterLandmark.h
+    ParameterRecognizer.h
+    Factory.h
+    Face.h
+    Detector.h
+    Landmarker.h
+    Recognizer.h
     CameraQtCaptureVideoFrame.h
     ImageTool.h
     Log.h
     yuv2rgb/yuv2rgb.h
     yuv2rgb/bmp_utils.h
     yuv2rgb/rgb2yuv.h
+
     )
 
 set(SOURCE_UI_FILES
     ${SOURCE_UI_FILES}
-    FrmDisplay.ui
     )
 
 #翻译

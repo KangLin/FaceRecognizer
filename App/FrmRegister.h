@@ -8,23 +8,24 @@
 #ifndef CFRMREGISTER_H
 #define CFRMREGISTER_H
 
-#include "FrmDisplay.h"
+#pragma once
 
 #include "seeta/FaceDetector.h"
 #include "seeta/FaceLandmarker.h"
 #include "seeta/FaceDatabase.h"
 
-#include "facerecognizer_export.h"
-
 #include <QVideoFrame>
 #include <QSharedPointer>
 #include <QMap>
+
+#include "FrmDisplay.h"
+#include "Factory.h"
 
 namespace Ui {
 class CFrmRegister;
 }
 
-class FACERECOGNIZER_EXPORT CFrmRegister : public QWidget
+class CFrmRegister : public QWidget
 {
     Q_OBJECT
     
@@ -70,6 +71,8 @@ private:
     QImage m_Image;
     
     QString m_szDb;
+    
+    CFactory m_Factory;
 };
 
 #endif // CFRMREGISTER_H
