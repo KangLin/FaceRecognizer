@@ -31,7 +31,7 @@ CFrmRegister::CFrmRegister(QWidget *parent) :
 
 CFrmRegister::~CFrmRegister()
 {
-    m_FDB->Save(m_szDb.toStdString().c_str());
+    SaveDatabase();
     delete ui;
 }
 
@@ -76,14 +76,7 @@ int CFrmRegister::InitSeeta(const QString& szPath)
         
         m_FD->set(seeta::FaceDetector::PROPERTY_VIDEO_STABLE, 1);
         
-        if(m_FDB->Load(m_szDb.toStdString().c_str()))
-        {
-            size_t id = 0;
-            if(m_FDB->Count() > 0)
-                id = m_FDB->Count() - 1;
-            ui->lbID->setText(QString::number(id));
-        }
-        //LoadDatabase();
+        LoadDatabase();
     } catch (...) {
         QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
         msg.exec();
@@ -93,7 +86,7 @@ int CFrmRegister::InitSeeta(const QString& szPath)
     return 0;
 }
 
-qint64 CFrmRegister::LoadDatabase()
+qint64 CFrmRegister::LoadDatabaseFromDirectory()
 {   
     qint64 m_nId = 0;
     QDir d(RabbitCommon::CDir::Instance()->GetDirUserImage());
@@ -144,6 +137,32 @@ qint64 CFrmRegister::LoadDatabase()
     m_nId++;
     ui->lbID->setText(QString::number(m_nId));
     return m_nId;
+}
+
+qint64 CFrmRegister::LoadDatabase()
+{
+    qint64 id = 0;
+    
+    if(m_FDB->Load(m_szDb.toStdString().c_str()))
+    {
+        size_t id = 0;
+        if(m_FDB->Count() > 0)
+            id = m_FDB->Count() - 1;
+        ui->lbID->setText(QString::number(id));
+    }
+    
+    return id;
+}
+
+int CFrmRegister::SaveDatabase(const qint64 &id, const QString &szName)
+{
+    if(-1 != id)
+    {
+        //Save to database
+        
+    }
+    m_FDB->Save(m_szDb.toStdString().c_str());
+    return 0;
 }
 
 void CFrmRegister::slotDisplay(const QImage &frame)
@@ -233,7 +252,7 @@ qint64 CFrmRegister::Register(QImage &image)
     //*/
     ui->lbID->setText(QString::number(id));
     
-    m_FDB->Save(m_szDb.toStdString().c_str());
+    SaveDatabase();
     return id;
 }
 

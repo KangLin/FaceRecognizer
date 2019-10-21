@@ -14,7 +14,7 @@
    <string>Face recognizer</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../Resource/Resource.qrc">
     <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
@@ -31,11 +31,40 @@
     <property name="title">
      <string>Operate</string>
     </property>
+    <widget class="QMenu" name="menuRegister">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Register</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../Resource/Resource.qrc">
+       <normaloff>:/image/Register</normaloff>:/image/Register</iconset>
+     </property>
+     <addaction name="actionRegisterImage"/>
+     <addaction name="actionRegisterImage_directory"/>
+     <addaction name="actionRegisterVideo"/>
+    </widget>
+    <widget class="QMenu" name="menuRecognizer">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Recognizer</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../Resource/Resource.qrc">
+       <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
+     </property>
+     <addaction name="actionRecognizerImage"/>
+     <addaction name="actionRecognizerVideo"/>
+    </widget>
     <addaction name="actionStart"/>
     <addaction name="separator"/>
     <addaction name="actionDisplay"/>
-    <addaction name="actionRegister"/>
-    <addaction name="actionRecognizer"/>
+    <addaction name="menuRegister"/>
+    <addaction name="menuRecognizer"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuOptions">
@@ -109,34 +138,12 @@
     <string>Landmarker</string>
    </property>
   </action>
-  <action name="actionRecognizer">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Recognizer</string>
-   </property>
-   <property name="statusTip">
-    <string>Recognizer</string>
-   </property>
-  </action>
   <action name="actionSet_model_path">
    <property name="text">
     <string>Set model path</string>
    </property>
    <property name="statusTip">
     <string>Set model path</string>
-   </property>
-  </action>
-  <action name="actionRegister">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Register</string>
-   </property>
-   <property name="statusTip">
-    <string>Register</string>
    </property>
   </action>
   <action name="actionAbout_A">
@@ -174,6 +181,10 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+   </property>
    <property name="text">
     <string>Display</string>
    </property>
@@ -191,6 +202,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Video</normaloff>:/image/Video</iconset>
+   </property>
    <property name="text">
     <string>Camera</string>
    </property>
@@ -199,11 +214,122 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+   </property>
    <property name="text">
     <string>File</string>
    </property>
   </action>
+  <action name="actionRegisterImage">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
+   </property>
+   <property name="text">
+    <string>Image</string>
+   </property>
+   <property name="toolTip">
+    <string>Register from image</string>
+   </property>
+   <property name="statusTip">
+    <string>Register from image</string>
+   </property>
+   <property name="whatsThis">
+    <string>Register from image</string>
+   </property>
+  </action>
+  <action name="actionRegisterImage_directory">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
+   </property>
+   <property name="text">
+    <string>Image directory</string>
+   </property>
+   <property name="toolTip">
+    <string>Register from image directory</string>
+   </property>
+   <property name="statusTip">
+    <string>Register from image directory</string>
+   </property>
+   <property name="whatsThis">
+    <string>Register from image directory</string>
+   </property>
+  </action>
+  <action name="actionRegisterVideo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+   </property>
+   <property name="text">
+    <string>Video</string>
+   </property>
+   <property name="toolTip">
+    <string>Register from video</string>
+   </property>
+   <property name="statusTip">
+    <string>Register from video</string>
+   </property>
+   <property name="whatsThis">
+    <string>Register from video</string>
+   </property>
+  </action>
+  <action name="actionRecognizerImage">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
+   </property>
+   <property name="text">
+    <string>Image</string>
+   </property>
+   <property name="toolTip">
+    <string>Recognizer from image</string>
+   </property>
+   <property name="statusTip">
+    <string>Recognizer from image</string>
+   </property>
+   <property name="whatsThis">
+    <string>Recognizer from image</string>
+   </property>
+  </action>
+  <action name="actionRecognizerVideo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+   </property>
+   <property name="text">
+    <string>Video</string>
+   </property>
+   <property name="toolTip">
+    <string>Recongnizer from video</string>
+   </property>
+   <property name="statusTip">
+    <string>Recongnizer from video</string>
+   </property>
+   <property name="whatsThis">
+    <string>Recongnizer from video</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Resource/Resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

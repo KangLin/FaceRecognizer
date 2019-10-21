@@ -43,9 +43,12 @@ MainWindow::MainWindow(QWidget *parent) :
     
     QActionGroup *pViewGroup = new QActionGroup(this);
     pViewGroup->addAction(ui->actionDisplay);
-    pViewGroup->addAction(ui->actionRegister);
-    pViewGroup->addAction(ui->actionRecognizer);
-    
+    pViewGroup->addAction(ui->actionRegisterImage);
+    pViewGroup->addAction(ui->actionRegisterImage_directory);
+    pViewGroup->addAction(ui->actionRegisterVideo);
+    pViewGroup->addAction(ui->actionRecognizerImage);
+    pViewGroup->addAction(ui->actionRecognizerVideo);
+
     QActionGroup *pViewGroup1 = new QActionGroup(this);
     pViewGroup1->addAction(ui->actionFile);
     pViewGroup1->addAction(ui->actionCamera);
@@ -71,16 +74,13 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->actionFile->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
-    ui->actionRegister->setVisible(true);
-    ui->actionRecognizer->setVisible(true);
-    
-    ui->actionRecognizer->setChecked(true);
-    on_actionRecognizer_triggered();
+    ui->actionRecognizerVideo->setChecked(true);
+    void on_actionRecognizerVideo_triggered();
 #else
-    ui->actionRegister->setVisible(false);
-    ui->actionRecognizer->setVisible(false);
+    ui->menuRegister->setEnabled(false);
+    ui->menuRecognizer->setEnabled(false);
     
-    ui->actionCamera->setChecked(true);
+    ui->actionDisplay->setChecked(true);
     on_actionDisplay_triggered();
 #endif
 }
@@ -211,7 +211,7 @@ void MainWindow::on_actionSet_model_path_triggered()
 #endif
 }
 
-void MainWindow::on_actionRecognizer_triggered()
+void MainWindow::on_actionRecognizerVideo_triggered()
 {
 #ifdef HAVE_SEETA_FACE
     CFrmRecognizer *pRecognizer = new CFrmRecognizer(this);
@@ -227,7 +227,7 @@ void MainWindow::on_actionRecognizer_triggered()
 #endif
 }
 
-void MainWindow::on_actionRegister_triggered()
+void MainWindow::on_actionRegisterVideo_triggered()
 {
 #ifdef HAVE_SEETA_FACE
     CFrmRegister *pRegister = new CFrmRegister(this);

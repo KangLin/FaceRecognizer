@@ -1,3 +1,10 @@
+/* Register 
+ * Author: Kang Lin (kl222@126.com)
+ * 
+ * 
+ * 
+ */
+
 #ifndef CFRMREGISTER_H
 #define CFRMREGISTER_H
 
@@ -36,6 +43,8 @@ private slots:
 
 protected:
     qint64 LoadDatabase();
+    qint64 LoadDatabaseFromDirectory();
+    int SaveDatabase(const qint64 &id = -1, const QString &szName = QString());
     virtual int InitSeeta(const QString &szPath = QString());
     virtual int Detecetor(QImage &image);
     qint64 Register(QImage &image);

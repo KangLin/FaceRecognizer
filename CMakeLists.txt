@@ -49,7 +49,7 @@ endif()
 
 #需要的QT组件
 get_filename_component(QT_INSTALL_DIR "${Qt5_DIR}/../../.." ABSOLUTE)
-SET(QT_COMPONENTS Core Gui Widgets Xml Network Multimedia)
+SET(QT_COMPONENTS Core Gui Widgets Xml Network Multimedia Sql)
 find_package(Qt5 COMPONENTS ${QT_COMPONENTS})
 FOREACH(_COMPONENT ${QT_COMPONENTS})
     SET(QT_LIBRARIES ${QT_LIBRARIES} Qt5::${_COMPONENT})
