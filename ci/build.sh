@@ -46,7 +46,8 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
          -DCMAKE_VERBOSE=ON \
          -DCMAKE_BUILD_TYPE=Release \
          -DBUILD_EXAMPLE=OFF \
-         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}"
+         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
+         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
 else
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
@@ -189,7 +190,8 @@ if [ -n "$GENERATORS" ]; then
             -DCMAKE_BUILD_TYPE=Release \
             -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
             -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}"
+            -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
+            -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
     else
 	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
             -DCMAKE_INSTALL_PREFIX=`pwd`/install \
@@ -230,7 +232,6 @@ else
             sed -i "s/<ARCHITECTURE>.*</<ARCHITECTURE>${BUILD_ARCH}</g" update_android.xml
             sed -i "s/<MD5SUM>.*</<MD5SUM>${MD5}</g" update_android.xml
             sed -i "s:<URL>.*<:<URL>https\://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/android-build-debug.apk<:g" update_android.xml
-
 
             export UPLOADTOOL_BODY="Release FaceRecognizer-${VERSION}"
             #export UPLOADTOOL_PR_BODY=

@@ -143,7 +143,7 @@ deploy:
     #prerelease: true
     on:
       BUILD_TARGERT: windows_msvc
-      TOOLCHAIN_VERSION: 12
+      TOOLCHAIN_VERSION: 14
       QT_VERSION: 5.6.3
       BUILD_ARCH: x86
       appveyor_repo_tag: true        # deploy on tag push only
