@@ -223,6 +223,7 @@ qint64 CFrmRegister::Register(QImage &image)
         return -1;
     }
     qint64 id = m_FDB->Register( imageData, m_LandmarksPoints[0].data() );
+    /*
     QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
             + QDir::separator()
             + ui->lbID->text() + "_" + ui->leName->text() + ".jpg";
@@ -231,6 +232,8 @@ qint64 CFrmRegister::Register(QImage &image)
                         szFile.toStdString().c_str());
     //*/
     ui->lbID->setText(QString::number(id));
+    
+    m_FDB->Save(m_szDb.toStdString().c_str());
     return id;
 }
 

@@ -72,7 +72,11 @@ int CFrmRecognizer::InitSeeta(const QString& szPath)
         //set face detector's min face size
         m_FD->set( seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, 40 );
 
-        LoadDatabase();
+        QString szDb = RabbitCommon::CDir::Instance()->GetDirUserData()
+                + QDir::separator() + "Feature.db";
+        m_FDB->Load(szDb.toStdString().c_str());
+        
+        //LoadDatabase();
     } catch (...) {
         QMessageBox msg(QMessageBox::Critical, tr("Exception"), tr("Load model file exception, please set model file path"));
         msg.exec();
@@ -211,7 +215,8 @@ int CFrmRecognizer::Recognizer(QImage &image)
         // similarity greater than threshold, means recognized
         if( similarity > m_Threshold )
         {
-            f.szName = m_Database[index];
+            f.id = index;
+            f.szName = QString::number(index); //m_Database[index];
             f.similarity = similarity;
             qDebug() << "recognizer name:" <<  f.szName << f.similarity;
         }
