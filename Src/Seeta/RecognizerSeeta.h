@@ -15,10 +15,12 @@ public:
     virtual ~CRecognizerSeeta();
 
     virtual qint64 Register(const QImage &image,
-                         const QVector<QPointF> &points);
-    virtual qint64 Query(/*[in]*/ const QImage &image,
-                      /*[in]*/ const QVector<QPointF> &points,
-                      /*[out]*/ float *similarity = nullptr);
+                            const QVector<QPointF> &points,
+                            /*[in/out]*/_INFO &info);
+    
+    virtual _INFO Query(/*[in]*/ const QImage &image,
+                        /*[in]*/ const QVector<QPointF> &points);
+    
     virtual int Save(const QString &szFile = QString());
     virtual int Load(const QString &szFile = QString());
     virtual qint64 GetCount();
@@ -26,6 +28,7 @@ public:
 protected:
     virtual void UpdateParameter();
     QSharedPointer<seeta::FaceDatabase> m_Recognizer;
+    float m_fThreshold;
 };
 
 #endif // CRECOGNIZERSEETA_H

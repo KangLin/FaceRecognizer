@@ -14,18 +14,26 @@ class FACERECOGNIZER_EXPORT CRecognizer : public QObject
 public:
     CRecognizer(QObject* parent = nullptr);
     virtual ~CRecognizer();
-
+    
     virtual int SetParameter(CParameterRecognizer *pPara);
-
+    
+    struct _INFO
+    {
+        qint64 index;
+        qint64 no;
+        QString szName;
+        QString szImageFile;
+    };
     virtual qint64 Register(const QImage &image,
-                         const QVector<QPointF> &points) = 0;
-    virtual qint64 Query(/*[in]*/ const QImage &image,
-                      /*[in]*/ const QVector<QPointF> &points,
-                      /*[out]*/ float *similarity = nullptr) = 0;
+                            const QVector<QPointF> &points,
+                            /*[in/out]*/_INFO &info) = 0;
+    
+    virtual _INFO Query(/*[in]*/ const QImage &image,
+                        /*[in]*/ const QVector<QPointF> &points) = 0;
     
     virtual int Save(const QString &szFile = QString()) = 0;
     virtual int Load(const QString &szFile = QString()) = 0;
-
+    
     // Registed count
     virtual qint64 GetCount();
     

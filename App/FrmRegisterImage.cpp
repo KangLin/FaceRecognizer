@@ -13,6 +13,8 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     m_bRegister(false)
 {
     ui->setupUi(this);
+    ui->lbOldImage->setVisible(false);
+    
     m_pFace = CFactory::Instance();
     ui->lbID->setText(QString::number(m_pFace->GetRecognizer()->GetCount()));
 }
@@ -51,15 +53,20 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     
     foreach (auto f, faces) {
         auto points = m_pFace->GetLandmarker()->Mark(image, f);
+        CRecognizer::_INFO info;
+        info = m_pFace->GetRecognizer()->Query(image, points);
+        if(info.index > -1)
+        {
+            qDebug() << "There is exists" << info.index;
+            ui->lbOldImage->setPixmap(QPixmap::fromImage(
+                                      QImage(info.szImageFile)));
+            ui->lbOldImage->setVisible(true);
+        }
+        info.no = ui->leNo->text().toLongLong();
+        info.szName = ui->leName->text();
         qint64 index = m_pFace->GetRecognizer()->Register(
-                    ui->lbImage->pixmap()->toImage(), points);
-        qDebug() << "Register index:" << index;
-        QString szFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
-                + QDir::separator()
-                + QString::number(index)
-                + "_" + ui->leNo->text()
-                + "_" + ui->leName->text();
-        m_Image.save(szFile, "png");
+                    image, points, info);
+        
         ui->lbID->setText(QString::number(m_pFace->GetRecognizer()->GetCount()));
         m_bRegister = true;
     }

@@ -1,10 +1,14 @@
 #include "RecognizerSeeta.h"
 #include "Log.h"
+#include "RabbitCommonDir.h"
+
 #include <QDir>
 
 CRecognizerSeeta::CRecognizerSeeta(QObject *parent)
     : CRecognizer(parent)
-{}
+{
+    m_fThreshold = 0.8f;
+}
 
 CRecognizerSeeta::~CRecognizerSeeta()
 {}
@@ -47,7 +51,9 @@ void CRecognizerSeeta::UpdateParameter()
     Load();
 }
 
-qint64 CRecognizerSeeta::Register(const QImage &image, const QVector<QPointF> &points)
+qint64 CRecognizerSeeta::Register(const QImage &image,
+                                  const QVector<QPointF> &points,
+                                  /*[in/out]*/_INFO &info)
 {
     int64_t index = 0;
 
@@ -56,7 +62,7 @@ qint64 CRecognizerSeeta::Register(const QImage &image, const QVector<QPointF> &p
     {
         img = img.convertToFormat(QImage::Format_RGB888).rgbSwapped();
     }
-    
+
     SeetaImageData data;
     data.width = img.width();
     data.height = img.height();
@@ -70,16 +76,24 @@ qint64 CRecognizerSeeta::Register(const QImage &image, const QVector<QPointF> &p
     }
 
     index = m_Recognizer->Register(data, p.data());
+    info.index = index;
+    info.szImageFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
+            + QDir::separator()
+            + "seeta_"
+            + QString::number(index)
+            + "_" + QString::number(info.no)
+            + "_" + info.szName + ".png";
+    if(!img.rgbSwapped().save(info.szImageFile))
+        LOG_MODEL_ERROR("CRecognizerSeeta", "Save register image fail");
+
+    //TODO: save to database
     
     return index;
 }
 
-qint64 CRecognizerSeeta::Query(const QImage &image,
-                               const QVector<QPointF> &points,
-                               float *similarity)
+CRecognizer::_INFO CRecognizerSeeta::Query(/*[in]*/ const QImage &image,
+                                /*[in]*/ const QVector<QPointF> &points)
 {
-    int64_t index = 0;
-
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
@@ -98,9 +112,20 @@ qint64 CRecognizerSeeta::Query(const QImage &image,
         p.push_back(pp);
     }
 
-    index = m_Recognizer->Query(data, p.data(), similarity);
-    
-    return index;
+    _INFO info;
+    float similarity = 0;
+    info.index = m_Recognizer->Query(data, p.data(), &similarity);
+    if(m_fThreshold > similarity)
+        info.index = -1;
+
+    //TODO: read image name and name and no from databae
+    info.szImageFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
+            + QDir::separator()
+            + "seeta_"
+            + QString::number(info.index)
+            + "_" + QString::number(info.no)
+            + "_" + info.szName + ".png";
+    return info;
 }
 
 int CRecognizerSeeta::Save(const QString &szFile)
