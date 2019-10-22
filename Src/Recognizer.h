@@ -23,8 +23,8 @@ public:
                       /*[in]*/ const QVector<QPointF> &points,
                       /*[out]*/ float *similarity = nullptr) = 0;
     
-    virtual int Save(const QString &szFile) = 0;
-    virtual int Load(const QString &szFile) = 0;
+    virtual int Save(const QString &szFile = QString()) = 0;
+    virtual int Load(const QString &szFile = QString()) = 0;
 
     // Registed count
     virtual qint64 GetCount();

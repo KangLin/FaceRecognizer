@@ -29,6 +29,7 @@ private:
     
     CFace* m_pFace;
     QImage m_Image;
+    bool m_bRegister;
 };
 
 #endif // FRMREGISTERIMAGE_H

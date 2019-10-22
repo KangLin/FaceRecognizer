@@ -9,7 +9,8 @@
 
 CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CFrmRegisterImage)
+    ui(new Ui::CFrmRegisterImage),
+    m_bRegister(false)
 {
     ui->setupUi(this);
     m_pFace = CFactory::Instance();
@@ -18,6 +19,8 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
 
 CFrmRegisterImage::~CFrmRegisterImage()
 {
+    if(m_pFace->GetRecognizer()->GetCount() > 0 && m_bRegister)
+        m_pFace->GetRecognizer()->Save();
     delete ui;
 }
 
@@ -58,6 +61,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
                 + "_" + ui->leName->text();
         m_Image.save(szFile, "png");
         ui->lbID->setText(QString::number(m_pFace->GetRecognizer()->GetCount()));
+        m_bRegister = true;
     }
 }
 

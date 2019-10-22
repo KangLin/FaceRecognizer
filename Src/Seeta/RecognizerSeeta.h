@@ -19,8 +19,8 @@ public:
     virtual qint64 Query(/*[in]*/ const QImage &image,
                       /*[in]*/ const QVector<QPointF> &points,
                       /*[out]*/ float *similarity = nullptr);
-    virtual int Save(const QString &szFile);
-    virtual int Load(const QString &szFile);
+    virtual int Save(const QString &szFile = QString());
+    virtual int Load(const QString &szFile = QString());
     virtual qint64 GetCount();
     
 protected:

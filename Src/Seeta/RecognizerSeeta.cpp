@@ -44,7 +44,7 @@ void CRecognizerSeeta::UpdateParameter()
         return;
     }
     
-    Load(m_pParameter->GetFeatureFile());
+    Load();
 }
 
 qint64 CRecognizerSeeta::Register(const QImage &image, const QVector<QPointF> &points)
@@ -105,14 +105,20 @@ qint64 CRecognizerSeeta::Query(const QImage &image,
 
 int CRecognizerSeeta::Save(const QString &szFile)
 {
-    if(m_Recognizer->Save(szFile.toStdString().c_str()))
+    QString file = szFile;
+    if(szFile.isEmpty())
+        file = m_pParameter->GetFeatureFile();
+    if(m_Recognizer->Save(file.toStdString().c_str()))
         return 0;
     return -1;
 }
 
 int CRecognizerSeeta::Load(const QString &szFile)
 {
-    if(m_Recognizer->Load(szFile.toStdString().c_str()))
+    QString file = szFile;
+    if(szFile.isEmpty())
+        file = m_pParameter->GetFeatureFile();
+    if(m_Recognizer->Load(file.toStdString().c_str()))
     {
         SetCount(m_Recognizer->Count());
         return 0;
