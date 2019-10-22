@@ -10,8 +10,8 @@ class FACERECOGNIZER_EXPORT CParameterRecognizer : public CParameter
 public:
     explicit CParameterRecognizer(QObject *parent = nullptr);
     
-    int SetFeatureFile(const QString &szFile);
-    QString GetFeatureFile();
+    virtual int SetFeatureFile(const QString &szFile);
+    virtual QString GetFeatureFile();
     
 private:
     QString m_szFeatureFile;
