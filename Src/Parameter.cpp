@@ -1,9 +1,13 @@
 #include "Parameter.h"
 #include <QDir>
+#include "RabbitCommonDir.h"
 
 CParameter::CParameter(QObject *parent) : QObject(parent),
     m_Device(CPU)
-{}
+{
+    m_szModelPath = RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
+            + QDir::separator() + "model";
+}
 
 int CParameter::SetModelPath(const QString &szPath)
 {

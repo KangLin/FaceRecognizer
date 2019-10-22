@@ -54,6 +54,9 @@ CParameterRecognizer* CParameterFactory::GetParameterRecognizer()
 
 int CParameterFactory::SetModelPath(const QString &szPath)
 {
+    if(szPath.isEmpty())
+        return -1;
+
     foreach(CParameter* p, m_pParameter)
     {
         if(p)
