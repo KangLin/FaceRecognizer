@@ -93,7 +93,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
             if(index > -1)
             {
                 CDataRegister data;
-                if(m_pFace->GetDatabase()->GetRegisterInfo(index, &data))
+                if(m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(index, &data))
                     return;
                 ShowReplaceUI(true);
                 ui->leNoOld->setText(QString::number(data.getNo()));
@@ -125,7 +125,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         data.setIdx(index);
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
-        if(m_pFace->GetDatabase()->Register(index, &data))
+        if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
         {            
             m_pFace->GetRecognizer()->Delete(index);
             szMsg = "Error: Write database fail. The no is exists?";
@@ -171,7 +171,7 @@ void CFrmRegisterImage::on_pbReplace_clicked()
             qint64 index = ui->lbIDOld->text().toLongLong();
             m_pFace->GetRecognizer()->Delete(index);
             // Delete item from database
-            m_pFace->GetDatabase()->Delete(index);
+            m_pFace->GetDatabase()->GetTableRegister()->Delete(index);
         } 
         
         ShowReplaceUI(false);
@@ -189,7 +189,7 @@ void CFrmRegisterImage::on_pbReplace_clicked()
         data.setIdx(index);
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
-        if(m_pFace->GetDatabase()->Register(index, &data))
+        if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
         {            
             m_pFace->GetRecognizer()->Delete(index);
             szMsg = "Error: Write database fail. The no is exists?";
@@ -246,6 +246,12 @@ int CFrmRegisterImage::Check()
     {
         ui->lbStatus->setText(tr("Error: Please input name"));
         return -2;
+    }
+    
+    if(m_pFace->GetDatabase()->GetTableRegister()->IsExistNo(ui->leNo->text().toLongLong()))
+    {
+        ui->lbStatus->setText(tr("Error: The no is exists"));
+        return -3; 
     }
     
     return 0;

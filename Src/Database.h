@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include "DataRegister.h"
+#include "TableRegister.h"
 
 class FACERECOGNIZER_EXPORT CDatabase : public QObject
 {
@@ -11,15 +12,14 @@ class FACERECOGNIZER_EXPORT CDatabase : public QObject
 public:
     explicit CDatabase(QObject *parent = nullptr);
     virtual ~CDatabase();
-    
-    int Register(qint64 index, CDataRegister *pData);
-    int Delete(qint64 index);
-    int GetRegisterInfo(qint64 index, CDataRegister *pData);
 
+    CTableRegister* GetTableRegister();
+    
 private:
     int InitDatabase();
     
-    QSqlDatabase m_Database;  
+    QSqlDatabase m_Database;
+    CTableRegister m_TableRegister;
 };
 
 #endif // CDATABASE_H

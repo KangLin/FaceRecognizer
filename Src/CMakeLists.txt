@@ -85,6 +85,7 @@ set(SOURCES_FILES
     Recognizer.cpp
     Database.cpp
     DataRegister.cpp
+    TableRegister.cpp
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     Log.cpp
@@ -107,6 +108,7 @@ set(HEADER_FILES
     Recognizer.h
     Database.h
     DataRegister.h
+    TableRegister.h
     CameraQtCaptureVideoFrame.h
     ImageTool.h
     Log.h
