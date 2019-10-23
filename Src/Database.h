@@ -5,7 +5,7 @@
 #include <QSqlDatabase>
 #include "DataRegister.h"
 
-class CDatabase : public QObject
+class FACERECOGNIZER_EXPORT CDatabase : public QObject
 {
     Q_OBJECT
 public:

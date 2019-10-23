@@ -2,8 +2,9 @@
 #define CDATAREGISTER_H
 
 #include <QObject>
+#include "facerecognizer_export.h"
 
-class CDataRegister : public QObject
+class FACERECOGNIZER_EXPORT CDataRegister : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qint64 index READ getIndex WRITE setIndex)
