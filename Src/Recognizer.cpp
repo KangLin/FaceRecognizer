@@ -1,9 +1,9 @@
 #include "Recognizer.h"
+#include <QDir>
 
 CRecognizer::CRecognizer(QObject *parent)
     : QObject(parent),
-      m_pParameter(nullptr),
-      m_nCount(0)
+      m_pParameter(nullptr)
 {}
 
 CRecognizer::~CRecognizer()
@@ -22,7 +22,7 @@ int CRecognizer::SetParameter(CParameterRecognizer *pPara)
                      this, SLOT(slotParameterUpdate()));
     Q_ASSERT(bCheck);
     
-    emit m_pParameter->sigUpdate();
+    UpdateParameter();
     return 0;
 }
 
@@ -36,13 +36,12 @@ void CRecognizer::slotParameterUpdate()
     UpdateParameter();
 }
 
-qint64 CRecognizer::GetCount()
+QString CRecognizer::GetRegisterImage(qint64 index)
 {
-    return m_nCount;
-}
-
-int CRecognizer::SetCount(qint64 count)
-{
-    m_nCount = count;
-    return 0;
+    if(0 > index)
+        return m_pParameter->GetRegisterImagePath();
+    
+    return m_pParameter->GetRegisterImagePath()
+            + QDir::separator()
+            + QString::number(index) + ".png";
 }

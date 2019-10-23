@@ -4,9 +4,10 @@
 
 CParameterRecognizer::CParameterRecognizer(QObject *parent) : CParameter(parent)
 {
-    m_szFeatureFile = RabbitCommon::CDir::Instance()->GetDirUserData()
+    SetFeatureFile(RabbitCommon::CDir::Instance()->GetDirUserData()
             + QDir::separator()
-            + "feature.db";
+            + "feature.db");
+    SetRegisterImagePath(RabbitCommon::CDir::Instance()->GetDirUserImage());
 }
 
 int CParameterRecognizer::SetFeatureFile(const QString &szFile)
@@ -18,4 +19,18 @@ int CParameterRecognizer::SetFeatureFile(const QString &szFile)
 QString CParameterRecognizer::GetFeatureFile()
 {
     return m_szFeatureFile;
+}
+
+int CParameterRecognizer::SetRegisterImagePath(const QString &szPath)
+{
+    m_szRegisterImagePath = szPath;
+    QDir d(m_szRegisterImagePath);
+    if(!d.exists(m_szRegisterImagePath))
+        d.mkpath(m_szRegisterImagePath);
+    return 0;
+}
+
+QString CParameterRecognizer::GetRegisterImagePath()
+{
+    return m_szRegisterImagePath;
 }

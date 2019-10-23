@@ -21,8 +21,11 @@ private slots:
     void on_pbBrower_clicked();
     void on_pbRegister_clicked();
     
+    void on_pbCancel_clicked();
+    
 private:
     int MarkFace(QImage &image);
+    int ShowReplaceUI(bool bReplace = true);
     
 private:
     Ui::CFrmRegisterImage *ui;
@@ -30,6 +33,7 @@ private:
     CFace* m_pFace;
     QImage m_Image;
     bool m_bRegister;
+    bool m_bReplace;
 };
 
 #endif // FRMREGISTERIMAGE_H

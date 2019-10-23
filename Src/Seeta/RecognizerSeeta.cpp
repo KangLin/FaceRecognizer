@@ -52,8 +52,7 @@ void CRecognizerSeeta::UpdateParameter()
 }
 
 qint64 CRecognizerSeeta::Register(const QImage &image,
-                                  const QVector<QPointF> &points,
-                                  /*[in/out]*/_INFO &info)
+                                  const QVector<QPointF> &points)
 {
     int64_t index = 0;
 
@@ -76,22 +75,25 @@ qint64 CRecognizerSeeta::Register(const QImage &image,
     }
 
     index = m_Recognizer->Register(data, p.data());
-    info.index = index;
-    info.szImageFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
-            + QDir::separator()
-            + "seeta_"
-            + QString::number(index)
-            + "_" + QString::number(info.no)
-            + "_" + info.szName + ".png";
-    if(!img.rgbSwapped().save(info.szImageFile))
+    
+    if(!img.rgbSwapped().save(GetRegisterImage(index)))
         LOG_MODEL_ERROR("CRecognizerSeeta", "Save register image fail");
-
-    //TODO: save to database
     
     return index;
 }
 
-CRecognizer::_INFO CRecognizerSeeta::Query(/*[in]*/ const QImage &image,
+int CRecognizerSeeta::Delete(const qint64 &index)
+{
+    int nRet = m_Recognizer->Delete(index);
+    if(1 == nRet)
+    {
+        QDir d;
+        d.remove(GetRegisterImage(index));
+        return 0;
+    }
+    return -1;
+}
+qint64 CRecognizerSeeta::Query(/*[in]*/ const QImage &image,
                                 /*[in]*/ const QVector<QPointF> &points)
 {
     QImage img = image;
@@ -112,20 +114,12 @@ CRecognizer::_INFO CRecognizerSeeta::Query(/*[in]*/ const QImage &image,
         p.push_back(pp);
     }
 
-    _INFO info;
     float similarity = 0;
-    info.index = m_Recognizer->Query(data, p.data(), &similarity);
+    qint64 index = m_Recognizer->Query(data, p.data(), &similarity);
     if(m_fThreshold > similarity)
-        info.index = -1;
+        index = -1;
 
-    //TODO: read image name and name and no from databae
-    info.szImageFile = RabbitCommon::CDir::Instance()->GetDirUserImage()
-            + QDir::separator()
-            + "seeta_"
-            + QString::number(info.index)
-            + "_" + QString::number(info.no)
-            + "_" + info.szName + ".png";
-    return info;
+    return index;
 }
 
 int CRecognizerSeeta::Save(const QString &szFile)
@@ -145,13 +139,7 @@ int CRecognizerSeeta::Load(const QString &szFile)
         file = m_pParameter->GetFeatureFile();
     if(m_Recognizer->Load(file.toStdString().c_str()))
     {
-        SetCount(m_Recognizer->Count());
         return 0;
     }
     return -1;
-}
-
-qint64 CRecognizerSeeta::GetCount()
-{
-    return m_Recognizer->Count();
 }
