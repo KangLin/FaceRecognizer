@@ -14,8 +14,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     m_bReplace(false)
 {
     ui->setupUi(this);
-    ui->lbOldImage->setVisible(false);
-    ui->pbCancel->setVisible(false);
+    ShowReplaceUI(false);
     m_pFace = CFactory::Instance();
     ui->lbID->setText("");
 }
@@ -82,14 +81,21 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         
         if(m_bReplace)
         {
-            m_pFace->GetRecognizer()->Delete(ui->lbID->text().toLongLong());
+            qint64 index = ui->lbID->text().toLongLong();
+            m_pFace->GetRecognizer()->Delete(index);
+            // Delete item from database
+            m_pFace->GetDatabase()->Delete(index);
         } else {
             auto index = m_pFace->GetRecognizer()->Query(image, points);
             if(index > -1)
             {
-                ui->lbID->setText(QString::number(index));
+                CDataRegister data;
+                m_pFace->GetDatabase()->GetRegisterInfo(index, &data);
+                ui->leNoOld->setText(QString::number(data.getNo()));
+                ui->leNameOld->setText(data.getName());
+                ui->lbIDOld->setText(QString::number(index));
                 ui->lbOldImage->setPixmap(QPixmap::fromImage(
-                    QImage(m_pFace->GetRecognizer()->GetRegisterImage(index))));
+                    QImage(m_pFace->GetRecognizer()->GetRegisterImage(index))));               
                 ShowReplaceUI(true);
                 return;
             }
@@ -100,8 +106,12 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         
         ui->lbID->setText(QString::number(index));
         m_bRegister = true;
-        //TODO: write database
-        
+        //Write item to database
+        CDataRegister data;
+        data.setIndex(index);
+        data.setNo(ui->leNo->text().toLongLong());
+        data.setName(ui->leName->text());
+        m_pFace->GetDatabase()->Register(index, &data);
     }
 }
 
@@ -114,11 +124,25 @@ int CFrmRegisterImage::ShowReplaceUI(bool bReplace)
 {
     if(bReplace)
     {
+        ui->lbNoOld->setVisible(true);
+        ui->leNoOld->setVisible(true);
+        ui->leNoOld->setEnabled(false);
+        ui->lbNameOld->setVisible(true);
+        ui->leNameOld->setVisible(true);
+        ui->leNameOld->setEnabled(false);
+        ui->lbOldID->setVisible(true);
+        ui->lbIDOld->setVisible(true);
         ui->lbOldImage->setVisible(true);
         ui->pbCancel->setVisible(true);
         ui->pbRegister->setText(tr("Replace"));
         m_bReplace = true;
     } else {
+        ui->lbNoOld->setVisible(false);
+        ui->leNoOld->setVisible(false);
+        ui->lbNameOld->setVisible(false);
+        ui->leNameOld->setVisible(false);
+        ui->lbOldID->setVisible(false);
+        ui->lbIDOld->setVisible(false);
         ui->lbOldImage->setVisible(false);
         ui->pbCancel->setVisible(false);
         m_bReplace = false;

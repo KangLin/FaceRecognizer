@@ -1,4 +1,4 @@
-CREATE TABLE `FaceFeature` (
+CREATE TABLE IF NOT EXISTS `Register` (
 	`index`	INTEGER NOT NULL UNIQUE,
 	`name`	TEXT,
 	`no`	INTEGER NOT NULL UNIQUE,

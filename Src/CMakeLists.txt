@@ -83,13 +83,14 @@ set(SOURCES_FILES
     Detector.cpp
     Landmarker.cpp
     Recognizer.cpp
+    Database.cpp
+    DataRegister.cpp
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     Log.cpp
     yuv2rgb/yuv2rgb.cpp
     yuv2rgb/bmp_utils.cpp
     yuv2rgb/rgb2yuv.cpp
-
     )
 
 set(HEADER_FILES
@@ -104,13 +105,14 @@ set(HEADER_FILES
     Detector.h
     Landmarker.h
     Recognizer.h
+    Database.h
+    DataRegister.h
     CameraQtCaptureVideoFrame.h
     ImageTool.h
     Log.h
     yuv2rgb/yuv2rgb.h
     yuv2rgb/bmp_utils.h
     yuv2rgb/rgb2yuv.h
-
     )
 
 set(SOURCE_UI_FILES
@@ -124,6 +126,11 @@ include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
 SET(RCC_FILES
     ../Resource/Resource.qrc
     ${TRANSLATIONS_RESOURCE_FILES})
+
+string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+if(BUILD_TYPE STREQUAL "debug")
+    SET(RCC_FILES ${RCC_FILES} ../Resource/ResourceSql.qrc)
+endif()
 
 add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -172,6 +179,8 @@ if(ANDROID)
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )
+    # Install sql file
+    INSTALL(FILES ../Resource/db/database.sql DESTINATION assets/data/db)
 else()
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
@@ -182,6 +191,8 @@ else()
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )
+    # Install sql file
+    INSTALL(FILES ../Resource/db/database.sql DESTINATION data/db)
 endif()
 
 export(TARGETS ${PROJECT_NAME}
