@@ -23,9 +23,12 @@ private slots:
     
     void on_pbCancel_clicked();
     
+    void on_pbReplace_clicked();
+    
 private:
     int MarkFace(QImage &image);
     int ShowReplaceUI(bool bReplace = true);
+    int Check();
     
 private:
     Ui::CFrmRegisterImage *ui;

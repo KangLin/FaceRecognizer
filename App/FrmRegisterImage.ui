@@ -108,7 +108,7 @@
          <item>
           <widget class="QLineEdit" name="leName">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -163,7 +163,7 @@
          <item>
           <widget class="QLineEdit" name="leNameOld">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -205,6 +205,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pbReplace">
+       <property name="text">
+        <string>Replace</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pbCancel">
        <property name="text">
         <string>Cancel</string>
@@ -212,6 +219,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="lbStatus">
+     <property name="text">
+      <string>Status</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

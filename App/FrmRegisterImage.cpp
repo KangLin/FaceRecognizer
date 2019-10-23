@@ -17,6 +17,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     ShowReplaceUI(false);
     m_pFace = CFactory::Instance();
     ui->lbID->setText("");
+    ui->lbStatus->setText(tr("Please select image"));
 }
 
 CFrmRegisterImage::~CFrmRegisterImage()
@@ -61,49 +62,62 @@ void CFrmRegisterImage::on_pbBrower_clicked()
     m_Image = image;
     MarkFace(image);
     ui->lbImage->setPixmap(QPixmap::fromImage(image));
+    ui->lbID->setText(QString());
+    ui->lbStatus->setText(tr("Have selected images"));
     ShowReplaceUI(false);
 }
 
 void CFrmRegisterImage::on_pbRegister_clicked()
 {
     if(!m_pFace) return;
+    if(Check())
+        return;
+    
+    QString szMsg;
     QImage image = m_Image;
     auto faces = m_pFace->GetDector()->Detect(image);
     if(faces.size() != 1)
     {
+        QString szMsg = tr("Error: Please select a photo with only one person");
+        ui->lbStatus->setText(szMsg);
         QMessageBox::warning(this, tr("Face register"),
-                             tr("Please select a photo with only one person"));
+                             szMsg);
         return;
     }
     
     foreach (auto f, faces) {
         auto points = m_pFace->GetLandmarker()->Mark(image, f);
-        
-        if(m_bReplace)
+        if(!m_bReplace)
         {
-            qint64 index = ui->lbID->text().toLongLong();
-            m_pFace->GetRecognizer()->Delete(index);
-            // Delete item from database
-            m_pFace->GetDatabase()->Delete(index);
-        } else {
             auto index = m_pFace->GetRecognizer()->Query(image, points);
             if(index > -1)
             {
                 CDataRegister data;
-                m_pFace->GetDatabase()->GetRegisterInfo(index, &data);
+                if(m_pFace->GetDatabase()->GetRegisterInfo(index, &data))
+                    return;
+                ShowReplaceUI(true);
                 ui->leNoOld->setText(QString::number(data.getNo()));
                 ui->leNameOld->setText(data.getName());
                 ui->lbIDOld->setText(QString::number(index));
                 ui->lbOldImage->setPixmap(QPixmap::fromImage(
                     QImage(m_pFace->GetRecognizer()->GetRegisterImage(index))));               
-                ShowReplaceUI(true);
+
+                QString szMsg = tr("Error: This person already exists. index:");
+                szMsg += QString::number(data.getIdx());
+                szMsg += "; no:" + QString::number(data.getNo());
+                szMsg += "; name:" + data.getName();
+                ui->lbStatus->setText(szMsg);
                 return;
             }
         }
         ShowReplaceUI(false);
         qint64 index = m_pFace->GetRecognizer()->Register(
                     image, points);
-        
+        if(-1 == index)
+        {
+            ui->lbStatus->setText(tr("Face register fail"));
+            return;
+        }
         ui->lbID->setText(QString::number(index));
         m_bRegister = true;
         //Write item to database
@@ -111,13 +125,82 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         data.setIdx(index);
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
-        m_pFace->GetDatabase()->Register(index, &data);
+        if(m_pFace->GetDatabase()->Register(index, &data))
+        {            
+            m_pFace->GetRecognizer()->Delete(index);
+            szMsg = "Error: Write database fail. The no is exists?";
+        } else {
+            szMsg = tr("Regist success. index:");
+            szMsg += QString::number(data.getIdx());
+            szMsg += "; no:" + QString::number(data.getNo());
+            szMsg += "; name:" + data.getName();
+        }
+        ui->lbStatus->setText(szMsg);
     }
 }
 
 void CFrmRegisterImage::on_pbCancel_clicked()
 {
     ShowReplaceUI(false);
+    ui->lbStatus->setText(tr("Please select image"));
+}
+
+void CFrmRegisterImage::on_pbReplace_clicked()
+{
+    if(!m_pFace) return;
+    if(Check())
+        return;
+    
+    QString szMsg;
+    QImage image = m_Image;
+    auto faces = m_pFace->GetDector()->Detect(image);
+    if(faces.size() != 1)
+    {
+        QString szMsg = tr("Error: Please select a photo with only one person");
+        ui->lbStatus->setText(szMsg);
+        QMessageBox::warning(this, tr("Face register"),
+                             szMsg);
+        return;
+    }
+
+    foreach (auto f, faces) {
+        auto points = m_pFace->GetLandmarker()->Mark(image, f);
+        
+        if(m_bReplace)
+        {
+            qint64 index = ui->lbIDOld->text().toLongLong();
+            m_pFace->GetRecognizer()->Delete(index);
+            // Delete item from database
+            m_pFace->GetDatabase()->Delete(index);
+        } 
+        
+        ShowReplaceUI(false);
+        qint64 index = m_pFace->GetRecognizer()->Register(
+                    image, points);
+        if(-1 == index)
+        {
+            ui->lbStatus->setText(tr("Face register fail"));
+            return;
+        }
+        ui->lbID->setText(QString::number(index));
+        m_bRegister = true;
+        //Write item to database
+        CDataRegister data;
+        data.setIdx(index);
+        data.setNo(ui->leNo->text().toLongLong());
+        data.setName(ui->leName->text());
+        if(m_pFace->GetDatabase()->Register(index, &data))
+        {            
+            m_pFace->GetRecognizer()->Delete(index);
+            szMsg = "Error: Write database fail. The no is exists?";
+        } else {
+            szMsg = tr("Regist success. index:");
+            szMsg += QString::number(data.getIdx());
+            szMsg += "; no:" + QString::number(data.getNo());
+            szMsg += "; name:" + data.getName();
+        }
+        ui->lbStatus->setText(szMsg);
+    }
 }
 
 int CFrmRegisterImage::ShowReplaceUI(bool bReplace)
@@ -134,7 +217,7 @@ int CFrmRegisterImage::ShowReplaceUI(bool bReplace)
         ui->lbIDOld->setVisible(true);
         ui->lbOldImage->setVisible(true);
         ui->pbCancel->setVisible(true);
-        ui->pbRegister->setText(tr("Replace"));
+        ui->pbReplace->setVisible(true);
         m_bReplace = true;
     } else {
         ui->lbNoOld->setVisible(false);
@@ -145,8 +228,25 @@ int CFrmRegisterImage::ShowReplaceUI(bool bReplace)
         ui->lbIDOld->setVisible(false);
         ui->lbOldImage->setVisible(false);
         ui->pbCancel->setVisible(false);
+        ui->pbReplace->setVisible(false);
         m_bReplace = false;
-        ui->pbRegister->setText(tr("Register"));
     }
+    return 0;
+}
+
+int CFrmRegisterImage::Check()
+{
+    if(ui->leNo->text().isEmpty())
+    {
+        ui->lbStatus->setText(tr("Error: Please input no"));
+        return -1;
+    }
+    
+    if(ui->leName->text().isEmpty())
+    {
+        ui->lbStatus->setText(tr("Error: Please input name"));
+        return -2;
+    }
+    
     return 0;
 }
