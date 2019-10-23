@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `Register` (
-	`index`	INTEGER NOT NULL UNIQUE,
+	`idx`	INTEGER NOT NULL UNIQUE,
 	`name`	TEXT,
 	`no`	INTEGER NOT NULL UNIQUE,
-	PRIMARY KEY(`index`,`no`)
+	PRIMARY KEY(`idx`,`no`)
 );

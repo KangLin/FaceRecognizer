@@ -108,7 +108,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         m_bRegister = true;
         //Write item to database
         CDataRegister data;
-        data.setIndex(index);
+        data.setIdx(index);
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
         m_pFace->GetDatabase()->Register(index, &data);

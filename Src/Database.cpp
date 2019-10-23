@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <QFile>
 #include <QMetaProperty>
 #include <QMetaClassInfo>
@@ -69,7 +70,7 @@ int CDatabase::Register(qint64 index, CDataRegister *pData)
     int nRet = 0;
     if(!pData)
         return -1;
-    if(pData->getIndex() != index)
+    if(pData->getIdx() != index)
         return -2;
 
     QString szCol, szValue;
@@ -94,23 +95,31 @@ int CDatabase::Register(qint64 index, CDataRegister *pData)
         }
     }
 
-    QString szSql = "INSERT INTO Register (" + szCol + ") VALUES (" + szValue + ")";
-    LOG_MODEL_DEBUG("CDatabase", "sql: %s", szSql);
+    QString szSql = "INSERT INTO Register (" + szCol + ") VALUES (" + szValue + ");";
+    LOG_MODEL_DEBUG("CDatabase", "sql: %s\n", szSql.toString().c_str());
+    qDebug() << "sql:" << szSql;
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
+    {
         LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
                    m_Database.lastError().text().toStdString().c_str());
+        return -1;
+    }
     return nRet;
 }
 
 int CDatabase::Delete(qint64 index)
 {
     int nRet = 0;
-    QString szSql = "DELETE FROM Register WHERE index=" + QString::number(index);
+    QString szSql = "DELETE FROM Register WHERE idx="
+            + QString::number(index) + ";";
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
+    {
         LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
                    m_Database.lastError().text().toStdString().c_str());
+        return -1;
+    }
     return nRet;
 }
 
@@ -120,18 +129,28 @@ int CDatabase::GetRegisterInfo(qint64 index, CDataRegister *pData)
     if(!pData)
         return -1;
 
-    QString szSql = "SELECT * FROM Register WHERE index=" + QString::number(index);
+    QString szSql = "SELECT * FROM Register WHERE idx="
+            + QString::number(index) + ";";
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
+    {
         LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
                    m_Database.lastError().text().toStdString().c_str());
-    int nCount = pData->metaObject()->propertyCount();
-    for(int i = pData->metaObject()->propertyOffset(); i < nCount; i++)
-    {
-        QMetaProperty p = pData->metaObject()->property(i);
-        if(p.isWritable())
-            p.write(pData, query.value(p.name()));
+        return -2;
     }
-
+    while (query.next()) {
+        int nCount = pData->metaObject()->propertyCount();
+        for(int i = pData->metaObject()->propertyOffset(); i < nCount; i++)
+        {
+            QMetaProperty p = pData->metaObject()->property(i);
+            if(p.isWritable())
+                p.write(pData, query.value(p.name()));
+            
+            QString szName = p.name();
+            int idx = query.record().indexOf(p.name());
+            QString szValue = query.value(idx).toString();
+            qDebug() << szName << "=" << szValue;
+        }
+    }
     return nRet;
 }

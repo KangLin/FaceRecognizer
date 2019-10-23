@@ -3,14 +3,14 @@
 CDataRegister::CDataRegister(QObject *parent) : QObject(parent)
 {}
 
-qint64 CDataRegister::getIndex()
+qint64 CDataRegister::getIdx()
 {
-    return m_nIndex;
+    return m_nIdx;
 }
 
-int CDataRegister::setIndex(qint64 index)
+int CDataRegister::setIdx(qint64 idx)
 {
-    m_nIndex = index;
+    m_nIdx = idx;
     return 0;
 }
 
