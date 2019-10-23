@@ -74,8 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->actionFile->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
-    ui->actionRecognizerVideo->setChecked(true);
-    void on_actionRecognizerVideo_triggered();
+    ui->actionRegisterImage->setChecked(true);
+    on_actionRegisterImage_triggered();
 #else
     ui->menuRegister->setEnabled(false);
     ui->menuRecognizer->setEnabled(false);
