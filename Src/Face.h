@@ -9,7 +9,7 @@
 #include "Landmarker.h"
 #include "Recognizer.h"
 #include "Parameter.h"
-#include "Database.h"
+#include "database/Database.h"
 
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {

@@ -73,6 +73,9 @@ endif()
 
 set(SOURCES_FILES
     ${SOURCES_FILES}
+    CameraQtCaptureVideoFrame.cpp
+    ImageTool.cpp
+    Log.cpp
     ParameterFactory.cpp
     Parameter.cpp
     ParameterDetector.cpp
@@ -83,12 +86,9 @@ set(SOURCES_FILES
     Detector.cpp
     Landmarker.cpp
     Recognizer.cpp
-    Database.cpp
-    DataRegister.cpp
-    TableRegister.cpp
-    CameraQtCaptureVideoFrame.cpp
-    ImageTool.cpp
-    Log.cpp
+    database/Database.cpp
+    database/DataRegister.cpp
+    database/TableRegister.cpp
     yuv2rgb/yuv2rgb.cpp
     yuv2rgb/bmp_utils.cpp
     yuv2rgb/rgb2yuv.cpp
@@ -96,6 +96,9 @@ set(SOURCES_FILES
 
 set(HEADER_FILES
     ${HEADER_FILES}
+    CameraQtCaptureVideoFrame.h
+    ImageTool.h
+    Log.h
     ParameterFactory.h
     Parameter.h
     ParameterDetector.h
@@ -106,12 +109,9 @@ set(HEADER_FILES
     Detector.h
     Landmarker.h
     Recognizer.h
-    Database.h
-    DataRegister.h
-    TableRegister.h
-    CameraQtCaptureVideoFrame.h
-    ImageTool.h
-    Log.h
+    database/Database.h
+    database/DataRegister.h
+    database/TableRegister.h
     yuv2rgb/yuv2rgb.h
     yuv2rgb/bmp_utils.h
     yuv2rgb/rgb2yuv.h
