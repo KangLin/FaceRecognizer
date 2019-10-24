@@ -1,7 +1,9 @@
 #ifndef CLOG_H
 #define CLOG_H
 
-class  CLog
+#include "facerecognizer_export.h"
+
+class FACERECOGNIZER_EXPORT CLog
 {
 public:
     CLog();

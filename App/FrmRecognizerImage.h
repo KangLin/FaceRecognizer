@@ -22,7 +22,7 @@ private slots:
     
 private:
     int RecognizeFace(QImage &image);
-    int MarkFace(QImage &image);
+    int MarkFace(QImage &image, int nSelect = -1);
     int ShowUI(bool bShow = true);
     enum STATUS_TYPE
     {
@@ -38,13 +38,13 @@ private:
         QVector<QPointF> points;
         qint64 index;
         CDataRegister data;
-        bool bSelect;
     };
     QVector<FACE_INFO> m_Info;
-
+    
 private:
     Ui::CFrmRecognizerImage *ui;
     CFace* m_pFace;
+    QImage m_Image;
 };
 
 #endif // FRMRECOGNIZERIMAGE_H

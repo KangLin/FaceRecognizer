@@ -7,7 +7,7 @@
 CRecognizerSeeta::CRecognizerSeeta(QObject *parent)
     : CRecognizer(parent)
 {
-    m_fThreshold = 0.8f;
+    m_fThreshold = 0.7f;
 }
 
 CRecognizerSeeta::~CRecognizerSeeta()

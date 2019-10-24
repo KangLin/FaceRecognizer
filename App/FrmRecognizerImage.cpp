@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QStandardItemModel>
 #include <QStandardItem>
+#include <QPen>
 
 CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     QWidget(parent),
@@ -51,11 +52,8 @@ void CFrmRecognizerImage::on_pbBrower_clicked()
     ShowUI(false);
 
     ui->leFile->setText(szFile);
-
-    QImage image(szFile);
-    RecognizeFace(image);
-    MarkFace(image);
-    ui->lbImage->setPixmap(QPixmap::fromImage(image));
+    m_Image.load(szFile);
+    RecognizeFace(m_Image);
 }
 
 int CFrmRecognizerImage::SetStatusInformation(const QString &szInfo, int nRet, STATUS_TYPE type)
@@ -91,29 +89,31 @@ int CFrmRecognizerImage::ShowUI(bool bShow)
     {
         ui->lbOldImage->setVisible(true);
         ui->tvInformation->setVisible(true);
-        if(m_Info.size() > 1)
-        {
-            ui->pbNext->setVisible(true);
-            ui->pbPrevious->setVisible(true);
-        }
     } else {
         ui->lbOldImage->setVisible(false);
         ui->tvInformation->setVisible(false);
-        ui->pbNext->setVisible(false);
-        ui->pbPrevious->setVisible(false);
     }
     return 0;
 }
 
-int CFrmRecognizerImage::MarkFace(QImage &image)
+int CFrmRecognizerImage::MarkFace(QImage &image, int nSelect)
 {
     QPainter painter(&image);
     QPen pen(Qt::green);
     pen.setWidth(2);
-    painter.setPen(pen);    
+    painter.setPen(pen);
     QVector<FACE_INFO>::iterator it;
+    int i = 0;
     for(it = m_Info.begin(); it != m_Info.end(); it++)
     {
+        if(-1 != nSelect)
+        {
+            if(i == nSelect)
+                pen.setColor(Qt::red);
+            else
+                pen.setColor(Qt::green);
+            painter.setPen(pen);
+        }
         painter.drawRect(it->face.x(), it->face.y(), it->face.width(), it->face.height());
         if(!it->data.getName().isEmpty())
             painter.drawText(it->face.x(), it->face.y(), it->data.getName());
@@ -121,7 +121,9 @@ int CFrmRecognizerImage::MarkFace(QImage &image)
         {
             painter.drawPoint(point.x(), point.y());
         }
+        i++;
     }
+    ui->lbImage->setPixmap(QPixmap::fromImage(image));
     return 0;
 }
 
@@ -160,12 +162,14 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     
     if(m_Info.size() > 0)
     {
+        ShowUI(true);
         QModelIndex index = ui->tvInformation->model()->index(0, 0);
         ui->tvInformation->clicked(index);
-        ShowUI(true);
         SetStatusInformation(tr("Recognizer %1 faces").arg(m_Info.size()));
-    } else 
+    } else {
+        MarkFace(m_Image);   
         SetStatusInformation(tr("Please select image"));
+    }
     return 0;
 }
 
@@ -173,7 +177,10 @@ void CFrmRecognizerImage::on_tvInformation_clicked(const QModelIndex &index)
 {
     if(!index.isValid())
         return;
+    
+    ui->tvInformation->selectRow(index.row());
     ui->lbOldImage->setPixmap(QPixmap::fromImage(
-                  QImage(m_pFace->GetRecognizer()->GetRegisterImage(
-                                 m_Info[index.row()].index))));
+                        QImage(m_pFace->GetRecognizer()->GetRegisterImage(
+                                             m_Info[index.row()].index))));
+    MarkFace(m_Image, index.row());
 }
