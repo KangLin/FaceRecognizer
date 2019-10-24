@@ -131,6 +131,7 @@ SET(RCC_FILES
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 if(BUILD_TYPE STREQUAL "debug")
+    set(LIBS_DEFINES ${LIBS_DEFINES} DEBUG)
     SET(RCC_FILES ${RCC_FILES} ../Resource/ResourceSql.qrc)
 endif()
 

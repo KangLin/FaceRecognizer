@@ -1,5 +1,6 @@
 - v0.0.3
   + Add database
+  + Add register from image
   
 - v0.0.2
   + Register and recognizer face from video file

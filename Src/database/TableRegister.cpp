@@ -52,8 +52,7 @@ int CTableRegister::Register(qint64 index, CDataRegister *pData)
     }
 
     QString szSql = "INSERT INTO Register (" + szCol + ") VALUES (" + szValue + ");";
-    LOG_MODEL_DEBUG("CDatabase", "sql: %s\n", szSql.toString().c_str());
-    qDebug() << "sql:" << szSql;
+    LOG_MODEL_DEBUG("CDatabase", "sql: %s\n", szSql.toStdString().c_str());
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
@@ -105,7 +104,6 @@ int CTableRegister::GetRegisterInfo(qint64 index, CDataRegister *pData)
             QString szName = p.name();
             int idx = query.record().indexOf(p.name());
             QString szValue = query.value(idx).toString();
-            qDebug() << szName << "=" << szValue;
         }
     }
     return nRet;

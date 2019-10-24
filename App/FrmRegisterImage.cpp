@@ -148,8 +148,6 @@ void CFrmRegisterImage::on_pbCancel_clicked()
 void CFrmRegisterImage::on_pbReplace_clicked()
 {
     if(!m_pFace) return;
-    if(Check())
-        return;
     
     QString szMsg;
     QImage image = m_Image;
@@ -172,7 +170,10 @@ void CFrmRegisterImage::on_pbReplace_clicked()
             m_pFace->GetRecognizer()->Delete(index);
             // Delete item from database
             m_pFace->GetDatabase()->GetTableRegister()->Delete(index);
-        } 
+        }
+        
+        if(Check())
+            return;
         
         ShowReplaceUI(false);
         qint64 index = m_pFace->GetRecognizer()->Register(
