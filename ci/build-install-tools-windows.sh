@@ -51,10 +51,17 @@ fi
 
 #下载android ndk  
 if [ ! -d "${TOOLS_DIR}/android-ndk" ]; then
-    wget -c -nv http://dl.google.com/android/ndk/android-ndk-r10e-windows-x86.exe
-    ./android-ndk-r10e-windows-x86.exe > /dev/null
-    mv android-ndk-r10e android-ndk
-    rm android-ndk-r10e-windows-x86.exe
+    if [ "$QT_VERSION_DIR" = "5.12" ]; then
+        wget -c -nv https://dl.google.com/android/repository/android-ndk-r19c-windows-x86_64.zip
+        unzip android-ndk-r19c-windows-x86_64.zip
+        mv android-ndk-r19c android-ndk
+        rm android-ndk-r19c-windows-x86_64.zip
+    else
+        wget -c -nv http://dl.google.com/android/ndk/android-ndk-r10e-windows-x86.exe
+        ./android-ndk-r10e-windows-x86.exe > /dev/null
+        mv android-ndk-r10e android-ndk
+        rm android-ndk-r10e-windows-x86.exe
+    fi
 fi
 
 cd ${SOURCE_DIR}

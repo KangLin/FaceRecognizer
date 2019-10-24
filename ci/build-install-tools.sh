@@ -47,17 +47,27 @@ function function_common()
     fi
 }
 
-function function_android()
+function install_android()
+{
+    cd ${SOURCE_DIR}/Tools
+    if [ ! -d "`pwd`/android-sdk" ]; then
+        wget -c -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+        mkdir android-sdk
+        cd android-sdk
+        cp ../sdk-tools-linux-4333796.zip .
+        unzip sdk-tools-linux-4333796.zip
+        echo "Install sdk and ndk ......"
+        ./tools/bin/sdkmanager "platform-tools" "build-tools" "platforms;${ANDROID_API}" "ndk-bundle"
+        if [ ! -d ${SOURCE_DIR}/Tools/android-ndk ]; then
+            ln -s ${SOURCE_DIR}/Tools/android-sdk/ndk ${SOURCE_DIR}/Tools/android-ndk
+        fi
+    fi
+}
+
+function install_android_sdk_and_ndk()
 {
     cd ${SOURCE_DIR}/Tools
     
-    # install oracle jdk
-    #sudo add-apt-repository ppa:linuxuprising/java -y
-    #sudo apt update
-    #(sleep 5 ; while true ; do sleep 1 ; printf '\r\n' ; done ) | sudo apt install oracle-java11-installer -qq -y
-    
-    #sudo apt install oracle-java11-set-default -qq -y
-
     #下载android ndk  
     if [ ! -d "`pwd`/android-ndk" ]; then
         if [ "$QT_VERSION_DIR" = "5.9" ]; then
@@ -76,18 +86,31 @@ function function_android()
     fi
 
     cd ${SOURCE_DIR}/Tools
-    
+
     #Download android sdk  
     if [ ! -d "`pwd`/android-sdk" ]; then
-        wget -c -nv https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
-        tar xf android-sdk_r24.4.1-linux.tgz 
+        SDK_VERSION=r24.4.1
+        wget -c -nv https://dl.google.com/android/android-sdk_${SDK_VERSION}-linux.tgz
+        tar xf android-sdk_${SDK_VERSION}-linux.tgz 
         mv android-sdk-linux android-sdk
-        rm android-sdk_r24.4.1-linux.tgz 
+        rm android-sdk_${SDK_VERSION}-linux.tgz 
         (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
         | android-sdk/tools/android update sdk -u #-t tool,android-18,android-24,extra,platform,platform-tools,build-tools-28.0.3
     fi
+}
 
+function function_android()
+{
+    cd ${SOURCE_DIR}/Tools
     
+    # install oracle jdk
+    #sudo add-apt-repository ppa:linuxuprising/java -y
+    #sudo apt update
+    #(sleep 5 ; while true ; do sleep 1 ; printf '\r\n' ; done ) | sudo apt install oracle-java11-installer -qq -y
+    
+    #sudo apt install oracle-java11-set-default -qq -y
+
+    install_android_sdk_and_ndk
     
     sudo apt-get install ant -qq -y
     sudo apt-get install libicu-dev -qq -y
@@ -114,7 +137,8 @@ function function_unix()
         libgstreamer0.10-dev \
         libgstreamer-plugins-base0.10-dev \
         gstreamer1.0-pulseaudio \
-        libopencv-dev
+        libmysql-cil-dev libmysql-cil-dev libmysql-ocaml-dev libmysql++-dev libmysqld-dev libmysqlcppconn-dev \
+	libodbc1
 
     if [ "$BUILD_DOWNLOAD" != "TRUE" ]; then
         sudo apt-get install -y -qq qt${QT_VERSION_DIR}base \
