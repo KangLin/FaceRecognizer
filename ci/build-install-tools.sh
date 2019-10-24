@@ -70,7 +70,7 @@ function install_android_sdk_and_ndk()
     
     #下载android ndk  
     if [ ! -d "`pwd`/android-ndk" ]; then
-        if [ "$QT_VERSION_DIR" = "5.9" ]; then
+        if [ "$QT_VERSION_DIR" = "5.8" ]; then
             wget -c -nv http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
             chmod u+x android-ndk-r10e-linux-x86_64.bin
             ./android-ndk-r10e-linux-x86_64.bin > /dev/null
@@ -137,8 +137,10 @@ function function_unix()
         libgstreamer0.10-dev \
         libgstreamer-plugins-base0.10-dev \
         gstreamer1.0-pulseaudio \
-        libmysql-cil-dev libmysql-cil-dev libmysql-ocaml-dev libmysql++-dev libmysqld-dev libmysqlcppconn-dev \
-	libodbc1
+        libmysql-cil-dev libmysql-cil-dev libmysql-ocaml-dev \
+        libmysql++-dev libmysqld-dev libmysqlcppconn-dev \
+        libmysqlclient-dev \
+        libodbc1
 
     if [ "$BUILD_DOWNLOAD" != "TRUE" ]; then
         sudo apt-get install -y -qq qt${QT_VERSION_DIR}base \

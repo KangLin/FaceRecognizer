@@ -6,6 +6,7 @@ set(SOURCES_FILES
     main.cpp
     MainWindow.cpp
     FrmRegisterImage.cpp
+    FrmRecognizerImage.cpp
     FrmDisplay.cpp
     FrmRegister.cpp
     FrmRecognizer.cpp
@@ -14,6 +15,7 @@ set(SOURCES_FILES
 set(HEADER_FILES
     MainWindow.h
     FrmRegisterImage.h
+    FrmRecognizerImage.h
     FrmDisplay.h
     FrmRegister.h
     FrmRecognizer.h
@@ -22,6 +24,7 @@ set(HEADER_FILES
 set(SOURCE_UI_FILES
     MainWindow.ui
     FrmRegisterImage.ui
+    FrmRecognizerImage.ui
     FrmDisplay.ui
     FrmRegister.ui
     FrmRecognizer.ui

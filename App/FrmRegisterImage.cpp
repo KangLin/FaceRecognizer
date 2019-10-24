@@ -18,7 +18,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     ShowReplaceUI(false);
     m_pFace = CFactory::Instance();
     ui->lbID->setText("");
-    SetStatusInformation(tr("Please select image")); 
+    SetStatusInformation(tr("Please select image"));
 }
 
 CFrmRegisterImage::~CFrmRegisterImage()

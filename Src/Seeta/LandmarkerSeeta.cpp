@@ -52,8 +52,9 @@ QVector<QPointF> CLandmarkerSeeta::Mark(const QImage &image, const QRect &face)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
-        img = img.convertToFormat(QImage::Format_RGB888).rgbSwapped();
+        img = img.convertToFormat(QImage::Format_RGB888);
     }
+    img = img.rgbSwapped();
     
     SeetaImageData data;
     data.width = img.width();

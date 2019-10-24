@@ -13,7 +13,8 @@ class FACERECOGNIZER_EXPORT CDataRegister : public QObject
     
 public:
     explicit CDataRegister(QObject *parent = nullptr);
-    
+    CDataRegister(const CDataRegister &other);
+    CDataRegister& operator=(const CDataRegister&);
     qint64 getIdx();
     int setIdx(qint64 idx);
 

@@ -82,12 +82,12 @@
 + 编译工具
   + [Qt](http://qt.io/)
   + 编译器
-    -  For linux
+    - For linux
         + GNU Make 工具
         + GCC 或者 Clang 编译器
     - For windows
-        + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio) 或者 MinGW. 
-      
+        + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio)
+        + MinGW
   + [CMake](http://www.cmake.org/)
 + 依赖库
   - [必选] Rabbit 公共库: https://github.com/KangLin/RabbitCommon
@@ -95,7 +95,7 @@
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
   - [可选] opencv: https://opencv.org/
-  
+
 ### 编译参数
   - CMAKE_INSTALL_PREFIX: 安装前缀
   - Qt5_DIR: qt 安装位置
@@ -103,7 +103,7 @@
   - SeetaFace_DIR: SeetaFace 库安装位置
   - YUV_DIR: libyuv 库安装位置
   - OpenCV_DIR: OpenCV 库安装位置
- 
+
 ### 各平台编译
 #### linux平台编译说明
   - 编译

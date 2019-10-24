@@ -12,6 +12,7 @@
 #include <QFileDialog>
 
 #include "FrmRegisterImage.h"
+#include "FrmRecognizerImage.h"
 
 #ifdef RABBITCOMMON
     #include "FrmUpdater/FrmUpdater.h"
@@ -74,8 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->actionFile->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
-    ui->actionRegisterImage->setChecked(true);
-    on_actionRegisterImage_triggered();
+    ui->actionRecognizerImage->setChecked(true);
+    on_actionRecognizerImage_triggered();
 #else
     ui->menuRegister->setEnabled(false);
     ui->menuRecognizer->setEnabled(false);
@@ -226,7 +227,8 @@ void MainWindow::on_actionRegisterImage_directory_triggered()
 
 void MainWindow::on_actionRecognizerImage_triggered()
 {
-    
+    CFrmRecognizerImage* pImage = new CFrmRecognizerImage(this);
+    setCentralWidget(pImage);
 }
 
 void MainWindow::on_actionRecognizerVideo_triggered()
