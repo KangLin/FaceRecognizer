@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QDebug>
+#include <QPalette>
 
 CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     QWidget(parent),
@@ -17,7 +18,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     ShowReplaceUI(false);
     m_pFace = CFactory::Instance();
     ui->lbID->setText("");
-    ui->lbStatus->setText(tr("Please select image"));
+    SetStatusInformation(tr("Please select image")); 
 }
 
 CFrmRegisterImage::~CFrmRegisterImage()
@@ -63,7 +64,7 @@ void CFrmRegisterImage::on_pbBrower_clicked()
     MarkFace(image);
     ui->lbImage->setPixmap(QPixmap::fromImage(image));
     ui->lbID->setText(QString());
-    ui->lbStatus->setText(tr("Have selected images"));
+    SetStatusInformation(tr("Have selected images"));
     ShowReplaceUI(false);
 }
 
@@ -78,9 +79,9 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     auto faces = m_pFace->GetDector()->Detect(image);
     if(faces.size() != 1)
     {
-        QString szMsg = tr("Error: Please select a photo with only one person");
-        ui->lbStatus->setText(szMsg);
-        QMessageBox::warning(this, tr("Face register"),
+        QString szMsg = tr("Please select a photo with only one person");
+        SetStatusInformation(szMsg, -1, ERROR);
+        QMessageBox::critical(this, tr("Face register"),
                              szMsg);
         return;
     }
@@ -102,11 +103,11 @@ void CFrmRegisterImage::on_pbRegister_clicked()
                 ui->lbOldImage->setPixmap(QPixmap::fromImage(
                     QImage(m_pFace->GetRecognizer()->GetRegisterImage(index))));               
 
-                QString szMsg = tr("Error: This person already exists. index:");
-                szMsg += QString::number(data.getIdx());
-                szMsg += "; no:" + QString::number(data.getNo());
-                szMsg += "; name:" + data.getName();
-                ui->lbStatus->setText(szMsg);
+                QString szMsg = tr("This person already exists. index:");
+                szMsg += QString::number(data.getIdx()) + "; ";
+                szMsg += tr("no:") + QString::number(data.getNo()) + "; ";
+                szMsg += tr("name:") + data.getName();
+                SetStatusInformation(szMsg, -1, ERROR);
                 return;
             }
         }
@@ -115,7 +116,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
                     image, points);
         if(-1 == index)
         {
-            ui->lbStatus->setText(tr("Face register fail"));
+            SetStatusInformation(tr("Face register fail"), -2, FAIL);
             return;
         }
         ui->lbID->setText(QString::number(index));
@@ -128,21 +129,23 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
         {            
             m_pFace->GetRecognizer()->Delete(index);
-            szMsg = "Error: Write database fail. The no is exists?";
+            szMsg = "Write database fail. The no is exists?";
+            SetStatusInformation(szMsg, -1, ERROR);
         } else {
             szMsg = tr("Regist success. index:");
-            szMsg += QString::number(data.getIdx());
-            szMsg += "; no:" + QString::number(data.getNo());
-            szMsg += "; name:" + data.getName();
+            szMsg += QString::number(data.getIdx()) + "; ";
+            szMsg += tr("no:") + QString::number(data.getNo()) + "; ";
+            szMsg += tr("name:") + data.getName();
+            SetStatusInformation(szMsg, 0, SUCCESS);
         }
-        ui->lbStatus->setText(szMsg);
+        
     }
 }
 
 void CFrmRegisterImage::on_pbCancel_clicked()
 {
     ShowReplaceUI(false);
-    ui->lbStatus->setText(tr("Please select image"));
+    SetStatusInformation(tr("Please select image"));
 }
 
 void CFrmRegisterImage::on_pbReplace_clicked()
@@ -154,8 +157,8 @@ void CFrmRegisterImage::on_pbReplace_clicked()
     auto faces = m_pFace->GetDector()->Detect(image);
     if(faces.size() != 1)
     {
-        QString szMsg = tr("Error: Please select a photo with only one person");
-        ui->lbStatus->setText(szMsg);
+        QString szMsg = tr("Please select a photo with only one person");
+        SetStatusInformation(szMsg, -1, ERROR);
         QMessageBox::warning(this, tr("Face register"),
                              szMsg);
         return;
@@ -180,7 +183,7 @@ void CFrmRegisterImage::on_pbReplace_clicked()
                     image, points);
         if(-1 == index)
         {
-            ui->lbStatus->setText(tr("Face register fail"));
+            SetStatusInformation(tr("Face register fail"), -1, FAIL);
             return;
         }
         ui->lbID->setText(QString::number(index));
@@ -193,14 +196,15 @@ void CFrmRegisterImage::on_pbReplace_clicked()
         if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
         {            
             m_pFace->GetRecognizer()->Delete(index);
-            szMsg = "Error: Write database fail. The no is exists?";
+            szMsg = tr("Write database fail. The no is exists?");
+            SetStatusInformation(szMsg, -1, ERROR); 
         } else {
             szMsg = tr("Regist success. index:");
-            szMsg += QString::number(data.getIdx());
-            szMsg += "; no:" + QString::number(data.getNo());
-            szMsg += "; name:" + data.getName();
+            szMsg += QString::number(data.getIdx()) + "; ";
+            szMsg += tr("NO:") + QString::number(data.getNo()) + "; ";
+            szMsg += tr("name:") + data.getName();
+            SetStatusInformation(szMsg, 0, SUCCESS); 
         }
-        ui->lbStatus->setText(szMsg);
     }
 }
 
@@ -239,21 +243,45 @@ int CFrmRegisterImage::Check()
 {
     if(ui->leNo->text().isEmpty())
     {
-        ui->lbStatus->setText(tr("Error: Please input no"));
-        return -1;
+        return SetStatusInformation(tr("Please input no"), -1, ERROR); 
     }
     
     if(ui->leName->text().isEmpty())
     {
-        ui->lbStatus->setText(tr("Error: Please input name"));
-        return -2;
+        return SetStatusInformation(tr("Please input name"), -2, ERROR); 
     }
     
     if(m_pFace->GetDatabase()->GetTableRegister()->IsExistNo(ui->leNo->text().toLongLong()))
     {
-        ui->lbStatus->setText(tr("Error: The no is exists"));
-        return -3; 
+        return SetStatusInformation(tr("The no is exists"), -3, ERROR); 
     }
     
     return 0;
+}
+
+int CFrmRegisterImage::SetStatusInformation(const QString &szInfo, int nRet, STATUS_TYPE type)
+{
+    QPalette palette;
+    QString szMsg;
+    switch (type) {
+    case ERROR:
+        szMsg = tr("ERROR: ");
+        palette.setColor(QPalette::WindowText, QColor(255, 0, 0));
+        break;
+    case FAIL:
+        szMsg = tr("FAIL: ");
+        palette.setColor(QPalette::WindowText, QColor(255, 0, 0));
+        break;
+    case SUCCESS:
+        szMsg = tr("SUCCESS: ");
+        palette.setColor(QPalette::WindowText, QColor(0, 255, 0));
+        break;
+    default:
+        break;
+    }
+    szMsg += szInfo;
+    
+    ui->lbStatus->setPalette(palette);
+    ui->lbStatus->setText(szMsg);
+    return nRet;
 }

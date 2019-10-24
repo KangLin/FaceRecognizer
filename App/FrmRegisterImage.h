@@ -29,6 +29,14 @@ private:
     int MarkFace(QImage &image);
     int ShowReplaceUI(bool bReplace = true);
     int Check();
+    enum STATUS_TYPE
+    {
+        NORMAL,
+        ERROR,
+        FAIL,
+        SUCCESS
+    };
+    int SetStatusInformation(const QString &szInfo, int nRet = 0, STATUS_TYPE type = NORMAL);
     
 private:
     Ui::CFrmRegisterImage *ui;
