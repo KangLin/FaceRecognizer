@@ -9,9 +9,10 @@ class FACERECOGNIZER_EXPORT CParameter : public QObject
     Q_OBJECT
 public:
     explicit CParameter(QObject *parent = nullptr);
-
-    int SetModelPath(const QString &szPath);
-    QString GetModelPath();
+    virtual ~CParameter();
+    
+    virtual int SetModelPath(const QString &szPath);
+    virtual QString GetModelPath();
     
     enum DEVICE
     {
@@ -19,8 +20,8 @@ public:
         CPU,
         GPU
     };
-    int SetDevice(DEVICE device);
-    DEVICE GetDevice();
+    virtual int SetDevice(DEVICE device);
+    virtual DEVICE GetDevice();
     
 Q_SIGNALS:
     void sigUpdate();
