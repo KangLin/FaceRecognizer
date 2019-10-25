@@ -1,6 +1,18 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+#ifdef RABBITCOMMON
+    #include "FrmUpdater/FrmUpdater.h"
+    #include "DlgAbout/DlgAbout.h"
+    #include "RabbitCommonDir.h"
+#endif
+
+#include "FrmDisplay.h"
+#include "ParameterFactory.h"
+#include "FrmRegisterImage.h"
+#include "FrmRecognizerImage.h"
+#include "FrmRegisterVideo.h"
+
 #include <QCameraInfo>
 #include <QGuiApplication>
 #include <QScreen>
@@ -10,24 +22,6 @@
 #include <QComboBox>
 #include <QActionGroup>
 #include <QFileDialog>
-
-#include "FrmRegisterImage.h"
-#include "FrmRecognizerImage.h"
-
-#ifdef RABBITCOMMON
-    #include "FrmUpdater/FrmUpdater.h"
-    #include "DlgAbout/DlgAbout.h"
-    #include "RabbitCommonDir.h"
-#endif
-
-#include "FrmDisplay.h"
-
-#ifdef HAVE_SEETA_FACE
-    #include "FrmRecognizer.h"
-    #include "FrmRegister.h"
-#endif
-
-#include "ParameterFactory.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -75,8 +69,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->actionFile->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
-    ui->actionRecognizerImage->setChecked(true);
-    on_actionRecognizerImage_triggered();
+    ui->actionRegisterVideo->setChecked(true);
+    on_actionRegisterVideo_triggered();
 #else
     ui->menuRegister->setEnabled(false);
     ui->menuRecognizer->setEnabled(false);
@@ -216,6 +210,7 @@ void MainWindow::on_actionSet_model_path_triggered()
 
 void MainWindow::on_actionRegisterImage_triggered()
 {
+    m_CaptureFrame.disconnect();
     CFrmRegisterImage* pImage = new CFrmRegisterImage(this);
     setCentralWidget(pImage);
 }
@@ -225,37 +220,27 @@ void MainWindow::on_actionRegisterImage_directory_triggered()
     
 }
 
+void MainWindow::on_actionRegisterVideo_triggered()
+{
+    CFrmRegisterVideo *pVideo = new CFrmRegisterVideo(this);
+    if(!pVideo) return;
+    m_CaptureFrame.disconnect();
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
+                          pVideo, SLOT(slotDisplay(const QImage &)));
+    Q_ASSERT(check);
+    setCentralWidget(pVideo);
+}
+
 void MainWindow::on_actionRecognizerImage_triggered()
 {
     CFrmRecognizerImage* pImage = new CFrmRecognizerImage(this);
+    m_CaptureFrame.disconnect();
     setCentralWidget(pImage);
 }
 
 void MainWindow::on_actionRecognizerVideo_triggered()
 {
-#ifdef HAVE_SEETA_FACE
-    CFrmRecognizer *pRecognizer = new CFrmRecognizer(this);
-    if(!pRecognizer)
-        return;
 
-    this->setCentralWidget(pRecognizer);
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
-                         pRecognizer, SLOT(slotDisplay(const QImage &)));
-    Q_ASSERT(check);
-#endif
-}
-
-void MainWindow::on_actionRegisterVideo_triggered()
-{
-#ifdef HAVE_SEETA_FACE
-    CFrmRegister *pRegister = new CFrmRegister(this);
-    if(!pRegister)
-        return;
-    this->setCentralWidget(pRegister);
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
-                         pRegister, SLOT(slotDisplay(const QImage &)));
-    Q_ASSERT(check);    
-#endif
 }
 
 void MainWindow::on_actionDisplay_triggered()
@@ -263,10 +248,11 @@ void MainWindow::on_actionDisplay_triggered()
     CFrmDisplay *pDisplay = new CFrmDisplay(this);
     if(!pDisplay)
         return;
-    this->setCentralWidget(pDisplay);
+    m_CaptureFrame.disconnect();
     bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
                           pDisplay, SLOT(slotDisplay(const QImage &)));
     Q_ASSERT(check);
+    this->setCentralWidget(pDisplay);
 }
 
 void MainWindow::on_actionAbout_A_triggered()

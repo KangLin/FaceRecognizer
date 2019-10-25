@@ -15,12 +15,7 @@ public:
     virtual ~CParameterFactory();
     
     static CParameterFactory* Instance();
-    
-    enum _PARAMTER_TYPE{
-        DETECTORY = 0,
-        LANDMARKER,
-        RECOGNIZER
-    };
+
     CParameterDetector* GetParameterDetector();
     CParameterLandmark* GetParameterLandmark();
     CParameterRecognizer* GetParameterRecognizer();
@@ -29,6 +24,11 @@ public:
     int SetDevice(CParameter::DEVICE device);
 
 private:
+    enum _PARAMTER_TYPE{
+        DETECTORY = 0,
+        LANDMARKER,
+        RECOGNIZER
+    };
     QVector<CParameter*> m_pParameter;
 };
 

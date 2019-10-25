@@ -18,7 +18,7 @@ public:
     ~CFrmDisplay();
     
 public Q_SLOTS:
-    void slotDisplay(const QImage &frame);
+    void slotDisplay(const QImage &image);
 
 protected:
     void paintEvent(QPaintEvent *event);

@@ -3,31 +3,31 @@ cmake_minimum_required(VERSION 2.8)
 project(FaceRecognizerApp)
 
 set(SOURCES_FILES
+    FrmDisplay.cpp
     main.cpp
     MainWindow.cpp
     FrmRegisterImage.cpp
     FrmRecognizerImage.cpp
-    FrmDisplay.cpp
-    FrmRegister.cpp
-    FrmRecognizer.cpp
+    FrmRegisterVideo.cpp
+    #FrmRegisterVideoImage.cpp
     )
 
 set(HEADER_FILES
+    FrmDisplay.h
     MainWindow.h
     FrmRegisterImage.h
     FrmRecognizerImage.h
-    FrmDisplay.h
-    FrmRegister.h
-    FrmRecognizer.h
+    FrmRegisterVideo.h
+    #FrmRegisterVideoImage.h
     )
 
 set(SOURCE_UI_FILES
+    FrmDisplay.ui
     MainWindow.ui
     FrmRegisterImage.ui
     FrmRecognizerImage.ui
-    FrmDisplay.ui
-    FrmRegister.ui
-    FrmRecognizer.ui
+    FrmRegisterVideo.ui
+    #FrmRegisterVideoImage.ui
     )
 
 #翻译

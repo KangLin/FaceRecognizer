@@ -11,11 +11,11 @@
   - [下载安装包](#下载安装包)
 - [编译](#编译)
   - [依赖](#依赖)
-  - [编译参数](#编译参数)
+  - [CMake 配置参数](#CMake-配置参数)
   - [各平台编译](#各平台编译)
-    - [linux平台编译说明](#linux平台编译说明)
-    - [windows平台编译说明](#windows平台编译说明)
-    - [Android平台编译说明](#Android平台编译说明)
+    - [linux 平台编译说明](#linux-平台编译说明)
+    - [windows 平台编译说明](#windows-平台编译说明)
+    - [Android 平台编译说明](#Android-平台编译说明)
 - [捐赠](#捐赠)
 - [贡献](#贡献)
 - [许可协议](#许可协议)
@@ -30,9 +30,9 @@
   - [ ] 人脸特效
 - [ ] 测试比较工具框架
 - [ ] 人脸识别开源库测试比较
-  + [x] [opencv](https://github.com/opencv/opencv)
+  + [ ] [opencv](https://github.com/opencv/opencv)
   + [ ] [dlib](https://github.com/davisking/dlib)
-  + [x] [SeetaFace2](https://github.com/KangLin/SeetaFace2/tree/develop)
+  + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
 
 ### 支持平台
@@ -91,21 +91,21 @@
   + [CMake](http://www.cmake.org/)
 + 依赖库
   - [必选] Rabbit 公共库: https://github.com/KangLin/RabbitCommon
-  - [可选] SeetaFace2: https://github.com/KangLin/SeetaFace2/tree/develop
+  - [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
   - [可选] opencv: https://opencv.org/
 
-### 编译参数
-  - CMAKE_INSTALL_PREFIX: 安装前缀
-  - Qt5_DIR: qt 安装位置
-  - RabbitCommon_DIR: RabbitCommon源码位置
-  - SeetaFace_DIR: SeetaFace 库安装位置
-  - YUV_DIR: libyuv 库安装位置
-  - OpenCV_DIR: OpenCV 库安装位置
+### CMake 配置参数
+  - [必选] Qt5_DIR: qt 安装位置
+  - [必选] RabbitCommon_DIR: RabbitCommon源码位置
+  - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
+  - [可选] SeetaFace_DIR: SeetaFace 库安装位置
+  - [可选] YUV_DIR: libyuv 库安装位置
+  - [可选] OpenCV_DIR: OpenCV 库安装位置
 
 ### 各平台编译
-#### linux平台编译说明
+#### linux 平台编译说明
   - 编译
 
         cd FaceRecognizer
@@ -115,7 +115,7 @@
                  -DCMAKE_BUILD_TYPE=Release \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaFace_DIR= 
+                 [其它可选 CMake 配置参数]
         cmake --build . --config Release 
 
   - 安装
@@ -125,15 +125,15 @@
   - 运行例子
     + 把生成库的目录加入到变量 LD_LIBRARY_PATH 中
  
-            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/lib
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/bin
 
-    + 拷贝模型文件到程序执行目录的 model 目录下
+    + 拷贝模型文件到程序安装目录下的 model 目录下，也可以在程序运行后指定。
+      - SeetaFace 模型文件。模型文件位置详见：https://github.com/seetafaceengine/SeetaFace2
 
-            cd FaceRecognizer
-            cd build
-            cd bin
-            mkdir model
-            cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
+                cd FaceRecognizer
+                cd build
+                mkdir model
+                cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
 
     + 执行 bin 目录下的程序
 
@@ -143,7 +143,7 @@
             ./FaceRecognizer
 
 
-#### windows平台编译说明
+#### windows 平台编译说明
   - 使用 cmake-gui.exe 工具编译。打开 cmake-gui.exe
   - 命令行编译
     + 把 cmake 命令所在目录加入到环境变量 PATH 中
@@ -158,26 +158,26 @@
                  -DCMAKE_BUILD_TYPE=Release \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaFace_DIR= 
-            cmake --build . --config Release 
+                 [其它可选 CMake 配置参数]
+            cmake --build . --config Release
 
       - 安装
 
             cmake --build . --config Release --target install
 
       - 运行例子
-        + 拷贝模型文件到程序执行目录的 model 目录下
-
-                cd FaceRecognizer
-                cd build
-                cd bin
-                mkdir model
-                cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
+        + 拷贝模型文件到程序安装目录下的 model 目录下，也可以在程序运行后指定。
+          - SeetaFace 模型文件。模型文件位置详见：https://github.com/seetafaceengine/SeetaFace2
+  
+                  cd FaceRecognizer
+                  cd build
+                  mkdir model
+                  cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
 
         + 执行 bin 目录下的程序
           - FaceRecognizer
 
-#### Android平台编译说明
+#### Android 平台编译说明
 + 安装 ndk 编译工具
   - 从  https://developer.android.com/ndk/downloads 下载 ndk，并安装到：/home/android-ndk
   - 设置环境变量：
@@ -185,7 +185,7 @@
         export ANDROID_NDK=/home/android-ndk
 
 + 编译
-  - 主机是linux
+  - 主机是 linux
 
         cd FaceRecognizer
         mkdir build
@@ -197,11 +197,11 @@
                  -DANDROID_PLATFORM=android-18 \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaFace_DIR= 
+                 [其它可选 CMake 配置参数]
         cmake --build . --config Release --target install
 	    cmake --build . --target APK
 
-  - 主机是windows
+  - 主机是 windows
 
         cd FaceRecognizer
         mkdir build
@@ -214,11 +214,11 @@
                  -DANDROID_ARM_NEON=ON \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
-                 -DSeetaFace_DIR= 
+                 [其它可选 CMake 配置参数]
         cmake --build . --config Release --target install
 	    cmake --build . --target APK
 
-  - 参数说明：https://developer.android.google.cn/ndk/guides/cmake
+  - CMake android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：
       目标 ABI。如果未指定目标 ABI，则 CMake 默认使用 armeabi-v7a。  
       有效的目标名称为：
@@ -232,7 +232,7 @@
     + ANDROID_PLATFORM: 如需平台名称和对应 Android 系统映像的完整列表，请参阅 [Android NDK 原生 API](https://developer.android.google.cn/ndk/guides/stable_apis.html)
     + ANDROID_ARM_MODE
     + ANDROID_ARM_NEON
-    + ANDROID_STL:指定 CMake 应使用的 STL。
+    + ANDROID_STL:指定 CMake 应使用的 STL。默认情况下，CMake 使用 c++_static。 
 
   - 安装 apk 到设备
 

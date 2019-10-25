@@ -15,9 +15,9 @@ CFrmDisplay::~CFrmDisplay()
     delete ui;
 }
 
-void CFrmDisplay::slotDisplay(const QImage &frame)
+void CFrmDisplay::slotDisplay(const QImage &image)
 {
-    m_Image = frame;
+    m_Image = image;
     update();
 }
 
