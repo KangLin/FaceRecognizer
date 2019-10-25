@@ -17,6 +17,9 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     ui->setupUi(this);
     ShowReplaceUI(false);
     m_pFace = CFactory::Instance();
+    if(!m_pFace)
+        throw std::runtime_error("CFrmRegisterImage consturct allocte memory fail");
+    
     ui->lbID->setText("");
     SetStatusInformation(tr("Please select image"));
 }

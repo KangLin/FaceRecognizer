@@ -1,5 +1,6 @@
 #include "LandmarkerSeeta.h"
 #include "Log.h"
+#include "Performance.h"
 
 #include <QDir>
 
@@ -69,7 +70,9 @@ QVector<QPointF> CLandmarkerSeeta::Mark(const QImage &image, const QRect &face)
     rect.height = face.height();
     
     QVector<QPointF> ret;
+    PERFORMANCE(SeetaMark)
     std::vector<SeetaPointF> points = m_Landmarker->mark(data, rect);
+    PERFORMANCE_ADD_TIME(SeetaMark, "mark")
     std::vector<SeetaPointF>::iterator it;
     for(it = points.begin(); it != points.end(); it++)
     {

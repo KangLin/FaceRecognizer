@@ -1,6 +1,7 @@
 #include "RecognizerSeeta.h"
 #include "Log.h"
 #include "RabbitCommonDir.h"
+#include "Performance.h"
 
 #include <QDir>
 
@@ -56,6 +57,7 @@ qint64 CRecognizerSeeta::Register(const QImage &image,
 {
     int64_t index = 0;
 
+    PERFORMANCE(SeetaRegister);
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
@@ -75,8 +77,9 @@ qint64 CRecognizerSeeta::Register(const QImage &image,
         p.push_back(pp);
     }
 
+    PERFORMANCE_START(SeetaRegister)
     index = m_Recognizer->Register(data, p.data());
-    
+    PERFORMANCE_ADD_TIME(SeetaRegister, "Register")
     if(!img.rgbSwapped().save(GetRegisterImage(index)))
         LOG_MODEL_ERROR("CRecognizerSeeta", "Save register image fail");
     

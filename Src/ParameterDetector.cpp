@@ -2,7 +2,7 @@
 
 CParameterDetector::CParameterDetector(QObject *parent) : CParameter(parent)
 {
-    m_nFaceSize = 20;
+    m_nFaceSize = 40;
 }
 
 int CParameterDetector::SetFaceSize(int size)

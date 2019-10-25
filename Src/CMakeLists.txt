@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(FaceRecognizer)
 
+set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
+
 #Use: https://github.com/KangLin/libyuv
 find_package(YUV)
 if(YUV_FOUND)
@@ -89,9 +91,7 @@ set(SOURCES_FILES
     database/Database.cpp
     database/DataRegister.cpp
     database/TableRegister.cpp
-    yuv2rgb/yuv2rgb.cpp
-    yuv2rgb/bmp_utils.cpp
-    yuv2rgb/rgb2yuv.cpp
+    Performance.cpp
     )
 
 set(HEADER_FILES
@@ -112,9 +112,7 @@ set(HEADER_FILES
     database/Database.h
     database/DataRegister.h
     database/TableRegister.h
-    yuv2rgb/yuv2rgb.h
-    yuv2rgb/bmp_utils.h
-    yuv2rgb/rgb2yuv.h
+    Performance.h
     )
 
 set(SOURCE_UI_FILES

@@ -1,6 +1,7 @@
 #include "DetectorSeeta.h"
 #include "Log.h"
 #include <QDir>
+#include "Performance.h"
 
 CDetectorSeeta::CDetectorSeeta(QObject *parent) 
     : CDetector(parent)
@@ -11,10 +12,13 @@ CDetectorSeeta::~CDetectorSeeta()
 
 QVector<QRect> CDetectorSeeta::Detect(const QImage &image)
 {
+    PERFORMANCE(SeetaDectect)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
+        PERFORMANCE_START(SeetaDectect)
         img = img.convertToFormat(QImage::Format_RGB888);
+        PERFORMANCE_ADD_TIME(SeetaDectect, "conver format")
     }
     img = img.rgbSwapped();
     
@@ -25,7 +29,10 @@ QVector<QRect> CDetectorSeeta::Detect(const QImage &image)
     data.data = img.bits();
     
     QVector<QRect> facesRect;
+    PERFORMANCE_START(SeetaDectect)
     SeetaFaceInfoArray faces = m_Dector->detect(data);
+    PERFORMANCE_ADD_TIME(SeetaDectect, "detect")
+    
     for(int i = 0; i < faces.size; i++)
     {
         QRect rect(faces.data[i].pos.x,
