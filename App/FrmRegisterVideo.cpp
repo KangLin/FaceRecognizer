@@ -70,14 +70,26 @@ void CFrmRegisterVideo::on_pbRegister_clicked()
     if(Check())
         return;
     
+    if(m_Faces.size() != 1)
+        return;
+    
+    if(CheckFace(m_box, m_Faces[0]))
+        return;
+    
 }
 
 int CFrmRegisterVideo::MarkFace(QPainter &painter, const QVector<QRect> faces)
 {
     QPen pen = painter.pen();
-    pen.setColor(Qt::green);
-    painter.setPen(pen);
     foreach (auto f, faces) {
+        if(CheckFace(m_box, f))
+        {
+            pen.setColor(Qt::red);
+            painter.setPen(pen);
+        } else {
+            pen.setColor(Qt::green);
+            painter.setPen(pen);
+        }
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
     }
     return 0;
@@ -108,14 +120,30 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
     painter.setPen(pen);
     painter.drawRect(m_box);
  
-    auto faces = m_pFace->GetDector()->Detect(image);
-    MarkFace(painter, faces);
-    if(faces.size() > 1)
+    m_Faces = m_pFace->GetDector()->Detect(image);
+    MarkFace(painter, m_Faces);
+    if(m_Faces.size() > 1)
         SetStatusInformation(tr("Please only a person before the camera"));
-    else if(faces.size() == 0)
+    else if(m_Faces.size() == 0)
+        SetStatusInformation(tr("Please face into box"));
+    else if(CheckFace(m_box, m_Faces[0]))
         SetStatusInformation(tr("Please face into box"));
     else
         SetStatusInformation(tr("Please push register button"));
 
     ui->wgDisplay->slotDisplay(img);
+}
+
+int CFrmRegisterVideo::CheckFace(const QRect &box, const QRect &face)
+{
+    if(box.width() < face.width() || box.height() < face.height())
+        return -1;
+    if(box.width() > face.width() * 2 || box.height() > face.height() * 2)
+        return -2;
+    if(box.x() > face.x() || box.y() > face.y())
+        return -3;
+    if(((box.x() + box.width() / 4) < face.x())
+            || (box.y() + box.height() / 4 < face.y()))
+        return -4;
+    return 0;
 }
