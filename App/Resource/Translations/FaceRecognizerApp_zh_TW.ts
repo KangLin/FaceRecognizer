@@ -10,111 +10,77 @@
     </message>
 </context>
 <context>
-    <name>CFrmRecognizer</name>
-    <message>
-        <source>Recognizer</source>
-        <translation type="vanished">識別</translation>
-    </message>
-    <message>
-        <source>Exception</source>
-        <translation type="vanished">異常</translation>
-    </message>
-    <message>
-        <source>Load model file exception, please set model file path</source>
-        <translation type="vanished">加載模型文件異常，請設置模型文件路徑</translation>
-    </message>
-</context>
-<context>
     <name>CFrmRecognizerImage</name>
     <message>
         <location filename="../../FrmRecognizerImage.ui" line="20"/>
         <source>Recognizer from image</source>
-        <translation type="unfinished">從圖像識別</translation>
+        <translation>從圖像識別</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.ui" line="28"/>
         <source>Image:</source>
-        <translation type="unfinished">圖像</translation>
+        <translation>圖像</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.ui" line="51"/>
         <source>Brower</source>
-        <translation type="unfinished">瀏覽</translation>
+        <translation>瀏覽</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="35"/>
         <location filename="../../FrmRecognizerImage.cpp" line="171"/>
         <source>Please select image</source>
-        <translation type="unfinished">請選擇圖像</translation>
-    </message>
-    <message>
-        <source>Old Image</source>
-        <translation type="obsolete">原來的圖像</translation>
+        <translation>請選擇圖像</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.ui" line="118"/>
         <source>Status</source>
-        <translation type="unfinished">狀態</translation>
+        <translation>狀態</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="24"/>
         <source>index</source>
-        <translation type="unfinished"></translation>
+        <translation>索引號</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="25"/>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="26"/>
         <source>name</source>
-        <translation type="unfinished"></translation>
+        <translation>姓名</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="46"/>
         <source>Select image</source>
-        <translation type="unfinished">選擇圖像</translation>
+        <translation>選擇圖像</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="48"/>
         <source>Image files(*.png *.gif *.jpeg *.jpg *.bmp);; All files(*.*)</source>
-        <translation type="unfinished">圖像文件(*.png *.gif *.jpeg *.jpg *.bmp);; 所有文件(*.*)</translation>
+        <translation>圖像文件(*.png *.gif *.jpeg *.jpg *.bmp);; 所有文件(*.*)</translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="65"/>
         <source>ERROR: </source>
-        <translation type="unfinished">錯誤： </translation>
+        <translation>錯誤： </translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="69"/>
         <source>FAIL: </source>
-        <translation type="unfinished">失敗： </translation>
+        <translation>失敗： </translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="73"/>
         <source>SUCCESS: </source>
-        <translation type="unfinished">成功： </translation>
+        <translation>成功： </translation>
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.cpp" line="168"/>
         <source>Recognizer %1 faces</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CFrmRegister</name>
-    <message>
-        <source>Name:</source>
-        <translation type="obsolete">姓名</translation>
-    </message>
-    <message>
-        <source>Exception</source>
-        <translation type="obsolete">異常</translation>
-    </message>
-    <message>
-        <source>Load model file exception, please set model file path</source>
-        <translation type="obsolete">加載模型文件異常，請設置模型文件路徑</translation>
+        <translation>識別 %1 張人臉</translation>
     </message>
 </context>
 <context>
@@ -139,10 +105,6 @@
         <location filename="../../FrmRegisterImage.cpp" line="147"/>
         <source>Please select image</source>
         <translation>請選擇圖像</translation>
-    </message>
-    <message>
-        <source>Old Image</source>
-        <translation type="vanished">原來的圖像</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterImage.ui" line="80"/>
@@ -287,68 +249,68 @@
     <message>
         <location filename="../../FrmRegisterVideo.ui" line="14"/>
         <source>Registe from Video</source>
-        <translation type="unfinished"></translation>
+        <translation>從視頻註冊</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.ui" line="22"/>
         <source>NO:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.ui" line="32"/>
         <source>Name:</source>
-        <translation type="unfinished">姓名</translation>
+        <translation>姓名</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.ui" line="42"/>
         <source>Register</source>
-        <translation type="unfinished">註冊</translation>
+        <translation>註冊</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.ui" line="61"/>
         <source>Status</source>
-        <translation type="unfinished">狀態</translation>
+        <translation>狀態</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="14"/>
         <location filename="../../FrmRegisterVideo.cpp" line="116"/>
         <source>Please face into box</source>
-        <translation type="unfinished"></translation>
+        <translation>請把人臉放入框中</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="33"/>
         <source>ERROR: </source>
-        <translation type="unfinished">錯誤： </translation>
+        <translation>錯誤： </translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="37"/>
         <source>FAIL: </source>
-        <translation type="unfinished">失敗： </translation>
+        <translation>失敗： </translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="41"/>
         <source>SUCCESS: </source>
-        <translation type="unfinished">成功： </translation>
+        <translation>成功： </translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="58"/>
         <source>Please input no</source>
-        <translation type="unfinished">請輸入NO</translation>
+        <translation>請輸入NO</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="63"/>
         <source>Please input name</source>
-        <translation type="unfinished">請輸入姓名</translation>
+        <translation>請輸入姓名</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="114"/>
         <source>Please only a person before the camera</source>
-        <translation type="unfinished"></translation>
+        <translation>只能有壹個人在攝像頭前</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="118"/>
         <source>Please push register button</source>
-        <translation type="unfinished"></translation>
+        <translation>請按註冊按鈕</translation>
     </message>
 </context>
 <context>

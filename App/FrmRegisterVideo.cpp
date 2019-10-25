@@ -107,7 +107,7 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
     pen.setWidth(4);
     painter.setPen(pen);
     painter.drawRect(m_box);
-
+ 
     auto faces = m_pFace->GetDector()->Detect(image);
     MarkFace(painter, faces);
     if(faces.size() > 1)

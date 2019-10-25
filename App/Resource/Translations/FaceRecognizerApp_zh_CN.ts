@@ -305,12 +305,12 @@
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="114"/>
         <source>Please only a person before the camera</source>
-        <translation></translation>
+        <translation>只能有一个人在摄像头前</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.cpp" line="118"/>
         <source>Please push register button</source>
-        <translation></translation>
+        <translation>请按注册按钮</translation>
     </message>
 </context>
 <context>
