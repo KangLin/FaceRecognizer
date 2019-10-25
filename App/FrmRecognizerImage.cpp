@@ -87,10 +87,10 @@ int CFrmRecognizerImage::ShowUI(bool bShow)
 {
     if(bShow)
     {
-        ui->lbOldImage->setVisible(true);
+        ui->frmOldImage->setVisible(true);
         ui->tvInformation->setVisible(true);
     } else {
-        ui->lbOldImage->setVisible(false);
+        ui->frmOldImage->setVisible(false);
         ui->tvInformation->setVisible(false);
     }
     return 0;
@@ -123,7 +123,7 @@ int CFrmRecognizerImage::MarkFace(QImage &image, int nSelect)
         }
         i++;
     }
-    ui->lbImage->setPixmap(QPixmap::fromImage(image));
+    ui->frmImage->slotDisplay(image);
     return 0;
 }
 
@@ -179,8 +179,8 @@ void CFrmRecognizerImage::on_tvInformation_clicked(const QModelIndex &index)
         return;
     
     ui->tvInformation->selectRow(index.row());
-    ui->lbOldImage->setPixmap(QPixmap::fromImage(
+    ui->frmOldImage->slotDisplay(
                         QImage(m_pFace->GetRecognizer()->GetRegisterImage(
-                                             m_Info[index.row()].index))));
+                                             m_Info[index.row()].index)));
     MarkFace(m_Image, index.row());
 }

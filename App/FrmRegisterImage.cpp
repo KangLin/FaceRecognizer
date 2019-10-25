@@ -62,7 +62,7 @@ void CFrmRegisterImage::on_pbBrower_clicked()
     QImage image(szFile);
     m_Image = image;
     MarkFace(image);
-    ui->lbImage->setPixmap(QPixmap::fromImage(image));
+    ui->wgImage->slotDisplay(image);
     ui->lbID->setText(QString());
     SetStatusInformation(tr("Have selected images"));
     ShowReplaceUI(false);
@@ -100,8 +100,8 @@ void CFrmRegisterImage::on_pbRegister_clicked()
                 ui->leNoOld->setText(QString::number(data.getNo()));
                 ui->leNameOld->setText(data.getName());
                 ui->lbIDOld->setText(QString::number(index));
-                ui->lbOldImage->setPixmap(QPixmap::fromImage(
-                    QImage(m_pFace->GetRecognizer()->GetRegisterImage(index))));               
+                ui->wgOldImage->slotDisplay(
+                    QImage(m_pFace->GetRecognizer()->GetRegisterImage(index)));
 
                 QString szMsg = tr("This person already exists. index:");
                 szMsg += QString::number(data.getIdx()) + "; ";
@@ -220,7 +220,7 @@ int CFrmRegisterImage::ShowReplaceUI(bool bReplace)
         ui->leNameOld->setEnabled(false);
         ui->lbOldID->setVisible(true);
         ui->lbIDOld->setVisible(true);
-        ui->lbOldImage->setVisible(true);
+        ui->wgOldImage->setVisible(true);
         ui->pbCancel->setVisible(true);
         ui->pbReplace->setVisible(true);
         m_bReplace = true;
@@ -231,7 +231,7 @@ int CFrmRegisterImage::ShowReplaceUI(bool bReplace)
         ui->leNameOld->setVisible(false);
         ui->lbOldID->setVisible(false);
         ui->lbIDOld->setVisible(false);
-        ui->lbOldImage->setVisible(false);
+        ui->wgOldImage->setVisible(false);
         ui->pbCancel->setVisible(false);
         ui->pbReplace->setVisible(false);
         m_bReplace = false;

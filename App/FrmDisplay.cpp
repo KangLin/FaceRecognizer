@@ -27,5 +27,8 @@ void CFrmDisplay::paintEvent(QPaintEvent *event)
     if(this->isHidden())
         return;
     QPainter painter(this);
-    painter.drawImage(this->rect(), m_Image);
+    /*
+    QImage img = m_Image.scaled(rect().size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    painter.drawImage(this->rect(), img);//*/
+    painter.drawImage(rect(), m_Image);
 }
