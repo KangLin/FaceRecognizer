@@ -126,7 +126,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     ./test/test_linux.sh
 
     #因为上面 dpgk 已安装好了，所以不需要设置下面的环境变量
-    export LD_LIBRARY_PATH=${SeetaFace2_DIR}/lib:${QT_ROOT}/bin:${QT_ROOT}/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${SeetaFace2_DIR}/bin:${SeetaFace2_DIR}/lib:${QT_ROOT}/bin:${QT_ROOT}/lib:$LD_LIBRARY_PATH
     
     cd debian/facerecognizer/opt
     
@@ -198,6 +198,10 @@ if [ -n "$GENERATORS" ]; then
             -DQt5Sql_DIR=${QT_ROOT}/lib/cmake/Qt5Sql \
             -DQt5LinguistTools_DIR=${QT_ROOT}/lib/cmake/Qt5LinguistTools \
             -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
             -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
     else
@@ -206,56 +210,15 @@ if [ -n "$GENERATORS" ]; then
             -DCMAKE_VERBOSE=ON \
             -DCMAKE_BUILD_TYPE=Release \
             -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-            -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake 
+            -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake 
     fi
     cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
     if [ "${BUILD_TARGERT}" = "android" ]; then
         cmake --build . --target APK  
-    fi
-else
-    if [ "ON" = "${STATIC}" ]; then
-        CONFIG_PARA="CONFIG*=static"
-    fi
-    if [ "${BUILD_TARGERT}" = "android" ]; then
-        ${QT_ROOT}/bin/qmake ${SOURCE_DIR} \
-            "CONFIG+=release" ${CONFIG_PARA}
-
-        $MAKE
-        $MAKE install INSTALL_ROOT=`pwd`/android-build
-        ${QT_ROOT}/bin/androiddeployqt \
-                       --input `pwd`/App/android-libFaceRecognizerApp.so-deployment-settings.json \
-                       --output `pwd`/android-build \
-                       --android-platform ${ANDROID_API} \
-                       --gradle --verbose
-                       # --jdk ${JAVA_HOME}
-        if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION_DIR"="5.12" ]; then
-        
-            cp $SOURCE_DIR/Update/update_android.xml .
-	        APK_FILE=`find . -name "android-build-debug.apk"`
-            MD5=`md5sum ${APK_FILE} | awk '{print $1}'`
-            echo "MD5:${MD5}"
-            sed -i "s/<VERSION>.*</<VERSION>${VERSION}</g" update_android.xml
-            sed -i "s/<INFO>.*</<INFO>Release FaceRecognizer-${VERSION}</g" update_android.xml
-            sed -i "s/<TIME>.*</<TIME>`date`</g" update_android.xml
-            sed -i "s/<ARCHITECTURE>.*</<ARCHITECTURE>${BUILD_ARCH}</g" update_android.xml
-            sed -i "s/<MD5SUM>.*</<MD5SUM>${MD5}</g" update_android.xml
-            sed -i "s:<URL>.*<:<URL>https\://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/android-build-debug.apk<:g" update_android.xml
-
-            export UPLOADTOOL_BODY="Release FaceRecognizer-${VERSION}"
-            #export UPLOADTOOL_PR_BODY=
-            wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-            chmod u+x upload.sh
-            ./upload.sh ${APK_FILE} 
-            ./upload.sh update_android.xml
-        fi
-    else
-        ${QT_ROOT}/bin/qmake ${SOURCE_DIR} \
-                "CONFIG+=release" ${CONFIG_PARA}\
-                PREFIX=`pwd`/install
-                
-        $MAKE
-        echo "$MAKE install ...."
-        $MAKE install
     fi
 fi
 
