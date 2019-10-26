@@ -14,7 +14,8 @@
 CDatabase::CDatabase(QObject *parent)
     : QObject(parent)
 {
-    InitDatabase();
+    if(InitDatabase())
+        throw std::runtime_error("Init database fail");
 }
 
 CDatabase::~CDatabase()

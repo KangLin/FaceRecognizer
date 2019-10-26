@@ -70,13 +70,19 @@ void CFrmRegisterVideo::on_pbRegister_clicked()
 {
     if(Check())
         return;
-    
+
     if(m_Faces.size() != 1)
         return;
-    
+
     if(CheckFace(m_box, m_Faces[0]))
         return;
+
+    CParameterRegisterImage para;
+    para.SetNo(ui->leNo->text().toLongLong());
+    para.SetName(ui->leName->text());
+    para.SetImage(m_Image);
     
+    emit sigRegister(para);
 }
 
 int CFrmRegisterVideo::MarkFace(QPainter &painter, const QVector<QRect> faces)

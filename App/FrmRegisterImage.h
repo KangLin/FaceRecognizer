@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "Factory.h"
+#include "ParameterRegisterImage.h"
 
 namespace Ui {
 class CFrmRegisterImage;
@@ -17,15 +18,20 @@ public:
     explicit CFrmRegisterImage(QWidget *parent = nullptr);
     ~CFrmRegisterImage();
     
+Q_SIGNALS:
+    void sigFinish();
+
+public slots:
+    void slotParameter(const CParameterRegisterImage &para);
+
 private slots:
     void on_pbBrower_clicked();
     void on_pbRegister_clicked();
-    
     void on_pbCancel_clicked();
-    
     void on_pbReplace_clicked();
     
 private:
+    int ProcessImage(const QImage &image);
     int MarkFace(QImage &image);
     int ShowReplaceUI(bool bReplace = true);
     int Check();

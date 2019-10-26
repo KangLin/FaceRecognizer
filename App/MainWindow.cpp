@@ -11,7 +11,8 @@
 #include "ParameterFactory.h"
 #include "FrmRegisterImage.h"
 #include "FrmRecognizerImage.h"
-#include "FrmRegisterVideo.h"
+
+#include "ManageRegisterVideo.h"
 
 #include <QCameraInfo>
 #include <QGuiApplication>
@@ -222,13 +223,12 @@ void MainWindow::on_actionRegisterImage_directory_triggered()
 
 void MainWindow::on_actionRegisterVideo_triggered()
 {
-    CFrmRegisterVideo *pVideo = new CFrmRegisterVideo(this);
-    if(!pVideo) return;
+    CManageRegisterVideo *pManage = new CManageRegisterVideo(this);
     m_CaptureFrame.disconnect();
     bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
-                          pVideo, SLOT(slotDisplay(const QImage &)));
+                          pManage, SIGNAL(sigCaptureFrame(const QImage &)));
     Q_ASSERT(check);
-    setCentralWidget(pVideo);
+    setCentralWidget(pManage);
 }
 
 void MainWindow::on_actionRecognizerImage_triggered()

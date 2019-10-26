@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 2.8)
 
 project(FaceRecognizer)
 
-set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
+OPTION(HAVE_PERFORMANCE "Set to ON to performance)." ON)
+if(HAVE_PERFORMANCE)
+    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
+endif()
 
 #Use: https://github.com/KangLin/libyuv
 find_package(YUV)
@@ -210,7 +213,6 @@ write_basic_package_version_file(
     COMPATIBILITY AnyNewerVersion)
 install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
 
-
 IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
     IF(CMAKE_BUILD_TYPE MATCHES Release AND MINGW)
         #windeployqt 分发时，是根据是否 strip 来判断是否是 DEBUG 版本,而用mingw编译时,qt没有自动 strip
@@ -229,6 +231,7 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
     #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
 
+message("== HAVE_PERFORMANCE:${HAVE_PERFORMANCE}")
 message("== OpenCV:${OpenCV_FOUND}")
 message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")

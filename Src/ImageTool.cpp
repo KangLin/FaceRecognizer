@@ -1,6 +1,6 @@
 #include "ImageTool.h"
 #include "Log.h"
-#include "yuv2rgb/yuv2rgb.h"
+#include "Performance.h"
 
 #ifdef HAVE_OPENCV
     #if OpenCV_VERSION_MAJOR == 3 || OpenCV_VERSION_MAJOR == 2
@@ -199,9 +199,11 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
             {
             case QVideoFrame::Format_Jpeg:
                 {
+                    PERFORMANCE(Format_Jpeg)
                     img.loadFromData(videoFrame.bits(),
                                      videoFrame.mappedBytes(),
                                      "JPEG");
+                    PERFORMANCE_ADD_TIME(Format_Jpeg, "loadFromData")
                 }
                 break;
             case QVideoFrame::Format_YUV420P:

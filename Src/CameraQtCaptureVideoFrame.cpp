@@ -73,9 +73,10 @@ bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
     emit sigCaptureFrame(frame);
     PERFORMANCE(CCameraQtCaptureVideoFrame_preset)
     QImage img = CImageTool::ConverFormatToRGB888(frame);
-    PERFORMANCE_ADD_TIME(CCameraQtCaptureVideoFrame_preset, "conver format to RBG888")
+    PERFORMANCE_ADD_TIME(CCameraQtCaptureVideoFrame_preset,
+             "conver format to RBG888, rotation:" + QString::number(m_Rotation))
     if(m_Rotation)
-        img.transformed(QTransform().rotate(-1 * m_Rotation));
+        img = img.transformed(QTransform().rotate(-1 * m_Rotation));
     emit sigCaptureFrame(img);
     return true;
 }

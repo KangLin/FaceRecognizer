@@ -31,6 +31,47 @@ CFrmRegisterImage::~CFrmRegisterImage()
     delete ui;
 }
 
+void CFrmRegisterImage::slotParameter(const CParameterRegisterImage &para)
+{
+    CParameterRegisterImage p = para;
+    ui->leNo->setText(QString::number(p.GetNo()));
+    ui->leName->setText(p.GetName());
+    ProcessImage(p.GetImage());
+    
+    ui->lbImage->setVisible(false);
+    ui->leFile->setVisible(false);
+    ui->pbBrower->setVisible(false);
+}
+
+int CFrmRegisterImage::ProcessImage(const QImage &image)
+{
+    if(image.isNull())
+        return -1;
+    m_Image = image;
+    QImage img = image;
+    MarkFace(img);
+    ui->wgImage->slotDisplay(img);
+    ui->lbID->setText(QString());
+    SetStatusInformation(tr("Have selected images"));
+    ShowReplaceUI(false);
+    return 0;
+}
+
+void CFrmRegisterImage::on_pbBrower_clicked()
+{
+    QString szFile = RabbitCommon::CDir::GetOpenFileName(this,
+                                                         tr("Select image"),
+                                                         ui->leFile->text(),
+           tr("Image files(*.png *.gif *.jpeg *.jpg *.bmp);; All files(*.*)"));
+    if(szFile.isEmpty())
+        return;
+
+    ui->leFile->setText(szFile);
+    
+    QImage image(szFile);
+    ProcessImage(image);
+}
+
 int CFrmRegisterImage::MarkFace(QImage &image)
 {
     if(!m_pFace) return -1;
@@ -53,23 +94,6 @@ int CFrmRegisterImage::MarkFace(QImage &image)
     return 0;
 }
 
-void CFrmRegisterImage::on_pbBrower_clicked()
-{
-    QString szFile = RabbitCommon::CDir::GetOpenFileName(this,
-                                                         tr("Select image"),
-                                                         ui->leFile->text(),
-           tr("Image files(*.png *.gif *.jpeg *.jpg *.bmp);; All files(*.*)"));
-    ui->leFile->setText(szFile);
-    
-    QImage image(szFile);
-    m_Image = image;
-    MarkFace(image);
-    ui->wgImage->slotDisplay(image);
-    ui->lbID->setText(QString());
-    SetStatusInformation(tr("Have selected images"));
-    ShowReplaceUI(false);
-}
-
 void CFrmRegisterImage::on_pbRegister_clicked()
 {
     if(!m_pFace) return;
@@ -83,8 +107,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     {
         QString szMsg = tr("Please select a photo with only one person");
         SetStatusInformation(szMsg, -1, ERROR);
-        QMessageBox::critical(this, tr("Face register"),
-                             szMsg);
+        QMessageBox::critical(this, tr("Face register"), szMsg);
         return;
     }
     
@@ -97,7 +120,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
             {
                 CDataRegister data;
                 if(m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(index, &data))
-                    return;
+                   return;
                 ShowReplaceUI(true);
                 ui->leNoOld->setText(QString::number(data.getNo()));
                 ui->leNameOld->setText(data.getName());
@@ -129,9 +152,9 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
         if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
-        {            
+        {
             m_pFace->GetRecognizer()->Delete(index);
-            szMsg = "Write database fail. The no is exists?";
+            szMsg = "Write database fail.";
             SetStatusInformation(szMsg, -1, ERROR);
         } else {
             szMsg = tr("Regist success. index:");
@@ -140,14 +163,16 @@ void CFrmRegisterImage::on_pbRegister_clicked()
             szMsg += tr("name:") + data.getName();
             SetStatusInformation(szMsg, 0, SUCCESS);
         }
-        
     }
+
+    emit sigFinish();
 }
 
 void CFrmRegisterImage::on_pbCancel_clicked()
 {
     ShowReplaceUI(false);
     SetStatusInformation(tr("Please select image"));
+    emit sigFinish();
 }
 
 void CFrmRegisterImage::on_pbReplace_clicked()
@@ -208,6 +233,7 @@ void CFrmRegisterImage::on_pbReplace_clicked()
             SetStatusInformation(szMsg, 0, SUCCESS); 
         }
     }
+    emit sigFinish();
 }
 
 int CFrmRegisterImage::ShowReplaceUI(bool bReplace)

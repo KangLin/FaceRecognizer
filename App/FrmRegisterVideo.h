@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <Face.h>
 
+#include "ParameterRegisterImage.h"
+
 namespace Ui {
 class CFrmRegisterVideo;
 }
@@ -15,7 +17,10 @@ class CFrmRegisterVideo : public QWidget
 public:
     explicit CFrmRegisterVideo(QWidget *parent = nullptr);
     ~CFrmRegisterVideo();
-    
+
+Q_SIGNALS:
+    void sigRegister(const CParameterRegisterImage &image);
+
 public Q_SLOTS:
     void slotDisplay(const QImage &image);
     
