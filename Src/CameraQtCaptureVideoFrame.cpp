@@ -1,5 +1,6 @@
 #include "CameraQtCaptureVideoFrame.h"
 #include "ImageTool.h"
+#include "Performance.h"
 
 #include <QThread>
 #include <QTime>
@@ -70,7 +71,9 @@ bool CCameraQtCaptureVideoFrame::isFormatSupported(const QVideoSurfaceFormat &fo
 bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
 {
     emit sigCaptureFrame(frame);
+    PERFORMANCE(CCameraQtCaptureVideoFrame_preset)
     QImage img = CImageTool::ConverFormatToRGB888(frame);
+    PERFORMANCE_ADD_TIME(CCameraQtCaptureVideoFrame_preset, "conver format to RBG888")
     if(m_Rotation)
         img.transformed(QTransform().rotate(-1 * m_Rotation));
     emit sigCaptureFrame(img);

@@ -17,8 +17,12 @@ QVector<QRect> CDetectorSeeta::Detect(const QImage &image)
     if(img.format() != QImage::Format_RGB888)
     {
         PERFORMANCE_START(SeetaDectect)
-        img = img.convertToFormat(QImage::Format_RGB888);
-        PERFORMANCE_ADD_TIME(SeetaDectect, "conver format")
+        img = img.convertToFormat(QImage::Format_RGB888);     
+        PERFORMANCE_ADD_TIME(SeetaDectect,
+                             "conver format, image width:"
+                             + QString::number(image.width())
+                             + ";Height:"
+                             + QString::number(image.height()))
     }
     img = img.rgbSwapped();
     
@@ -41,6 +45,7 @@ QVector<QRect> CDetectorSeeta::Detect(const QImage &image)
                    faces.data[i].pos.height);
         facesRect.push_back(rect);
     }
+    PERFORMANCE_ADD_TIME(SeetaDectect, "copy reture value")
     return facesRect;
 }
 
@@ -73,6 +78,6 @@ void CDetectorSeeta::UpdateParameter()
                               device,
                               id);
     m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
-    m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetFaceSize());
+    m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetMinFaceSize());
     return;
 }

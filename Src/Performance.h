@@ -1,6 +1,8 @@
 #ifndef CPERFORMANCE_H
 #define CPERFORMANCE_H
 
+#pragma once
+
 #include <QObject>
 #include <QTime>
 #include "ParameterRecognizer.h"
@@ -14,7 +16,10 @@ public:
     virtual ~CPerformance();
     
     int StartTime();
-    int AddTime(const QString &szName = QString());
+    int AddTime(const QString &szFile,
+                int nLine,
+                const QString &szFunction = QString(),
+                const QString &szName = QString());
     
 private:
     QString m_szName;
@@ -26,7 +31,8 @@ private:
     #define PERFORMANCE(name) \
         CPerformance object##name (#name);
     #define PERFORMANCE_START(name) object##name.StartTime();
-    #define PERFORMANCE_ADD_TIME(name, message) object##name.AddTime(message);
+    #define PERFORMANCE_ADD_TIME(name, message) \
+        object##name.AddTime(__FILE__, __LINE__, __FUNCTION__, message);
 #else
     #define PERFORMANCE(name)
     #define PERFORMANCE_START(name)

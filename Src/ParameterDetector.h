@@ -10,11 +10,11 @@ class FACERECOGNIZER_EXPORT CParameterDetector : public CParameter
 public:
     explicit CParameterDetector(QObject *parent = nullptr);
     
-    int SetFaceSize(int size);
-    int GetFaceSize();
+    int SetMinFaceSize(int size);
+    int GetMinFaceSize();
     
 private:
-    int m_nFaceSize;
+    int m_nMinFaceSize;
 };
 
 #endif // CPARAMETERDETECTOR_H

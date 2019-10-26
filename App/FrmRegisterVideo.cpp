@@ -1,5 +1,6 @@
 #include "FrmRegisterVideo.h"
 #include "ui_FrmRegisterVideo.h"
+#include "Performance.h"
 
 #include <QPainter>
 #include <Factory.h>
@@ -120,8 +121,11 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
     painter.setPen(pen);
     painter.drawRect(m_box);
  
+    PERFORMANCE(CFrmRegisterVideo)
     m_Faces = m_pFace->GetDector()->Detect(image);
+    PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "Dectect")
     MarkFace(painter, m_Faces);
+    PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "MarkFace")
     if(m_Faces.size() > 1)
         SetStatusInformation(tr("Please only a person before the camera"));
     else if(m_Faces.size() == 0)
@@ -132,6 +136,7 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
         SetStatusInformation(tr("Please push register button"));
 
     ui->wgDisplay->slotDisplay(img);
+    PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "slotDisplay")
 }
 
 int CFrmRegisterVideo::CheckFace(const QRect &box, const QRect &face)
