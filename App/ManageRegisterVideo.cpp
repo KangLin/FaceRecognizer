@@ -14,7 +14,7 @@ CManageRegisterVideo::CManageRegisterVideo(QWidget *parent) : QWidget(parent)
     m_RegisterImage->hide();
     
     bool check = connect(this, SIGNAL(sigCaptureFrame(const QImage &)),
-                          m_RegisterVideo.get(), SLOT(slotDisplay(const QImage &)));
+                          m_RegisterVideo.data(), SLOT(slotDisplay(const QImage &)));
     Q_ASSERT(check);
     check = connect(m_RegisterVideo.data(), SIGNAL(sigRegister(const CParameterRegisterImage &)),
                     this, SLOT(slotRigister(const CParameterRegisterImage &)));

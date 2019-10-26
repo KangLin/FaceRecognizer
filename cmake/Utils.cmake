@@ -37,7 +37,7 @@ function(GENERATED_DEPLOYMENT_SETTINGS)
     FILE(APPEND ${_file_name} "\"sdk\":\"${ANDROID_SDK}\",\n")
     FILE(APPEND ${_file_name} "\"ndk\":\"${ANDROID_NDK}\",\n")
 
-    if(Qt5_VERSION VERSION_GREATER 5.13.0)
+    if(Qt5_VERSION VERSION_GREATER 5.9.0)
         FILE(APPEND ${_file_name} "\"stdcpp-path\":\"${ANDROID_NDK}/sources/cxx-stl/llvm-libc++/libs/${ANDROID_ABI}/libc++_shared.so\",\n")
         FILE(APPEND ${_file_name} "\"useLLVM\":true,\n")
         FILE(APPEND ${_file_name} "\"toolchain-prefix\":\"llvm\",\n")

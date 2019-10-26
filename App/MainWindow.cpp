@@ -11,8 +11,8 @@
 #include "ParameterFactory.h"
 #include "FrmRegisterImage.h"
 #include "FrmRecognizerImage.h"
-
 #include "ManageRegisterVideo.h"
+#include "ManageRecognizerVideo.h"
 
 #include <QCameraInfo>
 #include <QGuiApplication>
@@ -240,7 +240,12 @@ void MainWindow::on_actionRecognizerImage_triggered()
 
 void MainWindow::on_actionRecognizerVideo_triggered()
 {
-
+    CManageRecognizerVideo *pManage = new CManageRecognizerVideo(this);
+    m_CaptureFrame.disconnect();
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage&)),
+                         pManage, SIGNAL(sigCaptureFrame(const QImage&)));
+    Q_ASSERT(check);
+    setCentralWidget(pManage);
 }
 
 void MainWindow::on_actionDisplay_triggered()

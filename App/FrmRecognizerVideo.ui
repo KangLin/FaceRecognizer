@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CFrmRecognizer</class>
- <widget class="QWidget" name="CFrmRecognizer">
+ <class>CFrmRecognizerVideo</class>
+ <widget class="QWidget" name="CFrmRecognizerVideo">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,11 +11,25 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Recognizer</string>
+   <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="CFrmDisplay" name="frmDisplay" native="true"/>
+    <widget class="CFrmDisplay" name="wgDisplay" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lbStatus">
+     <property name="text">
+      <string>Status</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

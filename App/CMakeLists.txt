@@ -11,6 +11,8 @@ set(SOURCES_FILES
     FrmRegisterVideo.cpp
     ManageRegisterVideo.cpp
     ParameterRegisterImage.cpp
+    FrmRecognizerVideo.cpp
+    ManageRecognizerVideo.cpp
     )
 
 set(HEADER_FILES
@@ -21,6 +23,8 @@ set(HEADER_FILES
     FrmRegisterVideo.h
     ManageRegisterVideo.h
     ParameterRegisterImage.h
+    FrmRecognizerVideo.h
+    ManageRecognizerVideo.h
     )
 
 set(SOURCE_UI_FILES
@@ -29,6 +33,8 @@ set(SOURCE_UI_FILES
     FrmRegisterImage.ui
     FrmRecognizerImage.ui
     FrmRegisterVideo.ui
+    FrmRecognizerVideo.ui
+    ManageRecognizerVideo.ui
     )
 
 #翻译
