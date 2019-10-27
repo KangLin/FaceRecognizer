@@ -6,12 +6,16 @@ CPerformance::CPerformance(const QString &szName, QObject *parent)
     : QObject(parent),
       m_szName(szName)
 {
-    m_szMessage = szName + ":\n";
+    m_StartTime = QTime::currentTime();
     StartTime();
 }
 
 CPerformance::~CPerformance()
 {
+    m_szMessage = m_szName
+            + "[total use time: "
+            + QString::number(m_StartTime.msecsTo(QTime::currentTime()))
+            + "ms]:\n" + m_szMessage;
     qDebug().noquote() << m_szMessage;
 }
 

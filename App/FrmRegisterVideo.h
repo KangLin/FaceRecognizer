@@ -37,7 +37,7 @@ private:
     };
     int SetStatusInformation(const QString &szInfo, int nRet = 0, STATUS_TYPE type = NORMAL);
     int Check();
-    int MarkFace(QPainter &painter, const QVector<QRect> faces);
+    int MarkFace(QPainter &painter, const QVector<QRect> &faces);
     int CheckFace(const QRect &box, const QRect &face);
     
 private:

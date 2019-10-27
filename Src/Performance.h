@@ -3,6 +3,19 @@
 
 #pragma once
 
+#ifdef HAVE_PERFORMANCE
+    #define PERFORMANCE(name) \
+        CPerformance object##name (#name);
+    #define PERFORMANCE_START(name) object##name.StartTime();
+    #define PERFORMANCE_ADD_TIME(name, message) \
+        object##name.AddTime(__FILE__, __LINE__, __FUNCTION__, message);
+#else
+    #define PERFORMANCE(name)
+    #define PERFORMANCE_START(name)
+    #define PERFORMANCE_ADD_TIME(name, message)
+#endif
+
+
 #include <QObject>
 #include <QTime>
 #include "ParameterRecognizer.h"
@@ -22,6 +35,11 @@ public:
                 const QString &szName = QString());
     
 private:
+    QString m_szName;
+    QString m_szMessage;
+    QTime m_StartTime;
+    QTime m_Time;
+
     /*
      * 常用的ANSI控制码如下：
     \033[0m 关闭所有属性
@@ -111,21 +129,7 @@ private:
         BackgroundLightWhite,
     };
     QString GetColor(COLOR color);
-    
-    QString m_szName;
-    QString m_szMessage;
-    QTime m_Time;
 };
 
-#ifdef HAVE_PERFORMANCE
-    #define PERFORMANCE(name) \
-        CPerformance object##name (#name);
-    #define PERFORMANCE_START(name) object##name.StartTime();
-    #define PERFORMANCE_ADD_TIME(name, message) \
-        object##name.AddTime(__FILE__, __LINE__, __FUNCTION__, message);
-#else
-    #define PERFORMANCE(name)
-    #define PERFORMANCE_START(name)
-    #define PERFORMANCE_ADD_TIME(name, message)
-#endif
+
 #endif // CPERFORMANCE_H

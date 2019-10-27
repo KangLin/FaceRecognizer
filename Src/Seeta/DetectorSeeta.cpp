@@ -10,7 +10,7 @@ CDetectorSeeta::CDetectorSeeta(QObject *parent)
 CDetectorSeeta::~CDetectorSeeta()
 {}
 
-QVector<QRect> CDetectorSeeta::Detect(const QImage &image)
+int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
 {
     PERFORMANCE(SeetaDectect)
     QImage img = image;
@@ -25,28 +25,27 @@ QVector<QRect> CDetectorSeeta::Detect(const QImage &image)
                              + QString::number(image.height()))
     }
     img = img.rgbSwapped();
-    
+    PERFORMANCE_ADD_TIME(SeetaDectect, "rgbSwapped")
     SeetaImageData data;
     data.width = img.width();
     data.height = img.height();
     data.channels = 3;
     data.data = img.bits();
     
-    QVector<QRect> facesRect;
     PERFORMANCE_START(SeetaDectect)
-    SeetaFaceInfoArray faces = m_Dector->detect(data);
+    SeetaFaceInfoArray f = m_Dector->detect(data);
     PERFORMANCE_ADD_TIME(SeetaDectect, "detect")
     
-    for(int i = 0; i < faces.size; i++)
+    for(int i = 0; i < f.size; i++)
     {
-        QRect rect(faces.data[i].pos.x,
-                   faces.data[i].pos.y,
-                   faces.data[i].pos.width,
-                   faces.data[i].pos.height);
-        facesRect.push_back(rect);
+        QRect rect(f.data[i].pos.x,
+                   f.data[i].pos.y,
+                   f.data[i].pos.width,
+                   f.data[i].pos.height);
+        faces.push_back(rect);
     }
     PERFORMANCE_ADD_TIME(SeetaDectect, "copy reture value")
-    return facesRect;
+    return 0;
 }
 
 void CDetectorSeeta::UpdateParameter()

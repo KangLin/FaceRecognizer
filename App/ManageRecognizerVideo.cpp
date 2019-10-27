@@ -8,11 +8,13 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     ui->setupUi(this);
     
     m_pFrmRecognizerVideo = new CFrmRecognizerVideo(this);
-    bool check = connect(m_pFrmRecognizerVideo, SIGNAL(slotRecognizer(const QImage&)),
-                         this, SLOT(slotRecognizer(const QImage&)));
-    Q_ASSERT(check);
-    check = connect(this, SIGNAL(sigCaptureFrame(const QImage&)),
+    if(!m_pFrmRecognizerVideo)
+        throw std::runtime_error("alloc memery fail");
+    bool check = connect(this, SIGNAL(sigCaptureFrame(const QImage&)),
                     m_pFrmRecognizerVideo, SLOT(slotDisplay(const QImage&)));
+    Q_ASSERT(check);
+    check = connect(m_pFrmRecognizerVideo, SIGNAL(slotRecognizer(const QImage&)),
+                         this, SLOT(slotRecognizer(const QImage&)));
     Q_ASSERT(check);
 }
 

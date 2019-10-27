@@ -10,7 +10,7 @@ CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
     ui(new Ui::CFrmRecognizerVideo)
 {
     ui->setupUi(this);
-    SetStatusInformation(tr("Please face into box"));
+    SetStatusInformation(tr("Please stand in front of the camera"));
     m_pFace = CFactory::Instance();
     if(!m_pFace)
     {
@@ -52,13 +52,18 @@ int CFrmRecognizerVideo::SetStatusInformation(const QString &szInfo, int nRet, S
 
 void CFrmRecognizerVideo::slotDisplay(const QImage &image)
 {
+    if(isHidden() || !m_pFace) return;
+
     QImage img = image;
     QPainter painter(&img);
     QPen pen(Qt::green);
     pen.setWidth(2);
     painter.setPen(pen);
     PERFORMANCE(CFrmRecognizerVideo);
-    auto faces = m_pFace->GetDector()->Detect(image);
+    QVector<QRect> faces;
+    int nRet = m_pFace->GetDector()->Detect(image, faces);
+    if(nRet)
+        return;
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo,
                          "Dectect " + QString::number(faces.size()) + " faces");
     foreach (auto f, faces) {

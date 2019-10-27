@@ -20,7 +20,7 @@ public:
     virtual ~CDetector();
 
     virtual int SetParameter(CParameterDetector *pPara);
-    virtual QVector<QRect> Detect(const QImage &image) = 0;
+    virtual int Detect(const QImage &image,  QVector<QRect> &faces) = 0;
 
 public Q_SLOTS:
     void slotParameterUpdate();

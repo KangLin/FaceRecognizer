@@ -79,7 +79,8 @@ int CFrmRegisterImage::MarkFace(QImage &image)
     QPen pen(Qt::green);
     pen.setWidth(2);
     painter.setPen(pen);
-    auto faces = m_pFace->GetDector()->Detect(image);   
+    QVector<QRect> faces;
+    m_pFace->GetDector()->Detect(image, faces);
     foreach (auto f, faces) {
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
         auto points = m_pFace->GetLandmarker()->Mark(image, f);
@@ -102,7 +103,8 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     
     QString szMsg;
     QImage image = m_Image;
-    auto faces = m_pFace->GetDector()->Detect(image);
+    QVector<QRect> faces;
+    m_pFace->GetDector()->Detect(image, faces);
     if(faces.size() != 1)
     {
         QString szMsg = tr("Please select a photo with only one person");
@@ -181,7 +183,8 @@ void CFrmRegisterImage::on_pbReplace_clicked()
     
     QString szMsg;
     QImage image = m_Image;
-    auto faces = m_pFace->GetDector()->Detect(image);
+    QVector<QRect> faces;
+    m_pFace->GetDector()->Detect(image, faces);
     if(faces.size() != 1)
     {
         QString szMsg = tr("Please select a photo with only one person");

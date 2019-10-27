@@ -14,7 +14,7 @@ public:
     CDetectorSeeta(QObject *parent = nullptr);
     virtual ~CDetectorSeeta();
     
-    virtual QVector<QRect> Detect(const QImage &image);
+    virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
 private:
     virtual void UpdateParameter();

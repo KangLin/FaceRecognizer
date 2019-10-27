@@ -141,8 +141,8 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     QStandardItemModel* pModel = dynamic_cast<QStandardItemModel*>(ui->tvInformation->model());
     pModel->removeRows(0, pModel->rowCount());
     
-    auto faces = m_pFace->GetDector()->Detect(image);
-
+    QVector<QRect> faces;
+    m_pFace->GetDector()->Detect(image, faces);
     foreach (auto f, faces) {
         FACE_INFO info;
         info.face = f;

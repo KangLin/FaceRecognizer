@@ -85,7 +85,7 @@ void CFrmRegisterVideo::on_pbRegister_clicked()
     emit sigRegister(para);
 }
 
-int CFrmRegisterVideo::MarkFace(QPainter &painter, const QVector<QRect> faces)
+int CFrmRegisterVideo::MarkFace(QPainter &painter, const QVector<QRect> &faces)
 {
     QPen pen = painter.pen();
     foreach (auto f, faces) {
@@ -104,7 +104,7 @@ int CFrmRegisterVideo::MarkFace(QPainter &painter, const QVector<QRect> faces)
 
 void CFrmRegisterVideo::slotDisplay(const QImage &image)
 {
-    if(!m_pFace) return;
+    if(isHidden() || !m_pFace) return;
 
     m_Image = image;
     QImage img = image;
@@ -128,7 +128,8 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
     painter.drawRect(m_box);
  
     PERFORMANCE(CFrmRegisterVideo)
-    m_Faces = m_pFace->GetDector()->Detect(image);
+    m_Faces.clear();
+    m_pFace->GetDector()->Detect(image, m_Faces);
     PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "Dectect")
     MarkFace(painter, m_Faces);
     PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "MarkFace")
