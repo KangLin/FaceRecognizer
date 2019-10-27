@@ -24,11 +24,15 @@
 
 ## 简介
 
+本项目提供一些人脸常见应用。提供应用级人脸框架，方便自定义快速开发人脸应用。
+以及性能测试比较框架，方便对第三方人脸库做性能测试比较。
+如有定制开发，或移植可联系本人（QQ:16614119)。如果对你有帮助，请你[捐赠](#捐赠)支持本项目:)
+
 - [x] 人脸识别框架
-- [x] 人脸识别应用
-  - [ ] 考勤
+- [x] 人脸识别常见应用
+  - [x] 考勤
   - [ ] 人脸特效
-- [ ] 测试比较工具框架
+- [x] 测试比较工具和框架
 - [ ] 人脸识别开源库测试比较
   + [ ] [opencv](https://github.com/opencv/opencv)
   + [ ] [dlib](https://github.com/davisking/dlib)
@@ -42,6 +46,7 @@
   + [x] android
   + [ ] mac
   + [ ] ios
+  + [x] 其它嵌入式平台，可联系本人（QQ:16614119)或你自己移植:)
   
   mac 和 ios我没有设备，请有设备的同学自行编译测试。
 
@@ -68,7 +73,7 @@
 
 - ubuntu
     - [FaceRecognizer_0.0.2_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer_0.0.2_amd64.deb)  
-  deb 安装包,可用于　Ubuntu
+  deb 安装包,可用于 Ubuntu
   
 - windows
     - [FaceRecognizer-Setup-v0.0.2.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer-Setup-v0.0.2.exe)  
@@ -77,12 +82,14 @@
 - android
     + [android-build-debug.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/android-build-debug.apk)
 
+**注意:**本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
+
 ## 编译
 ### 依赖
 + 编译工具
   + [Qt](http://qt.io/)
   + 编译器
-    - For linux
+    - For linux or android
         + GNU Make 工具
         + GCC 或者 Clang 编译器
     - For windows
@@ -98,7 +105,8 @@
 
 ### CMake 配置参数
   - [必选] Qt5_DIR: qt 安装位置
-  - [必选] RabbitCommon_DIR: RabbitCommon源码位置
+  - [必选] RabbitCommon_DIR: RabbitCommon 源码位置
+  - [可选] HAVE_PERFORMANCE: 比较测试框架，默认 ON
   - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
   - [可选] SeetaFace_DIR: SeetaFace 库安装位置
   - [可选] YUV_DIR: libyuv 库安装位置
@@ -144,7 +152,7 @@
 
 
 #### windows 平台编译说明
-  - 使用 cmake-gui.exe 工具编译。打开 cmake-gui.exe
+  - 使用 cmake-gui.exe 工具编译。打开 cmake-gui.exe 配置
   - 命令行编译
     + 把 cmake 命令所在目录加入到环境变量 PATH 中
     + 从开始菜单打开 “VS2015开发人员命令提示”，进入命令行
@@ -179,10 +187,16 @@
 
 #### Android 平台编译说明
 + 安装 ndk 编译工具
-  - 从  https://developer.android.com/ndk/downloads 下载 ndk，并安装到：/home/android-ndk
+  - 从 https://developer.android.com/ndk/downloads 下载 ndk，并安装到：/home/android-ndk
   - 设置环境变量：
 
         export ANDROID_NDK=/home/android-ndk
+        
++ 安装 sdk 工具
+  - 从 https://developer.android.google.cn/studio/releases 下载 sdk tools, 并安装到 /home/android-sdk
+  - 设置环境变量：
+  
+        export ANDROID_SDK=/home/android-sdk
 
 + 编译
   - 主机是 linux
@@ -218,7 +232,7 @@
         cmake --build . --config Release --target install
 	    cmake --build . --target APK
 
-  - CMake android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
+  - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：
       目标 ABI。如果未指定目标 ABI，则 CMake 默认使用 armeabi-v7a。  
       有效的目标名称为：
@@ -248,4 +262,6 @@
 问题：https://github.com/KangLin/FaceRecognizer/issues  
 项目位置：https://github.com/KangLin/FaceRecognizer
 
-## [许可协议](License.md "License.md")
+## 许可协议
+- [本项目许可协议](License.md "License.md")  
+- 第三方库许可协议：详见各第三库许可协议。当你使用本项目依赖的第三方库时，同时请遵守其许可协议。
