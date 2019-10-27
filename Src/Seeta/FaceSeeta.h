@@ -5,6 +5,7 @@
 
 #include "Face.h"
 #include "DetectorSeeta.h"
+#include "TrackerSeeta.h"
 #include "LandmarkerSeeta.h"
 #include "RecognizerSeeta.h"
 #include <QSharedPointer>
@@ -17,11 +18,13 @@ public:
     virtual ~CFaceSeeta();
     
     virtual CDetector* GetDector();
+    virtual CTracker* GetTracker();
     virtual CLandmarker* GetLandmarker();
     virtual CRecognizer* GetRecognizer();
     
 private:
     CDetectorSeeta* m_pDetector;
+    CTrackerSeeta* m_pTracker;
     CLandmarkerSeeta* m_pLandmark;
     CRecognizerSeeta* m_pRecognizer;
 };

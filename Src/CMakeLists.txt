@@ -58,6 +58,7 @@ if(SeetaFace_FOUND)
         ${SOURCES_FILES}
         Seeta/FaceSeeta.cpp
         Seeta/DetectorSeeta.cpp
+        Seeta/TrackerSeeta.cpp
         Seeta/LandmarkerSeeta.cpp
         Seeta/RecognizerSeeta.cpp
         )
@@ -66,6 +67,7 @@ if(SeetaFace_FOUND)
         ${HEADER_FILES}
         Seeta/FaceSeeta.h
         Seeta/DetectorSeeta.h
+        Seeta/TrackerSeeta.h
         Seeta/LandmarkerSeeta.h
         Seeta/RecognizerSeeta.h
         )
@@ -89,6 +91,7 @@ set(SOURCES_FILES
     Factory.cpp
     Face.cpp
     Detector.cpp
+    Tracker.cpp
     Landmarker.cpp
     Recognizer.cpp
     database/Database.cpp
@@ -110,6 +113,7 @@ set(HEADER_FILES
     Factory.h
     Face.h
     Detector.h
+    Tracker.h
     Landmarker.h
     Recognizer.h
     database/Database.h

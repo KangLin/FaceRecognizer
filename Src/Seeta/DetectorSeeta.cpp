@@ -12,6 +12,7 @@ CDetectorSeeta::~CDetectorSeeta()
 
 int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
 {
+    if(image.isNull()) return -1;
     PERFORMANCE(SeetaDectect)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
@@ -73,10 +74,15 @@ void CDetectorSeeta::UpdateParameter()
     int id = 0;
     
     QString szFile = m_pParameter->GetModelPath() + QDir::separator() + "fd_2_00.dat";
-    seeta::ModelSetting model(szFile.toStdString(),
-                              device,
-                              id);
-    m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
+    try {
+        seeta::ModelSetting model(szFile.toStdString(),
+                                  device,
+                                  id);
+        m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
+    } catch (...) {
+        LOG_MODEL_ERROR("CDetectorSeeta", "Load model fail");
+        return;
+    }
     m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetMinFaceSize());
     return;
 }

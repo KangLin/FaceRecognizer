@@ -60,19 +60,21 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     pen.setWidth(2);
     painter.setPen(pen);
     PERFORMANCE(CFrmRecognizerVideo);
-    QVector<QRect> faces;
-    int nRet = m_pFace->GetDector()->Detect(image, faces);
+    QVector<CTracker::strFace> faces;
+    int nRet = m_pFace->GetTracker()->Track(image, faces);
     if(nRet)
         return;
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo,
-                         "Dectect " + QString::number(faces.size()) + " faces");
-    foreach (auto f, faces) {
+                         "Track " + QString::number(faces.size()) + " faces");
+    foreach (auto face, faces) {
+        QRect f = face.rect;
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
+        painter.drawText(f.x(), f.y(), QString::number(face.pid));
     }
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "MarkFace");
-    
-    ui->wgDisplay->slotDisplay(image);
-    
+
+    ui->wgDisplay->slotDisplay(img);
+
     if(faces.size() > 1)
     {
         SetStatusInformation(tr("Please only a person before the camera"));
@@ -81,7 +83,7 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
         SetStatusInformation(tr("Please face befor camera"));
         return;
     }
-    
+
     //TOD: recognizer
     
 }

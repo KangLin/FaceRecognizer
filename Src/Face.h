@@ -6,6 +6,7 @@
 #include "facerecognizer_export.h"
 
 #include "Detector.h"
+#include "Tracker.h"
 #include "Landmarker.h"
 #include "Recognizer.h"
 #include "Parameter.h"
@@ -19,6 +20,7 @@ public:
     virtual ~CFace();
     
     virtual CDetector* GetDector() = 0;
+    virtual CTracker* GetTracker() = 0;
     virtual CLandmarker* GetLandmarker() = 0;
     virtual CRecognizer* GetRecognizer() = 0;
     virtual CDatabase* GetDatabase();
