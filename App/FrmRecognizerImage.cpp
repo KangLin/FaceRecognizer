@@ -146,7 +146,7 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     foreach (auto f, faces) {
         FACE_INFO info;
         info.face = f;
-        info.points = m_pFace->GetLandmarker()->Mark(image, f);
+        m_pFace->GetLandmarker()->Mark(image, f, info.points);
         info.index = m_pFace->GetRecognizer()->Query(image, info.points);
         if(info.index < 0)
             continue;

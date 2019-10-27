@@ -18,14 +18,14 @@ class FACERECOGNIZER_EXPORT CLandmarker : public QObject
 public:
     CLandmarker(QObject *parent = nullptr);
     virtual ~CLandmarker();
-    
+
     virtual int SetParameter(CParameterLandmark *pPara);
-    virtual QVector<QPointF> Mark(const QImage &image, const QRect &face) = 0;
-    
+    virtual int Mark(const QImage &image, const QRect &face, QVector<QPointF> &points) = 0;
+
 public Q_SLOTS:
     void slotParameterUpdate();
     void slotParameterDelete();
-    
+
 protected:
     virtual void UpdateParameter() = 0;
     CParameterLandmark *m_pParameter;

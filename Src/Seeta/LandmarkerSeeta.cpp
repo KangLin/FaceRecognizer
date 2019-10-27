@@ -48,7 +48,7 @@ void CLandmarkerSeeta::UpdateParameter()
     return;
 }
 
-QVector<QPointF> CLandmarkerSeeta::Mark(const QImage &image, const QRect &face)
+int CLandmarkerSeeta::Mark(const QImage &image, const QRect &face, QVector<QPointF> &points)
 {
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
@@ -69,15 +69,15 @@ QVector<QPointF> CLandmarkerSeeta::Mark(const QImage &image, const QRect &face)
     rect.width = face.width();
     rect.height = face.height();
     
-    QVector<QPointF> ret;
     PERFORMANCE(SeetaMark)
-    std::vector<SeetaPointF> points = m_Landmarker->mark(data, rect);
+    std::vector<SeetaPointF> p = m_Landmarker->mark(data, rect);
+    if(p.size() == 0) return -1;
     PERFORMANCE_ADD_TIME(SeetaMark, "mark")
     std::vector<SeetaPointF>::iterator it;
-    for(it = points.begin(); it != points.end(); it++)
+    for(it = p.begin(); it != p.end(); it++)
     {
         QPointF p(it->x, it->y);
-        ret.push_back(p);
+        points.push_back(p);
     }
-    return ret;
+    return 0;
 }

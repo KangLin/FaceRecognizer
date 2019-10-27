@@ -83,7 +83,8 @@ int CFrmRegisterImage::MarkFace(QImage &image)
     m_pFace->GetDector()->Detect(image, faces);
     foreach (auto f, faces) {
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
-        auto points = m_pFace->GetLandmarker()->Mark(image, f);
+        QVector<QPointF> points;
+        m_pFace->GetLandmarker()->Mark(image, f, points);
         for (auto &point : points)
         {
             {
@@ -114,7 +115,8 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     }
     
     foreach (auto f, faces) {
-        auto points = m_pFace->GetLandmarker()->Mark(image, f);
+        QVector<QPointF> points;
+        m_pFace->GetLandmarker()->Mark(image, f, points);
         if(!m_bReplace)
         {
             auto index = m_pFace->GetRecognizer()->Query(image, points);
@@ -195,7 +197,8 @@ void CFrmRegisterImage::on_pbReplace_clicked()
     }
 
     foreach (auto f, faces) {
-        auto points = m_pFace->GetLandmarker()->Mark(image, f);
+        QVector<QPointF> points;
+        m_pFace->GetLandmarker()->Mark(image, f, points);
         
         if(m_bReplace)
         {

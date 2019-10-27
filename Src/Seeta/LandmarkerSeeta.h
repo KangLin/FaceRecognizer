@@ -16,7 +16,7 @@ public:
     CLandmarkerSeeta(QObject* parent = nullptr);
     virtual ~CLandmarkerSeeta();
 
-    virtual QVector<QPointF> Mark(const QImage &image, const QRect &face);
+    virtual int Mark(const QImage &image, const QRect &face, QVector<QPointF> &points);
 
 private:
     virtual void UpdateParameter();
