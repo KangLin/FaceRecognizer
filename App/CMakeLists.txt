@@ -13,6 +13,7 @@ set(SOURCES_FILES
     ParameterRegisterImage.cpp
     FrmRecognizerVideo.cpp
     ManageRecognizerVideo.cpp
+    RecognizerThread.cpp
     )
 
 set(HEADER_FILES
@@ -25,6 +26,7 @@ set(HEADER_FILES
     ParameterRegisterImage.h
     FrmRecognizerVideo.h
     ManageRecognizerVideo.h
+    RecognizerThread.h
     )
 
 set(SOURCE_UI_FILES

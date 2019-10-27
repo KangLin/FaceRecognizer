@@ -6,7 +6,7 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     ui(new Ui::CManageRecognizerVideo)
 {
     ui->setupUi(this);
-    
+
     m_pFrmRecognizerVideo = new CFrmRecognizerVideo(this);
     if(!m_pFrmRecognizerVideo)
         throw std::runtime_error("alloc memery fail");
@@ -16,10 +16,14 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     check = connect(m_pFrmRecognizerVideo, SIGNAL(slotRecognizer(const QImage&)),
                          this, SLOT(slotRecognizer(const QImage&)));
     Q_ASSERT(check);
+    
+    m_pThread = new CRecognizerThread();
+    m_pThread->start();
 }
 
 CManageRecognizerVideo::~CManageRecognizerVideo()
 {
+    m_pThread->exit();
     delete ui;
 }
 

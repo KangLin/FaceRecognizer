@@ -5,6 +5,7 @@
 #include <QResizeEvent>
 
 #include "FrmRecognizerVideo.h"
+#include "RecognizerThread.h"
 
 namespace Ui {
 class CManageRecognizerVideo;
@@ -16,8 +17,8 @@ class CManageRecognizerVideo : public QWidget
     
 public:
     explicit CManageRecognizerVideo(QWidget *parent = nullptr);
-    ~CManageRecognizerVideo();
-    
+    virtual ~CManageRecognizerVideo() override;
+
 public Q_SLOTS:
     void slotRecognizer(const QImage &image);
     void slotRecognizerFinish();
@@ -28,8 +29,8 @@ Q_SIGNALS:
 private:
     Ui::CManageRecognizerVideo *ui;
     CFrmRecognizerVideo *m_pFrmRecognizerVideo;
-    
-    // QWidget interface
+    CRecognizerThread *m_pThread;
+
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
 };
