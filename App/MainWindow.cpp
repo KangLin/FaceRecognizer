@@ -13,6 +13,7 @@
 #include "FrmRecognizerImage.h"
 #include "ManageRegisterVideo.h"
 #include "ManageRecognizerVideo.h"
+#include "Factory.h"
 
 #include <QCameraInfo>
 #include <QGuiApplication>
@@ -70,8 +71,14 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->actionFile->setChecked(true);
 
 #ifdef HAVE_SEETA_FACE
-    ui->actionRegisterVideo->setChecked(true);
-    on_actionRegisterVideo_triggered();
+    if(CFactory::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
+    {
+        ui->actionRecognizerVideo->setChecked(true);
+        on_actionRecognizerVideo_triggered();
+    } else {
+        ui->actionRegisterVideo->setChecked(true);
+        on_actionRegisterVideo_triggered();
+    }
 #else
     ui->menuRegister->setEnabled(false);
     ui->menuRecognizer->setEnabled(false);

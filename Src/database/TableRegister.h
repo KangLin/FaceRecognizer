@@ -15,7 +15,12 @@ public:
     int Register(qint64 index, CDataRegister *pData);
     int Delete(qint64 index);
     int GetRegisterInfo(qint64 index, CDataRegister *pData);
-    bool IsExistNo(qint64 no);
+    /**
+     * @brief IsExistNo
+     * @param no: when is -1, determine if the registry has data
+     * @return 
+     */
+    bool IsExistNo(qint64 no = -1);
     
 private:
     QSqlDatabase m_Database;

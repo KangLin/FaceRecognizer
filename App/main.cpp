@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setApplicationName("FaceRecognizer");
-    
+
 #ifdef RABBITCOMMON
     RabbitCommon::CTools::Instance()->Init();
 
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 #endif
     
-    a.setApplicationDisplayName(QObject::tr("FaceRecognizer"));
+    a.setApplicationDisplayName(QObject::tr("Face recognizer"));
     
 #ifdef RABBITCOMMON 
     CFrmUpdater *pUpdate = new CFrmUpdater();
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     if(!pUpdate->GenerateUpdateXml()) 
         return 0; 
 #endif
-    
+
     MainWindow w;
     
 #if defined (Q_OS_ANDROID)

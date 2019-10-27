@@ -111,8 +111,12 @@ int CTableRegister::GetRegisterInfo(qint64 index, CDataRegister *pData)
 
 bool CTableRegister::IsExistNo(qint64 no)
 {
-    QString szSql = "SELECT * FROM Register WHERE no="
-            + QString::number(no) + ";";
+    QString szSql;
+    if(-1 == no)
+        szSql = "SELECT * FROM Register";
+    else
+        szSql = "SELECT * FROM Register WHERE no="
+                + QString::number(no) + ";";
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
