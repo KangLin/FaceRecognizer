@@ -4,6 +4,7 @@
 #include "Performance.h"
 
 #include <QPainter>
+#include <QDebug>
 
 CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
     QWidget(parent),
@@ -20,6 +21,7 @@ CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
 
 CFrmRecognizerVideo::~CFrmRecognizerVideo()
 {
+    qDebug() << "CFrmRecognizerVideo::~CFrmRecognizerVideo()";
     delete ui;
 }
 
@@ -66,14 +68,19 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
         return;
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo,
                          "Track " + QString::number(faces.size()) + " faces");
+    bool bRecognize = false;
     foreach (auto face, faces) {
         QRect f = face.rect;
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
-        painter.drawText(f.x(), f.y(), QString::number(face.pid));
+        if(m_FaceInfo.end() == m_FaceInfo.find(face.pid))
+            bRecognize = true;
+        else
+            painter.drawText(f.x(), f.y(), m_FaceInfo.find(face.pid).value());
     }
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "MarkFace");
-
     ui->wgDisplay->slotDisplay(img);
+    if(bRecognize)
+        emit sigRecognize(image);
 
     if(faces.size() > 1)
     {
@@ -86,4 +93,9 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
 
     //TOD: recognizer
     
+}
+
+void CFrmRecognizerVideo::slotRecognized(const QMap<int, QString> &faceInfo)
+{
+    m_FaceInfo = faceInfo;
 }

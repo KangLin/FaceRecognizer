@@ -14,6 +14,7 @@ set(SOURCES_FILES
     FrmRecognizerVideo.cpp
     ManageRecognizerVideo.cpp
     RecognizerThread.cpp
+    RecognizerVideo.cpp
     )
 
 set(HEADER_FILES
@@ -27,6 +28,7 @@ set(HEADER_FILES
     FrmRecognizerVideo.h
     ManageRecognizerVideo.h
     RecognizerThread.h
+    RecognizerVideo.h
     )
 
 set(SOURCE_UI_FILES

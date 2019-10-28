@@ -3,6 +3,7 @@
 
 #pragma once
 #include <QThread>
+#include "ManageRecognizerVideo.h"
 
 class CRecognizerThread : public QThread
 {
@@ -15,6 +16,9 @@ public Q_SLOTS:
     
 protected:
     virtual void run() override;
+    
+private:
+    CManageRecognizerVideo *m_pManageRecognizerVideo;
 };
 
 #endif // CRECOGNIZERTHREAD_H

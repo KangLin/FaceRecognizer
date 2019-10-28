@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(FaceRecognizer)
 
-OPTION(HAVE_PERFORMANCE "Set to ON to performance)." ON)
+OPTION(HAVE_PERFORMANCE "Set to ON to build performance)." OFF)
 if(HAVE_PERFORMANCE)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
 endif()

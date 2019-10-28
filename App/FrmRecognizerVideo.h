@@ -2,6 +2,8 @@
 #define FRMRECOGNIZERVIDEO_H
 
 #include <QWidget>
+#include <QMap>
+
 #include "Face.h"
 
 namespace Ui {
@@ -14,13 +16,14 @@ class CFrmRecognizerVideo : public QWidget
     
 public:
     explicit CFrmRecognizerVideo(QWidget *parent = nullptr);
-    ~CFrmRecognizerVideo();
+    virtual ~CFrmRecognizerVideo();
 
 public Q_SLOTS:
     void slotDisplay(const QImage &image);
+    void slotRecognized(const QMap<int, QString> &faceInfo);
 
 Q_SIGNALS:
-    void sigRecognizer(const QImage &image);
+    void sigRecognize(const QImage &image);
 
 private:
     enum STATUS_TYPE
@@ -36,6 +39,7 @@ private:
     Ui::CFrmRecognizerVideo *ui;
     QImage m_Image;
     CFace* m_pFace;
+    QMap<int, QString> m_FaceInfo;
 };
 
 #endif // FRMRECOGNIZERVIDEO_H

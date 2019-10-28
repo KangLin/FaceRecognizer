@@ -106,7 +106,7 @@
 ### CMake 配置参数
   - [必选] Qt5_DIR: qt 安装位置
   - [必选] RabbitCommon_DIR: RabbitCommon 源码位置
-  - [可选] HAVE_PERFORMANCE: 比较测试框架，默认 ON
+  - [可选] HAVE_PERFORMANCE: 比较测试框架，默认 OFF
   - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
   - [可选] SeetaFace_DIR: SeetaFace 库安装位置
   - [可选] YUV_DIR: libyuv 库安装位置
