@@ -1,4 +1,5 @@
 #include <QApplication>
+
 #include "MainWindow.h"
 
 #ifdef RABBITCOMMON

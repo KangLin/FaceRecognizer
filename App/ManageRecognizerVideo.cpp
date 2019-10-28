@@ -1,5 +1,6 @@
 #include "ManageRecognizerVideo.h"
 #include "ui_ManageRecognizerVideo.h"
+#include <QDebug>
 
 CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     QWidget(parent),
@@ -13,7 +14,7 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     bool check = connect(this, SIGNAL(sigCaptureFrame(const QImage&)),
                     m_pFrmRecognizerVideo, SLOT(slotDisplay(const QImage&)));
     Q_ASSERT(check);
-    check = connect(m_pFrmRecognizerVideo, SIGNAL(slotRecognizer(const QImage&)),
+    check = connect(m_pFrmRecognizerVideo, SIGNAL(sigRecognizer(const QImage&)),
                          this, SLOT(slotRecognizer(const QImage&)));
     Q_ASSERT(check);
     
@@ -23,6 +24,7 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
 
 CManageRecognizerVideo::~CManageRecognizerVideo()
 {
+    qDebug() << "CManageRecognizerVideo::~CManageRecognizerVideo()";
     m_pThread->exit();
     delete ui;
 }

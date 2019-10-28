@@ -110,7 +110,8 @@ function function_android()
     
     #sudo apt install oracle-java11-set-default -qq -y
 
-    install_android_sdk_and_ndk
+    #install_android_sdk_and_ndk
+    install_android
     
     sudo apt-get install ant -qq -y
     sudo apt-get install libicu-dev -qq -y

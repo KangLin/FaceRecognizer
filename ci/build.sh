@@ -202,6 +202,7 @@ if [ -n "$GENERATORS" ]; then
             -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
             -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
     else

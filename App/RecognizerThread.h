@@ -11,6 +11,8 @@ public:
     explicit CRecognizerThread(QObject *parent = nullptr);
     virtual ~CRecognizerThread() override;
 
+public Q_SLOTS:
+    
 protected:
     virtual void run() override;
 };

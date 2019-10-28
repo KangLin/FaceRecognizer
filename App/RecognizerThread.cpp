@@ -1,18 +1,18 @@
 #include "RecognizerThread.h"
 #include <QtDebug>
+#include <QTimer>
+#include <QTime>
 
 CRecognizerThread::CRecognizerThread(QObject *parent) : QThread(parent)
-{
-    connect(this, SIGNAL(finished()), this, SLOT(deleteLater()));
-}
+{}
 
 CRecognizerThread::~CRecognizerThread()
 {
-   qDebug() << "CRecognizerThread::~CRecognizerThread";
+    qDebug() << "CRecognizerThread::~CRecognizerThread";
 }
 
 void CRecognizerThread::run()
 {
-
+  
     this->exec();
 }
