@@ -3,18 +3,18 @@
 
 #pragma once
 
-#ifdef HAVE_PERFORMANCE
+#ifndef HAVE_PERFORMANCE
+    #define PERFORMANCE(name)
+    #define PERFORMANCE_START(name)
+    #define PERFORMANCE_ADD_TIME(name, message)
+    #define RETURN(value)    
+#else
     #define PERFORMANCE(name) \
         CPerformance object##name (#name);
     #define PERFORMANCE_START(name) object##name.StartTime();
     #define PERFORMANCE_ADD_TIME(name, message) \
         object##name.AddTime(__FILE__, __LINE__, __FUNCTION__, message);
-#else
-    #define PERFORMANCE(name)
-    #define PERFORMANCE_START(name)
-    #define PERFORMANCE_ADD_TIME(name, message)
-#endif
-
+    #define RETURN(value)
 
 #include <QObject>
 #include <QTime>
@@ -131,5 +131,6 @@ private:
     QString GetColor(COLOR color);
 };
 
+#endif //HAVE_PERFORMANCE
 
 #endif // CPERFORMANCE_H

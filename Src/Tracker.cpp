@@ -1,5 +1,7 @@
 #include "Tracker.h"
 
+static int gTrackStrFaceId = qRegisterMetaType<CTracker::strFace>();
+static int gVectorTrackStrFaceId = qRegisterMetaType<QVector<CTracker::strFace> >();
 CTracker::CTracker(QObject *parent) : QObject(parent)
 {}
 

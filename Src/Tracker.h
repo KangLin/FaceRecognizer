@@ -22,7 +22,7 @@ public:
         QRect rect;
         int pid;
     };
-
+    
     virtual int Track(const QImage &image, QVector<strFace> &faces) = 0;
 
 public Q_SLOTS:
@@ -34,4 +34,5 @@ protected:
     CParameterDetector* m_pParameter;
 };
 
+Q_DECLARE_METATYPE(CTracker::strFace);
 #endif // CTRACKER_H

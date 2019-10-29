@@ -72,7 +72,6 @@ int CTrackerSeeta::Track(const QImage &image, QVector<strFace> &faces)
     auto f = m_Tracker->track(data);
     PERFORMANCE_ADD_TIME(CTrackerSeeta, "track")
 
-    if(f.size <= 0) return -2;
     for (int i = 0; i < f.size; ++i) {
         strFace face;
         face.pid = f.data[i].PID;

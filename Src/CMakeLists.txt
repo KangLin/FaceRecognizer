@@ -5,6 +5,7 @@ project(FaceRecognizer)
 OPTION(HAVE_PERFORMANCE "Set to ON to build performance)." OFF)
 if(HAVE_PERFORMANCE)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
+    set(SOURCES_FILES ${SOURCES_FILES} Performance.cpp)
 endif()
 
 #Use: https://github.com/KangLin/libyuv
@@ -27,7 +28,7 @@ find_package(OpenCV)
 if(OpenCV_FOUND)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
     set(LIBS ${LIBS} ${OpenCV_LIBS})
-    set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
+    set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
 #    #android 编译出来的是静态库
 #    foreach(component ${OpenCV_LIBS})
@@ -97,7 +98,6 @@ set(SOURCES_FILES
     database/Database.cpp
     database/DataRegister.cpp
     database/TableRegister.cpp
-    Performance.cpp
     )
 
 set(HEADER_FILES

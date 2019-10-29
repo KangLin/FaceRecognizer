@@ -3,6 +3,7 @@
 
 #pragma once
 #include <QObject>
+#include "Factory.h"
 
 class CRecognizerVideo : public QObject
 {
@@ -14,7 +15,7 @@ Q_SIGNALS:
     void sigRecognized(const QMap<int, QString> &faceInfo);
 
 public slots:
-    void slotRecognize(const QImage &image);
+    void slotRecognize(const QImage &image, const QVector<CTracker::strFace> &faces);
 };
 
 #endif // CRECOGNIZERVIDEO_H

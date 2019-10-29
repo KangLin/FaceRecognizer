@@ -36,7 +36,6 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
     PERFORMANCE_START(SeetaDectect)
     SeetaFaceInfoArray f = m_Dector->detect(data);
     PERFORMANCE_ADD_TIME(SeetaDectect, "detect")
-    if(f.size == 0) return -1;
     for(int i = 0; i < f.size; i++)
     {
         QRect rect(f.data[i].pos.x,

@@ -26,7 +26,8 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void sigCaptureFrame(const QImage &image);
-    void sigRecognize(const QImage &image);
+    void sigRecognize(const QImage &image, const QVector<CTracker::strFace> &faces);
+    void sigRecognized(const QMap<int, QString> &faceInfo);
 
 private:
     Ui::CManageRecognizerVideo *ui;

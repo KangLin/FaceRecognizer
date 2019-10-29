@@ -233,7 +233,7 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         LOG_MODEL_ERROR("CImageTool", "videoFrame.map fail");
         return img;
     }
-    
+    PERFORMANCE(OpenCVConverFormatToRGB888)
     do{
         img = QImage(videoFrame.width(),
                      videoFrame.height(),
@@ -308,6 +308,7 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
         
     }while(0);
     videoFrame.unmap();
+    PERFORMANCE_ADD_TIME(OpenCVConverFormatToRGB888, "OpenCVConverFormatToRGB888")
     return img;
 }
 
@@ -323,7 +324,7 @@ QImage CImageTool::FFMpegConverFormatToRGB888(const QVideoFrame &frame)
         return img;
     if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
         return img;
-
+    PERFORMANCE(FFMpegConverFormatToRGB888)
     do{
         img = QImage(videoFrame.width(),
                      videoFrame.height(),
@@ -353,6 +354,7 @@ QImage CImageTool::FFMpegConverFormatToRGB888(const QVideoFrame &frame)
                              AV_PIX_FMT_RGB24);
     }while (0);
     videoFrame.unmap();
+    PERFORMANCE_ADD_TIME(FFMpegConverFormatToRGB888, "FFMpegConverFormatToRGB888")
     return img;
 }
 
@@ -365,6 +367,8 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
         return img;
     if(!videoFrame.map(QAbstractVideoBuffer::ReadOnly))
         return img;
+    
+    PERFORMANCE(LibyuvConverFormatToRGB888)
     do{
         img = QImage(videoFrame.width(),
                      videoFrame.height(),
@@ -418,6 +422,7 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
         
     }while(0);
     videoFrame.unmap();
+    PERFORMANCE_ADD_TIME(LibyuvConverFormatToRGB888, "LibyuvConverFormatToRGB888")
     return img;
 }
 #endif

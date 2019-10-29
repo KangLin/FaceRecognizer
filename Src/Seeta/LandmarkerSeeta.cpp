@@ -71,7 +71,6 @@ int CLandmarkerSeeta::Mark(const QImage &image, const QRect &face, QVector<QPoin
     
     PERFORMANCE(SeetaMark)
     std::vector<SeetaPointF> p = m_Landmarker->mark(data, rect);
-    if(p.size() == 0) return -1;
     PERFORMANCE_ADD_TIME(SeetaMark, "mark")
     std::vector<SeetaPointF>::iterator it;
     for(it = p.begin(); it != p.end(); it++)

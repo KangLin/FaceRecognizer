@@ -2,9 +2,11 @@
 #include "ui_FrmRecognizerVideo.h"
 #include "Factory.h"
 #include "Performance.h"
+#include "Log.h"
 
 #include <QPainter>
 #include <QDebug>
+#include <QMutexLocker>
 
 CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
     QWidget(parent),
@@ -54,7 +56,11 @@ int CFrmRecognizerVideo::SetStatusInformation(const QString &szInfo, int nRet, S
 
 void CFrmRecognizerVideo::slotDisplay(const QImage &image)
 {
-    if(isHidden() || !m_pFace) return;
+    if(isHidden() || !m_pFace)
+    {
+        LOG_MODEL_ERROR("CFrmRecognizerVideo", "isHidden() || !m_pFace");
+        return;
+    }
 
     QImage img = image;
     QPainter painter(&img);
@@ -63,25 +69,30 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     painter.setPen(pen);
     PERFORMANCE(CFrmRecognizerVideo);
     QVector<CTracker::strFace> faces;
-    int nRet = m_pFace->GetTracker()->Track(image, faces);
-    if(nRet)
-        return;
+    m_pFace->GetTracker()->Track(image, faces);
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo,
                          "Track " + QString::number(faces.size()) + " faces");
     bool bRecognize = false;
     foreach (auto face, faces) {
         QRect f = face.rect;
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
+        QMutexLocker locker(&m_Mutex);
         if(m_FaceInfo.end() == m_FaceInfo.find(face.pid))
+        {
             bRecognize = true;
+            painter.drawText(f.x(), f.y(), QString::number(face.pid));
+        }
         else
             painter.drawText(f.x(), f.y(), m_FaceInfo.find(face.pid).value());
     }
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "MarkFace");
     ui->wgDisplay->slotDisplay(img);
     if(bRecognize)
-        emit sigRecognize(image);
-
+    {
+        QMutexLocker locker(&m_Mutex);
+        emit sigRecognize(image, faces);
+        PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "sigRecognize");
+    }
     if(faces.size() > 1)
     {
         SetStatusInformation(tr("Please only a person before the camera"));
@@ -97,5 +108,6 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
 
 void CFrmRecognizerVideo::slotRecognized(const QMap<int, QString> &faceInfo)
 {
+    QMutexLocker locker(&m_Mutex);
     m_FaceInfo = faceInfo;
 }

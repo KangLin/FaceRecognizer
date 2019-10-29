@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QMutex>
 
 #include "Face.h"
 
@@ -23,7 +24,7 @@ public Q_SLOTS:
     void slotRecognized(const QMap<int, QString> &faceInfo);
 
 Q_SIGNALS:
-    void sigRecognize(const QImage &image);
+    void sigRecognize(const QImage &image, const QVector<CTracker::strFace> &faces);
 
 private:
     enum STATUS_TYPE
@@ -40,6 +41,7 @@ private:
     QImage m_Image;
     CFace* m_pFace;
     QMap<int, QString> m_FaceInfo;
+    QMutex m_Mutex;
 };
 
 #endif // FRMRECOGNIZERVIDEO_H
