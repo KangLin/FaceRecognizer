@@ -95,7 +95,7 @@ function install_android_sdk_and_ndk()
         mv android-sdk-linux android-sdk
         rm android-sdk_${SDK_VERSION}-linux.tgz 
         (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
-        | android-sdk/tools/android update sdk -u #-t tool,android-18,android-24,extra,platform,platform-tools,build-tools-28.0.3
+        | android-sdk/tools/android update sdk -u -t tool,${ANDROID_API},extra,platform,platform-tools,build-tools-28.0.3
     fi
 }
 
@@ -110,8 +110,7 @@ function function_android()
     
     #sudo apt install oracle-java11-set-default -qq -y
 
-    #install_android_sdk_and_ndk
-    install_android
+    install_android_sdk_and_ndk
     
     sudo apt-get install ant -qq -y
     sudo apt-get install libicu-dev -qq -y
