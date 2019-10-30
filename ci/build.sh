@@ -30,35 +30,6 @@ if [ "$BUILD_TARGERT" = "android" ]; then
     export PATH=${SOURCE_DIR}/Tools/apache-ant/bin:$JAVA_HOME:$PATH
 fi
 
-echo "Build SeetaFace2 ......"
-export SeetaFace2_SOURCE=${SOURCE_DIR}/../SeetaFace2
-export SeetaFace2_DIR=${SeetaFace2_SOURCE}/install
-git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_SOURCE}
-cd ${SeetaFace2_SOURCE}
-
-if [ -n "${STATIC}" ]; then
-    CONFIG_PARA="-DBUILD_SHARED_LIBS=${STATIC}"
-fi
-echo "PWD:`pwd`"
-if [ "${BUILD_TARGERT}" = "android" ]; then
-    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
-         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
-         -DBUILD_EXAMPLE=OFF \
-         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
-         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
-else
-    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
-         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
-         -DBUILD_EXAMPLE=OFF
-fi
-cmake --build . --target install --config Release
-
-cd ${SOURCE_DIR}
-
 if [ "${BUILD_TARGERT}" = "unix" ]; then
     if [ "$BUILD_DOWNLOAD" = "TRUE" ]; then
         QT_DIR=${SOURCE_DIR}/Tools/Qt/${QT_VERSION}
@@ -97,6 +68,34 @@ esac
 export PATH=${QT_ROOT}/bin:$PATH
 echo "PATH:$PATH"
 echo "PKG_CONFIG:$PKG_CONFIG"
+
+echo "Build SeetaFace2 ......"
+export SeetaFace2_SOURCE=${SOURCE_DIR}/../SeetaFace2
+export SeetaFace2_DIR=${SeetaFace2_SOURCE}/install
+git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_SOURCE}
+cd ${SeetaFace2_SOURCE}
+
+if [ -n "${STATIC}" ]; then
+    CONFIG_PARA="-DBUILD_SHARED_LIBS=${STATIC}"
+fi
+echo "PWD:`pwd`"
+if [ "${BUILD_TARGERT}" = "android" ]; then
+    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
+         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
+         -DCMAKE_VERBOSE=ON \
+         -DCMAKE_BUILD_TYPE=Release \
+         -DBUILD_EXAMPLE=OFF \
+         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
+         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
+else
+    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
+         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
+         -DCMAKE_VERBOSE=ON \
+         -DCMAKE_BUILD_TYPE=Release \
+         -DBUILD_EXAMPLE=OFF
+fi
+cmake --build . --target install --config Release
+
 cd ${SOURCE_DIR}
 
 mkdir -p build_${BUILD_TARGERT}
