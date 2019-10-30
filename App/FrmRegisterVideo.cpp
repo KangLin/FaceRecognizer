@@ -72,7 +72,10 @@ void CFrmRegisterVideo::on_pbRegister_clicked()
         return;
 
     if(m_Faces.size() != 1)
+    {
+        SetStatusInformation(tr("Please only a person before the camera"));
         return;
+    }
 
     if(CheckFace(m_box, m_Faces[0]))
         return;
@@ -149,9 +152,15 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
 int CFrmRegisterVideo::CheckFace(const QRect &box, const QRect &face)
 {
     if(box.width() < face.width() || box.height() < face.height())
+    {
+        SetStatusInformation(tr("Please stay away from the camera"));
         return -1;
+    }
     if(box.width() > face.width() * 2 || box.height() > face.height() * 2)
+    {
+        SetStatusInformation(tr("Please be close to the camera"));
         return -2;
+    }
     if(box.x() > face.x() || box.y() > face.y())
         return -3;
     if(((box.x() + box.width() / 4) < face.x())

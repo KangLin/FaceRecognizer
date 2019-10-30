@@ -9,7 +9,7 @@ class CRecognizerThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit CRecognizerThread(QObject *parent = nullptr);
+    explicit CRecognizerThread(CManageRecognizerVideo *parent = nullptr);
     virtual ~CRecognizerThread() override;
 
 public Q_SLOTS:

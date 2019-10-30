@@ -33,6 +33,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
     data.channels = 3;
     data.data = img.bits();
     
+    faces.clear();
     PERFORMANCE_START(SeetaDectect)
     SeetaFaceInfoArray f = m_Dector->detect(data);
     PERFORMANCE_ADD_TIME(SeetaDectect, "detect")

@@ -67,11 +67,11 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     QPen pen(Qt::green);
     pen.setWidth(2);
     painter.setPen(pen);
-    PERFORMANCE(CFrmRecognizerVideo);
+    PERFORMANCE(CFrmRecognizerVideo)
     QVector<CTracker::strFace> faces;
     m_pFace->GetTracker()->Track(image, faces);
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo,
-                         "Track " + QString::number(faces.size()) + " faces");
+                         "Track " + QString::number(faces.size()) + " faces")
     bool bRecognize = false;
     foreach (auto face, faces) {
         QRect f = face.rect;
@@ -81,17 +81,19 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
         {
             bRecognize = true;
             painter.drawText(f.x(), f.y(), QString::number(face.pid));
+            m_FaceInfo[face.pid];
         }
         else
-            painter.drawText(f.x(), f.y(), m_FaceInfo.find(face.pid).value());
+            painter.drawText(f.x(), f.y(), QString::number(face.pid)
+                             + "-" + m_FaceInfo.find(face.pid).value());
     }
-    PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "MarkFace");
+    PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "MarkFace")
     ui->wgDisplay->slotDisplay(img);
     if(bRecognize)
     {
         QMutexLocker locker(&m_Mutex);
         emit sigRecognize(image, faces);
-        PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "sigRecognize");
+        PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "sigRecognize")
     }
     if(faces.size() > 1)
     {

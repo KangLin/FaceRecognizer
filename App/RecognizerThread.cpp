@@ -2,7 +2,7 @@
 #include "RecognizerVideo.h"
 #include <QtDebug>
 
-CRecognizerThread::CRecognizerThread(QObject *parent) : QThread(parent)
+CRecognizerThread::CRecognizerThread(CManageRecognizerVideo *parent) : QThread()
 {
     m_pManageRecognizerVideo = dynamic_cast<CManageRecognizerVideo*>(parent);
 }

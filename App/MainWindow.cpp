@@ -247,7 +247,7 @@ void MainWindow::on_actionRecognizerImage_triggered()
 
 void MainWindow::on_actionRecognizerVideo_triggered()
 {
-    CManageRecognizerVideo *pManage = new CManageRecognizerVideo(this);
+    CManageRecognizerVideo *pManage = new CManageRecognizerVideo();
     m_CaptureFrame.disconnect();
     bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage&)),
                          pManage, SIGNAL(sigCaptureFrame(const QImage&)));

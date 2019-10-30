@@ -199,11 +199,11 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
             {
             case QVideoFrame::Format_Jpeg:
                 {
-                    PERFORMANCE(Format_Jpeg)
+                    PERFORMANCE(Load_Jpeg)
                     img.loadFromData(videoFrame.bits(),
                                      videoFrame.mappedBytes(),
                                      "JPEG");
-                    PERFORMANCE_ADD_TIME(Format_Jpeg, "loadFromData")
+                    PERFORMANCE_ADD_TIME(Load_Jpeg, "load jpeg From Data")
                 }
                 break;
             case QVideoFrame::Format_YUV420P:
