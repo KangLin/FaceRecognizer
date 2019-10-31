@@ -6,7 +6,7 @@ CParameter::CParameter(QObject *parent) : QObject(parent),
     m_Device(CPU)
 {
     SetModelPath(RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
-            + QDir::separator() + "model");
+            + QDir::separator() + "model" + QDir::separator() + "Seeta");
 }
 
 CParameter::~CParameter()

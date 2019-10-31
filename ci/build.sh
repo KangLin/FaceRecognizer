@@ -118,6 +118,12 @@ esac
 export VERSION="v0.0.2"
 if [ "${BUILD_TARGERT}" = "unix" ]; then
     cd $SOURCE_DIR
+    if [ "${BUILD_DOWNLOAD}" != "TRUE" ]; then
+        sed -i "s/export QT_VERSION_DIR=.*/export QT_VERSION_DIR=${QT_VERSION_DIR}/g" ${SOURCE_DIR}/debian/postinst
+        sed -i "s/export QT_VERSION=.*/export QT_VERSION=${QT_VERSION}/g" ${SOURCE_DIR}/debian/preinst
+        cat ${SOURCE_DIR}/debian/postinst
+        cat ${SOURCE_DIR}/debian/preinst
+    fi
     bash build_debpackage.sh ${QT_ROOT}
 
     sudo dpkg -i ../facerecognizer_*_amd64.deb

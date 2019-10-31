@@ -16,8 +16,10 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     bool check = connect(this, SIGNAL(sigCaptureFrame(const QImage&)),
                     m_pFrmRecognizerVideo, SLOT(slotDisplay(const QImage&)));
     Q_ASSERT(check);
-    check = connect(m_pFrmRecognizerVideo, SIGNAL(sigRecognize(const QImage&, const QVector<CTracker::strFace> &)),
-                         this, SIGNAL(sigRecognize(const QImage&, const QVector<CTracker::strFace> &)));
+    check = connect(m_pFrmRecognizerVideo,
+        SIGNAL(sigRecognize(const QImage&, const QVector<CTracker::strFace> &)),
+        this,
+       SIGNAL(sigRecognize(const QImage&, const QVector<CTracker::strFace> &)));
     Q_ASSERT(check);
     check = connect(this, SIGNAL(sigRecognized(const QMap<int, QString> &)),
         m_pFrmRecognizerVideo, SLOT(slotRecognized(const QMap<int, QString>&)));
@@ -36,6 +38,7 @@ CManageRecognizerVideo::~CManageRecognizerVideo()
 
 void CManageRecognizerVideo::slotRecognized(const QImage &image)
 {
+    Q_UNUSED(image)
     m_pFrmRecognizerVideo->hide();
 }
 

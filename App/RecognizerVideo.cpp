@@ -15,7 +15,7 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
     
     CFace *pFace = CFactory::Instance();
     if(!pFace) return;
-    
+
     PERFORMANCE(CRecognizerVideo)
     QMap<int, QString> faceInfo;
     foreach (auto face, faces) {
@@ -45,5 +45,6 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
     if(!faceInfo.isEmpty())
     {
         emit sigRecognized(faceInfo);
+        //qDebug() << "emit sigRecognized(faceInfo); end";
     }
 }

@@ -39,12 +39,16 @@ void CLandmarkerSeeta::UpdateParameter()
     else 
         szFile += "pd_2_00_pts5.dat";
     
-    seeta::ModelSetting model(szFile.toStdString(),
-                              device,
-                              id);
-    
-    m_Landmarker = QSharedPointer<seeta::FaceLandmarker>(
-                          new seeta::FaceLandmarker(model));
+    try {
+        seeta::ModelSetting model(szFile.toStdString(),
+                                  device,
+                                  id);
+        m_Landmarker = QSharedPointer<seeta::FaceLandmarker>(
+                              new seeta::FaceLandmarker(model));   
+    } catch (...) {
+        LOG_MODEL_ERROR("CLandmarkerSeeta", "Load model fail");
+        return;
+    }
     return;
 }
 

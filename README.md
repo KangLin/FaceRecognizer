@@ -85,6 +85,15 @@
 **注意:**本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
 ## 编译
+### 下载源码
+
+    git clone --recursive https://github.com/KangLin/FaceRecognizer.git
+
+或者：
+
+    git clone https://github.com/KangLin/FaceRecognizer.git
+    git submodule update --init --recursive
+
 ### 依赖
 + 编译工具
   + [Qt](http://qt.io/)
@@ -213,7 +222,7 @@
                  -DRabbitCommon_DIR= \
                  [其它可选 CMake 配置参数]
         cmake --build . --config Release --target install
-	    cmake --build . --target APK
+	    cmake --build . --config Release --target APK
 
   - 主机是 windows
 
@@ -230,7 +239,7 @@
                  -DRabbitCommon_DIR= \
                  [其它可选 CMake 配置参数]
         cmake --build . --config Release --target install
-	    cmake --build . --target APK
+	    cmake --build . --config Release --target APK
 
   - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：

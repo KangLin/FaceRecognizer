@@ -4,6 +4,7 @@
 #include "Performance.h"
 #include "Log.h"
 
+#include <QFont>
 #include <QPainter>
 #include <QDebug>
 #include <QMutexLocker>
@@ -76,6 +77,10 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     foreach (auto face, faces) {
         QRect f = face.rect;
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
+        
+        QFont font = painter.font();
+        font.setBold(true);
+        painter.setFont(font);
         QMutexLocker locker(&m_Mutex);
         if(m_FaceInfo.end() == m_FaceInfo.find(face.pid))
         {
@@ -91,9 +96,11 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     ui->wgDisplay->slotDisplay(img);
     if(bRecognize)
     {
+        //qDebug() << "emit sigRecognize(image, faces); start";
         QMutexLocker locker(&m_Mutex);
         emit sigRecognize(image, faces);
         PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "sigRecognize")
+        //qDebug() << "emit sigRecognize(image, faces); end";
     }
     if(faces.size() > 1)
     {

@@ -38,17 +38,21 @@ void CRecognizerSeeta::UpdateParameter()
     
     int id = 0;
     
-    QString szFile = m_pParameter->GetModelPath() + QDir::separator() + "fr_2_10.dat";
-    seeta::ModelSetting model(szFile.toStdString(),
-                              device,
-                              id);
-    m_Recognizer = QSharedPointer<seeta::FaceDatabase>(new seeta::FaceDatabase(model));
-    if(!m_Recognizer)
-    {
-        LOG_MODEL_ERROR("CRecognizerSeeta", "new seeta::FaceDatabase fail");
-        return;
+    try {
+        QString szFile = m_pParameter->GetModelPath() + QDir::separator() + "fr_2_10.dat";
+        seeta::ModelSetting model(szFile.toStdString(),
+                                  device,
+                                  id);
+        m_Recognizer = QSharedPointer<seeta::FaceDatabase>(new seeta::FaceDatabase(model));
+        if(!m_Recognizer)
+        {
+            LOG_MODEL_ERROR("CRecognizerSeeta", "new seeta::FaceDatabase fail");
+            return;
+        }        
+    } catch (...) {
+        LOG_MODEL_ERROR("CRecognizerSeeta", "Load model fail");
     }
-    
+
     Load();
 }
 

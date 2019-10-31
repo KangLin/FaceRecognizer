@@ -189,6 +189,11 @@ if(ANDROID)
             )
     # Install sql file
     INSTALL(FILES ../Resource/db/database.sql DESTINATION assets/data/db)
+    # Install model files
+    #INSTALL(FILES ../model/Seeta/fd_2_00.dat DESTINATION assets/model/Seeta)
+    #INSTALL(FILES ../model/Seeta/fr_2_10.dat DESTINATION assets/model/Seeta)
+    #INSTALL(FILES ../model/Seeta/pd_2_00_pts5.dat DESTINATION assets/model/Seeta)
+    #INSTALL(FILES ../model/Seeta/pd_2_00_pts81.dat DESTINATION assets/model/Seeta)
 else()
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
@@ -201,6 +206,11 @@ else()
             )
     # Install sql file
     INSTALL(FILES ../Resource/db/database.sql DESTINATION data/db)
+    # Install model files
+    #INSTALL(FILES ../model/Seeta/fd_2_00.dat DESTINATION model/Seeta)
+    #INSTALL(FILES ../model/Seeta/fr_2_10.dat DESTINATION model/Seeta)
+    #INSTALL(FILES ../model/Seeta/pd_2_00_pts5.dat DESTINATION model/Seeta)
+    #INSTALL(FILES ../model/Seeta/pd_2_00_pts81.dat DESTINATION model/Seeta)
 endif()
 
 export(TARGETS ${PROJECT_NAME}
