@@ -32,15 +32,15 @@ int CFrmRegisterVideo::SetStatusInformation(const QString &szInfo, int nRet, STA
     switch (type) {
     case ERROR:
         szMsg = tr("ERROR: ");
-        palette.setColor(QPalette::WindowText, QColor(255, 0, 0));
+        palette.setColor(QPalette::WindowText, Qt::red);
         break;
     case FAIL:
         szMsg = tr("FAIL: ");
-        palette.setColor(QPalette::WindowText, QColor(255, 0, 0));
+        palette.setColor(QPalette::WindowText, Qt::red);
         break;
     case SUCCESS:
         szMsg = tr("SUCCESS: ");
-        palette.setColor(QPalette::WindowText, QColor(0, 255, 0));
+        palette.setColor(QPalette::WindowText, Qt::green);
         break;
     default:
         break;

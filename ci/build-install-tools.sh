@@ -51,14 +51,20 @@ function install_android()
 {
     cd ${SOURCE_DIR}/Tools
     if [ ! -d "`pwd`/android-sdk" ]; then
+        ANDROID_STUDIO_VERSION=191.5900203
+        wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
+        tar xzf android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
+        export JAVA_HOME=`pwd`/android-studio/jre
+        export PATH=${JAVA_HOME}/bin:$PATH
         wget -c -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
         mkdir android-sdk
         cd android-sdk
         cp ../sdk-tools-linux-4333796.zip .
-        unzip sdk-tools-linux-4333796.zip
+        unzip -q sdk-tools-linux-4333796.zip
         echo "Install sdk and ndk ......"
+        cd tools
         (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
-        | ./tools/bin/sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
+        | ./bin/sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
         if [ ! -d ${SOURCE_DIR}/Tools/android-ndk ]; then
             ln -s ${SOURCE_DIR}/Tools/android-sdk/ndk-bundle ${SOURCE_DIR}/Tools/android-ndk
         fi

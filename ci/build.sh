@@ -11,13 +11,13 @@ cd ${SOURCE_DIR}
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${SOURCE_DIR}/Tools/android-sdk
     export ANDROID_NDK_ROOT=${SOURCE_DIR}/Tools/android-ndk
-    export ANDROID_SDK=${ANDROID_SDK_ROOT}
-    export ANDROID_NDK=${ANDROID_NDK_ROOT}
     if [ -n "$APPVEYOR" ]; then
         export JAVA_HOME="/C/Program Files (x86)/Java/jdk1.8.0"
+        export ANDROID_NDK_ROOT=${SOURCE_DIR}/Tools/android-sdk/ndk-bundle
     fi
     if [ "$TRAVIS" = "true" ]; then
-        export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+        export JAVA_HOME=${SOURCE_DIR}/Tools/android-studio/jre
+        #export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     fi
     case $BUILD_ARCH in
         arm*)
@@ -28,6 +28,8 @@ if [ "$BUILD_TARGERT" = "android" ]; then
         ;;
     esac
     export PATH=${SOURCE_DIR}/Tools/apache-ant/bin:$JAVA_HOME:$PATH
+    export ANDROID_SDK=${ANDROID_SDK_ROOT}
+    export ANDROID_NDK=${ANDROID_NDK_ROOT}
 fi
 
 if [ "${BUILD_TARGERT}" = "unix" ]; then
@@ -182,9 +184,11 @@ fi
 
 if [ -n "$GENERATORS" ]; then
     if [ -n "${STATIC}" ]; then
-        CONFIG_PARA="-DBUILD_SHARED_LIBS=${STATIC}"
+        CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
     fi
-
+    if [ -n "${ANDROID_ARM_NEON}" ]; then
+        CONFIG_PARA="${CONFIG_PARA} -DANDROID_ARM_NEON=${ANDROID_ARM_NEON}"
+    fi
     echo "Build FaceRecognizer ......"
     cd ${SOURCE_DIR}
     echo "PWD:`pwd`"
@@ -224,7 +228,27 @@ if [ -n "$GENERATORS" ]; then
     fi
     cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
     if [ "${BUILD_TARGERT}" = "android" ]; then
-        cmake --build . --target APK  
+        cmake --build . --target APK
+        if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION_DIR"="5.12" ]; then
+        
+            cp $SOURCE_DIR/Update/update_android.xml .
+	        APK_FILE=`find . -name "android-build-debug.apk"`
+            MD5=`md5sum ${APK_FILE} | awk '{print $1}'`
+            echo "MD5:${MD5}"
+            sed -i "s/<VERSION>.*</<VERSION>${VERSION}</g" update_android.xml
+            sed -i "s/<INFO>.*</<INFO>Release Tasks-${VERSION}</g" update_android.xml
+            sed -i "s/<TIME>.*</<TIME>`date`</g" update_android.xml
+            sed -i "s/<ARCHITECTURE>.*</<ARCHITECTURE>${BUILD_ARCH}</g" update_android.xml
+            sed -i "s/<MD5SUM>.*</<MD5SUM>${MD5}</g" update_android.xml
+            sed -i "s:<URL>.*<:<URL>https\://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/android-build-debug.apk<:g" update_android.xml
+
+            export UPLOADTOOL_BODY="Release FaceRecognizer-${VERSION}"
+            #export UPLOADTOOL_PR_BODY=
+            wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+            chmod u+x upload.sh
+            ./upload.sh ${APK_FILE} 
+            ./upload.sh update_android.xml
+        fi
     fi
 fi
 
