@@ -217,10 +217,9 @@ export(TARGETS ${PROJECT_NAME}
        APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
 )
 # Install cmake configure files
-install(
-        EXPORT ${PROJECT_NAME}Config
+install(EXPORT ${PROJECT_NAME}Config
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
-)
+        )
 write_basic_package_version_file(
     "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
     VERSION ${BUILD_VERSION}
