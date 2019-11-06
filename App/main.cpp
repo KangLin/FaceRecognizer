@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     
 #ifdef RABBITCOMMON 
     CFrmUpdater *pUpdate = new CFrmUpdater();
-    pUpdate->SetTitle(QPixmap(":/image/FaceRecognizer"));
+    pUpdate->SetTitle(QImage(":/image/FaceRecognizer"));
     if(!pUpdate->GenerateUpdateXml()) 
         return 0; 
 #endif

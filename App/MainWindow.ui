@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
@@ -153,6 +153,10 @@
    </property>
   </action>
   <action name="actionAbout_A">
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
+   </property>
    <property name="text">
     <string>About(&amp;A)</string>
    </property>

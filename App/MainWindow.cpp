@@ -15,6 +15,7 @@
 #include "ManageRecognizerVideo.h"
 #include "Factory.h"
 
+#include <QIcon>
 #include <QCameraInfo>
 #include <QGuiApplication>
 #include <QScreen>
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pCamera(nullptr)
 {
     ui->setupUi(this);
-        
+            
     //Init menu
     ui->actionStart->setIcon(QIcon(":/image/Start"));
     ui->actionStart->setText(tr("Start"));
@@ -69,6 +70,11 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     } else 
         ui->actionFile->setChecked(true);
+
+#ifdef RABBITCOMMON  
+    CFrmUpdater updater;
+    ui->actionUpdate_U->setIcon(updater.windowIcon());
+#endif
 
 #ifdef HAVE_SEETA_FACE
     if(CFactory::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
@@ -271,7 +277,7 @@ void MainWindow::on_actionAbout_A_triggered()
 {
 #ifdef RABBITCOMMON
     CDlgAbout about(this);
-    about.m_AppIcon = QPixmap(":/image/FaceRecognizer");
+    about.m_AppIcon = QImage(":/image/FaceRecognizer");
     about.m_szHomePage = "https://github.com/KangLin/FaceRecognizer";
     if(about.isHidden())
 #if defined (Q_OS_ANDROID)
@@ -285,7 +291,7 @@ void MainWindow::on_actionUpdate_U_triggered()
 {
 #ifdef RABBITCOMMON
     CFrmUpdater* m_pfrmUpdater = new CFrmUpdater();
-    m_pfrmUpdater->SetTitle(QPixmap(":/image/FaceRecognizer"));
+    m_pfrmUpdater->SetTitle(QImage(":/image/FaceRecognizer"));
     #if defined (Q_OS_ANDROID)
         m_pfrmUpdater->showMaximized();
     #else
