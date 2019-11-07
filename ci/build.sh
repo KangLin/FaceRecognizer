@@ -24,8 +24,8 @@ if [ "$BUILD_TARGERT" = "android" ]; then
             export QT_ROOT=${SOURCE_DIR}/Tools/Qt/${QT_VERSION}/${QT_VERSION}/android_armv7
             ;;
         x86)
-        export QT_ROOT=${SOURCE_DIR}/Tools/Qt/${QT_VERSION}/${QT_VERSION}/android_x86
-        ;;
+            export QT_ROOT=${SOURCE_DIR}/Tools/Qt/${QT_VERSION}/${QT_VERSION}/android_x86
+            ;;
     esac
     export PATH=${SOURCE_DIR}/Tools/apache-ant/bin:$JAVA_HOME:$PATH
     export ANDROID_SDK=${ANDROID_SDK_ROOT}
@@ -100,9 +100,6 @@ cmake --build . --target install --config Release
 
 cd ${SOURCE_DIR}
 
-mkdir -p build_${BUILD_TARGERT}
-cd build_${BUILD_TARGERT}
-
 case ${BUILD_TARGERT} in
     windows_msvc)
         MAKE=nmake
@@ -161,16 +158,14 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     ./bin/FaceRecognizerApp \
         -f "`pwd`/update_linux.xml" \
         --md5 ${MD5}
-    cat update_linux.xml
     
     MD5=`md5sum FaceRecognizer_${VERSION}.tar.gz|awk '{print $1}'`
     ./FaceRecognizer-x86_64.AppImage \
         -f "`pwd`/update_linux_appimage.xml" \
         --md5 ${MD5} \
         --url "https://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/FaceRecognizer_${VERSION}.tar.gz"
-    cat update_linux_appimage.xml
     
-    if [ "$TRAVIS_TAG" != "" -a "${QT_VERSION_DIR}" = "512" ]; then
+    if [ "$TRAVIS_TAG" != "" -a "${QT_VERSION}" = "5.12.3" ]; then
         export UPLOADTOOL_BODY="Release FaceRecognizer-${VERSION}"
         #export UPLOADTOOL_PR_BODY=
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
@@ -182,6 +177,9 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     exit 0
 fi
 
+mkdir -p build_${BUILD_TARGERT}
+cd build_${BUILD_TARGERT}
+
 if [ -n "$GENERATORS" ]; then
     if [ -n "${STATIC}" ]; then
         CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
@@ -190,8 +188,6 @@ if [ -n "$GENERATORS" ]; then
         CONFIG_PARA="${CONFIG_PARA} -DANDROID_ARM_NEON=${ANDROID_ARM_NEON}"
     fi
     echo "Build FaceRecognizer ......"
-    cd ${SOURCE_DIR}
-    echo "PWD:`pwd`"
     if [ "${BUILD_TARGERT}" = "android" ]; then
     	 cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
             -DCMAKE_INSTALL_PREFIX=`pwd`/install \
@@ -212,6 +208,7 @@ if [ -n "$GENERATORS" ]; then
             -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
             -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
     else
@@ -229,7 +226,7 @@ if [ -n "$GENERATORS" ]; then
     cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
     if [ "${BUILD_TARGERT}" = "android" ]; then
         cmake --build . --target APK
-        if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION_DIR"="5.12" ]; then
+        if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION"="5.13.2" ]; then
         
             cp $SOURCE_DIR/Update/update_android.xml .
 	        APK_FILE=`find . -name "android-build-debug.apk"`
@@ -266,7 +263,5 @@ if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
         MD5=`md5sum FaceRecognizer-Setup-*.exe|awk '{print $1}'`
         echo "MD5:${MD5}"
         install/bin/FaceRecognizerApp.exe -f "`pwd`/update_windows.xml" --md5 ${MD5}
-        
-        cat update_windows.xml
     fi
 fi

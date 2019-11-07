@@ -24,7 +24,7 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     check = connect(this, SIGNAL(sigRecognized(const QMap<int, QString> &)),
         m_pFrmRecognizerVideo, SLOT(slotRecognized(const QMap<int, QString>&)));
     Q_ASSERT(check);
-    
+
     m_pThread = new CRecognizerThread(this);
     m_pThread->start();
 }

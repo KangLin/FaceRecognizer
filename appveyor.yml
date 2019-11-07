@@ -123,11 +123,11 @@ build_script:
   - C:\msys64\usr\bin\bash.exe %APPVEYOR_BUILD_FOLDER%\ci\build.sh
 
 artifacts:
-  - path: FaceRecognizer-Setup-*.exe
+  - path: build_$(BUILD_TARGERT)\FaceRecognizer-Setup-*.exe
     name: FaceRecognizer_$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     type: zip
     
-  - path: update_windows.xml
+  - path: build_$(BUILD_TARGERT)\update_windows.xml
 
 test: off
 

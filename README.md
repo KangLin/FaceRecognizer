@@ -72,7 +72,7 @@
                 ./install.sh remove
 
 - ubuntu
-    - [FaceRecognizer_0.0.2_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer_0.0.2_amd64.deb)  
+    - [facerecognizer_0.0.2_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/facerecognizer_0.0.2_amd64.deb)  
   deb 安装包,可用于 Ubuntu
   
 - windows
