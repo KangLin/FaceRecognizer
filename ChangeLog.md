@@ -2,6 +2,8 @@
   + Add database
   + Add register from image
   + Add recognizer from image
+  + Add register from video
+  + Add recognizer from video
 
 - v0.0.2
   + Register and recognizer face from video file
