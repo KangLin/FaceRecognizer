@@ -117,6 +117,13 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     foreach (auto f, faces) {
         QVector<QPointF> points;
         m_pFace->GetLandmarker()->Mark(image, f, points);
+        
+        if(0.0f == m_pFace->GetFaceTools()->EvaluateQuality(m_Image, f, points))
+        {
+            SetStatusInformation(tr(" The image quality is lower"));
+            continue;
+        }
+        
         if(!m_bReplace)
         {
             auto index = m_pFace->GetRecognizer()->Query(image, points);

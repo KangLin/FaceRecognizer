@@ -62,6 +62,7 @@ if(SeetaFace_FOUND)
         Seeta/TrackerSeeta.cpp
         Seeta/LandmarkerSeeta.cpp
         Seeta/RecognizerSeeta.cpp
+        Seeta/FaceToolsSeeta.cpp
         )
     
     set(HEADER_FILES
@@ -71,6 +72,7 @@ if(SeetaFace_FOUND)
         Seeta/TrackerSeeta.h
         Seeta/LandmarkerSeeta.h
         Seeta/RecognizerSeeta.h
+        Seeta/FaceToolsSeeta.h
         )
     
     set(SOURCE_UI_FILES
@@ -89,12 +91,14 @@ set(SOURCES_FILES
     ParameterDetector.cpp
     ParameterLandmark.cpp
     ParameterRecognizer.cpp
+    ParameterFaceTools.cpp
     Factory.cpp
     Face.cpp
     Detector.cpp
     Tracker.cpp
     Landmarker.cpp
     Recognizer.cpp
+    FaceTools.cpp
     database/Database.cpp
     database/DataRegister.cpp
     database/TableRegister.cpp
@@ -110,20 +114,18 @@ set(HEADER_FILES
     ParameterDetector.h
     ParameterLandmark.h
     ParameterRecognizer.h
+    ParameterFaceTools.h
     Factory.h
     Face.h
     Detector.h
     Tracker.h
     Landmarker.h
     Recognizer.h
+    FaceTools.h
     database/Database.h
     database/DataRegister.h
     database/TableRegister.h
     Performance.h
-    )
-
-set(SOURCE_UI_FILES
-    ${SOURCE_UI_FILES}
     )
 
 #翻译
@@ -140,7 +142,7 @@ if(BUILD_TYPE STREQUAL "debug")
     SET(RCC_FILES ${RCC_FILES} ../Resource/ResourceSql.qrc)
 endif()
 
-add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${RCC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

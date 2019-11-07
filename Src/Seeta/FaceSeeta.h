@@ -8,6 +8,8 @@
 #include "TrackerSeeta.h"
 #include "LandmarkerSeeta.h"
 #include "RecognizerSeeta.h"
+#include "FaceToolsSeeta.h"
+
 #include <QSharedPointer>
 
 class CFaceSeeta : public CFace
@@ -21,12 +23,14 @@ public:
     virtual CTracker* GetTracker();
     virtual CLandmarker* GetLandmarker();
     virtual CRecognizer* GetRecognizer();
+    virtual CFaceTools* GetFaceTools();
     
 private:
     CDetectorSeeta* m_pDetector;
     CTrackerSeeta* m_pTracker;
     CLandmarkerSeeta* m_pLandmark;
     CRecognizerSeeta* m_pRecognizer;
+    CFaceToolsSeeta* m_pFaceTools;
 };
 
 #endif // CFACESEETA_H_KL_2019_10_21

@@ -9,6 +9,7 @@
 #include "Tracker.h"
 #include "Landmarker.h"
 #include "Recognizer.h"
+#include "FaceTools.h"
 #include "Parameter.h"
 #include "database/Database.h"
 
@@ -23,6 +24,7 @@ public:
     virtual CTracker* GetTracker() = 0;
     virtual CLandmarker* GetLandmarker() = 0;
     virtual CRecognizer* GetRecognizer() = 0;
+    virtual CFaceTools* GetFaceTools() = 0;
     virtual CDatabase* GetDatabase();
     
 private:

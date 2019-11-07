@@ -6,6 +6,7 @@
 #include "ParameterLandmark.h"
 #include "ParameterDetector.h"
 #include "ParameterRecognizer.h"
+#include "ParameterFaceTools.h"
 
 class FACERECOGNIZER_EXPORT CParameterFactory : public QObject
 {
@@ -19,7 +20,8 @@ public:
     CParameterDetector* GetParameterDetector();
     CParameterLandmark* GetParameterLandmark();
     CParameterRecognizer* GetParameterRecognizer();
-
+    CParameterFaceTools* GetParameterFaceTools();
+    
     int SetModelPath(const QString &szPath);
     int SetDevice(CParameter::DEVICE device);
 
@@ -27,7 +29,8 @@ private:
     enum _PARAMTER_TYPE{
         DETECTORY = 0,
         LANDMARKER,
-        RECOGNIZER
+        RECOGNIZER,
+        FACETOOLS
     };
     QVector<CParameter*> m_pParameter;
 };

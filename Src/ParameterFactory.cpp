@@ -13,6 +13,8 @@ CParameterFactory::CParameterFactory(QObject *parent) : QObject(parent)
     m_pParameter.push_back(pPara);
     pPara = new CParameterRecognizer(this);
     m_pParameter.push_back(pPara);
+    pPara = new CParameterFaceTools(this);
+    m_pParameter.push_back(pPara);
     
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
@@ -50,6 +52,11 @@ CParameterLandmark* CParameterFactory::GetParameterLandmark()
 CParameterRecognizer* CParameterFactory::GetParameterRecognizer()
 {
     return dynamic_cast<CParameterRecognizer*>(m_pParameter[RECOGNIZER]);
+}
+
+CParameterFaceTools* CParameterFactory::GetParameterFaceTools()
+{
+    return dynamic_cast<CParameterFaceTools*>(m_pParameter[FACETOOLS]);
 }
 
 int CParameterFactory::SetModelPath(const QString &szPath)

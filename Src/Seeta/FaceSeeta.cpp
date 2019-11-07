@@ -15,6 +15,8 @@ CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
     m_pLandmark->SetParameter(pFactory->GetParameterLandmark());
     m_pRecognizer = new CRecognizerSeeta();
     m_pRecognizer->SetParameter(pFactory->GetParameterRecognizer());
+    m_pFaceTools = new CFaceToolsSeeta();
+    m_pFaceTools->SetParameter(pFactory->GetParameterFaceTools());
 }
 
 CFaceSeeta::~CFaceSeeta()
@@ -27,6 +29,7 @@ CFaceSeeta::~CFaceSeeta()
         delete m_pLandmark;
     if(m_pRecognizer)
         delete m_pRecognizer;
+    if(m_pFaceTools) delete m_pFaceTools;
 }
 
 CDetector* CFaceSeeta::GetDector()
@@ -47,4 +50,9 @@ CRecognizer* CFaceSeeta::GetRecognizer()
 CTracker* CFaceSeeta::GetTracker()
 {
     return m_pTracker;
+}
+
+CFaceTools* CFaceSeeta::GetFaceTools()
+{
+    return m_pFaceTools;
 }
