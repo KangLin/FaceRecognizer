@@ -80,6 +80,9 @@ target_include_directories(${PROJECT_NAME}
 if(BUILD_VERSION)
     target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
     set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+    if(UNIX AND NOT ANDROID)
+        set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
+    endif()
 endif()
 
 if(ANDROID)
