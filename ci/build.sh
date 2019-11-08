@@ -8,6 +8,15 @@ fi
 
 cd ${SOURCE_DIR}
 
+# Download model files
+echo "Download model files"
+mkdir -p model
+mkdir -p Seeta
+wget https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
+wget https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
+wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
+wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${SOURCE_DIR}/Tools/android-sdk
     export ANDROID_NDK_ROOT=${SOURCE_DIR}/Tools/android-ndk
