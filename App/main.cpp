@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
                     + "App_" + QLocale::system().name() + ".qm");
     a.installTranslator(&translator);
 #endif
-    
+   
     a.setApplicationDisplayName(QObject::tr("Face recognizer"));
     
 #ifdef RABBITCOMMON 
