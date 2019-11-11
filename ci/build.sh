@@ -6,16 +6,16 @@ if [ -n "$1" ]; then
     SOURCE_DIR=$1
 fi
 
-cd ${SOURCE_DIR}
-
 # Download model files
 echo "Download model files"
-mkdir -p model
-mkdir -p Seeta
+mkdir -p ${SOURCE_DIR}/model/Seeta
+cd ${SOURCE_DIR}/model/Seeta
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+
+cd ${SOURCE_DIR}
 
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${SOURCE_DIR}/Tools/android-sdk
