@@ -25,9 +25,9 @@ cd ${TOOLS_DIR}
 
 # Qt qt安装参见：https://github.com/benlau/qtci  
 if [ -n "${QT_VERSION}" ]; then
-    QT_DIR=C:/projects/SerialPortAssistant/Tools/Qt/${QT_VERSION}
+    QT_DIR=C:/projects/${APPVEYOR_PROJECT_NAME}/Tools/Qt/${QT_VERSION}
     if [ ! -d "${QT_DIR}" ]; then
-        wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-windows-x86-android-${QT_VERSION}.exe
+        wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-windows-x86-${QT_VERSION}.exe
         bash ${SOURCE_DIR}/ci/qt-installer.sh qt-opensource-windows-x86-android-${QT_VERSION}.exe ${QT_DIR}
         rm qt-opensource-windows-x86-android-${QT_VERSION}.exe
     fi
@@ -41,6 +41,7 @@ mv apache-ant-1.10.1 apache-ant
 
 #Download android sdk  
 if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
+    cd ${TOOLS_DIR}
     ANDROID_STUDIO_VERSION=191.5900203
     wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
     unzip -q android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
@@ -56,32 +57,7 @@ if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
     cd tools
     (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
     | ./bin/sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
-    
-    #if [ ! -d ${SOURCE_DIR}/Tools/android-ndk ]; then
-    #    ln -s ${SOURCE_DIR}/Tools/android-sdk/ndk-bundle ${SOURCE_DIR}/Tools/android-ndk
-    #fi
-    
-    #wget -c -nv https://dl.google.com/android/android-sdk_r24.4.1-windows.zip
-    #unzip -q android-sdk_r24.4.1-windows.zip
-    #mv android-sdk-windows android-sdk
-    #rm android-sdk_r24.4.1-windows.zip
-    #(sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
-    #| android-sdk/tools/android.bat update sdk -u -t tool,android-18,android-24,extra,platform,platform-tools,build-tools-24.0.1
+    cd ${TOOLS_DIR}
 fi
-
-#下载android ndk  
-#if [ ! -d "${TOOLS_DIR}/android-ndk" ]; then
-#    if [ "$QT_VERSION_DIR" = "5.12" ]; then
-#        wget -c -nv https://dl.google.com/android/repository/android-ndk-r19c-windows-x86_64.zip
-#        unzip android-ndk-r19c-windows-x86_64.zip
-#        mv android-ndk-r19c android-ndk
-#        rm android-ndk-r19c-windows-x86_64.zip
-#    else
-#        wget -c -nv http://dl.google.com/android/ndk/android-ndk-r10e-windows-x86.exe
-#        ./android-ndk-r10e-windows-x86.exe > /dev/null
-#        mv android-ndk-r10e android-ndk
-#        rm android-ndk-r10e-windows-x86.exe
-#    fi
-#fi
 
 cd ${SOURCE_DIR}

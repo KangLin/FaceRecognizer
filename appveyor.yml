@@ -91,6 +91,15 @@ environment:
     QT_ROOT: C:\Qt\5.12\mingw73_64
     BUILD_ARCH: x64
 
+  ##### android ########
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "armeabi-v7a"
+    ANDROID_ARM_NEON: ON
+    QT_VERSION_DIR: 5.13
+    QT_VERSION: 5.13.2
+    ANDROID_API: android-24
+    
 matrix:
   fast_finish: false
 
