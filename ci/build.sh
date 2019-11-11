@@ -6,16 +6,16 @@ if [ -n "$1" ]; then
     SOURCE_DIR=$1
 fi
 
-cd ${SOURCE_DIR}
-
 # Download model files
 echo "Download model files"
-mkdir -p model
-mkdir -p Seeta
+mkdir -p ${SOURCE_DIR}/model/Seeta
+cd ${SOURCE_DIR}/model/Seeta
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
 wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+
+cd ${SOURCE_DIR}
 
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${SOURCE_DIR}/Tools/android-sdk
@@ -218,8 +218,9 @@ if [ -n "$GENERATORS" ]; then
             -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake \
+            -DQt5AndroidExtras_DIR=${QT_ROOT}/lib/cmake/Qt5AndroidExtras \
             -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
-            -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
+            -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
     else
 	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
             -DCMAKE_INSTALL_PREFIX=`pwd`/install \
@@ -230,13 +231,13 @@ if [ -n "$GENERATORS" ]; then
             -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake 
+            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
     fi
     cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
     if [ "${BUILD_TARGERT}" = "android" ]; then
         cmake --build . --target APK
         if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION"="5.13.2" ]; then
-        
+
             cp $SOURCE_DIR/Update/update_android.xml .
 	        APK_FILE=`find . -name "android-build-debug.apk"`
             MD5=`md5sum ${APK_FILE} | awk '{print $1}'`
@@ -252,7 +253,7 @@ if [ -n "$GENERATORS" ]; then
             #export UPLOADTOOL_PR_BODY=
             wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
             chmod u+x upload.sh
-            ./upload.sh ${APK_FILE} 
+            ./upload.sh ${APK_FILE}
             ./upload.sh update_android.xml
         fi
     fi

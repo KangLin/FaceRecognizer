@@ -9,7 +9,7 @@
 #
 #      例子：
 #      set(TRANSLATIONS_NAME ${PROJECT_NAME})
-#      include(${CMAKE_SOURCE_DIR}/cmake/Qt5CorePatches.cmake) 
+#      include(${CMAKE_SOURCE_DIR}/cmake/Qt5CorePatches.cmake)
 #      include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
 #      add_executable(${PROJECT_NAME} ${TRANSLATIONS_RESOURCE_FILES})
 #      add_dependencies(${TRANSLATIONS_NAME} translations_${TRANSLATIONS_NAME})
@@ -20,33 +20,41 @@
 #                   + "/" + qApp->applicationName() + "_" + QLocale::system().name() + ".qm");
 #     qApp->installTranslator(&translator);
 
-# android 和 debug 翻译资源做为资源文件嵌入程序
+# debug 翻译资源做为资源文件嵌入程序
+
+# android 翻译资源放在 assets 中
 #
+# Android:
+#     assets                                       GetDirApplicationInstallRoot()  (Only read)
+#        |- translations                           GetDirTranslations()
+#        |        |- ${TRANSLATIONS_NAME}_zh_CN.ts
+#        |        |- ${TRANSLATIONS_NAME}_zh_TW.ts
+ 
 # 其它系统发行模式下，做为文件放在程序的安装目录 Translations 目录下
 # 程序的安装目录：
 #   AppRoot |
 #           |- bin
 #           |   |- App.exe
 #           |- lib
-#           |      
+#           |
 #           |- translations
-#               |- ${TRANSLATIONS_NAME}_zh_CN.qm
-#               |- ${TRANSLATIONS_NAME}_zh_TW.qm
+#                 |- ${TRANSLATIONS_NAME}_zh_CN.qm
+#                 |- ${TRANSLATIONS_NAME}_zh_TW.qm
 #
 # 源码目录：
 #   SourceRoot |
 #              |- App
 #              |   |- Resource
 #              |        |-Translations
-#              |        |- ${TRANSLATIONS_NAME}_zh_CN.ts
-#              |        |- ${TRANSLATIONS_NAME}_zh_TW.ts
+#              |             |- ${TRANSLATIONS_NAME}_zh_CN.ts
+#              |             |- ${TRANSLATIONS_NAME}_zh_TW.ts
 #              |- cmake
 #              |   |- Translations.cmake
 #              |- Src
 #                  |- Resource
 #                       |-Translations
-#                       |- ${TRANSLATIONS_NAME}_zh_CN.ts
-#                       |- ${TRANSLATIONS_NAME}_zh_TW.ts
+#                            |- ${TRANSLATIONS_NAME}_zh_CN.ts
+#                            |- ${TRANSLATIONS_NAME}_zh_TW.ts
 
 if(NOT TRANSLATIONS_NAME)
     SET(TRANSLATIONS_NAME ${PROJECT_NAME})
@@ -64,15 +72,14 @@ IF(OPTION_TRANSLATIONS)
     IF(NOT Qt5_LRELEASE_EXECUTABLE)
         MESSAGE(WARNING "Could not find lrelease. Your build won't contain translations.")
     ELSE(NOT Qt5_LRELEASE_EXECUTABLE)
-        #qt5_create_translation(QM_FILES ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${TS_FILES}) #生成 .ts 文件与 .qm 文件，仅当没有TS文件的时候用。
-        #qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES}) #生成 .ts 文件与 .qm 文件，仅当没有TS文件的时候用。
+        #qt5_create_translation(QM_FILES ${SOURCES_FILES} ${SOURCE_UI_FILES} ${TS_FILES}) #生成 .ts 文件与 .qm 文件，仅当没有TS文件的时候用。
         qt5_add_translation(QM_FILES ${TS_FILES}) #生成翻译资源 .qm 文件
         
         ADD_CUSTOM_TARGET(translations_${TRANSLATIONS_NAME} ALL DEPENDS ${QM_FILES})
         #add_dependencies(${TRANSLATIONS_NAME} translations_${TRANSLATIONS_NAME})
         
         set(RESOURCE_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/translations_${TRANSLATIONS_NAME}.qrc")
-        if("Debug" STREQUAL CMAKE_BUILD_TYPE OR ANDROID)
+        if("Debug" STREQUAL CMAKE_BUILD_TYPE)
             file(WRITE "${RESOURCE_FILE_NAME}"
                 "<!DOCTYPE RCC>
                 <RCC version=\"1.0\">
@@ -88,6 +95,8 @@ IF(OPTION_TRANSLATIONS)
                 </RCC>
                 ")
             set(TRANSLATIONS_RESOURCE_FILES "${RESOURCE_FILE_NAME}")
+        elseif(ANDROID)
+            install(FILES ${QM_FILES} DESTINATION "assets")
         else()
             install(FILES ${QM_FILES} DESTINATION "translations")
         endif()
