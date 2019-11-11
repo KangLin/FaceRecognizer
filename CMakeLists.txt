@@ -121,8 +121,6 @@ endif()
 # 设置安装前缀
 if(ANDROID)
     set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/android-build CACHE STRING "Install path prefix" FORCE)
-elseif(WIN32)
-    SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE STRING "Install path prefix." FORCE)
 endif()
 
 if(NOT RabbitCommon_DIR)

@@ -213,7 +213,7 @@
         cd FaceRecognizer
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                  -DANDROID_ABI="armeabi-v7a with NEON" \
@@ -229,7 +229,7 @@
         cd FaceRecognizer
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
                  -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                  -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe \
