@@ -139,6 +139,7 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     m_Info.clear();
     
     QStandardItemModel* pModel = dynamic_cast<QStandardItemModel*>(ui->tvInformation->model());
+    if(!pModel) return -2;
     pModel->removeRows(0, pModel->rowCount());
     
     QVector<QRect> faces;
@@ -152,9 +153,7 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
             continue;
         m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(info.index, &info.data);
         m_Info.push_back(info);
-        
-        QStandardItemModel* pModel = dynamic_cast<QStandardItemModel*>(ui->tvInformation->model());
-        
+
         QList<QStandardItem*> items;
         QStandardItem *item = new QStandardItem(QString::number(info.index));
         items.push_back(item);
