@@ -69,11 +69,13 @@ TARGET_OS=`uname -s`
 case $TARGET_OS in
     MINGW* | CYGWIN* | MSYS*)
         export PKG_CONFIG=/c/msys64/mingw32/bin/pkg-config.exe
-        ANDROID_NDK_HOST=windows-x86_64
-        if [ ! -d $ANDROID_NDK/prebuilt/${ANDROID_NDK_HOST} ]; then
-            ANDROID_NDK_HOST=windows
+        if [ "$BUILD_TARGERT" = "android" ]; then
+            ANDROID_NDK_HOST=windows-x86_64
+            if [ ! -d $ANDROID_NDK/prebuilt/${ANDROID_NDK_HOST} ]; then
+                ANDROID_NDK_HOST=windows
+            fi
+            CONFIG_PARA="${CONFIG_PARA} -DCMAKE_MAKE_PROGRAM=make" #${ANDROID_NDK}/prebuilt/${ANDROID_NDK_HOST}/bin/make.exe"
         fi
-        CONFIG_PARA="${CONFIG_PARA} -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/${ANDROID_NDK_HOST}/bin/make.exe"
         ;;
     Linux* | Unix*)
     ;;
@@ -241,10 +243,12 @@ if [ -n "$GENERATORS" ]; then
     cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
     if [ "${BUILD_TARGERT}" = "android" ]; then
         cmake --build . --target APK
+        APK_FILE=`find . -name "android-build-debug.apk"`
+        cp ${APK_FILE} $SOURCE_DIR/.
         if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION"="5.13.2" ]; then
 
             cp $SOURCE_DIR/Update/update_android.xml .
-	        APK_FILE=`find . -name "android-build-debug.apk"`
+	        
             MD5=`md5sum ${APK_FILE} | awk '{print $1}'`
             echo "MD5:${MD5}"
             sed -i "s/<VERSION>.*</<VERSION>${VERSION}</g" update_android.xml

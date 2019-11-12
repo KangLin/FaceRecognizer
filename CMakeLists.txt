@@ -48,19 +48,19 @@ if("Debug" STREQUAL CMAKE_BUILD_TYPE)
 endif()
 
 #需要的QT组件
-get_filename_component(QT_INSTALL_DIR "${Qt5_DIR}/../../.." ABSOLUTE)
 SET(QT_COMPONENTS Core Gui Widgets Xml Network Multimedia Sql)
 if(ANDROID)
     SET(QT_COMPONENTS ${QT_COMPONENTS} AndroidExtras)
 endif()
 find_package(Qt5 COMPONENTS ${QT_COMPONENTS})
 message("QT_VERSION:${Qt5_VERSION}")
-if(Qt5_VERSION VERSION_LESS 5.9.0)
-    message(FATAL_ERROR "Qt must great 5.9.0")
+if(Qt5_VERSION VERSION_LESS 5.10.0 AND ANDROID)
+    message(FATAL_ERROR "Qt must great 5.10.0")
 endif()
 FOREACH(_COMPONENT ${QT_COMPONENTS})
     SET(QT_LIBRARIES ${QT_LIBRARIES} Qt5::${_COMPONENT})
 ENDFOREACH()
+get_filename_component(QT_INSTALL_DIR "${Qt5_DIR}/../../.." ABSOLUTE)
 
 #打开 qt 编译工具
 SET(CMAKE_AUTOUIC ON)

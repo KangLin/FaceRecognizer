@@ -139,7 +139,8 @@ artifacts:
     type: zip
     
   - path: build_$(BUILD_TARGERT)\update_windows.xml
-
+  - path: android-build-debug.apk
+  
 test: off
 
 #See:https://www.appveyor.com/docs/deployment/github/
