@@ -63,7 +63,7 @@ function install_android()
         unzip -q sdk-tools-linux-4333796.zip
         echo "Install sdk and ndk ......"
         cd tools
-        (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
+        (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
         | ./bin/sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
         if [ ! -d ${SOURCE_DIR}/Tools/android-ndk ]; then
             ln -s ${SOURCE_DIR}/Tools/android-sdk/ndk-bundle ${SOURCE_DIR}/Tools/android-ndk
