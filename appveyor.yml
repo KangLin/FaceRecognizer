@@ -3,16 +3,6 @@ version: 'v0.0.2.{build}'
 
 environment:
   matrix: 
-  ##### android ########
-  - BUILD_TARGERT: android
-    GENERATORS: "MSYS Makefiles"
-    BUILD_ARCH: "armeabi-v7a"
-    ANDROID_ARM_NEON: ON
-    QT_VERSION_DIR: 5.13
-    QT_VERSION: 5.13.2
-    ANDROID_API: android-24
-    TOOLCHAIN_VERSION: 4.9
-
   ##### msvc 2013 ########
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 12 2013"
@@ -100,6 +90,16 @@ environment:
     TOOLCHAIN_VERSION: 730_64
     QT_ROOT: C:\Qt\5.12\mingw73_64
     BUILD_ARCH: x64
+
+  ##### android ########
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "armeabi-v7a"
+    ANDROID_ARM_NEON: ON
+    QT_VERSION_DIR: 5.13
+    QT_VERSION: 5.13.2
+    ANDROID_API: android-24
+    TOOLCHAIN_VERSION: 4.9
     
 matrix:
   fast_finish: false
