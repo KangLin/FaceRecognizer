@@ -118,6 +118,7 @@ init:
   
 install:
   - C:\msys64\autorebase.bat
+  - C:\msys64\usr\bin\pacman.exe -S --noconfirm unzip
   #- if "%BUILD_TARGERT%"=="windows_mingw" set PATH=C:\Qt\Tools\mingw%TOOLCHAIN_VERSION%_32\bin;%PATH%
   - if "%BUILD_TARGERT%" == "windows_mingw" set MSYSTEM=MINGW32  #设置编译系统为MINGW32
 

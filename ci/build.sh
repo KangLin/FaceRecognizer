@@ -10,10 +10,10 @@ fi
 echo "Download model files"
 mkdir -p ${SOURCE_DIR}/model/Seeta
 cd ${SOURCE_DIR}/model/Seeta
-wget https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
-wget https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
-wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
-wget https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
+wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
+wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
+wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
 
 cd ${SOURCE_DIR}
 
@@ -69,6 +69,11 @@ TARGET_OS=`uname -s`
 case $TARGET_OS in
     MINGW* | CYGWIN* | MSYS*)
         export PKG_CONFIG=/c/msys64/mingw32/bin/pkg-config.exe
+        ANDROID_NDK_HOST=windows-x86_64
+        if [ ! -d $ANDROID_NDK/prebuilt/${ANDROID_NDK_HOST} ]; then
+            ANDROID_NDK_HOST=windows
+        fi
+        CONFIG_PARA="${CONFIG_PARA} -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/${ANDROID_NDK_HOST}/bin/make.exe"
         ;;
     Linux* | Unix*)
     ;;
@@ -87,7 +92,7 @@ git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_SOUR
 cd ${SeetaFace2_SOURCE}
 
 if [ -n "${STATIC}" ]; then
-    CONFIG_PARA="-DBUILD_SHARED_LIBS=${STATIC}"
+    CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
 fi
 echo "PWD:`pwd`"
 if [ "${BUILD_TARGERT}" = "android" ]; then

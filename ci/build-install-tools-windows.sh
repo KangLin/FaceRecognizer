@@ -45,25 +45,25 @@ cd ${TOOLS_DIR}
 #Download android sdk  
 if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
     cd ${TOOLS_DIR}
+
     ANDROID_STUDIO_VERSION=191.5900203
     wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
-    unzip android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
+    unzip -q android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
     rm android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
-    export JAVA_HOME=`pwd`/android-studio/jre
+    export JAVA_HOME=${TOOLS_DIR}/android-studio/jre
     export PATH=${JAVA_HOME}/bin:$PATH
+    
     ANDROID_SDK_VERSION=4333796
-    ls
     wget -c -nv https://dl.google.com/android/repository/sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
     mkdir android-sdk
     cd android-sdk
-    cp ../sdk-tools-windows-${ANDROID_SDK_VERSION}.zip .
-    unzip sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
+    mv ../sdk-tools-windows-${ANDROID_SDK_VERSION}.zip .
+    unzip -q sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
     rm sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
+
     echo "Install sdk and ndk ......"
-    ls
-    cd tools
     (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
-    | ./bin/sdkmanager "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
+    | ./tools/bin/sdkmanager.bat "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
     cd ${TOOLS_DIR}
 fi
 
