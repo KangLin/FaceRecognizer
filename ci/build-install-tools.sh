@@ -31,7 +31,7 @@ function function_common()
     fi
     
     # Qt qt安装参见：https://github.com/benlau/qtci  
-    if [ "$BUILD_DOWNLOAD" = "TRUE" ]; then
+    if [ "$DOWNLOAD_QT" = "TRUE" ]; then
         QT_DIR=`pwd`/Qt/${QT_VERSION}
         if [ ! -d "${QT_DIR}" ]; then
             if [ "${QT_VERSION}" = "5.6.3" ]; then
@@ -133,7 +133,7 @@ function function_unix()
     #汇编工具yasm
     #function_install_yasm
 
-    if [ "$BUILD_DOWNLOAD" != "TRUE"  ]; then
+    if [ "$DOWNLOAD_QT" != "TRUE"  ]; then
         #See: https://launchpad.net/~beineri
         sudo add-apt-repository ppa:beineri/opt-qt-${QT_VERSION}-`lsb_release -c|awk '{print $2}'` -y
     fi
@@ -153,7 +153,7 @@ function function_unix()
         libmysqlclient-dev \
         libodbc1 
 
-    if [ "$BUILD_DOWNLOAD" != "TRUE" ]; then
+    if [ "$DOWNLOAD_QT" != "TRUE" ]; then
         sudo apt-get install -y -qq qt${QT_VERSION_DIR}base \
             qt${QT_VERSION_DIR}tools \
             qt${QT_VERSION_DIR}multimedia

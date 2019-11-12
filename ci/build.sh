@@ -42,7 +42,7 @@ if [ "$BUILD_TARGERT" = "android" ]; then
 fi
 
 if [ "${BUILD_TARGERT}" = "unix" ]; then
-    if [ "$BUILD_DOWNLOAD" = "TRUE" ]; then
+    if [ "$DOWNLOAD_QT" = "TRUE" ]; then
         QT_DIR=${SOURCE_DIR}/Tools/Qt/${QT_VERSION}
         export QT_ROOT=${QT_DIR}/${QT_VERSION}/gcc_64
     else
@@ -133,7 +133,7 @@ esac
 export VERSION="v0.0.2"
 if [ "${BUILD_TARGERT}" = "unix" ]; then
     cd $SOURCE_DIR
-    if [ "${BUILD_DOWNLOAD}" != "TRUE" ]; then
+    if [ "${DOWNLOAD_QT}" != "TRUE" ]; then
         sed -i "s/export QT_VERSION_DIR=.*/export QT_VERSION_DIR=${QT_VERSION_DIR}/g" ${SOURCE_DIR}/debian/postinst
         sed -i "s/export QT_VERSION=.*/export QT_VERSION=${QT_VERSION}/g" ${SOURCE_DIR}/debian/preinst
         cat ${SOURCE_DIR}/debian/postinst
