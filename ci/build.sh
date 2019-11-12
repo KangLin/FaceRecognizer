@@ -244,7 +244,7 @@ if [ -n "$GENERATORS" ]; then
     if [ "${BUILD_TARGERT}" = "android" ]; then
         cmake --build . --target APK
         APK_FILE=`find . -name "android-build-debug.apk"`
-        cp ${APK_FILE} $SOURCE_DIR/.
+        cp ${APK_FILE} $SOURCE_DIR
         if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION"="5.13.2" ]; then
 
             cp $SOURCE_DIR/Update/update_android.xml .

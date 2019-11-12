@@ -62,7 +62,7 @@ if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
     rm sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
 
     echo "Install sdk and ndk ......"
-    (sleep 5 ; while true ; do sleep 1 ; printf 'y\r\n' ; done ) \
+    (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
     | ./tools/bin/sdkmanager.bat "platform-tools" "build-tools;28.0.3" "platforms;${ANDROID_API}" "ndk-bundle"
     cd ${TOOLS_DIR}
 fi
