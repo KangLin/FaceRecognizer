@@ -140,6 +140,8 @@ function function_unix()
 
     sudo apt-get update -y -qq
     sudo apt-get install debhelper fakeroot -y -qq
+    sudo apt-get install -y -qq libdlib-dev libopencv-dev
+    sudo apt-get install -y -qq libavcodec-dev libavformat-dev libavfilter-dev libavdevice-dev libavresample-dev libavutil-dev 
     sudo apt-get install -y -qq libglu1-mesa-dev \
         libxkbcommon-x11-dev \
         libpulse-mainloop-glib0 \
