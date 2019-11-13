@@ -96,8 +96,8 @@ environment:
     GENERATORS: "MSYS Makefiles"
     BUILD_ARCH: "armeabi-v7a"
     ANDROID_ARM_NEON: ON
-    QT_VERSION_DIR: 5.13
-    QT_VERSION: 5.13.2
+    QT_VERSION_DIR: 5.12
+    QT_VERSION: 5.12.6
     ANDROID_API: android-24
     TOOLCHAIN_VERSION: 4.9
     
