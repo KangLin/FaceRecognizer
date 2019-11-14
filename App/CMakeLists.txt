@@ -62,13 +62,17 @@ else()
     add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 endif()
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} FaceRecognizer)
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+     VERSION ${BUILD_VERSION}
+    )
+target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
 if(UNIX AND NOT ANDROID)
     set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
 endif()
+
 
 if(${CMAKE_CXX_COMPILER} MATCHES ".*/(g\\+\\+)(\\..*)")
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "-mwindows")
@@ -82,32 +86,39 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE ${RabbitCommon_DIR}/Src
     ${CMAKE_BINARY_DIR})
 
-if(BUILD_VERSION)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
-    set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
-    if(UNIX AND NOT ANDROID)
-        set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
-    endif()
-endif()
-
 if(ANDROID)
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
             RUNTIME DESTINATION "libs/${ANDROID_ABI}"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                COMPONENT Runtime
             LIBRARY DESTINATION "libs/${ANDROID_ABI}"
+                COMPONENT Runtime
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             )
 else()
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                COMPONENT Runtime
+            LIBRARY DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                COMPONENT Runtime
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             )
 endif()
 IF(WIN32)
-    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico DESTINATION .)
+    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico
+        DESTINATION .
+        COMPONENT Runtime)
 ENDIF()
+
+if(UNIX)
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop
+        DESTINATION "share/applications"
+        COMPONENT Runtime)
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/Resource/image/FaceRecognizer.png
+        DESTINATION "share/pixmaps"
+        COMPONENT Runtime)
+endif()
 
 IF(ANDROID)
     Set(JSON_FILE ${CMAKE_BINARY_DIR}/android_deployment_settings.json)
@@ -152,5 +163,7 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
         --verbose 7
         "$<TARGET_FILE:${PROJECT_NAME}>"
         )
-    INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/"
+        DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        COMPONENT Runtime)
 ENDIF()

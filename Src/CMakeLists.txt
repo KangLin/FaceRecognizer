@@ -30,13 +30,18 @@ if(OpenCV_FOUND)
     set(LIBS ${LIBS} ${OpenCV_LIBS})
     set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 
-#    #android 编译出来的是静态库
-#    foreach(component ${OpenCV_LIBS})
-#        if(ANDROID)
-#            INSTALL(FILES $<TARGET_FILE:${component}>
-#                DESTINATION "libs/${ANDROID_ABI}")
-#        endif()
-#    endforeach()
+    #android 编译出来的是静态库
+    foreach(opencv_component ${OpenCV_LIBS})
+        if(ANDROID)
+            INSTALL(FILES $<TARGET_FILE:${opencv_component}>
+                DESTINATION "libs/${ANDROID_ABI}"
+                COMPONENT Runtime)
+        else()
+            INSTALL(FILES $<TARGET_FILE:${opencv_component}>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                COMPONENT Runtime)
+        endif()
+    endforeach()
     
 endif()
 
@@ -44,14 +49,15 @@ find_package(SeetaFace)
 if(SeetaFace_FOUND)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_SEETA_FACE)
     set(LIBS ${LIBS} ${SeetaFace_LIBRARIES})
-    foreach(componet ${SeetaFace_LIBRARIES})
+    foreach(componet_seetaFace ${SeetaFace_LIBRARIES})
         if(ANDROID)
-            
-            INSTALL(FILES $<TARGET_FILE:${componet}>
-                DESTINATION "libs/${ANDROID_ABI}")
+            INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
+                DESTINATION "libs/${ANDROID_ABI}"
+                COMPONENT Runtime)
         else()
-            INSTALL(FILES $<TARGET_FILE:${componet}>
-                DESTINATION "${CMAKE_INSTALL_BINDIR}")
+            INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                COMPONENT Runtime)
         endif()
     endforeach()
     
@@ -143,10 +149,12 @@ if(BUILD_TYPE STREQUAL "debug")
 endif()
 
 add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${RCC_FILES})
-set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set_target_properties(${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    PUBLIC_HEADER "${INSTALLHEADER_FILES}" # Install head files
+    VERSION ${BUILD_VERSION})
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC RABBITCOMMON ${LIBS_DEFINES})
 target_link_libraries(${PROJECT_NAME} PUBLIC RabbitCommon ${QT_LIBRARIES} ${LIBS})
@@ -166,13 +174,6 @@ set(INSTALLHEADER_FILES ${INSTALLHEADER_FILES}
     ${CMAKE_CURRENT_BINARY_DIR}/${LOWER_PROJECT_NAME}_export.h)
 file(COPY ${CMAKE_CURRENT_BINARY_DIR}/${LOWER_PROJECT_NAME}_export.h
     DESTINATION ${CMAKE_BINARY_DIR})
-# Install head files
-set_property(
-    TARGET
-        ${PROJECT_NAME}
-    PROPERTY
-        PUBLIC_HEADER "${INSTALLHEADER_FILES}"
-)
 
 if(FFMPEG_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
@@ -185,27 +186,40 @@ if(ANDROID)
     INSTALL(TARGETS ${PROJECT_NAME}
             EXPORT ${PROJECT_NAME}Config
             RUNTIME DESTINATION "libs/${ANDROID_ABI}"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                COMPONENT Runtime
             LIBRARY DESTINATION "libs/${ANDROID_ABI}"
+                COMPONENT Runtime
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )
     # Install sql file
-    INSTALL(FILES ../Resource/db/database.sql DESTINATION assets/data/db)
+    INSTALL(FILES ../Resource/db/database.sql DESTINATION assets/data/db
+        COMPONENT Runtime)
     # Install model files
     if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat DESTINATION assets/model/Seeta)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat DESTINATION assets/model/Seeta)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat DESTINATION assets/model/Seeta)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat DESTINATION assets/model/Seeta)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
+            DESTINATION assets/model/Seeta
+            COMPONENT Runtime)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
+            DESTINATION assets/model/Seeta
+            COMPONENT Runtime)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
+            DESTINATION assets/model/Seeta
+            COMPONENT Runtime)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
+            DESTINATION assets/model/Seeta
+            COMPONENT Runtime)
     endif()
 else()
     # Install target
     INSTALL(TARGETS ${PROJECT_NAME}
             EXPORT ${PROJECT_NAME}Config
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                COMPONENT Runtime
             LIBRARY DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                COMPONENT Runtime
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )
@@ -213,10 +227,18 @@ else()
     INSTALL(FILES ../Resource/db/database.sql DESTINATION data/db)
     # Install model files
     if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat DESTINATION model/Seeta)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat DESTINATION model/Seeta)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat DESTINATION model/Seeta)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat DESTINATION model/Seeta)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
+            DESTINATION model/Seeta
+            COMPONENT Runtime)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
+            DESTINATION model/Seeta
+            COMPONENT Runtime)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
+            DESTINATION model/Seeta
+            COMPONENT Runtime)
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
+            DESTINATION model/Seeta
+            COMPONENT Runtime)
     endif()
 endif()
 

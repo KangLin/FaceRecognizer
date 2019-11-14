@@ -145,7 +145,16 @@ endif()
 add_subdirectory(Src)
 add_subdirectory(App)
 
-INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}")
+add_custom_target(install-runtime
+  COMMAND
+     "${CMAKE_COMMAND}" -DCMAKE_INSTALL_COMPONENT=Runtime 
+     -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake"
+)
+
+iF(WIN32)
+    INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}"
+        COMPONENT Runtime)
+endif()
 set(OTHER_FILES
     License.md
     Authors.md
@@ -154,14 +163,11 @@ set(OTHER_FILES
     ChangeLog_zh_CN.md)
 if(ANDROID)
     # Install other files
-    INSTALL(FILES ${OTHER_FILES} DESTINATION "assets")
+    INSTALL(FILES ${OTHER_FILES} DESTINATION "assets" COMPONENT Runtime)
 else()
     # Install other files
-    INSTALL(FILES ${OTHER_FILES} DESTINATION ".")
+    INSTALL(FILES ${OTHER_FILES} DESTINATION "." COMPONENT Runtime)
 endif()
-if(UNIX)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop DESTINATION "share/applications")
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/Resource/image/FaceRecognizer.png DESTINATION "share/pixmaps")
-endif()
+
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")

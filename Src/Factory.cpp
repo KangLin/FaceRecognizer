@@ -1,5 +1,7 @@
 #include "Factory.h"
-#include "Seeta/FaceSeeta.h"
+#ifdef HAVE_SEETA_FACE
+    #include "Seeta/FaceSeeta.h"
+#endif
 #include "ParameterFactory.h"
 
 CFactory::CFactory(QObject *parent)
