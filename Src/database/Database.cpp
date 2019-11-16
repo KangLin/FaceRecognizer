@@ -47,11 +47,22 @@ int CDatabase::InitDatabase()
 #endif
         if(file.open(QFile::ReadOnly))
         {
-            QString szSql(file.readAll());
             QSqlQuery query(m_Database);
-            if(!query.exec(szSql))
-                LOG_MODEL_ERROR("CDatabase", "Create database fail: %s",
-                           m_Database.lastError().text().toStdString().c_str());
+            QString szSql(file.readAll());
+            QStringList sql = szSql.split(";");
+            for(int i = 0; i < sql.size(); i++)
+            {
+                qDebug() << sql[i];
+                if(!query.exec(sql[i]) && m_Database.lastError().type() != QSqlError::NoError)
+                {
+                    qCritical() << "Create database fail: " << m_Database.lastError();
+                    file.close();
+                    m_Database.close();
+                    QDir d;
+                    d.remove(szFile);
+                    return -1;
+                }
+            }
             file.close();
         }
         m_Database.close();
