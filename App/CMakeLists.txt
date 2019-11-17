@@ -73,10 +73,9 @@ if(UNIX AND NOT ANDROID)
     set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME})
 endif()
 
-
-if(${CMAKE_CXX_COMPILER} MATCHES ".*/(g\\+\\+)(\\..*)")
+if(MINGW)
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "-mwindows")
-elseif(${CMAKE_CXX_COMPILER} MATCHES ".*/(cl)(\\..*)")
+elseif(MSVC)
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE
         "/SUBSYSTEM:WINDOWS\",5.01\" /ENTRY:mainCRTStartup")
 endif()

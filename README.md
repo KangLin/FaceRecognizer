@@ -221,6 +221,7 @@
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
                  [其它可选 CMake 配置参数]
+        cmake --build . --config Release
         cmake --build . --config Release --target install
 	    cmake --build . --config Release --target APK
 
@@ -238,6 +239,7 @@
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
                  [其它可选 CMake 配置参数]
+        cmake --build . --config Release
         cmake --build . --config Release --target install
 	    cmake --build . --config Release --target APK
 
