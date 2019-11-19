@@ -121,11 +121,6 @@ else()
     set(BUILD_ARCH ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
-# 设置安装前缀
-if(ANDROID)
-    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/android-build CACHE STRING "Install path prefix" FORCE)
-endif()
-
 if(NOT RabbitCommon_DIR)
     set(RabbitCommon_DIR $ENV{RabbitCommon_DIR})
     if(NOT RabbitCommon_DIR)

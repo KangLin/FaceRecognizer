@@ -206,7 +206,7 @@ if [ -n "$GENERATORS" ]; then
     echo "Build FaceRecognizer ......"
     if [ "${BUILD_TARGERT}" = "android" ]; then
     	 cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
-            -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+            -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
             -DCMAKE_VERBOSE=ON \
             -DCMAKE_BUILD_TYPE=Release \
             -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \

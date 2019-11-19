@@ -134,12 +134,12 @@ IF(ANDROID)
     endif()
     
     add_custom_target(APK #TARGET ${PROJECT_NAME} POST_BUILD
-        #COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" ${CMAKE_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/$<TARGET_FILE_NAME:${PROJECT_NAME}>
-        #COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/android-build/libs/${ANDROID_ABI}
-        #COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE_DIR:${PROJECT_NAME}>/*" ${CMAKE_BINARY_DIR}/android-build/libs/${ANDROID_ABI}
+        #COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" ${CMAKE_INSTALL_PREFIX}/libs/${ANDROID_ABI}/$<TARGET_FILE_NAME:${PROJECT_NAME}>
+        #COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/libs/${ANDROID_ABI}
+        #COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE_DIR:${PROJECT_NAME}>/*" ${CMAKE_INSTALL_PREFIX}/libs/${ANDROID_ABI}
         #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
         COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
-            --output ${CMAKE_BINARY_DIR}/android-build
+            --output ${CMAKE_INSTALL_PREFIX}
             --input ${JSON_FILE}
             --verbose
             ${ANDROID_DELOP_PARA}
