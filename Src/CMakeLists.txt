@@ -212,8 +212,10 @@ if(ANDROID)
             COMPONENT Runtime)
     endif()
 else()
+    
     # Install target
-    INSTALL(TARGETS ${PROJECT_NAME}
+    if(WIN32)
+        INSTALL(TARGETS ${PROJECT_NAME}
             EXPORT ${PROJECT_NAME}Config
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
                 COMPONENT Runtime
@@ -223,6 +225,18 @@ else()
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )
+    else()
+        INSTALL(TARGETS ${PROJECT_NAME}
+            EXPORT ${PROJECT_NAME}Config
+            RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                COMPONENT Runtime
+            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                COMPONENT Runtime
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+            PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
+            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            )
+    endif()
     # Install sql file
     INSTALL(FILES ../Resource/db/database.sql DESTINATION data/db)
     # Install model files
