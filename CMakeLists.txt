@@ -156,6 +156,7 @@ iF(WIN32)
     INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}"
         COMPONENT Runtime)
 endif()
+# Install other files
 set(OTHER_FILES
     License.md
     Authors.md
@@ -163,10 +164,8 @@ set(OTHER_FILES
     Authors_zh_CN.md
     ChangeLog_zh_CN.md)
 if(ANDROID)
-    # Install other files
     INSTALL(FILES ${OTHER_FILES} DESTINATION "assets" COMPONENT Runtime)
 else()
-    # Install other files
     INSTALL(FILES ${OTHER_FILES} DESTINATION "." COMPONENT Runtime)
 endif()
 
