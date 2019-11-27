@@ -161,12 +161,14 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     # Create appimage install package
     #cp ../FaceRecognizer-${VERSION}-x86_64.AppImage .
     cp $SOURCE_DIR/Install/install.sh .
+    cp $RabbitCommon_DIR/Install/install1.sh .    
     ln -s FaceRecognizer-${VERSION}-x86_64.AppImage FaceRecognizer-x86_64.AppImage
     tar -czf FaceRecognizer_${VERSION}.tar.gz \
         FaceRecognizer-${VERSION}-x86_64.AppImage \
         FaceRecognizer-x86_64.AppImage \
         share \
-        install.sh
+        install.sh \
+        install1.sh
 
     # Create update.xml
     MD5=`md5sum $SOURCE_DIR/../facerecognizer_*_amd64.deb|awk '{print $1}'`
