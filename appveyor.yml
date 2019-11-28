@@ -137,10 +137,9 @@ artifacts:
   - path: build_$(BUILD_TARGERT)\FaceRecognizer-Setup-*.exe
     name: FaceRecognizer_$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     type: zip
-    
   - path: build_$(BUILD_TARGERT)\update_windows.xml
-  - path: android-build-debug.apk
-  
+  - path: FaceRecognizer_$(appveyor_build_version).apk
+
 test: off
 
 #See:https://www.appveyor.com/docs/deployment/github/

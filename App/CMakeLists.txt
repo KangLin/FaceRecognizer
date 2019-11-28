@@ -135,31 +135,18 @@ if(UNIX)
 endif()
 
 IF(ANDROID)
-    Set(JSON_FILE ${CMAKE_BINARY_DIR}/android_deployment_settings.json)
+    Set(JSON_FILE ${CMAKE_CURRENT_BINARY_DIR}/android_deployment_settings.json)
     GENERATED_DEPLOYMENT_SETTINGS(NAME ${JSON_FILE}
         APPLACTION "${CMAKE_BINARY_DIR}/bin/lib${PROJECT_NAME}.so")
 
-    set(ANDROID_DELOP_PARA --gradle)
-    if(Qt5_VERSION VERSION_LESS 5.8.0)
-        find_program(ANT NAMES ant) # PATHS  "/usr/bin")
-        MESSAGE("ant:${ANT}\n")
-        if(ANT_FOUND)
-            set(ANDROID_DELOP_PARA --ant ${ANT})
-        endif()
-    endif()
-    
-    add_custom_target(APK #TARGET ${PROJECT_NAME} POST_BUILD
-        #COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:${PROJECT_NAME}>" ${CMAKE_INSTALL_PREFIX}/libs/${ANDROID_ABI}/$<TARGET_FILE_NAME:${PROJECT_NAME}>
-        #COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/libs/${ANDROID_ABI}
-        #COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE_DIR:${PROJECT_NAME}>/*" ${CMAKE_INSTALL_PREFIX}/libs/${ANDROID_ABI}
-        #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
-        COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
-            --output ${CMAKE_INSTALL_PREFIX}
-            --input ${JSON_FILE}
-            --verbose
-            ${ANDROID_DELOP_PARA}
-            #--jdk $ENV{JAVA_HOME}
-    )
+    add_custom_target(APK #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
+            COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
+                --output ${CMAKE_INSTALL_PREFIX}
+                --input ${JSON_FILE}
+                --verbose
+                --gradle
+                --android-platform ${ANDROID_PLATFORM}
+        )
 ENDIF(ANDROID)
 
 IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)

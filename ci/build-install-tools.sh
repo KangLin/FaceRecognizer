@@ -68,10 +68,13 @@ function install_android()
         else
             PLATFORMS="platforms"
         fi
+        if [ -z "${BUILD_TOOS_VERSION}" ]; then
+            BUILD_TOOS_VERSION="28.0.3"
+        fi
         (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
-        | ./bin/sdkmanager "platform-tools" "build-tools;28.0.3" "build-tools;28.0.2" "${PLATFORMS}" "ndk-bundle"
-        if [ ! -d ${SOURCE_DIR}/Tools/android-ndk ]; then
-            ln -s ${SOURCE_DIR}/Tools/android-sdk/ndk-bundle ${SOURCE_DIR}/Tools/android-ndk
+        | ./bin/sdkmanager "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
+        if [ ! -d ${TOOLS_DIR}/android-ndk ]; then
+            ln -s ${TOOLS_DIR}/android-sdk/ndk-bundle ${TOOLS_DIR}/android-ndk
         fi
     fi
 }
