@@ -62,7 +62,6 @@ function install_android()
         cp ../sdk-tools-linux-4333796.zip .
         unzip -q sdk-tools-linux-4333796.zip
         echo "Install sdk and ndk ......"
-        cd tools
         if [ -n "${ANDROID_API}" ]; then
             PLATFORMS="platforms;${ANDROID_API}"
         else
@@ -72,7 +71,7 @@ function install_android()
             BUILD_TOOS_VERSION="28.0.3"
         fi
         (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
-        | ./bin/sdkmanager "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
+        | ./tools/bin/sdkmanager "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
         if [ ! -d ${TOOLS_DIR}/android-ndk ]; then
             ln -s ${TOOLS_DIR}/android-sdk/ndk-bundle ${TOOLS_DIR}/android-ndk
         fi

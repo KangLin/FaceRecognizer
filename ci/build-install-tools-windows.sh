@@ -71,7 +71,7 @@ if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
         BUILD_TOOS_VERSION="28.0.3"
     fi
     (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
-    | ./bin/sdkmanager.bat "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
+    | ./tools/bin/sdkmanager.bat "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
     cd ${TOOLS_DIR}
 fi
 
