@@ -2,6 +2,8 @@
 version: 'v0.0.2.{build}'
 
 environment:
+  BUILD_VERSION: "v0.0.2"
+  
   matrix: 
   ##### msvc 2013 ########
   - BUILD_TARGERT: windows_msvc
@@ -105,7 +107,6 @@ matrix:
   fast_finish: false
 
 init:
-  - set BUILD_VERSION=%APPVEYOR_BUILD_VERSION%
   - set varch=%BUILD_ARCH%
   - if "%BUILD_ARCH%" == "x64" set varch=amd64
   - if "%BUILD_TARGERT%" == "windows_msvc" if %TOOLCHAIN_VERSION% LSS 15 (call "C:\Program Files (x86)\Microsoft Visual Studio %TOOLCHAIN_VERSION%.0\VC\vcvarsall.bat" %varch%) else (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" %varch%)  
@@ -138,7 +139,7 @@ artifacts:
     name: FaceRecognizer_$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     type: zip
   - path: build_$(BUILD_TARGERT)\update_windows.xml
-  - path: FaceRecognizer_$(appveyor_build_version).apk
+  - path: FaceRecognizer_$(BUILD_VERSION).apk
 
 test: off
 
