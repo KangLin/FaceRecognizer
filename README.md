@@ -80,7 +80,7 @@
   Windows安装包，支持 Windows xp 以上系统 
 
 - android
-    + [android-build-debug.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/android-build-debug.apk)
+    + [FaceRecognizer_v0.0.2.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/FaceRecognizer_v0.0.2.apk)
 
 **注意:**本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
