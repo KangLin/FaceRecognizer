@@ -65,11 +65,11 @@
 
       2. 安装
         
-                ./install.sh install
+                ./install1.sh install FaceRecognizer
         
       3. 如果需要，卸载
         
-                ./install.sh remove
+                ./install1.sh remove FaceRecognizer
 
 - ubuntu
     - [facerecognizer_0.0.2_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.2/facerecognizer_0.0.2_amd64.deb)  
