@@ -148,11 +148,16 @@ void MainWindow::slotCameraChanged(int index)
 
 void MainWindow::on_actionFile_triggered()
 {
-    QUrl url = QFileDialog::getOpenFileUrl(this);
-    if(url.isEmpty())
+#ifdef RABBITCOMMON
+    QString szFile = RabbitCommon::CDir::GetOpenFileName(this,
+                                   tr("Open file"),
+                                   qApp->applicationDirPath());
+    if(szFile.isEmpty())
         return;
+    QUrl url = QUrl::fromLocalFile(szFile);
     m_Player.setMedia(url);
     m_Player.setVideoOutput(&m_CaptureFrame);
+#endif
 }
 
 void MainWindow::on_actionStart_triggered()
