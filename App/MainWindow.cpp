@@ -51,6 +51,15 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup1->addAction(ui->actionFile);
     pViewGroup1->addAction(ui->actionCamera);
     
+    QActionGroup *pCameraAngle = new QActionGroup(this);
+    pCameraAngle->addAction(ui->action0);
+    pCameraAngle->addAction(ui->action90);
+    pCameraAngle->addAction(ui->action180);
+    pCameraAngle->addAction(ui->action270);
+    bool check = connect(pCameraAngle, SIGNAL(triggered(QAction *)),
+                         this, SLOT(slotCameraOrientation(QAction *)));
+    Q_ASSERT(check);
+    
     if(!QCameraInfo::availableCameras().isEmpty())
     {
         QComboBox *cmbCameras = new QComboBox(ui->toolBar);
@@ -144,6 +153,20 @@ void MainWindow::slotCameraChanged(int index)
     } else {
         QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
     }
+}
+
+void MainWindow::slotCameraOrientation(QAction *pAction)
+{
+    int nAngle = 0;
+    if(pAction == ui->action0)
+        nAngle = 0;
+    if(pAction == ui->action90)
+        nAngle = 90;
+    if(pAction == ui->action180)
+        nAngle = 180;
+    if(pAction == ui->action270)
+        nAngle = 270;
+    m_CaptureFrame.SetCameraAngle(nAngle);
 }
 
 void MainWindow::on_actionFile_triggered()

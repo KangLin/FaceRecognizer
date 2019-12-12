@@ -21,6 +21,7 @@ public:
     
 private slots:
     void slotCameraChanged(int index);
+    void slotCameraOrientation(QAction* pAction);
     void on_actionStart_triggered();
     void on_actionRegisterImage_triggered();
     void on_actionRegisterVideo_triggered();

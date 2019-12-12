@@ -30,12 +30,12 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>Operate</string>
+     <string>Operate(&amp;O)</string>
     </property>
     <widget class="QMenu" name="menuRegister">
      <property name="enabled">
@@ -75,9 +75,20 @@
    </widget>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
-     <string>Options</string>
+     <string>Tools(&amp;T)</string>
     </property>
+    <widget class="QMenu" name="menuCamer_Orientation">
+     <property name="title">
+      <string>Camer Orientation</string>
+     </property>
+     <addaction name="action0"/>
+     <addaction name="action90"/>
+     <addaction name="action180"/>
+     <addaction name="action270"/>
+    </widget>
     <addaction name="actionSet_model_path"/>
+    <addaction name="actionOptions_O"/>
+    <addaction name="menuCamer_Orientation"/>
    </widget>
    <widget class="QMenu" name="menuHelp_H">
     <property name="title">
@@ -88,7 +99,7 @@
    </widget>
    <widget class="QMenu" name="menuSource">
     <property name="title">
-     <string>Source</string>
+     <string>Source(&amp;S)</string>
     </property>
     <addaction name="actionCamera"/>
     <addaction name="actionFile"/>
@@ -335,6 +346,43 @@
    </property>
    <property name="whatsThis">
     <string>Recongnizer from video</string>
+   </property>
+  </action>
+  <action name="actionOptions_O">
+   <property name="text">
+    <string>Options(&amp;O)</string>
+   </property>
+  </action>
+  <action name="action90">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>90°</string>
+   </property>
+  </action>
+  <action name="action180">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>180°</string>
+   </property>
+  </action>
+  <action name="action270">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>270°</string>
+   </property>
+  </action>
+  <action name="action0">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>0°</string>
    </property>
   </action>
  </widget>
