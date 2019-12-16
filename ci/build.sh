@@ -221,6 +221,7 @@ if [ -n "$GENERATORS" ]; then
             -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
             -DCMAKE_VERBOSE=ON \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH=${QT_ROOT} \
             -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
             -DQt5Core_DIR=${QT_ROOT}/lib/cmake/Qt5Core \
             -DQt5Gui_DIR=${QT_ROOT}/lib/cmake/Qt5Gui \

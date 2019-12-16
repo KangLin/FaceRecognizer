@@ -54,6 +54,9 @@ if("Debug" STREQUAL CMAKE_BUILD_TYPE)
 endif()
 
 #需要的QT组件
+if(CMAKE_VERSION VERSION_LESS "3.7.0")
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+endif()
 SET(QT_COMPONENTS Core Gui Widgets Xml Network Multimedia Sql)
 if(ANDROID)
     SET(QT_COMPONENTS ${QT_COMPONENTS} AndroidExtras)
