@@ -47,7 +47,8 @@ public:
             const QVideoFrame::PixelFormat format);
     static AVPixelFormat QImageFormatToFFMpegPixFormat(
             const QImage::Format format);
-
+    static QImage FFMpegConverFormatToRGB888(const QVideoFrame &frame);
+    
 private:
     /**
      * @brief 格式转换，这个函数只内部调用    
@@ -69,23 +70,20 @@ private:
                              /*[out]*/ AVPicture &outFrame,                /** 转换后的帧 */
                              /*[in]*/  int nOutWidth,                /** 转换后的帧的宽度 */
                              /*[in]*/  int nOutHeight,               /** 转换后的帧的高度 */  
-                             /*[in]*/  AVPixelFormat outPixelFormat);/** 转换后的帧的格式 */  
-    
-public:
-
+                             /*[in]*/  AVPixelFormat outPixelFormat);/** 转换后的帧的格式 */
 #endif
 
+public:
     static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
     static QImage ConverFormatToRGB888(const QVideoFrame &frame);
 
-#ifdef HAVE_OPENCV
-    static QImage OpenCVConverFormatToRGB888(const QVideoFrame &frame);    
-#elif HAVE_FFMPEG
-    static QImage FFMpegConverFormatToRGB888(const QVideoFrame &frame);
-#elif HAVE_LIBYUV
+#if HAVE_LIBYUV
     static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);
 #endif
-    
+#if HAVE_OPENCV
+    static QImage OpenCVConverFormatToRGB888(const QVideoFrame &frame);
+#endif
+
 signals:
 
 public slots:
