@@ -8,12 +8,13 @@ CTrackerSeeta::CTrackerSeeta(QObject *parent) : CTracker(parent)
 {
 }
 
-void CTrackerSeeta::UpdateParameter()
+int CTrackerSeeta::UpdateParameter(QString &szErr)
 {
     if(!m_pParameter)
     {
-        LOG_MODEL_ERROR("CTrackerSeeta", "The parameter is null");
-        return;
+        szErr = "The parameter is null";
+        LOG_MODEL_ERROR("CTrackerSeeta", szErr.toStdString().c_str());
+        return -1;
     }
     
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
@@ -25,8 +26,9 @@ void CTrackerSeeta::UpdateParameter()
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        LOG_MODEL_ERROR("CDetectorSeeta", "Don't support device %d",
-                        m_pParameter->GetDevice());
+        szErr = "Don't support device %d" +
+                QString::number(m_pParameter->GetDevice());
+        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         break;
     }
     
@@ -39,11 +41,12 @@ void CTrackerSeeta::UpdateParameter()
                                   id);
         m_Tracker = QSharedPointer<seeta::FaceTracker>(new seeta::FaceTracker(model));
     }catch(...){
-        LOG_MODEL_ERROR("CTrackerSeeta", "Load model fail");
-        return;
+        szErr = "Load model fail";
+        LOG_MODEL_ERROR("CTrackerSeeta", szErr.toStdString().c_str());
+        return -2;
     }
     m_Tracker->set(seeta::FaceTracker::PROPERTY_VIDEO_STABLE, 1);
-    return;
+    return 0;
 }
 
 int CTrackerSeeta::Track(const QImage &image, QVector<strFace> &faces)

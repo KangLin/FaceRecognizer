@@ -12,10 +12,10 @@ CLandmarkerSeeta::~CLandmarkerSeeta()
 {
 }
 
-void CLandmarkerSeeta::UpdateParameter()
+int CLandmarkerSeeta::UpdateParameter(QString &szErr)
 {
     if(!m_pParameter)
-        return;
+        return -1;
     
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (m_pParameter->GetDevice()) {
@@ -26,8 +26,9 @@ void CLandmarkerSeeta::UpdateParameter()
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        LOG_MODEL_ERROR("CLandmarkerSeeta", "Don't support device %d",
-                        m_pParameter->GetDevice());
+        szErr = "Don't support device" +
+                QString::number(m_pParameter->GetDevice());
+        LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
         break;
     }
     
@@ -46,10 +47,11 @@ void CLandmarkerSeeta::UpdateParameter()
         m_Landmarker = QSharedPointer<seeta::FaceLandmarker>(
                               new seeta::FaceLandmarker(model));   
     } catch (...) {
-        LOG_MODEL_ERROR("CLandmarkerSeeta", "Load model fail");
-        return;
+        szErr = "Load model fail";
+        LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
+        return -1;
     }
-    return;
+    return 0;
 }
 
 int CLandmarkerSeeta::Mark(const QImage &image, const QRect &face, QVector<QPointF> &points)

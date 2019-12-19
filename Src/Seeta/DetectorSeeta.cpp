@@ -49,12 +49,13 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
     return 0;
 }
 
-void CDetectorSeeta::UpdateParameter()
+int CDetectorSeeta::UpdateParameter(QString &szErr)
 {
     if(!m_pParameter)
     {
-        LOG_MODEL_ERROR("CDetectorSeeta", "The parameter is null");
-        return;
+        szErr = "The parameter is null";
+        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        return -1;
     }
     
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
@@ -66,8 +67,8 @@ void CDetectorSeeta::UpdateParameter()
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        LOG_MODEL_ERROR("CDetectorSeeta", "Don't support device %d",
-                        m_pParameter->GetDevice());
+        szErr =  "Don't support device " + QString::number(m_pParameter->GetDevice());
+        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         break;
     }
     
@@ -80,9 +81,10 @@ void CDetectorSeeta::UpdateParameter()
                                   id);
         m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
     } catch (...) {
-        LOG_MODEL_ERROR("CDetectorSeeta", "Load model fail");
-        return;
+        szErr = "Load model fail";
+        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        return -2;
     }
     m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetMinFaceSize());
-    return;
+    return 0;
 }

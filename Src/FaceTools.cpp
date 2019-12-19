@@ -1,4 +1,5 @@
 #include "FaceTools.h"
+#include "Log.h"
 
 CFaceTools::CFaceTools(QObject *parent) : QObject(parent)
 {}
@@ -27,5 +28,9 @@ void CFaceTools::slotParameterDelete()
 
 void CFaceTools::slotParameterUpdate()
 {
-    UpdateParameter();
+    QString szErr;
+    int nRet = -UpdateParameter(szErr);
+    if(nRet)
+        LOG_MODEL_ERROR("CFaceTools", "UpdateParameter: %s",
+                         szErr.toStdString().c_str());
 }

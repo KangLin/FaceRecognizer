@@ -1,4 +1,5 @@
 #include "Landmarker.h"
+#include "Log.h"
 
 CLandmarker::CLandmarker(QObject *parent)
     : QObject(parent),
@@ -32,5 +33,9 @@ void CLandmarker::slotParameterDelete()
 
 void CLandmarker::slotParameterUpdate()
 {
-    UpdateParameter();
+    QString szErr;
+    int nRet = -UpdateParameter(szErr);
+    if(nRet)
+        LOG_MODEL_ERROR("CLandmarker", "UpdateParameter: %s",
+                         szErr.toStdString().c_str());
 }

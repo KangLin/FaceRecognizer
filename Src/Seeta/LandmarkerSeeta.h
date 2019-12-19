@@ -19,7 +19,7 @@ public:
     virtual int Mark(const QImage &image, const QRect &face, QVector<QPointF> &points);
 
 private:
-    virtual void UpdateParameter();
+    virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceLandmarker> m_Landmarker;
 };
 

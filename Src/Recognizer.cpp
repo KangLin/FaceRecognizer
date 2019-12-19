@@ -1,5 +1,6 @@
 #include "Recognizer.h"
 #include <QDir>
+#include "Log.h"
 
 CRecognizer::CRecognizer(QObject *parent)
     : QObject(parent),
@@ -22,7 +23,11 @@ int CRecognizer::SetParameter(CParameterRecognizer *pPara)
                      this, SLOT(slotParameterUpdate()));
     Q_ASSERT(bCheck);
     
-    UpdateParameter();
+    QString szErr;
+    int nRet = -UpdateParameter(szErr);
+    if(nRet)
+        LOG_MODEL_ERROR("CRecognizer", "UpdateParameter: %s",
+                         szErr.toStdString().c_str());
     return 0;
 }
 
@@ -33,7 +38,11 @@ void CRecognizer::slotParameterDelete()
 
 void CRecognizer::slotParameterUpdate()
 {
-    UpdateParameter();
+    QString szErr;
+    int nRet = -UpdateParameter(szErr);
+    if(nRet)
+        LOG_MODEL_ERROR("CRecognizer", "UpdateParameter: %s",
+                         szErr.toStdString().c_str());
 }
 
 QString CRecognizer::GetRegisterImage(qint64 index)

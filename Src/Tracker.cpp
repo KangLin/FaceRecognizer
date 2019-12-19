@@ -1,4 +1,5 @@
 #include "Tracker.h"
+#include "Log.h"
 
 static int gTrackStrFaceId = qRegisterMetaType<CTracker::strFace>();
 static int gVectorTrackStrFaceId = qRegisterMetaType<QVector<CTracker::strFace> >();
@@ -29,5 +30,9 @@ void CTracker::slotParameterDelete()
 
 void CTracker::slotParameterUpdate()
 {
-    UpdateParameter();
+    QString szErr;
+    int nRet = -UpdateParameter(szErr);
+    if(nRet)
+        LOG_MODEL_ERROR("CTracker", "UpdateParameter: %s",
+                         szErr.toStdString().c_str());
 }

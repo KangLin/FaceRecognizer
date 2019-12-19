@@ -17,7 +17,7 @@ public:
                            const QVector<QPointF> &points);
 
 private:
-    virtual void UpdateParameter();
+    virtual int UpdateParameter(QString &szErr);
     seeta::QualityAssessor m_QualityAssessor;
 };
 

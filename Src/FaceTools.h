@@ -23,7 +23,7 @@ public Q_SLOTS:
     void slotParameterDelete();
 
 protected:
-    virtual void UpdateParameter() = 0;
+    virtual int UpdateParameter(QString &szErr) = 0;
     CParameterFaceTools* m_pParameter;
 };
 

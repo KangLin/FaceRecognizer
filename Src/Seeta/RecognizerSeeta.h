@@ -45,7 +45,7 @@ public:
     virtual int Load(const QString &szFile = QString());
     
 protected:
-    virtual void UpdateParameter();
+    virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceDatabase> m_Recognizer;
     float m_fThreshold;
 };

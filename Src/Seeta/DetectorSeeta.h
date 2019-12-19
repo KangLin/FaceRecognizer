@@ -17,7 +17,7 @@ public:
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
 private:
-    virtual void UpdateParameter();
+    virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceDetector> m_Dector;
 };
 

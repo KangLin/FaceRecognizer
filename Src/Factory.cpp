@@ -15,9 +15,10 @@ CFactory::~CFactory()
 
 CFace* CFactory::Instance()
 {
+    static CFace* pFace = nullptr;
 #ifdef HAVE_SEETA_FACE
-    return new CFaceSeeta();
-#else
-    return nullptr;
+    if(!pFace)
+        pFace = new CFaceSeeta();
 #endif
+    return pFace;
 }

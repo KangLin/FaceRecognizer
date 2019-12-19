@@ -5,12 +5,12 @@
 CFaceToolsSeeta::CFaceToolsSeeta(QObject *parent) : CFaceTools(parent)
 {}
 
-void CFaceToolsSeeta::UpdateParameter()
+int CFaceToolsSeeta::UpdateParameter(QString &szErr)
 {
-    if(!m_pParameter) return;
+    if(!m_pParameter) return -1;
 
     m_QualityAssessor.setFaceSize(m_pParameter->GetMinFaceSize());
-    return;
+    return 0;
 }
 
 float CFaceToolsSeeta::EvaluateQuality(const QImage &image, const QRect &face, const QVector<QPointF> &points)

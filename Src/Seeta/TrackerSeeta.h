@@ -16,7 +16,7 @@ public:
     virtual int Track(const QImage &image, QVector<strFace> &faces);
     
 private:
-    virtual void UpdateParameter();
+    virtual int UpdateParameter(QString &szErr);
     
     QSharedPointer<seeta::FaceTracker> m_Tracker;
     

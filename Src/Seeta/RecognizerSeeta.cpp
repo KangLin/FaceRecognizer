@@ -14,12 +14,13 @@ CRecognizerSeeta::CRecognizerSeeta(QObject *parent)
 CRecognizerSeeta::~CRecognizerSeeta()
 {}
 
-void CRecognizerSeeta::UpdateParameter()
+int CRecognizerSeeta::UpdateParameter(QString &szErr)
 {
     if(!m_pParameter)
     {
-        LOG_MODEL_ERROR("CDetectorSeeta", "The parameter is null");
-        return;
+        szErr =  "The parameter is null";
+        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        return -1;
     }
     
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
@@ -31,8 +32,9 @@ void CRecognizerSeeta::UpdateParameter()
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        LOG_MODEL_ERROR("CDetectorSeeta", "Don't support device %d",
-                        m_pParameter->GetDevice());
+        szErr = "Don't support device %d" +
+                QString::number(m_pParameter->GetDevice());
+        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         break;
     }
     
@@ -46,11 +48,13 @@ void CRecognizerSeeta::UpdateParameter()
         m_Recognizer = QSharedPointer<seeta::FaceDatabase>(new seeta::FaceDatabase(model));
         if(!m_Recognizer)
         {
-            LOG_MODEL_ERROR("CRecognizerSeeta", "new seeta::FaceDatabase fail");
-            return;
+            szErr =  "new seeta::FaceDatabase fail";
+            LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
+            return -2;
         }        
     } catch (...) {
-        LOG_MODEL_ERROR("CRecognizerSeeta", "Load model fail");
+        szErr = "Load model fail";
+        LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
     }
 
     Load();

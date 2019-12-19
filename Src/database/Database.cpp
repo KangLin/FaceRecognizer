@@ -15,7 +15,9 @@ CDatabase::CDatabase(QObject *parent)
     : QObject(parent)
 {
     if(InitDatabase())
+    {
         throw std::runtime_error("Init database fail");
+    }
 }
 
 CDatabase::~CDatabase()
@@ -55,7 +57,8 @@ int CDatabase::InitDatabase()
                 qDebug() << sql[i];
                 if(!query.exec(sql[i]) && m_Database.lastError().type() != QSqlError::NoError)
                 {
-                    qCritical() << "Create database fail: " << m_Database.lastError();
+                    LOG_MODEL_ERROR("CDatabase", "Create database fail: %s",
+                                    m_Database.lastError().text().toStdString().c_str());
                     file.close();
                     m_Database.close();
                     QDir d;
