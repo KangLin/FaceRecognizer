@@ -171,7 +171,7 @@
             cd FaceRecognizer
             mkdir build
             cd build
-            cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+            cmake .. -DCMAKE_INSTALL_PREFIX=install \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
