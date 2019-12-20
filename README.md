@@ -85,14 +85,6 @@
 **注意:**本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
 ## 编译
-### 下载源码
-
-    git clone --recursive https://github.com/KangLin/FaceRecognizer.git
-
-或者：
-
-    git clone https://github.com/KangLin/FaceRecognizer.git
-    git submodule update --init --recursive
 
 ### 依赖
 + 编译工具
@@ -103,7 +95,7 @@
         + GCC 或者 Clang 编译器
     - For windows
         + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio)
-        + MinGW
+        + [MSYS2/MinGW](http://sourceforge.net/projects/msys2/)
   + [CMake](http://www.cmake.org/)
 + 依赖库
   - [必选] Rabbit 公共库: https://github.com/KangLin/RabbitCommon
@@ -113,15 +105,32 @@
   - [可选] opencv: https://opencv.org/
 
 ### CMake 配置参数
-  - [必选] Qt5_DIR: qt 安装位置
+  - [必选] Qt5_DIR: qt 安装位置(指向Qt5Config.cmake的目录，默认为 安装目录/lib/cmake/Qt5)。
+                   详见：https://doc.qt.io/qt-5/cmake-get-started.html
   - [必选] RabbitCommon_DIR: RabbitCommon 源码位置
   - [可选] HAVE_PERFORMANCE: 比较测试框架，默认 OFF
   - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
-  - [可选] SeetaFace_DIR: SeetaFace 库安装位置
+  - [可选] SeetaFace_DIR: SeetaFace 库安装位置(指向安装的SeetaFaceConfig.cmake目录,默认为 安装目录/lib/cmake)
   - [可选] YUV_DIR: libyuv 库安装位置
   - [可选] OpenCV_DIR: OpenCV 库安装位置
 
 ### 各平台编译
+#### 下载源码
+- 下载本项目源码
+
+    git clone --recursive https://github.com/KangLin/FaceRecognizer.git
+
+或者：
+
+    git clone https://github.com/KangLin/FaceRecognizer.git
+    git submodule update --init --recursive
+
+- 下载 RabbitCommon 源码
+
+    git clone https://github.com/KangLin/RabbitCommon.git
+
+- 从源码编译或安装可选库
+
 #### linux 平台编译说明
   - 编译
 
