@@ -25,10 +25,12 @@ int main(int argc, char *argv[])
 #ifdef RABBITCOMMON
     RabbitCommon::CTools::Instance()->Init();
 
+    QString szTranslator = RabbitCommon::CDir::Instance()->GetDirTranslations()
+            + "/" + qApp->applicationName()
+            + "App_" + QLocale::system().name() + ".qm";
+    qDebug() << "Translator:" << szTranslator;
     QTranslator translator;
-    translator.load(RabbitCommon::CDir::Instance()->GetDirTranslations()
-                    + "/" + qApp->applicationName()
-                    + "App_" + QLocale::system().name() + ".qm");
+    translator.load(szTranslator);
     a.installTranslator(&translator);
 #endif
    
