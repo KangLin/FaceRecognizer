@@ -226,7 +226,7 @@
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                  -DANDROID_ABI="armeabi-v7a with NEON" \
-                 -DANDROID_PLATFORM=android-18 \
+                 -DANDROID_PLATFORM=android-24 \
                  -DQt5_DIR= \
                  -DRabbitCommon_DIR= \
                  [其它可选 CMake 配置参数]
@@ -235,22 +235,43 @@
 	    cmake --build . --config Release --target APK
 
   - 主机是 windows
-
-        cd FaceRecognizer
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-                 -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
-                 -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-                 -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe \
-                 -DANDROID_ABI=arm64-v8a \
-                 -DANDROID_ARM_NEON=ON \
-                 -DQt5_DIR= \
-                 -DRabbitCommon_DIR= \
-                 [其它可选 CMake 配置参数]
-        cmake --build . --config Release
-        cmake --build . --config Release --target install
-	    cmake --build . --config Release --target APK
+    - windows 控制台
+    
+            cd FaceRecognizer
+            mkdir build
+            cd build
+            cmake .. -DCMAKE_INSTALL_PREFIX=%cd%\android-build ^
+                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ^
+                     -DCMAKE_TOOLCHAIN_FILE=%ANDROID_NDK%/build/cmake/android.toolchain.cmake ^
+                     -DCMAKE_MAKE_PROGRAM=%ANDROID_NDK%/prebuilt/windows-x86_64/bin/make.exe ^
+                     -DANDROID_ABI=arm64-v8a ^
+                     -DANDROID_ARM_NEON=ON ^
+                     -DANDROID_PLATFORM=android-24 ^
+                     -DQt5_DIR= ^
+                     -DRabbitCommon_DIR= ^
+                     [其它可选 CMake 配置参数]
+            cmake --build . --config Release
+            cmake --build . --config Release --target install
+            cmake --build . --config Release --target APK
+            
+    - msys2 或 cygwin
+    
+            cd FaceRecognizer
+            mkdir build
+            cd build
+            cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
+                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
+                     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+                     -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe \
+                     -DANDROID_ABI=arm64-v8a \
+                     -DANDROID_ARM_NEON=ON \
+                     -DANDROID_PLATFORM=android-24 \
+                     -DQt5_DIR= \
+                     -DRabbitCommon_DIR= \
+                     [其它可选 CMake 配置参数]
+            cmake --build . --config Release
+            cmake --build . --config Release --target install
+            cmake --build . --config Release --target APK
 
   - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：
