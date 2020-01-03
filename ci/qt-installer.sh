@@ -13,24 +13,40 @@ then
     exit -1
 fi
 
+function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
+function version_le() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+
 export PATH=$PATH:$PWD
 export WORKDIR=$PWD
 INSTALLER=$1
 OUTPUT=$2
 SCRIPT="$(mktemp /tmp/tmp.XXXXXXXXX)"
+
 case $BUILD_ARCH in
-    arm*)
-        SELECTEDPACKAGES=android_armv7
-        ;;
-     x86)
-        SELECTEDPACKAGES=android_x86
-        ;;
     unix)
         SELECTEDPACKAGES=gcc_64
         ;;
-       *)
-       echo "Aach[$BUILD_ARCH] don't suppoert"
+    arm*|x86*)
+        if version_ge $QT_VERSION_DIR 5.14 ; then
+            SELECTEDPACKAGES=android
+        else
+            case $BUILD_ARCH in
+                arm*)
+                    SELECTEDPACKAGES=android_armv7
+                    ;;
+                x86*)
+                    SELECTEDPACKAGES=android_x86
+                    ;;
+            esac
+        fi
+        ;;
+    *)
+        echo "Aach[$BUILD_ARCH] don't suppoert"
+        ;;
 esac
+
 
 cat <<EOF > $SCRIPT
 function Controller() {

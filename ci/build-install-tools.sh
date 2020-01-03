@@ -5,6 +5,14 @@ set -e
 SOURCE_DIR="`pwd`"
 echo $SOURCE_DIR
 TOOLS_DIR=${SOURCE_DIR}/Tools
+PACKAGE_DIR=${SOURCE_DIR}/Package
+
+if [ ! -d "${TOOLS_DIR}" ]; then
+    mkdir ${TOOLS_DIR}
+fi
+if [ ! -d "$PACKAGE_DIR" ]; then
+    mkdir -p $PACKAGE_DIR
+fi
 
 function function_install_yasm()
 {
@@ -31,17 +39,23 @@ function function_common()
     fi
     
     # Qt qt安装参见：https://github.com/benlau/qtci  
+    cd ${TOOLS_DIR}
     if [ "$DOWNLOAD_QT" = "TRUE" ]; then
         QT_DIR=`pwd`/Qt/${QT_VERSION}
+        cd ${PACKAGE_DIR}
         if [ ! -d "${QT_DIR}" ]; then
             if [ "${QT_VERSION}" = "5.6.3" ]; then
-                wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-linux-x64-android-${QT_VERSION}.run
+                if [ ! -f qt-opensource-linux-x64-android-${QT_VERSION}.run ]; then
+                    wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-linux-x64-android-${QT_VERSION}.run
+                fi
                 bash ${SOURCE_DIR}/ci/qt-installer.sh qt-opensource-linux-x64-android-${QT_VERSION}.run ${QT_DIR}
-                rm qt-opensource-linux-x64-android-${QT_VERSION}.run
+                #rm qt-opensource-linux-x64-android-${QT_VERSION}.run
             else
-                wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run
+                if [ ! -f qt-opensource-linux-x64-${QT_VERSION}.run ]; then
+                    wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run
+                fi
                 bash ${SOURCE_DIR}/ci/qt-installer.sh qt-opensource-linux-x64-${QT_VERSION}.run ${QT_DIR}
-                rm qt-opensource-linux-x64-${QT_VERSION}.run
+                #rm qt-opensource-linux-x64-${QT_VERSION}.run
             fi
         fi
     fi
@@ -51,8 +65,13 @@ function install_android()
 {
     cd ${TOOLS_DIR}
     if [ ! -d "`pwd`/android-sdk" ]; then
+        cd ${PACKAGE_DIR}
         ANDROID_STUDIO_VERSION=191.5900203
-        wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
+        if [ ! -f android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz ]; then
+            wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
+        fi
+        cp android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz ${TOOLS_DIR}/.
+        cd ${TOOLS_DIR}
         tar xzf android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
         export JAVA_HOME=`pwd`/android-studio/jre
         export PATH=${JAVA_HOME}/bin:$PATH
@@ -93,7 +112,7 @@ function function_android()
 
     install_android
     
-    sudo apt-get install ant -qq -y
+    #sudo apt-get install ant -qq -y
     sudo apt-get install libicu-dev -qq -y
     
     function_common
@@ -105,7 +124,7 @@ function function_unix()
     #汇编工具yasm
     #function_install_yasm
 
-    if [ "$DOWNLOAD_QT" != "TRUE"  ]; then
+    if [ "$DOWNLOAD_QT" != "TRUE" -a "$DOWNLOAD_QT" != "APT" ]; then
         #See: https://launchpad.net/~beineri
         sudo add-apt-repository ppa:beineri/opt-qt-${QT_VERSION}-`lsb_release -c|awk '{print $2}'` -y
     fi
@@ -125,7 +144,12 @@ function function_unix()
         libmysqlclient-dev \
         libodbc1 
 
-    if [ "$DOWNLOAD_QT" != "TRUE" ]; then
+    if [ "$DOWNLOAD_QT" = "APT" ]; then
+        sudo apt-get install -y -qq qttools5-dev qttools5-dev-tools \
+            qtbase5-dev qtbase5-dev-tools \
+            qtmultimedia5-dev
+        sudo ln -s /usr/lib/`uname -m`-linux-gnu/cmake /usr/lib/`uname -m`-linux-gnu/qt5/cmake 
+    elif [ "$DOWNLOAD_QT" != "TRUE" ]; then
         sudo apt-get install -y -qq qt${QT_VERSION_DIR}base \
             qt${QT_VERSION_DIR}tools \
             qt${QT_VERSION_DIR}multimedia
@@ -141,7 +165,7 @@ function function_mingw()
 {
     #汇编工具yasm
     #function_install_yasm
-
+    cd ${SOURCE_DIR}
     if [ "true" == "$RABBIT_BUILD_THIRDLIBRARY" ]; then
         export RABBIT_BUILD_CROSS_HOST=i686-w64-mingw32 #i586-mingw32msvc
     fi
