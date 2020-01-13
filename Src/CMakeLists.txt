@@ -16,42 +16,51 @@ if(HAVE_PERFORMANCE)
     set(SOURCES_FILES ${SOURCES_FILES} Performance.cpp)
 endif()
 
-#Use: https://github.com/KangLin/libyuv
-find_package(YUV)
-if(YUV_FOUND)
-    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBYUV)
-    set(LIBS ${LIBS} YUV)
-    if(ANDROID)
-        INSTALL(FILES $<TARGET_FILE:YUV>
-                DESTINATION "libs/${ANDROID_ABI}")
-    else()
-        INSTALL(FILES $<TARGET_FILE:YUV>
-                DESTINATION "${CMAKE_INSTALL_BINDIR}")
-    endif()
-endif()
-
-find_package(FFMPEG)
-
-find_package(OpenCV)
-if(OpenCV_FOUND)
-    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
-    set(LIBS ${LIBS} ${OpenCV_LIBS})
-    set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
-
-    #android 编译出来的是静态库
-    foreach(opencv_component ${OpenCV_LIBS})
+option(USE_YUV "Use libyuv" ON)
+if(USE_YUV)
+    #Use: https://github.com/KangLin/libyuv
+    find_package(YUV)
+    if(YUV_FOUND)
+        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBYUV)
+        set(LIBS ${LIBS} YUV)
         if(ANDROID)
-            INSTALL(FILES $<TARGET_FILE:${opencv_component}>
-                DESTINATION "libs/${ANDROID_ABI}"
-                COMPONENT Runtime)
+            INSTALL(FILES $<TARGET_FILE:YUV>
+                    DESTINATION "libs/${ANDROID_ABI}")
         else()
-            INSTALL(FILES $<TARGET_FILE:${opencv_component}>
-                DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                COMPONENT Runtime)
+            INSTALL(FILES $<TARGET_FILE:YUV>
+                    DESTINATION "${CMAKE_INSTALL_BINDIR}")
         endif()
-    endforeach()
+    endif()
+endif(USE_YUV)
+
+option(USE_FFMPEG "Use ffmpeg" ON)
+if(USE_FFMPEG)
+    find_package(FFMPEG)
+endif(USE_FFMPEG)
+
+option(USE_OPENCV "Use opencv" ON)
+if(USE_OPENCV)
+    find_package(OpenCV)
+    if(OpenCV_FOUND)
+        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
+        set(LIBS ${LIBS} ${OpenCV_LIBS})
+        set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
     
-endif()
+        #android 编译出来的是静态库
+        foreach(opencv_component ${OpenCV_LIBS})
+            if(ANDROID)
+                INSTALL(FILES $<TARGET_FILE:${opencv_component}>
+                    DESTINATION "libs/${ANDROID_ABI}"
+                    COMPONENT Runtime)
+            else()
+                INSTALL(FILES $<TARGET_FILE:${opencv_component}>
+                    DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                    COMPONENT Runtime)
+            endif()
+        endforeach()
+        
+    endif()
+endif(USE_OPENCV)
 
 find_package(SeetaFace)
 if(SeetaFace_FOUND)
