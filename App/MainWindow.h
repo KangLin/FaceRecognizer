@@ -34,6 +34,8 @@ private slots:
     void on_actionDisplay_triggered();
     void on_actionFile_triggered();
 
+    void on_actionExit_triggered();
+    
 private:
     int CamerOrientation(int index);
 

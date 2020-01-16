@@ -327,3 +327,8 @@ void MainWindow::on_actionUpdate_U_triggered()
     #endif
 #endif
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    qApp->quit();
+}

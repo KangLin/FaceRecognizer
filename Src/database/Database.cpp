@@ -39,7 +39,7 @@ int CDatabase::InitDatabase()
         {
             LOG_MODEL_ERROR("CDatabase", "Open database fail: %s",
                        m_Database.lastError().text().toStdString().c_str());
-            return m_Database.lastError().number();
+            return m_Database.lastError().nativeErrorCode().toInt();
         }
 #if defined (_DEBUG) || defined(DEBUG)
         QFile file(":/database/database");

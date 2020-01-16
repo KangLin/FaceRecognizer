@@ -10,5 +10,6 @@
         <file alias="VideoFolder">image/Videofolder.png</file>
         <file alias="Folder">image/Folder.png</file>
         <file alias="Image">image/Image.png</file>
+        <file alias="Exit">image/exit.png</file>
     </qresource>
 </RCC>

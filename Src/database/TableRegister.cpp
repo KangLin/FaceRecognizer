@@ -58,7 +58,7 @@ int CTableRegister::Register(qint64 index, CDataRegister *pData)
     {
         LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
                    m_Database.lastError().text().toStdString().c_str());
-        return m_Database.lastError().number();
+        return m_Database.lastError().nativeErrorCode().toInt();
     }
     return nRet;
 }
@@ -73,7 +73,7 @@ int CTableRegister::Delete(qint64 index)
     {
         LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
                    m_Database.lastError().text().toStdString().c_str());
-        return m_Database.lastError().number();
+        return m_Database.lastError().nativeErrorCode().toInt();
     }
     return nRet;
 }
@@ -91,7 +91,7 @@ int CTableRegister::GetRegisterInfo(qint64 index, CDataRegister *pData)
     {
         LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
                    m_Database.lastError().text().toStdString().c_str());
-        return m_Database.lastError().number();
+        return m_Database.lastError().nativeErrorCode().toInt();
     }
     while (query.next()) {
         int nCount = pData->metaObject()->propertyCount();

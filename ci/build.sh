@@ -244,6 +244,7 @@ if [ -n "$GENERATORS" ]; then
             -DQt5Multimedia_DIR=${QT_ROOT}/lib/cmake/Qt5Multimedia \
             -DQt5Sql_DIR=${QT_ROOT}/lib/cmake/Qt5Sql \
             -DQt5LinguistTools_DIR=${QT_ROOT}/lib/cmake/Qt5LinguistTools \
+            -DQt5AndroidExtras_DIR=${QT_ROOT}/lib/cmake/Qt5AndroidExtras \
             -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
@@ -251,7 +252,6 @@ if [ -n "$GENERATORS" ]; then
             -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake \
             -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DQt5AndroidExtras_DIR=${QT_ROOT}/lib/cmake/Qt5AndroidExtras \
             -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
             -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
     else
