@@ -1,8 +1,8 @@
-QT_ROOT=/opt/Qt5.13.2/5.13.2/android_armv7
-YUV_DIR=/home/libyuv/build/install/lib/cmake
+QT_ROOT=/c/Qt/Qt5.12.6/5.12.6/android_armv7
+YUV_DIR=/d/Source/RabbitIm/ThirdLibrary/android24_arm_qt5.12.6_Release
 OPENCV_DIR=
 FFMPEG_DIR=
-SeetaFace2_DIR=/home/SeetaFace/build/install
+SeetaFace2_DIR=/d/Source/RabbitIm/ThirdLibrary/android24_arm_qt5.12.6_Release
 if [ -n "$1" ]; then
     Qt5_ROOT=$1
 fi
@@ -26,7 +26,7 @@ if [ -n "$QT_ROOT" ]; then
             -DQt5AndroidExtras_DIR=${QT_ROOT}/lib/cmake/Qt5AndroidExtras"
 fi
 if [ -n "$YUV_DIR" ]; then
-    PARA="${PARA} -DYUV_DIR=${YUV_DIR}"
+    PARA="${PARA} -DYUV_DIR=${YUV_DIR}/lib/cmake"
 else
     PARA="${PARA} -DUSE_YUV=OFF"
 fi
@@ -56,11 +56,15 @@ if [ ! -d build ]; then
 fi
 cd build
 
-cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake -DANDROID_ABI="armeabi-v7a with NEON" -DANDROID_PLATFORM=android-18 ${PARA}
+cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+    -DANDROID_ABI="armeabi-v7a with NEON" \
+    -DANDROID_PLATFORM=android-18 ${PARA}
 
 cmake --build . --config Release -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
 
-cmake --build . --config Release --target install -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
+cmake --build . --config Release --target install # -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
 cmake --build . --config Release --target APK 
 
 cd ..

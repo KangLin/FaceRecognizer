@@ -14,7 +14,9 @@ test.xml
 .kdev_include_paths
 .vs/
 CMakeSettings.json
-build_*/
+build_
+modul/
+*/
 build-*/
 build/
 build_android/

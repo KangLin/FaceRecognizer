@@ -125,7 +125,7 @@ IF(WIN32)
         COMPONENT Runtime)
 ENDIF()
 
-if(UNIX)
+if(UNIX AND NOT ANDROID)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop
         DESTINATION "share/applications"
         COMPONENT Runtime)
