@@ -6,7 +6,7 @@
 
 CParameterFactory::CParameterFactory(QObject *parent) : QObject(parent)
 {
-    //注意生成顺序  
+    //注意：生成顺序  
     CParameter* pPara = new CParameterDetector(this);
     m_pParameter.push_back(pPara);
     pPara = new CParameterLandmark(this);

@@ -33,7 +33,7 @@ void CDetector::slotParameterDelete()
 void CDetector::slotParameterUpdate()
 {
     QString szErr;
-    int nRet = -UpdateParameter(szErr);
+    int nRet = UpdateParameter(szErr);
     if(nRet)
         LOG_MODEL_ERROR("CDetector", "UpdateParameter: %s",
                          szErr.toStdString().c_str());

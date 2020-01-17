@@ -1,13 +1,21 @@
 #ifndef CRECOGNIZER_H_KL_2019_10_21_
 #define CRECOGNIZER_H_KL_2019_10_21_
-
+  
 #pragma once
 #include <QObject>
 #include <QImage>
 
+/**
+ * @defgroup RecognizerInterface recognizer interface
+ */
+  
 #include "facerecognizer_export.h"
 #include "ParameterRecognizer.h"
 
+/**
+ * @brief The CRecognizer class
+ * @ingroup RecognizerInterface
+ */
 class FACERECOGNIZER_EXPORT CRecognizer : public QObject
 {
     Q_OBJECT
