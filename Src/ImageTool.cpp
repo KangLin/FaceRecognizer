@@ -137,15 +137,26 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
             libyuv::I420ToRGB24(videoFrame.bits(),
                                 videoFrame.width(),
                                 videoFrame.bits() + videoFrame.width() * videoFrame.height(),
-                                videoFrame.width() / 2,
+                                videoFrame.width() >> 1, // / 2,
                                 videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4,
-                                videoFrame.width() / 2,
+                                videoFrame.width() >> 1, // / 2
                                 img.bits(),
                                 videoFrame.width() * 3,
                                 videoFrame.width(),
                                 videoFrame.height());
         }
-            img = img.rgbSwapped();
+            break;
+        case QVideoFrame::Format_YV12:
+            libyuv::I420ToRGB24(videoFrame.bits(),
+                                videoFrame.width(),
+                                videoFrame.bits() +  videoFrame.width() * videoFrame.height() * 5 / 4,
+                                videoFrame.width() >> 1, // / 2
+                                videoFrame.bits() + videoFrame.width() * videoFrame.height(),
+                                videoFrame.width() >> 1, // / 2,
+                                img.bits(),
+                                videoFrame.width() * 3,
+                                videoFrame.width(),
+                                videoFrame.height());
             break;
         case QVideoFrame::Format_NV21:
         {
@@ -171,7 +182,7 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.height());
         }
             break;
-        case QVideoFrame::Format_YV12:
+        
         default:
             LOG_MODEL_WARNING("CImageTool",  "LibyuvConverFormatToRGB888 Don't implement conver format: %d",
                             videoFrame.pixelFormat());
@@ -209,11 +220,21 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
 #if OpenCV_VERSION_MAJOR >= 4
-            cv::cvtColor(in, out, cv::COLOR_YUV420p2RGB);
+            cv::cvtColor(in, out, cv::COLOR_YUV2RGB_I420);
 #else
-            cv::cvtColor(in, out, CV_YUV420p2RGB);
+            cv::cvtColor(in, out, CV_YUV2RGB_I420);
 #endif
-            img = img.rgbSwapped();
+        }
+            break;
+        case QVideoFrame::Format_YV12:
+        {
+            cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
+                       videoFrame.width(), CV_8UC1, videoFrame.bits());
+#if OpenCV_VERSION_MAJOR >= 4
+            cv::cvtColor(in, out, cv::COLOR_YUV2RGB_YV12);
+#else
+            cv::cvtColor(in, out, CV_YUV2RGB_YV12);
+#endif
         }
             break;
         case QVideoFrame::Format_NV21:
@@ -221,9 +242,9 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
             cv::Mat in(videoFrame.height() + videoFrame.height() / 2,
                        videoFrame.width(), CV_8UC1, videoFrame.bits());
 #if OpenCV_VERSION_MAJOR >= 4
-            cv::cvtColor(in, out, cv::COLOR_YUV420sp2RGB);
+            cv::cvtColor(in, out, cv::COLOR_YUV2RGB_NV21);
 #else
-            cv::cvtColor(in, out, CV_YUV420sp2RGB);   
+            cv::cvtColor(in, out, CV_YUV2RGB_NV21);   
 #endif
         }
             break;
@@ -262,7 +283,7 @@ QImage CImageTool::OpenCVConverFormatToRGB888(const QVideoFrame &frame)
 #endif
         }
             break;
-        case QVideoFrame::Format_YV12:
+        
         
         default:
             LOG_MODEL_WARNING("CImageTool",  "OpenCVConverFormatToRGB888 Don't conver format: %d",

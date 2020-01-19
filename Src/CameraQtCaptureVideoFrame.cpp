@@ -40,11 +40,14 @@ CCameraQtCaptureVideoFrame::supportedPixelFormats(
                 << QVideoFrame::Format_BGRA32
 
                 //android支持的格式
+                // YUV420SP
                 << QVideoFrame::Format_NV12
                 << QVideoFrame::Format_NV21
-                << QVideoFrame::Format_YV12
-                << QVideoFrame::Format_RGB565
+                   
+                // YUV420P
                 << QVideoFrame::Format_YUV420P
+                << QVideoFrame::Format_YV12
+                
                 << QVideoFrame::Format_UYVY
                 << QVideoFrame::Format_YUYV
                 << QVideoFrame::Format_YUV444
