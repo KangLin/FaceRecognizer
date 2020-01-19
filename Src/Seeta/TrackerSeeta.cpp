@@ -6,6 +6,7 @@
 
 CTrackerSeeta::CTrackerSeeta(QObject *parent) : CTracker(parent)
 {
+    m_bInit = false;
 }
 
 int CTrackerSeeta::UpdateParameter(QString &szErr)
@@ -17,6 +18,7 @@ int CTrackerSeeta::UpdateParameter(QString &szErr)
         return -1;
     }
     
+    m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (m_pParameter->GetDevice()) {
     case CParameter::CPU:
@@ -46,12 +48,15 @@ int CTrackerSeeta::UpdateParameter(QString &szErr)
         return -2;
     }
     m_Tracker->set(seeta::FaceTracker::PROPERTY_VIDEO_STABLE, 1);
+    m_bInit = true;
     return 0;
 }
 
 int CTrackerSeeta::Track(const QImage &image, QVector<strFace> &faces)
 {
     if(image.isNull()) return -1;
+    if(!m_bInit) return -2;
+    
     PERFORMANCE(CTrackerSeeta)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)

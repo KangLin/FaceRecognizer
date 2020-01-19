@@ -8,6 +8,7 @@
 CRecognizerSeeta::CRecognizerSeeta(QObject *parent)
     : CRecognizer(parent)
 {
+    m_bInit = false;
     m_fThreshold = 0.7f;
 }
 
@@ -22,7 +23,7 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         return -1;
     }
-    
+    m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (m_pParameter->GetDevice()) {
     case CParameter::CPU:
@@ -55,8 +56,11 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
     } catch (...) {
         szErr = "Load model fail";
         LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
+        return -3;
     }
 
+    m_bInit = true;
+    
     Load();
 }
 
@@ -65,6 +69,9 @@ qint64 CRecognizerSeeta::Register(const QImage &image,
 {
     int64_t index = 0;
 
+    if(image.isNull()) return -1;
+    if(!m_bInit) return -2;
+    
     PERFORMANCE(SeetaRegister);
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)

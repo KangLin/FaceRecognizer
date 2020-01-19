@@ -48,6 +48,7 @@ protected:
     virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceDatabase> m_Recognizer;
     float m_fThreshold;
+    bool m_bInit;
 };
 
 #endif // CRECOGNIZERSEETA_H

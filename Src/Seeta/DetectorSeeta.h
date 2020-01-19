@@ -19,6 +19,7 @@ public:
 private:
     virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceDetector> m_Dector;
+    bool m_bInit;
 };
 
 #endif // CDETECTORSEETA_H_KL_2019_10_29

@@ -242,7 +242,7 @@ void MainWindow::on_actionSet_model_path_triggered()
 #ifdef RABBITCOMMON
    QString szFile = RabbitCommon::CDir::GetOpenDirectory(this,
                         tr("Open model file path"),
-                        qApp->applicationDirPath());
+                        CParameterFactory::Instance()->GetParameterDetector()->GetModelPath());
    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                  QSettings::IniFormat);
    set.setValue("ModuleDir", szFile);

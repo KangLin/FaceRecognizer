@@ -5,7 +5,9 @@
 
 CDetectorSeeta::CDetectorSeeta(QObject *parent) 
     : CDetector(parent)
-{}
+{
+    m_bInit = false;
+}
 
 CDetectorSeeta::~CDetectorSeeta()
 {}
@@ -13,6 +15,8 @@ CDetectorSeeta::~CDetectorSeeta()
 int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
 {
     if(image.isNull()) return -1;
+    if(!m_bInit) return -2;
+    
     PERFORMANCE(SeetaDectect)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
@@ -57,7 +61,7 @@ int CDetectorSeeta::UpdateParameter(QString &szErr)
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         return -1;
     }
-    
+    m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (m_pParameter->GetDevice()) {
     case CParameter::CPU:
@@ -86,5 +90,6 @@ int CDetectorSeeta::UpdateParameter(QString &szErr)
         return -2;
     }
     m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetMinFaceSize());
+    m_bInit = true;
     return 0;
 }

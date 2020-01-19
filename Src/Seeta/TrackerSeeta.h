@@ -17,9 +17,9 @@ public:
     
 private:
     virtual int UpdateParameter(QString &szErr);
-    
+
     QSharedPointer<seeta::FaceTracker> m_Tracker;
-    
+    bool m_bInit;    
 };
 
 #endif // CTRACKERSEETA_H

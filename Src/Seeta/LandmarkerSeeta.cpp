@@ -6,7 +6,9 @@
 
 CLandmarkerSeeta::CLandmarkerSeeta(QObject *parent)
     : CLandmarker(parent)
-{}
+{
+    m_bInit = false;
+}
 
 CLandmarkerSeeta::~CLandmarkerSeeta()
 {
@@ -16,7 +18,7 @@ int CLandmarkerSeeta::UpdateParameter(QString &szErr)
 {
     if(!m_pParameter)
         return -1;
-    
+    m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (m_pParameter->GetDevice()) {
     case CParameter::CPU:
@@ -51,11 +53,15 @@ int CLandmarkerSeeta::UpdateParameter(QString &szErr)
         LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
         return -1;
     }
+    m_bInit = true;
     return 0;
 }
 
 int CLandmarkerSeeta::Mark(const QImage &image, const QRect &face, QVector<QPointF> &points)
 {
+    if(image.isNull()) return -1;
+    if(!m_bInit) return -2;
+    
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
