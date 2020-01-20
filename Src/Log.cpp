@@ -1,9 +1,27 @@
+/*++
+Copyright (c) Kang Lin studio, All Rights Reserved
+
+Author:
+	Kang Lin(kl222@126.com）
+
+Module Name:
+
+    Log.cpp
+
+Abstract:
+
+    This file contains log implement.
+ */
+
 #include "Log.h"
 #include <string>
 #include <stdarg.h>
 #include <QDebug>
+#include <QFile>
+#include <QUrl>
+#include <QDesktopServices>
 
-CLog::CLog()
+CLog::CLog() : QObject()
 {
 }
 
@@ -17,10 +35,10 @@ CLog* CLog::Instance()
 
 #define LOG_BUFFER_LENGTH 1024
 int CLog::Log(const char *pszFile, int nLine, int nLevel,
-                 const char* pszModelName, const char *pFormatString, ...)
+              const char* pszModelName, const char *pFormatString, ...)
 {
     char buf[LOG_BUFFER_LENGTH];
-    std::string szTemp = pszFile;
+    QString szTemp = pszFile;
     szTemp += "(";
     sprintf(buf, "%d", nLine);
     szTemp += buf;
@@ -58,6 +76,39 @@ int CLog::Log(const char *pszFile, int nLine, int nLevel,
     }
     szTemp += buf;
 
-    qDebug() << szTemp.c_str();
+    qDebug() << szTemp;
+
+    emit sigLog(szTemp + "\n");
+
+    if(!m_szFile.isEmpty())
+    {
+        QFile f(m_szFile);
+        if (!f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+        {
+            qDebug() << "open file fail: "
+                     << m_szFile
+                     << "["
+                     << f.error()
+                     << "]"
+                     << f.errorString();
+            return 0;
+        }
+        QTextStream out(&f);  
+        out << szTemp << endl;
+        f.close();
+    }
+    
+    return 0;
+}
+
+int CLog::SaveFile(const QString &szFile)
+{
+    m_szFile = szFile;
+    return 0;
+}
+
+int CLog::OpneFile()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(m_szFile));
     return 0;
 }

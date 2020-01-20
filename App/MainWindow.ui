@@ -72,6 +72,8 @@
     <addaction name="menuRegister"/>
     <addaction name="menuRecognizer"/>
     <addaction name="separator"/>
+    <addaction name="actionOpen_log_file"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuOptions">
@@ -401,9 +403,17 @@
     <string>Exit</string>
    </property>
   </action>
+  <action name="actionOpen_log_file">
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Log</normaloff>:/image/Log</iconset>
+   </property>
+   <property name="text">
+    <string>Open log file</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../Resource/Resource.qrc"/>
   <include location="../Resource/Resource.qrc"/>
  </resources>
  <connections/>

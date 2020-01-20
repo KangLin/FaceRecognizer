@@ -14,6 +14,7 @@
 #include "ManageRegisterVideo.h"
 #include "ManageRecognizerVideo.h"
 #include "Factory.h"
+#include "Log.h"
 
 #include <QIcon>
 #include <QCameraInfo>
@@ -25,6 +26,7 @@
 #include <QComboBox>
 #include <QActionGroup>
 #include <QFileDialog>
+#include <QStandardPaths>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,7 +34,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pCamera(nullptr)
 {
     ui->setupUi(this);
-            
+
+    CLog::Instance()->SaveFile(QStandardPaths::writableLocation(
+                                   QStandardPaths::TempLocation)
+                               + QDir::separator()
+                               + qApp->applicationName() + ".log");
     //Init menu
     ui->actionStart->setIcon(QIcon(":/image/Start"));
     ui->actionStart->setText(tr("Start"));
@@ -331,4 +337,9 @@ void MainWindow::on_actionUpdate_U_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     qApp->quit();
+}
+
+void MainWindow::on_actionOpen_log_file_triggered()
+{
+    CLog::Instance()->OpneFile();
 }
