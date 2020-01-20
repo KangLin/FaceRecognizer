@@ -56,12 +56,12 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_YUYV:
     case QVideoFrame::Format_UYVY:
 
-#if HAVE_LIBYUV
-        return  LibyuvConverFormatToRGB888(frame);
+#if HAVE_OPENCV
+        return OpenCVConverFormatToRGB888(frame);
 #elif HAVE_FFMPEG
         return FFMpegConverFormatToRGB888(frame);
-#elif HAVE_OPENCV
-        return OpenCVConverFormatToRGB888(frame);
+#elif HAVE_LIBYUV
+        return  LibyuvConverFormatToRGB888(frame);
 #else
         if(QVideoFrame::Format_YUV420P != frame.pixelFormat())
         {
