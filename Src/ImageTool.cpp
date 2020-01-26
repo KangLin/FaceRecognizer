@@ -50,9 +50,9 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     switch(frame.pixelFormat())
     {
     case QVideoFrame::Format_YUV420P:
+    case QVideoFrame::Format_YV12:
     case QVideoFrame::Format_NV21:
     case QVideoFrame::Format_NV12:
-    case QVideoFrame::Format_YV12:
     case QVideoFrame::Format_YUYV:
     case QVideoFrame::Format_UYVY:
 
@@ -182,7 +182,34 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
                                 videoFrame.height());
         }
             break;
-        
+        case QVideoFrame::Format_YUYV:
+        {
+            img = QImage(videoFrame.width(),
+                         videoFrame.height(),
+                         QImage::Format_ARGB32);
+            libyuv::YUY2ToARGB(videoFrame.bits(),
+                                videoFrame.width() << 1, // * 2
+                                img.bits(),
+                                videoFrame.width() << 2, // * 4
+                                videoFrame.width(),
+                                videoFrame.height());
+            img = img.convertToFormat(QImage::Format_RGB888);
+        }
+            break;
+        case QVideoFrame::Format_UYVY:
+        {
+            img = QImage(videoFrame.width(),
+                         videoFrame.height(),
+                         QImage::Format_ARGB32);
+            libyuv::UYVYToARGB(videoFrame.bits(),
+                                videoFrame.width() << 1, // * 2
+                                img.bits(),
+                                videoFrame.width() << 2, // * 4
+                                videoFrame.width(),
+                                videoFrame.height());
+            img = img.convertToFormat(QImage::Format_RGB888);
+        }
+            break;
         default:
             LOG_MODEL_WARNING("CImageTool",  "LibyuvConverFormatToRGB888 Don't implement conver format: %d",
                             videoFrame.pixelFormat());
