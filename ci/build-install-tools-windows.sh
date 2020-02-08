@@ -6,6 +6,8 @@ set -ev
 SOURCE_DIR="`pwd`"
 echo $SOURCE_DIR
 TOOLS_DIR=${SOURCE_DIR}/Tools
+PACKAGE_DIR=${SOURCE_DIR}/Package
+ThirdLibs_DIR=${TOOLS_DIR}/ThirdLibs
 echo ${TOOLS_DIR}
 
 if [ "$BUILD_TARGERT" = "android" ]; then
@@ -30,6 +32,17 @@ if [ -n "${QT_VERSION}" ]; then
         bash ${SOURCE_DIR}/ci/qt-installer.sh qt-opensource-windows-x86-${QT_VERSION}.exe ${QT_DIR}
         rm qt-opensource-windows-x86-${QT_VERSION}.exe
     fi
+fi
+
+# Download third libraries
+if [ -n "$DOWNLOAD_THIRDLIBS_URL" ]; then
+    if [ ! -d ${ThirdLibs_DIR} ]; then
+        mkdir -p ${ThirdLibs_DIR}
+    fi
+    cd ${ThirdLibs_DIR}
+    ThirdLibs_File=third_libs.tar.gz
+    wget -c --no-check-certificate $DOWNLOAD_THIRDLIBS_URL -O $ThirdLibs_File
+    tar xzvf $ThirdLibs_File
 fi
 
 cd ${TOOLS_DIR}

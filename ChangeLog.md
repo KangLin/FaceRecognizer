@@ -5,7 +5,8 @@
   + Add register from video
   + Add recognizer from video
   + Use default qt in ubuntu to ci
-
+  + Automatically generate binary distributions under CI
+  
 - v0.0.2
   + Register and recognizer face from video file
   + Add format convert

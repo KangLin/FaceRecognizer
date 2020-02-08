@@ -6,6 +6,8 @@ if [ -n "$1" ]; then
     SOURCE_DIR=$1
 fi
 TOOLS_DIR=${SOURCE_DIR}/Tools
+ThirdLibs_DIR=${TOOLS_DIR}/ThirdLibs
+cd ${SOURCE_DIR}
 export RabbitCommon_DIR="${SOURCE_DIR}/RabbitCommon"
 
 function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
@@ -149,10 +151,10 @@ case ${BUILD_TARGERT} in
 esac
 
 if [ -n "$appveyor_build_version" -a -z "$VERSION" ]; then
-    export VERSION=$appveyor_build_version
+    export VERSION="v0.0.3"
 fi
 if [ -z "$VERSION" ]; then
-    export VERSION="v0.0.2"
+    export VERSION="v0.0.3"
 fi
 if [ "${BUILD_TARGERT}" = "unix" ]; then
     cd $SOURCE_DIR
@@ -207,7 +209,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
         --url "https://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/FaceRecognizer_${VERSION}.tar.gz"
     
     if [ "$TRAVIS_TAG" != "" -a "${QT_VERSION}" = "5.12.3" ]; then
-        export UPLOADTOOL_BODY="Release FaceRecognizer-${VERSION}"
+        export UPLOADTOOL_BODY="Release FaceRecognizer ${VERSION}"
         #export UPLOADTOOL_PR_BODY=
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
         chmod u+x upload.sh
@@ -228,8 +230,16 @@ if [ -n "$GENERATORS" ]; then
     if [ -n "${ANDROID_ARM_NEON}" ]; then
         CONFIG_PARA="${CONFIG_PARA} -DANDROID_ARM_NEON=${ANDROID_ARM_NEON}"
     fi
+    if [ -d "${ThirdLibs_DIR}" ]; then
+        CONFIG_PARA="${CONFIG_PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake"
+        CONFIG_PARA="${CONFIG_PARA} -DOPENSSL_ROOT_DIR=${ThirdLibs_DIR}"
+        export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
+    fi
     echo "Build FaceRecognizer ......"
     if [ "${BUILD_TARGERT}" = "android" ]; then
+        if [ -d "${ThirdLibs_DIR}" ]; then
+            CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni"
+        fi
     	 cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
             -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
             -DCMAKE_VERBOSE=ON \
@@ -255,6 +265,9 @@ if [ -n "$GENERATORS" ]; then
             -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
             -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
     else
+        if [ -d "${ThirdLibs_DIR}" ]; then
+            CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}"
+        fi
 	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
             -DCMAKE_INSTALL_PREFIX=`pwd`/install \
             -DCMAKE_VERBOSE=ON \
@@ -279,8 +292,9 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         --sign ${RabbitCommon_DIR}/RabbitCommon.keystore rabbitcommon \
         --storepass ${STOREPASS}
     APK_FILE=`find . -name "android-build-release-signed.apk"`
-    mv -f ${APK_FILE} $SOURCE_DIR/FaceRecognizer_${VERSION}.apk
-    APK_FILE=$SOURCE_DIR/FaceRecognizer_${VERSION}.apk
+    APK_NAME=FaceRecognizer_${BUILD_ARCH}_${VERSION}.apk
+    mv -f ${APK_FILE} $SOURCE_DIR/${APK_NAME}
+    APK_FILE=$SOURCE_DIR/${APK_NAME}
     if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION"="5.13.2" ]; then
 
         cp $SOURCE_DIR/Update/update_android.xml .
@@ -288,13 +302,13 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         MD5=`md5sum ${APK_FILE} | awk '{print $1}'`
         echo "MD5:${MD5}"
         sed -i "s/<VERSION>.*</<VERSION>${VERSION}</g" update_android.xml
-        sed -i "s/<INFO>.*</<INFO>Release Tasks-${VERSION}</g" update_android.xml
+        sed -i "s/<INFO>.*</<INFO>Release FaceRecognizer ${VERSION}</g" update_android.xml
         sed -i "s/<TIME>.*</<TIME>`date`</g" update_android.xml
         sed -i "s/<ARCHITECTURE>.*</<ARCHITECTURE>${BUILD_ARCH}</g" update_android.xml
         sed -i "s/<MD5SUM>.*</<MD5SUM>${MD5}</g" update_android.xml
-        sed -i "s:<URL>.*<:<URL>https\://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/FaceRecognizer_${VERSION}.apk<:g" update_android.xml
+        sed -i "s:<URL>.*<:<URL>https\://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/${APK_NAME}<:g" update_android.xml
 
-        export UPLOADTOOL_BODY="Release FaceRecognizer-${VERSION}"
+        export UPLOADTOOL_BODY="Release FaceRecognizer ${VERSION}"
         #export UPLOADTOOL_PR_BODY=
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
         chmod u+x upload.sh

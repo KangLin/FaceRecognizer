@@ -3,7 +3,7 @@ Section: main
 Priority: optional
 Maintainer: Kang Lin <kl222@126.com>
 Build-Depends: debhelper (>= 6)
-Standards-Version:"v0.0.2"
+Standards-Version:"v0.0.3"
 Homepage: https://github.com/KangLin/FaceRecognizer
 Vcs-Git: https://github.com/KangLin/FaceRecognizer.git
 #Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/FaceRecognizer.git

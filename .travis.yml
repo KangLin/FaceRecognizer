@@ -38,7 +38,7 @@ addons:
 env:
   global:
     - SOURCE_DIR=$TRAVIS_BUILD_DIR
-    - RABBITIM_USE_REPOSITORIES="TRUE"
+    - RABBIT_BUILD_THIRDLIBRARY="TRUE"
     - QMAKE=qmake
 
   matrix:
@@ -56,9 +56,9 @@ env:
     # BUILD_ARCH qt 大于等于 5.14.0 可选（arm64-v8a armeabi-v7a x86_64 x86）组合
     #- BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a x86" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.14 QT_VERSION=5.14.0 ANDROID_API=android-24 DOWNLOAD_QT=TRUE  GENERATORS="Unix Makefiles"
     
-    - BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.13 QT_VERSION=5.13.2 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles"
-    - BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles"
-    - BUILD_TARGERT="android" BUILD_ARCH="x86" QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles"
+    - BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.13 QT_VERSION=5.13.2 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/android_arm.tar.gz
+    - BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/android_arm.tar.gz
+    - BUILD_TARGERT="android" BUILD_ARCH="x86" QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/android_x86.tar.gz
 
 before_install:
   - echo "TRAVIS_OS_NAME=${TRAVIS_OS_NAME}"
@@ -66,7 +66,7 @@ before_install:
   - sudo Xvfb :99 -ac &
   - export DISPLAY=:99.0
   - mkdir ${SOURCE_DIR}/Tools
-  - export VERSION="v0.0.2"
+  - export VERSION="v0.0.3"
   
 install:
   - cd ${SOURCE_DIR}
