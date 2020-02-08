@@ -120,19 +120,23 @@ echo "PWD:`pwd`"
 if [ "${BUILD_TARGERT}" = "android" ]; then
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
+         -DCMAKE_VERBOSE_MAKEFILE=ON \
+         -DCMAKE_BUILD_TYPE=MinSizeRel \
          -DBUILD_EXAMPLE=OFF \
          -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
          -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
 else
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
+         -DCMAKE_VERBOSE_MAKEFILE=ON \
+         -DCMAKE_BUILD_TYPE=MinSizeRel \
          -DBUILD_EXAMPLE=OFF
 fi
-cmake --build . --target install --config Release
+if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
+    cmake --build . --config MinSizeRel --target install
+else
+    cmake --build . --config MinSizeRel --target install/strip
+fi
 
 cd ${SOURCE_DIR}
 
@@ -223,64 +227,66 @@ fi
 mkdir -p build_${BUILD_TARGERT}
 cd build_${BUILD_TARGERT}
 
-if [ -n "$GENERATORS" ]; then
-    if [ -n "${STATIC}" ]; then
-        CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
-    fi
-    if [ -n "${ANDROID_ARM_NEON}" ]; then
-        CONFIG_PARA="${CONFIG_PARA} -DANDROID_ARM_NEON=${ANDROID_ARM_NEON}"
-    fi
+if [ -n "${STATIC}" ]; then
+    CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
+fi
+if [ -n "${ANDROID_ARM_NEON}" ]; then
+    CONFIG_PARA="${CONFIG_PARA} -DANDROID_ARM_NEON=${ANDROID_ARM_NEON}"
+fi
+if [ -d "${ThirdLibs_DIR}" ]; then
+    CONFIG_PARA="${CONFIG_PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake"
+    CONFIG_PARA="${CONFIG_PARA} -DOPENSSL_ROOT_DIR=${ThirdLibs_DIR}"
+    export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
+fi
+echo "Build FaceRecognizer ......"
+if [ "${BUILD_TARGERT}" = "android" ]; then
     if [ -d "${ThirdLibs_DIR}" ]; then
-        CONFIG_PARA="${CONFIG_PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake"
-        CONFIG_PARA="${CONFIG_PARA} -DOPENSSL_ROOT_DIR=${ThirdLibs_DIR}"
-        export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
+        CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni"
     fi
-    echo "Build FaceRecognizer ......"
-    if [ "${BUILD_TARGERT}" = "android" ]; then
-        if [ -d "${ThirdLibs_DIR}" ]; then
-            CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni"
-        fi
-    	 cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
-            -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-            -DCMAKE_VERBOSE=ON \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_PREFIX_PATH=${QT_ROOT} \
-            -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-            -DQt5Core_DIR=${QT_ROOT}/lib/cmake/Qt5Core \
-            -DQt5Gui_DIR=${QT_ROOT}/lib/cmake/Qt5Gui \
-            -DQt5Widgets_DIR=${QT_ROOT}/lib/cmake/Qt5Widgets \
-            -DQt5Xml_DIR=${QT_ROOT}/lib/cmake/Qt5Xml \
-            -DQt5Network_DIR=${QT_ROOT}/lib/cmake/Qt5Network \
-            -DQt5Multimedia_DIR=${QT_ROOT}/lib/cmake/Qt5Multimedia \
-            -DQt5Sql_DIR=${QT_ROOT}/lib/cmake/Qt5Sql \
-            -DQt5LinguistTools_DIR=${QT_ROOT}/lib/cmake/Qt5LinguistTools \
-            -DQt5AndroidExtras_DIR=${QT_ROOT}/lib/cmake/Qt5AndroidExtras \
-            -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
-            -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
-    else
-        if [ -d "${ThirdLibs_DIR}" ]; then
-            CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}"
-        fi
-	    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
-            -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-            -DCMAKE_VERBOSE=ON \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
-            -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
-            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
+    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
+        -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
+        -DCMAKE_VERBOSE_MAKEFILE=ON \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_PREFIX_PATH=${QT_ROOT} \
+        -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
+        -DQt5Core_DIR=${QT_ROOT}/lib/cmake/Qt5Core \
+        -DQt5Gui_DIR=${QT_ROOT}/lib/cmake/Qt5Gui \
+        -DQt5Widgets_DIR=${QT_ROOT}/lib/cmake/Qt5Widgets \
+        -DQt5Xml_DIR=${QT_ROOT}/lib/cmake/Qt5Xml \
+        -DQt5Network_DIR=${QT_ROOT}/lib/cmake/Qt5Network \
+        -DQt5Multimedia_DIR=${QT_ROOT}/lib/cmake/Qt5Multimedia \
+        -DQt5Sql_DIR=${QT_ROOT}/lib/cmake/Qt5Sql \
+        -DQt5LinguistTools_DIR=${QT_ROOT}/lib/cmake/Qt5LinguistTools \
+        -DQt5AndroidExtras_DIR=${QT_ROOT}/lib/cmake/Qt5AndroidExtras \
+        -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
+        -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
+else
+    if [ -d "${ThirdLibs_DIR}" ]; then
+        CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}"
     fi
-    cmake --build . --config Release -- ${RABBIT_MAKE_JOB_PARA}
-    cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
+    cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
+        -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+        -DCMAKE_VERBOSE_MAKEFILE=ON \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
+        -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
+        -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
+fi
+cmake --build . --config MinSizeRel -- ${RABBIT_MAKE_JOB_PARA}
+if [ "$TRAVIS_TAG" != "" ]; then
+    cmake --build . --config MinSizeRel --target install-runtime -- ${RABBIT_MAKE_JOB_PARA}
+else
+    cmake --build . --config MinSizeRel --target install -- ${RABBIT_MAKE_JOB_PARA}
 fi
 
 if [ "${BUILD_TARGERT}" = "android" ]; then
@@ -295,7 +301,9 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
     APK_NAME=FaceRecognizer_${BUILD_ARCH}_${VERSION}.apk
     mv -f ${APK_FILE} $SOURCE_DIR/${APK_NAME}
     APK_FILE=$SOURCE_DIR/${APK_NAME}
-    if [ "$TRAVIS_TAG" != "" -a "$BUILD_ARCH"="armeabi-v7a" -a "$QT_VERSION"="5.13.2" ]; then
+    if [ "$TRAVIS_TAG" != "" \
+         -a "$BUILD_ARCH" = "armeabi-v7a" \
+         -a "$QT_VERSION" = "5.12.6" ]; then
 
         cp $SOURCE_DIR/Update/update_android.xml .
         

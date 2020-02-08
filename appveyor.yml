@@ -1,5 +1,5 @@
 #TODO: Change version
-version: 'v0..{build}'
+version: 'v0.0..{build}'
 
 environment:
   matrix: 
@@ -22,28 +22,28 @@ environment:
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.10\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x86.tar.gz
 
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.10\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x64.tar.gz
     
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.6\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x86.tar.gz
 
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.6\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x64.tar.gz
 
   ##### msvc 2017 ########
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -53,7 +53,7 @@ environment:
     QT_ROOT: C:\Qt\5.12\msvc2017
     BUILD_ARCH: x86
     STATIC: ON
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc15_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc15_x86.tar.gz
     
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     GENERATORS: "Visual Studio 15 2017 Win64"
@@ -153,7 +153,7 @@ test: off
 deploy:
   - provider: GitHub
     #release: FaceRecognizer$(appveyor_build_version)
-    description: 'Release FaceRecognizer $(APPVEYOR_REPO_TAG_NAME) on windows'
+    #description: 'Release FaceRecognizer $(APPVEYOR_REPO_TAG_NAME) on windows'
     #token : https://github.com/settings/tokens
     #password encrypt: https://ci.appveyor.com/tools/encrypt
     auth_token:
@@ -161,6 +161,7 @@ deploy:
     #artifact: FaceRecognizer$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     #draft: true
     #prerelease: true
+    force_update: true
     on:
       BUILD_TARGERT: windows_msvc
       TOOLCHAIN_VERSION: 14

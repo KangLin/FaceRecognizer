@@ -11,8 +11,8 @@ addons:
       
 cache:
   - apt
-  - directories:
-    - Package
+#  - directories:
+#    - Package
 
 compiler:
   - g++
@@ -70,6 +70,7 @@ before_install:
   
 install:
   - cd ${SOURCE_DIR}
+  - /bin/bash ci/backgroud_echo.sh &
   - git clone https://github.com/KangLin/RabbitCommon.git
   - export RabbitCommon_DIR="`pwd`/RabbitCommon"
   - bash ci/build-install-tools.sh > /dev/null
