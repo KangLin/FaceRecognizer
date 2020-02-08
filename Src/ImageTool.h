@@ -30,10 +30,18 @@ class FACERECOGNIZER_EXPORT CImageTool : public QObject
 {
     Q_OBJECT
 public:
-    explicit CImageTool(QObject *parent = 0);
-    ~CImageTool();
+    explicit CImageTool(QObject *parent = nullptr);
 
 public:
+    static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
+    static QImage ConverFormatToRGB888(const QVideoFrame &frame);
+
+#if HAVE_LIBYUV
+    static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);
+#endif
+#if HAVE_OPENCV
+    static QImage OpenCVConverFormatToRGB888(const QVideoFrame &frame);
+#endif
 #ifdef HAVE_FFMPEG
     //设置ffmpeg日志输出  
     static int SetFFmpegLog();
@@ -71,17 +79,6 @@ private:
                              /*[in]*/  int nOutWidth,                /** 转换后的帧的宽度 */
                              /*[in]*/  int nOutHeight,               /** 转换后的帧的高度 */  
                              /*[in]*/  AVPixelFormat outPixelFormat);/** 转换后的帧的格式 */
-#endif
-
-public:
-    static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
-    static QImage ConverFormatToRGB888(const QVideoFrame &frame);
-
-#if HAVE_LIBYUV
-    static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);
-#endif
-#if HAVE_OPENCV
-    static QImage OpenCVConverFormatToRGB888(const QVideoFrame &frame);
 #endif
 
 signals:

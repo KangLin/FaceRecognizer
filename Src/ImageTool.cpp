@@ -32,10 +32,6 @@ CImageTool::CImageTool(QObject *parent) :
 {
 }
 
-CImageTool::~CImageTool()
-{
-}
-
 //设置日志的回调函数  
 void Log(void*, int, const char* fmt, va_list vl)
 {

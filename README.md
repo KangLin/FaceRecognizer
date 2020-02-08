@@ -41,9 +41,9 @@
 
 ### 支持平台
 
-  + [x] windows
+  + [x] windows (windows xp 及已后)
   + [x] linux
-  + [x] android
+  + [x] android (android 21 及已后)
   + [ ] mac
   + [ ] ios
   + [x] 其它嵌入式平台，可联系本人（QQ:16614119)或你自己移植:)
@@ -52,35 +52,35 @@
 
 ### [下载安装包](https://github.com/KangLin/FaceRecognizer/releases/latest)
 
-- linux
-    - [FaceRecognizer_v0.0.3.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/FaceRecognizer_v0.0.3.tar.gz)  
-      AppImage格式的执行程序，可直接运行在linux系统，详见：https://appimage.org/  
-      使用:    
-      1. 解压。复制FaceRecognizer_v0.0.3.tar.gz到安装目录，然后解压：
-
-                mkdir FaceRecognizer
-                cd FaceRecognizer
-                cp $DOWNLOAD/FaceRecognizer_v0.0.3.tar.gz .
-                tar xvfz FaceRecognizer_v0.0.3.tar.gz
-
-      2. 安装
-        
-                ./install1.sh install FaceRecognizer
-        
-      3. 如果需要，卸载
-        
-                ./install1.sh remove FaceRecognizer
-
-- ubuntu
-    - [facerecognizer_0.0.3_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/facerecognizer_0.0.3_amd64.deb)  
-  deb 安装包,可用于 Ubuntu
-  
 - windows
     - [FaceRecognizer-Setup-v0.0.3.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/FaceRecognizer-Setup-v0.0.3.exe)  
   Windows安装包，支持 Windows xp 以上系统 
 
 - android
     + [FaceRecognizer_armeabi-v7a_v0.0.3.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/FaceRecognizer_armeabi-v7a_v0.0.3.apk)
+
+- linux
+    - [FaceRecognizer_v0.0.3.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/FaceRecognizer_v0.0.3.tar.gz)  
+      AppImage格式的执行程序，可直接运行在linux系统，详见：https://appimage.org/  
+      使用:    
+      1. 解压。复制FaceRecognizer_v0.0.3.tar.gz到安装目录，然后解压：
+
+              mkdir FaceRecognizer
+              cd FaceRecognizer
+              cp $DOWNLOAD/FaceRecognizer_v0.0.3.tar.gz .
+              tar xvfz FaceRecognizer_v0.0.3.tar.gz
+
+      2. 安装
+        
+              ./install1.sh install FaceRecognizer
+        
+      3. 如果需要，卸载
+        
+              ./install1.sh remove FaceRecognizer
+
+- ubuntu
+    - [facerecognizer_0.0.3_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.3/facerecognizer_0.0.3_amd64.deb)  
+  deb 安装包,可用于 Ubuntu
 
 **注意:**本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
@@ -98,11 +98,12 @@
         + [MSYS2/MinGW](http://sourceforge.net/projects/msys2/)
   + [CMake](http://www.cmake.org/)
 + 依赖库
-  - [必选] Rabbit 公共库: https://github.com/KangLin/RabbitCommon
+  - [必选] 玉兔公共库: https://github.com/KangLin/RabbitCommon
   - [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
   - [可选] opencv: https://opencv.org/
+  - [可选] dlib: https://github.com/davisking/dlib
 
 ### CMake 配置参数
   - [必选] Qt5_DIR: qt 安装位置(指向Qt5Config.cmake的目录，默认为 安装目录/lib/cmake/Qt5)。
@@ -113,9 +114,11 @@
   - [可选] SeetaFace_DIR: SeetaFace 库安装位置(指向安装的SeetaFaceConfig.cmake目录,默认为 安装目录/lib/cmake)
   - [可选] YUV_DIR: libyuv 库安装位置
   - [可选] OpenCV_DIR: OpenCV 库安装位置
+  - [可选] dlib_DIR: dlib 库安装位置
 
 ### 各平台编译
 #### 下载源码
+
 - 下载本项目源码
 
     git clone --recursive https://github.com/KangLin/FaceRecognizer.git
@@ -132,49 +135,53 @@
 - 从源码编译或安装可选库
 
 #### linux 平台编译说明
-  - 编译
+- 编译
 
         cd FaceRecognizer
         mkdir build
         cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-                 -DCMAKE_BUILD_TYPE=Release \
-                 -DQt5_DIR= \
-                 -DRabbitCommon_DIR= \
-                 [其它可选 CMake 配置参数]
+        cmake .. -G"Unix Makefiles" \
+            -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQt5_DIR= \
+            -DRabbitCommon_DIR= \
+            [其它可选 CMake 配置参数]
         cmake --build . --config Release 
 
-  - 安装
+- 安装
+  + 安装库和程序
 
-        cmake --build . --config Release --target install 
+        cmake --build . --config Release --target install/strip
+    
+  + 仅安装程序
 
-  - 运行例子
-    + 把生成库的目录加入到变量 LD_LIBRARY_PATH 中
+        cmake --build . --config Release --target install-runtime
+
+- 运行例子
+  + 把生成库的目录加入到变量 LD_LIBRARY_PATH 中
  
-            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/bin
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/bin
 
-    + 拷贝模型文件到程序安装目录下的 model 目录下，也可以在程序运行后指定。
-      - SeetaFace 模型文件。模型文件位置详见：https://github.com/seetafaceengine/SeetaFace2
-
-                cd FaceRecognizer
-                cd build
-                mkdir model
-                cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
-
-    + 执行 bin 目录下的程序
+  + 拷贝模型文件到程序安装目录下的 model 目录下，也可以在程序运行后指定。
+    - SeetaFace 模型文件。模型文件位置详见：https://github.com/seetafaceengine/SeetaFace2
 
             cd FaceRecognizer
             cd build
-            cd bin
-            ./FaceRecognizer
+            mkdir model
+            cp fd_2_00.dat pd_2_00_pts5.dat pd_2_00_pts81.dat .
 
+  + 执行 bin 目录下的程序
+
+        cd FaceRecognizer
+        cd build
+        cd bin
+        ./FaceRecognizer
 
 #### windows 平台编译说明
   - 使用 cmake-gui.exe 工具编译。打开 cmake-gui.exe 配置
   - 命令行编译
     + 把 cmake 命令所在目录加入到环境变量 PATH 中
     + 从开始菜单打开 “VS2015开发人员命令提示”，进入命令行
-
       - 编译
 
             cd FaceRecognizer
@@ -188,8 +195,13 @@
             cmake --build . --config Release
 
       - 安装
-
-            cmake --build . --config Release --target install
+        + 安装库和程序
+        
+              cmake --build . --config Release --target install
+        
+        + 仅安装程序
+        
+              cmake --build . --config Release --target install-runtime
 
       - 运行例子
         + 拷贝模型文件到程序安装目录下的 model 目录下，也可以在程序运行后指定。
@@ -218,31 +230,45 @@
 
 + 编译
   - 主机是 linux
+    + 编译
 
-        cd FaceRecognizer
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-                 -DCMAKE_BUILD_TYPE=Release \
-                 -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-                 -DANDROID_ABI="armeabi-v7a with NEON" \
-                 -DANDROID_PLATFORM=android-24 \
-                 -DQt5_DIR= \
-                 -DRabbitCommon_DIR= \
-                 -DYUV_DIR= \
-                 [其它可选 CMake 配置参数]
-        cmake --build . --config Release
-        cmake --build . --config Release --target install
-	    cmake --build . --config Release --target APK
+          cd FaceRecognizer
+          mkdir build
+          cd build
+          cmake .. -G"Unix Makefiles" \
+                   -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
+                   -DCMAKE_BUILD_TYPE=MinSizeRel \
+                   -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+                   -DANDROID_ABI="armeabi-v7a with NEON" \
+                   -DANDROID_PLATFORM=android-24 \
+                   -DQt5_DIR= \
+                   -DRabbitCommon_DIR= \
+                   -DYUV_DIR= \
+                   [其它可选 CMake 配置参数]
+          cmake --build . --config MinSizeRel
+        
+    + 安装
+      - 安装库和程序
+      
+            cmake --build . --config MinSizeRel --target install/strip
+      
+      - 仅安装程序
+      
+            cmake --build . --config MinSizeRel --target install-runtime
+
+    + 生成 APK
+
+	      cmake --build . --config MinSizeRel --target APK
 
   - 主机是 windows
-    - windows 控制台
-    
+    + windows 控制台
+      - 编译
+      
             cd FaceRecognizer
             mkdir build
             cd build
             cmake .. -DCMAKE_INSTALL_PREFIX=%cd%\android-build ^
-                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ^
+                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ^
                      -DCMAKE_TOOLCHAIN_FILE=%ANDROID_NDK%/build/cmake/android.toolchain.cmake ^
                      -DCMAKE_MAKE_PROGRAM=%ANDROID_NDK%/prebuilt/windows-x86_64/bin/make.exe ^
                      -DANDROID_ABI=arm64-v8a ^
@@ -252,29 +278,40 @@
                      -DRabbitCommon_DIR= ^
                      -DYUV_DIR= ^
                      [其它可选 CMake 配置参数]
-            cmake --build . --config Release
-            cmake --build . --config Release --target install
-            cmake --build . --config Release --target APK
+            cmake --build . --config MinSizeRel
+
+      - 安装
+        + 安装库和程序
+          
+              cmake --build . --config MinSizeRel --target install/strip
+          
+        + 仅安装程序
+          
+              cmake --build . --config MinSizeRel --target install-runtime
             
-    - msys2 或 cygwin
+        + 生成 APK
+        
+              cmake --build . --config MinSizeRel --target APK
+
+    + msys2 或 cygwin
     
-            cd FaceRecognizer
-            mkdir build
-            cd build
-            cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
-                     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-                     -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe \
-                     -DANDROID_ABI=arm64-v8a \
-                     -DANDROID_ARM_NEON=ON \
-                     -DANDROID_PLATFORM=android-24 \
-                     -DQt5_DIR= \
-                     -DRabbitCommon_DIR= \
-                     -DYUV_DIR= \
-                     [其它可选 CMake 配置参数]
-            cmake --build . --config Release
-            cmake --build . --config Release --target install
-            cmake --build . --config Release --target APK
+          cd FaceRecognizer
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
+                   -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel \
+                   -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+                   -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe \
+                   -DANDROID_ABI=arm64-v8a \
+                   -DANDROID_ARM_NEON=ON \
+                   -DANDROID_PLATFORM=android-24 \
+                   -DQt5_DIR= \
+                   -DRabbitCommon_DIR= \
+                   -DYUV_DIR= \
+                   [其它可选 CMake 配置参数]
+          cmake --build . --config MinSizeRel
+          cmake --build . --config MinSizeRel --target install/strip
+          cmake --build . --config MinSizeRel --target APK
 
   - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：

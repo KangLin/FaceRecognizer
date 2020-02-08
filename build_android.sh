@@ -57,14 +57,14 @@ fi
 cd build
 
 cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI="armeabi-v7a with NEON" \
     -DANDROID_PLATFORM=android-18 ${PARA}
 
-cmake --build . --config Release -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
+cmake --build . --config MinSizeRel -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
 
-cmake --build . --config Release --target install # -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
-cmake --build . --config Release --target APK 
+cmake --build . --config MinSizeRel --target install-runtime # -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
+cmake --build . --config MinSizeRel --target APK 
 
 cd ..

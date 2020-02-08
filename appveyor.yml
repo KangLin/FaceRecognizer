@@ -1,5 +1,5 @@
 #TODO: Change version
-version: 'v0..{build}'
+version: 'v0.0..{build}'
 
 environment:
   matrix: 
@@ -161,6 +161,7 @@ deploy:
     #artifact: FaceRecognizer$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
     #draft: true
     #prerelease: true
+    force_update: true
     on:
       BUILD_TARGERT: windows_msvc
       TOOLCHAIN_VERSION: 14
