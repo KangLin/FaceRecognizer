@@ -15,7 +15,7 @@ CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
 {
     ui->setupUi(this);
     SetStatusInformation(tr("Please stand in front of the camera"));
-    m_pFace = CFactory::Instance();
+    m_pFace = CFactory::Instance()->GetFace();
     if(!m_pFace)
     {
         throw std::runtime_error("CFrmRegisterVideo consturct allocte memory fail");
@@ -57,7 +57,7 @@ int CFrmRecognizerVideo::SetStatusInformation(const QString &szInfo, int nRet, S
 
 void CFrmRecognizerVideo::slotDisplay(const QImage &image)
 {
-    if(isHidden() || !m_pFace)
+    if(isHidden() || !CFactory::Instance()->bIsValid())
     {
         LOG_MODEL_ERROR("CFrmRecognizerVideo", "isHidden() || !m_pFace");
         return;
@@ -70,7 +70,7 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     painter.setPen(pen);
     PERFORMANCE(CFrmRecognizerVideo)
     QVector<CTracker::strFace> faces;
-    m_pFace->GetTracker()->Track(image, faces);
+    CFactory::Instance()->GetTracker()->Track(image, faces);
     PERFORMANCE_ADD_TIME(CFrmRecognizerVideo,
                          "Track " + QString::number(faces.size()) + " faces")
     bool bRecognize = false;

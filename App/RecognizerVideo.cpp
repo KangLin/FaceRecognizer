@@ -13,7 +13,7 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
 {
     if(image.isNull() || faces.isEmpty()) return;
     
-    CFace *pFace = CFactory::Instance();
+    CFace *pFace = CFactory::Instance()->GetFace();
     if(!pFace) return;
 
     PERFORMANCE(CRecognizerVideo)

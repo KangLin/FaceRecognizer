@@ -10,8 +10,6 @@
 #include "RecognizerSeeta.h"
 #include "FaceToolsSeeta.h"
 
-#include <QSharedPointer>
-
 class CFaceSeeta : public CFace
 {
     Q_OBJECT

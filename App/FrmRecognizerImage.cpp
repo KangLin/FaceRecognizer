@@ -32,7 +32,7 @@ CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     model->setHorizontalHeaderItem(2, new QStandardItem(tr("name")));
     */
     
-    m_pFace = CFactory::Instance();
+    m_pFace = CFactory::Instance()->GetFace();
     if(!m_pFace)
         throw std::runtime_error("CFrmRecognizerImage consturct allocte memory fail");
     
@@ -134,7 +134,7 @@ int CFrmRecognizerImage::MarkFace(QImage &image, int nSelect)
 
 int CFrmRecognizerImage::RecognizeFace(QImage &image)
 {
-    if(!m_pFace) return -1;
+    if(!CFactory::Instance()->bIsValid()) return -1;
 
     m_Info.clear();
     
@@ -143,15 +143,15 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     pModel->removeRows(0, pModel->rowCount());
     
     QVector<QRect> faces;
-    m_pFace->GetDector()->Detect(image, faces);
+    CFactory::Instance()->GetDector()->Detect(image, faces);
     foreach (auto f, faces) {
         FACE_INFO info;
         info.face = f;
-        m_pFace->GetLandmarker()->Mark(image, f, info.points);
-        info.index = m_pFace->GetRecognizer()->Query(image, info.points);
+        CFactory::Instance()->GetLandmarker()->Mark(image, f, info.points);
+        info.index = CFactory::Instance()->GetRecognizer()->Query(image, info.points);
         if(info.index < 0)
             continue;
-        m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(info.index, &info.data);
+        CFactory::Instance()->GetDatabase()->GetTableRegister()->GetRegisterInfo(info.index, &info.data);
         m_Info.push_back(info);
 
         QList<QStandardItem*> items;
@@ -181,10 +181,11 @@ void CFrmRecognizerImage::on_tvInformation_clicked(const QModelIndex &index)
 {
     if(!index.isValid())
         return;
+    if(!CFactory::Instance()->bIsValid()) return;
     
     ui->tvInformation->selectRow(index.row());
     ui->frmOldImage->slotDisplay(
-                        QImage(m_pFace->GetRecognizer()->GetRegisterImage(
+                        QImage(CFactory::Instance()->GetRecognizer()->GetRegisterImage(
                                              m_Info[index.row()].index)));
     MarkFace(m_Image, index.row());
 }

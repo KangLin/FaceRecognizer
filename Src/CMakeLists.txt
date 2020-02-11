@@ -59,6 +59,17 @@ if(USE_OPENCV)
             endif()
         endforeach()
         
+        set(SOURCES_FILES
+            ${SOURCES_FILES}
+            OpenCV/FaceOpenCV.cpp
+            OpenCV/DetectorOpenCV.cpp
+            )
+        set(HEADER_FILES
+            ${HEADER_FILES}
+            OpenCV/FaceOpenCV.h
+            OpenCV/DetectorOpenCV.h
+            )
+        
     endif()
 endif(USE_OPENCV)
 
@@ -127,17 +138,9 @@ set(SOURCES_FILES
     database/TableRegister.cpp
     )
 
-set(HEADER_FILES
-    ${HEADER_FILES}
-    CameraQtCaptureVideoFrame.h
+set(INSTALLHEADER_FILES
     ImageTool.h
-    Log.h
-    ParameterFactory.h
-    Parameter.h
-    ParameterDetector.h
-    ParameterLandmark.h
-    ParameterRecognizer.h
-    ParameterFaceTools.h
+    CameraQtCaptureVideoFrame.h
     Factory.h
     Face.h
     Detector.h
@@ -145,10 +148,22 @@ set(HEADER_FILES
     Landmarker.h
     Recognizer.h
     FaceTools.h
+    Performance.h
+    ParameterFactory.h
+    Parameter.h
+    ParameterDetector.h
+    ParameterLandmark.h
+    ParameterRecognizer.h
+    ParameterFaceTools.h
+    )
+
+set(HEADER_FILES
+    ${HEADER_FILES}
+    ${INSTALLHEADER_FILES}
+    Log.h
     database/Database.h
     database/DataRegister.h
     database/TableRegister.h
-    Performance.h
     )
 
 #翻译
