@@ -79,6 +79,11 @@ int CDetectorSeeta::UpdateParameter(QString &szErr)
     int id = 0;
     
     QString szFile = m_pParameter->GetModelPath() + QDir::separator() + "fd_2_00.dat";
+    if(!QFile::exists(szFile))
+    {
+        szFile = m_pParameter->GetModelPath() + QDir::separator()
+                + "Seeta" + QDir::separator() + "fd_2_00.dat";
+    }
     try {
         seeta::ModelSetting model(szFile.toStdString(),
                                   device,

@@ -41,7 +41,15 @@ int CLandmarkerSeeta::UpdateParameter(QString &szErr)
         szFile += "pd_2_00_pts81.dat";
     else 
         szFile += "pd_2_00_pts5.dat";
-    
+    if(!QFile::exists(szFile))
+    {
+        szFile = m_pParameter->GetModelPath() + QDir::separator()
+                + "Seeta" + QDir::separator();
+            if(m_pParameter->GetPoints() == 81)
+                szFile += "pd_2_00_pts81.dat";
+            else 
+                szFile += "pd_2_00_pts5.dat";
+    }
     try {
         seeta::ModelSetting model(szFile.toStdString(),
                                   device,

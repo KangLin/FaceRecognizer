@@ -20,6 +20,12 @@ public:
     virtual ~CDetector();
 
     virtual int SetParameter(CParameterDetector *pPara);
+    /**
+     * @brief Detect
+     * @param image:
+     * @param faces
+     * @return 
+     */
     virtual int Detect(const QImage &image,  QVector<QRect> &faces) = 0;
 
 public Q_SLOTS:

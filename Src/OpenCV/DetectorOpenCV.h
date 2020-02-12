@@ -2,6 +2,8 @@
 #define DETECTOROPENCV_H
 
 #include "Detector.h"
+#include <opencv2/opencv.hpp>
+#include <opencv2/dnn.hpp>
 
 class CDetectorOpenCV : public CDetector
 {
@@ -13,8 +15,9 @@ public:
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
 private:
-    virtual int UpdateParameter(QString &szErr);    
-
+    virtual int UpdateParameter(QString &szErr);
+    bool m_bInit;
+    cv::dnn::Net m_Net;
 };
 
 #endif // DETECTOROPENCV_H

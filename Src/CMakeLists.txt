@@ -45,7 +45,7 @@ if(USE_OPENCV)
         set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
         set(LIBS ${LIBS} ${OpenCV_LIBS})
         set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
-    
+        message("OpenCV_LIBS:${OpenCV_LIBS}")
         #android 编译出来的是静态库
         foreach(opencv_component ${OpenCV_LIBS})
             if(ANDROID)
