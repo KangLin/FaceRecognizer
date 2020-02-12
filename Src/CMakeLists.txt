@@ -57,6 +57,7 @@ if(USE_OPENCV)
                     DESTINATION "${CMAKE_INSTALL_BINDIR}"
                     COMPONENT Runtime)
             endif()
+            
         endforeach()
         
         set(SOURCES_FILES

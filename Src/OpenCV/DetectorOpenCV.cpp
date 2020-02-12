@@ -19,6 +19,21 @@ CDetectorOpenCV::~CDetectorOpenCV()
 
 int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
 {
+#ifdef HAVE_OPENCV_DNN
+    return DetectDNN(image, faces);
+#endif
+}
+
+int CDetectorOpenCV::UpdateParameter(QString &szErr)
+{
+#ifdef HAVE_OPENCV_DNN
+    return UpdateParameterDNN(szErr);
+#endif
+}
+
+#ifdef HAVE_OPENCV_DNN
+int CDetectorOpenCV::DetectDNN(const QImage &image, QVector<QRect> &faces)
+{
     int nRet = 0;
     if(image.isNull()) return -1;
     if(!m_bInit) return -2;
@@ -36,30 +51,38 @@ int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
                              + QString::number(image.height()))
     }
     // Set the size of image and meanval
-    int inWidth = 300;//img.width();
-    int inHeight = 300;//img.height();
+    int inWidth = 300;
+    int inHeight = 300;
     double inScaleFactor = 1.0;
     cv::Scalar meanVal(104.0, 177.0, 123.0);
     float confidenceThreshold = 0.7f; 
     
     // Load image
-	cv::Mat frame(img.width(), img.height(), CV_8UC3, img.bits());
+	cv::Mat frame(img.height(), img.width(), CV_8UC3, img.bits());
     
     // Prepare blob
     cv::Mat inputBlob = cv::dnn::blobFromImage(frame, inScaleFactor,
               cv::Size(inWidth, inHeight), meanVal, false, false);
     m_Net.setInput(inputBlob, "data");	// set the network input
-    cv::Mat detection = m_Net.forward("detection_out");	// compute output
+    
+    // Compute output，这是一个4D数，
+    // rows and cols can only hold 2 dimensions,
+    // so they are not used here, and set to -1
+    cv::Mat detection = m_Net.forward("detection_out");
+    
     //LOG_MODEL_DEBUG("CDetectorOpenCV", m_Net.dump().c_str());
+    
+    //101*7矩阵
     cv::Mat detectionMat(detection.size[2], detection.size[3],
                          CV_32F, detection.ptr<float>());
 
     for (int i = 0; i < detectionMat.rows; i++)  
     {  
-        float confidence = detectionMat.at<float>(i, 2);  
+        float confidence = detectionMat.at<float>(i, 2);  //第二列存放可信度
         
         if (confidence > confidenceThreshold)  
-        {  
+        {
+            //存放人脸所在的图像中的位置信息
             int xLeftBottom = static_cast<int>(detectionMat.at<float>(i, 3) * frame.cols);  
             int yLeftBottom = static_cast<int>(detectionMat.at<float>(i, 4) * frame.rows);  
             int xRightTop = static_cast<int>(detectionMat.at<float>(i, 5) * frame.cols);  
@@ -75,7 +98,7 @@ int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
     return nRet;
 }
 
-int CDetectorOpenCV::UpdateParameter(QString &szErr)
+int CDetectorOpenCV::UpdateParameterDNN(QString &szErr)
 {
     int nRet = 0;
     
@@ -88,15 +111,18 @@ int CDetectorOpenCV::UpdateParameter(QString &szErr)
     
     m_bInit = false;
     
-    QString szPath = "C:\\Users\\k\\Downloads\\opencv_dnn_model"; //m_pParameter->GetModelPath();
+    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
+    QDir d;
+    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    
     QString modelCaffDesc = szPath + QDir::separator() + "deploy.prototxt";
     QString modelCaffBinary = szPath + QDir::separator() + "res10_300x300_ssd_iter_140000_fp16.caffemodel";
 
     QString modelTFBinary = szPath + QDir::separator() + "opencv_face_detector_uint8.pb";
     QString modelTFDesc = szPath + QDir::separator() + "opencv_face_detector.pbtxt";
     try{
-        m_Net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
-        m_Net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+        //m_Net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
+        //m_Net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
         
         //*
         m_Net = cv::dnn::readNetFromTensorflow(modelTFBinary.toStdString(),
@@ -126,3 +152,4 @@ int CDetectorOpenCV::UpdateParameter(QString &szErr)
     m_bInit = true;
     return nRet;
 }
+#endif //HAVE_OPENCV_DNN

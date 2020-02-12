@@ -42,12 +42,11 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
     int id = 0;
     
     try {
-        QString szFile = m_pParameter->GetModelPath() + QDir::separator() + "fr_2_10.dat";
-        if(!QFile::exists(szFile))
-        {
-            szFile = m_pParameter->GetModelPath() + QDir::separator()
-                    + "Seeta" + QDir::separator() + "fr_2_10.dat";
-        }
+        QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Seeta";
+        QDir d;
+        if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+        QString szFile = szPath + QDir::separator() + "fr_2_10.dat";
+        
         seeta::ModelSetting model(szFile.toStdString(),
                                   device,
                                   id);

@@ -2,7 +2,6 @@
 #define FACEOPENCV_H
 
 #include "Face.h"
-#include "DetectorOpenCV.h"
 
 class CFaceOpenCV : public CFace
 {
@@ -18,7 +17,7 @@ public:
     virtual CFaceTools* GetFaceTools();
     
 private:
-    CDetectorOpenCV* m_pDetector;
+    CDetector* m_pDetector;
 };
 
 #endif // FACEOPENCV_H

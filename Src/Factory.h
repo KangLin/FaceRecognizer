@@ -15,22 +15,22 @@ public:
 
     static CFactory* Instance();
     
-    enum FACE_TYPE{
+    enum LIB_TYPE{
         OPENCV,
         SEETA,
         DLIB,
         AUTO
     };
 
-    virtual CFace* GetFace(FACE_TYPE type = AUTO);
-    virtual CDetector* GetDector(FACE_TYPE type = AUTO);
-    virtual CTracker* GetTracker(FACE_TYPE type = AUTO);
-    virtual CLandmarker* GetLandmarker(FACE_TYPE type = AUTO);
-    virtual CRecognizer* GetRecognizer(FACE_TYPE type = AUTO);
-    virtual CFaceTools* GetFaceTools(FACE_TYPE type = AUTO);
-    virtual CDatabase* GetDatabase(FACE_TYPE type = AUTO);
+    virtual CFace* GetFace(LIB_TYPE type = AUTO);
+    virtual CDetector* GetDector(LIB_TYPE type = AUTO);
+    virtual CTracker* GetTracker(LIB_TYPE type = AUTO);
+    virtual CLandmarker* GetLandmarker(LIB_TYPE type = AUTO);
+    virtual CRecognizer* GetRecognizer(LIB_TYPE type = AUTO);
+    virtual CFaceTools* GetFaceTools(LIB_TYPE type = AUTO);
+    virtual CDatabase* GetDatabase(LIB_TYPE type = AUTO);
     
-    bool bIsValid(FACE_TYPE type = AUTO);
+    bool bIsValid(LIB_TYPE type = AUTO);
     
 private:
     CFace* m_Face[AUTO];

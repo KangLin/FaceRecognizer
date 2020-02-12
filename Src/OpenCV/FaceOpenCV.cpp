@@ -1,5 +1,6 @@
 #include "FaceOpenCV.h"
 #include "ParameterFactory.h"
+#include "DetectorOpenCV.h"
 
 CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent)
 {

@@ -36,7 +36,7 @@ CFactory* CFactory::Instance()
     return p;
 }
 
-bool CFactory::bIsValid(FACE_TYPE type)
+bool CFactory::bIsValid(LIB_TYPE type)
 {
     if(!GetFace(type))
     {
@@ -76,7 +76,7 @@ bool CFactory::bIsValid(FACE_TYPE type)
     return true;
 }
 
-CFace* CFactory::GetFace(FACE_TYPE type)
+CFace* CFactory::GetFace(LIB_TYPE type)
 {
     if(AUTO == type)
         for (int i = 0; i < AUTO; i++) {
@@ -86,7 +86,7 @@ CFace* CFactory::GetFace(FACE_TYPE type)
     return m_Face[type];
 }
 
-CDetector* CFactory::GetDector(FACE_TYPE type)
+CDetector* CFactory::GetDector(LIB_TYPE type)
 {
     CDetector* p = GetFace(type)->GetDector();
     if(p) return p;
@@ -97,7 +97,7 @@ CDetector* CFactory::GetDector(FACE_TYPE type)
     return nullptr;
 }
 
-CTracker* CFactory::GetTracker(FACE_TYPE type)
+CTracker* CFactory::GetTracker(LIB_TYPE type)
 {
     CTracker* p = GetFace(type)->GetTracker();
     if(p) return p;
@@ -108,7 +108,7 @@ CTracker* CFactory::GetTracker(FACE_TYPE type)
     return nullptr;
 }
 
-CLandmarker* CFactory::GetLandmarker(FACE_TYPE type)
+CLandmarker* CFactory::GetLandmarker(LIB_TYPE type)
 {
     CLandmarker* p = GetFace(type)->GetLandmarker();
     if(p) return p;
@@ -120,7 +120,7 @@ CLandmarker* CFactory::GetLandmarker(FACE_TYPE type)
     return nullptr;
 }
 
-CRecognizer* CFactory::GetRecognizer(FACE_TYPE type)
+CRecognizer* CFactory::GetRecognizer(LIB_TYPE type)
 {
     CRecognizer* p = GetFace(type)->GetRecognizer();
     if(p) return p;
@@ -132,7 +132,7 @@ CRecognizer* CFactory::GetRecognizer(FACE_TYPE type)
     return nullptr;
 }
 
-CFaceTools* CFactory::GetFaceTools(FACE_TYPE type)
+CFaceTools* CFactory::GetFaceTools(LIB_TYPE type)
 {
     CFaceTools* p = GetFace(type)->GetFaceTools();
     if(p) return p;
@@ -144,7 +144,7 @@ CFaceTools* CFactory::GetFaceTools(FACE_TYPE type)
     return nullptr;
 }
 
-CDatabase* CFactory::GetDatabase(FACE_TYPE type)
+CDatabase* CFactory::GetDatabase(LIB_TYPE type)
 {
     CDatabase* p = GetFace(type)->GetDatabase();
     if(p) return p;
