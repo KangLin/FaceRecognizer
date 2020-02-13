@@ -5,7 +5,7 @@
 CParameter::CParameter(QObject *parent) : QObject(parent),
     m_Device(CPU)
 {
-    SetModelPath(RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
+    SetModelPath(RabbitCommon::CDir::Instance()->GetDirData(true)
             + QDir::separator() + "model");
 }
 

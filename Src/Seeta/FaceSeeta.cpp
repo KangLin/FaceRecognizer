@@ -1,7 +1,14 @@
 #include "FaceSeeta.h"
-#include <QDir>
+
 #include "Log.h"
 #include "ParameterFactory.h"
+#include "DetectorSeeta.h"
+#include "TrackerSeeta.h"
+#include "LandmarkerSeeta.h"
+#include "RecognizerSeeta.h"
+#include "FaceToolsSeeta.h"
+
+#include <QDir>
 
 CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
 {
@@ -11,8 +18,8 @@ CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
     m_pDetector->SetParameter(pFactory->GetParameterDetector());
     m_pTracker = new CTrackerSeeta();
     m_pTracker->SetParameter(pFactory->GetParameterDetector());
-    m_pLandmark = new CLandmarkerSeeta();
-    m_pLandmark->SetParameter(pFactory->GetParameterLandmark());
+    m_pLandmarker = new CLandmarkerSeeta();
+    m_pLandmarker->SetParameter(pFactory->GetParameterLandmark());
     m_pRecognizer = new CRecognizerSeeta();
     m_pRecognizer->SetParameter(pFactory->GetParameterRecognizer());
     m_pFaceTools = new CFaceToolsSeeta();
@@ -25,8 +32,8 @@ CFaceSeeta::~CFaceSeeta()
         delete m_pDetector;
     if(m_pTracker)
         delete m_pTracker;
-    if(m_pLandmark)
-        delete m_pLandmark;
+    if(m_pLandmarker)
+        delete m_pLandmarker;
     if(m_pRecognizer)
         delete m_pRecognizer;
     if(m_pFaceTools) delete m_pFaceTools;
@@ -39,7 +46,7 @@ CDetector* CFaceSeeta::GetDector()
 
 CLandmarker* CFaceSeeta::GetLandmarker()
 {
-    return m_pLandmark;
+    return m_pLandmarker;
 }
 
 CRecognizer* CFaceSeeta::GetRecognizer()

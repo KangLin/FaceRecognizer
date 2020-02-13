@@ -8,6 +8,8 @@
 //利用OpenCV和深度学习实现人脸检测:https://blog.csdn.net/amusi1994/article/details/79645403
 //OpenCV3.3深度学习模块(DNN)应用-图像分类:https://blog.csdn.net/maweifei/article/details/78150233
 // opencv基于DNN的人脸检测:    https://blog.csdn.net/qq_30815237/article/details/87914775
+// OpenCV4.0 DNN-googleNet: https://blog.csdn.net/u011028771/article/details/84901361
+// GPU编程--OpenCL基本概念: https://blog.csdn.net/w1992wishes/article/details/80426476
 CDetectorOpenCV::CDetectorOpenCV(QObject *parent)
     : CDetector(parent),
       m_bInit(false)
@@ -114,7 +116,8 @@ int CDetectorOpenCV::UpdateParameterDNN(QString &szErr)
     QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
     QDir d;
     if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
-    
+    LOG_MODEL_ERROR("CDetectorOpenCV", "The model files path: %s",
+                    szPath.toStdString().c_str());
     QString modelCaffDesc = szPath + QDir::separator() + "deploy.prototxt";
     QString modelCaffBinary = szPath + QDir::separator() + "res10_300x300_ssd_iter_140000_fp16.caffemodel";
 
@@ -125,11 +128,13 @@ int CDetectorOpenCV::UpdateParameterDNN(QString &szErr)
         //m_Net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
         
         //*
-        m_Net = cv::dnn::readNetFromTensorflow(modelTFBinary.toStdString(),
-                                               modelTFDesc.toStdString());//*/
-        
-        /*
-        m_Net = cv::dnn::readNetFromCaffe(modelCaffDesc.toStdString(),
+        if(QFile::exists(modelTFDesc) && QFile::exists(modelTFBinary))
+            m_Net = cv::dnn::readNetFromTensorflow(modelTFBinary.toStdString(),
+                                               modelTFDesc.toStdString());
+        else //*/
+            //*
+            if(QFile::exists(modelCaffDesc) && QFile::exists(modelCaffBinary))
+            m_Net = cv::dnn::readNetFromCaffe(modelCaffDesc.toStdString(),
                                           modelCaffBinary.toStdString());//*/
         if(m_Net.empty())
         {

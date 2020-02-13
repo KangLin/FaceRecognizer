@@ -4,11 +4,6 @@
 #pragma once
 
 #include "Face.h"
-#include "DetectorSeeta.h"
-#include "TrackerSeeta.h"
-#include "LandmarkerSeeta.h"
-#include "RecognizerSeeta.h"
-#include "FaceToolsSeeta.h"
 
 class CFaceSeeta : public CFace
 {
@@ -24,11 +19,11 @@ public:
     virtual CFaceTools* GetFaceTools();
     
 private:
-    CDetectorSeeta* m_pDetector;
-    CTrackerSeeta* m_pTracker;
-    CLandmarkerSeeta* m_pLandmark;
-    CRecognizerSeeta* m_pRecognizer;
-    CFaceToolsSeeta* m_pFaceTools;
+    CDetector* m_pDetector;
+    CTracker* m_pTracker;
+    CLandmarker* m_pLandmarker;
+    CRecognizer* m_pRecognizer;
+    CFaceTools* m_pFaceTools;
 };
 
 #endif // CFACESEETA_H_KL_2019_10_21

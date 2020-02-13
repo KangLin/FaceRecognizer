@@ -10,6 +10,13 @@ endif()
 
 project(FaceRecognizer)
 
+# Set install data prefix
+if(ANDROID)
+    set(INSTALL_DATA_PREFIX assets/data)
+else()
+    set(INSTALL_DATA_PREFIX data)
+endif()
+    
 OPTION(HAVE_PERFORMANCE "Set to ON to build performance)." OFF)
 if(HAVE_PERFORMANCE)
     set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
@@ -45,8 +52,8 @@ if(USE_OPENCV)
         set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
         set(LIBS ${LIBS} ${OpenCV_LIBS})
         set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
-        message("OpenCV_LIBS:${OpenCV_LIBS}")
-        #android 编译出来的是静态库
+        #message("OpenCV_LIBS:${OpenCV_LIBS}")
+
         foreach(opencv_component ${OpenCV_LIBS})
             if(ANDROID)
                 INSTALL(FILES $<TARGET_FILE:${opencv_component}>
@@ -71,6 +78,21 @@ if(USE_OPENCV)
             OpenCV/DetectorOpenCV.h
             )
         
+        # Install model files
+        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
+            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/deploy.prototxt
+                    ${CMAKE_SOURCE_DIR}/model/Opencv/res10_300x300_ssd_iter_140000_fp16.caffemodel
+                    ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector.pbtxt
+                    ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector_uint8.pb
+                DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
+                COMPONENT Runtime)
+        else()
+            message(AUTHOR_WARNING "Please download Opencv from"
+                " https://github.com/opencv/opencv , then download model files from"
+                " [opencv source directory]/samples/dnn/face_detector "
+                " execute download_weights.py to downlaod model files and copy"
+                " there to ${CMAKE_SOURCE_DIR}/model/Opencv")
+        endif()
     endif()
 endif(USE_OPENCV)
 
@@ -114,6 +136,19 @@ if(SeetaFace_FOUND)
         ${SOURCE_UI_FILES}
         )
     
+    # Install model files
+    if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
+                ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
+                ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
+                ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
+            DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
+            COMPONENT Runtime)
+    else()
+        message(AUTHOR_WARNING "Please download Seeta model files from"
+            " https://github.com/KangLin/SeetaFace2/releases/tag/model"
+            " to ${CMAKE_SOURCE_DIR}/model/Seeta")
+    endif()
 endif()
 
 set(SOURCES_FILES
@@ -225,27 +260,8 @@ if(ANDROID)
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            )
-    # Install sql file
-    INSTALL(FILES ../Resource/db/database.sql DESTINATION assets/data/db
-        COMPONENT Runtime)
-    # Install model files
-    if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
-            DESTINATION assets/model/Seeta
-            COMPONENT Runtime)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
-            DESTINATION assets/model/Seeta
-            COMPONENT Runtime)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
-            DESTINATION assets/model/Seeta
-            COMPONENT Runtime)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
-            DESTINATION assets/model/Seeta
-            COMPONENT Runtime)
-    endif()
+            )    
 else()
-    
     # Install target
     if(WIN32)
         INSTALL(TARGETS ${PROJECT_NAME}
@@ -270,23 +286,6 @@ else()
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             )
     endif()
-    # Install sql file
-    INSTALL(FILES ../Resource/db/database.sql DESTINATION data/db)
-    # Install model files
-    if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
-            DESTINATION model/Seeta
-            COMPONENT Runtime)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
-            DESTINATION model/Seeta
-            COMPONENT Runtime)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
-            DESTINATION model/Seeta
-            COMPONENT Runtime)
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
-            DESTINATION model/Seeta
-            COMPONENT Runtime)
-    endif()
 endif()
 
 export(TARGETS ${PROJECT_NAME}
@@ -301,6 +300,11 @@ write_basic_package_version_file(
     VERSION ${BUILD_VERSION}
     COMPATIBILITY AnyNewerVersion)
 install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+
+# Install sql file
+INSTALL(FILES ../Resource/db/database.sql
+    DESTINATION ${INSTALL_DATA_PREFIX}/db
+    COMPONENT Runtime)
 
 IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
     IF(CMAKE_BUILD_TYPE MATCHES Release AND MINGW)

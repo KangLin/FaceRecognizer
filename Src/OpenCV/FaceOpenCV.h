@@ -18,6 +18,10 @@ public:
     
 private:
     CDetector* m_pDetector;
+    CTracker* m_pTracker;
+    CLandmarker* m_pLandmarker;
+    CRecognizer* m_pRecognizer;
+    CFaceTools* m_pFaceTools;
 };
 
 #endif // FACEOPENCV_H
