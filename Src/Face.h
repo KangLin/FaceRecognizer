@@ -22,13 +22,20 @@ public:
     
     bool IsValid();
 
-    virtual CDetector* GetDector() = 0;
-    virtual CTracker* GetTracker() = 0;
-    virtual CLandmarker* GetLandmarker() = 0;
-    virtual CRecognizer* GetRecognizer() = 0;
-    virtual CFaceTools* GetFaceTools() = 0;
+    virtual CDetector* GetDector();
+    virtual CTracker* GetTracker();
+    virtual CLandmarker* GetLandmarker();
+    virtual CRecognizer* GetRecognizer();
+    virtual CFaceTools* GetFaceTools();
     virtual CDatabase* GetDatabase();
     
+protected:
+    CDetector* m_pDetector;
+    CTracker* m_pTracker;
+    CLandmarker* m_pLandmarker;
+    CRecognizer* m_pRecognizer;
+    CFaceTools* m_pFaceTools;
+
 private:
     CDatabase* m_pDatabase;
 };

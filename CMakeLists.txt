@@ -110,6 +110,7 @@ include(GenerateExportHeader)
 include(CheckIncludeFile)
 include(CheckIncludeFileCXX)
 include(CheckFunctionExists)
+include(${CMAKE_SOURCE_DIR}/cmake/Download.cmake)
 
 #CHECK_INCLUDE_FILE_CXX("string" HAVE_STRING_H)
 #check_include_file("math.h" HAVE_MATH_H)

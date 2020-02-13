@@ -1,13 +1,27 @@
 #include "Face.h"
 #include "Log.h"
 
-CFace::CFace(QObject *parent) : QObject(parent)
+CFace::CFace(QObject *parent) : QObject(parent),
+    m_pDetector(nullptr),
+    m_pTracker(nullptr),
+    m_pLandmarker(nullptr),
+    m_pRecognizer(nullptr),
+    m_pFaceTools(nullptr)
 {
     m_pDatabase = new CDatabase();
 }
 
 CFace::~CFace()
 {
+    if(m_pDetector)
+        delete m_pDetector;
+    if(m_pTracker)
+        delete m_pTracker;
+    if(m_pLandmarker)
+        delete m_pLandmarker;
+    if(m_pRecognizer)
+        delete m_pRecognizer;
+    if(m_pFaceTools) delete m_pFaceTools;
     if(m_pDatabase)
         delete m_pDatabase;
 }
@@ -45,6 +59,31 @@ bool CFace::IsValid()
         return false;
     }
     return true;
+}
+
+CDetector* CFace::GetDector()
+{
+    return m_pDetector;
+}
+
+CLandmarker* CFace::GetLandmarker()
+{
+    return m_pLandmarker;
+}
+
+CRecognizer* CFace::GetRecognizer()
+{
+    return m_pRecognizer;
+}
+
+CTracker* CFace::GetTracker()
+{
+    return m_pTracker;
+}
+
+CFaceTools* CFace::GetFaceTools()
+{
+    return m_pFaceTools;
 }
 
 CDatabase* CFace::GetDatabase()

@@ -27,39 +27,4 @@ CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
 }
 
 CFaceSeeta::~CFaceSeeta()
-{
-    if(m_pDetector)
-        delete m_pDetector;
-    if(m_pTracker)
-        delete m_pTracker;
-    if(m_pLandmarker)
-        delete m_pLandmarker;
-    if(m_pRecognizer)
-        delete m_pRecognizer;
-    if(m_pFaceTools) delete m_pFaceTools;
-}
-
-CDetector* CFaceSeeta::GetDector()
-{
-    return m_pDetector;
-}
-
-CLandmarker* CFaceSeeta::GetLandmarker()
-{
-    return m_pLandmarker;
-}
-
-CRecognizer* CFaceSeeta::GetRecognizer()
-{
-    return m_pRecognizer;
-}
-
-CTracker* CFaceSeeta::GetTracker()
-{
-    return m_pTracker;
-}
-
-CFaceTools* CFaceSeeta::GetFaceTools()
-{
-    return m_pFaceTools;
-}
+{}

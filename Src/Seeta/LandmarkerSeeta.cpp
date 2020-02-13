@@ -11,8 +11,7 @@ CLandmarkerSeeta::CLandmarkerSeeta(QObject *parent)
 }
 
 CLandmarkerSeeta::~CLandmarkerSeeta()
-{
-}
+{}
 
 int CLandmarkerSeeta::UpdateParameter(QString &szErr)
 {

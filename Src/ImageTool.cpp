@@ -52,19 +52,21 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_YUYV:
     case QVideoFrame::Format_UYVY:
 
-#if HAVE_OPENCV
+#ifdef HAVE_OPENCV
         return OpenCVConverFormatToRGB888(frame);
-#elif HAVE_FFMPEG
+#endif
+#ifdef HAVE_FFMPEG
         return FFMpegConverFormatToRGB888(frame);
-#elif HAVE_LIBYUV
+#endif
+#ifdef HAVE_LIBYUV
         return  LibyuvConverFormatToRGB888(frame);
-#else
+#endif
         if(QVideoFrame::Format_YUV420P != frame.pixelFormat())
         {
             LOG_MODEL_WARNING("CImageTool", "Please use one of opencv, ffmpeg, libyuv");
         }
         break;
-#endif
+
     default:
         break;
     }

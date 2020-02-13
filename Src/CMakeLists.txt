@@ -52,7 +52,7 @@ if(USE_OPENCV)
         set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
         set(LIBS ${LIBS} ${OpenCV_LIBS})
         set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
-        #message("OpenCV_LIBS:${OpenCV_LIBS}")
+        message("OpenCV_LIBS:${OpenCV_LIBS}")
 
         foreach(opencv_component ${OpenCV_LIBS})
             if(ANDROID)
@@ -74,33 +74,64 @@ if(USE_OPENCV)
                     ${HEADER_FILES}
                     OpenCV/DetectorOpenCVDNN.h
                     )
+                # Install model files
+                if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
+                    INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/deploy.prototxt
+                            ${CMAKE_SOURCE_DIR}/model/Opencv/res10_300x300_ssd_iter_140000_fp16.caffemodel
+                            ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector.pbtxt
+                            ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector_uint8.pb
+                        DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
+                        COMPONENT Runtime)
+                else()
+                    message(AUTHOR_WARNING "Please download Opencv from"
+                        " https://github.com/opencv/opencv , then download model files from"
+                        " [opencv source directory]/samples/dnn/face_detector "
+                        " execute download_weights.py to downlaod model files and copy"
+                        " there to ${CMAKE_SOURCE_DIR}/model/Opencv")
+                endif()
+            endif()
+            
+            if(opencv_component STREQUAL "opencv_face")
+                set(SOURCES_FILES
+                    ${SOURCES_FILES}
+                    OpenCV/FaceOpenCV.cpp
+                    )
+                set(HEADER_FILES
+                    ${HEADER_FILES}
+                    OpenCV/FaceOpenCV.h
+                    )
             endif()
         endforeach()
         
         set(SOURCES_FILES
             ${SOURCES_FILES}
             OpenCV/FaceOpenCV.cpp
+            OpenCV/LandmarkerOpenCV.cpp
             )
         set(HEADER_FILES
             ${HEADER_FILES}
             OpenCV/FaceOpenCV.h
+            OpenCV/LandmarkerOpenCV.h
             )
         
         # Install model files
-        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
-            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/deploy.prototxt
-                    ${CMAKE_SOURCE_DIR}/model/Opencv/res10_300x300_ssd_iter_140000_fp16.caffemodel
-                    ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector.pbtxt
-                    ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector_uint8.pb
+        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
+            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
                 DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
                 COMPONENT Runtime)
         else()
             message(AUTHOR_WARNING "Please download Opencv from"
-                " https://github.com/opencv/opencv , then download model files from"
-                " [opencv source directory]/samples/dnn/face_detector "
-                " execute download_weights.py to downlaod model files and copy"
-                " there to ${CMAKE_SOURCE_DIR}/model/Opencv")
+                " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
+                " to ${CMAKE_SOURCE_DIR}/model/Opencv")
+            DOWNLOAD(FILENAME "lbfmodel.yaml"
+                HASH 3521fd7e2a0eb3d14634ec640e8b430d
+                URL "https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml"
+                DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
+                STATUS RETVAL)
         endif()
+        INSTALL(DIRECTORY ${OpenCV_DIR}/etc
+            DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
+            COMPONENT Runtime)
     endif()
 endif(USE_OPENCV)
 
@@ -156,6 +187,28 @@ if(SeetaFace_FOUND)
         message(AUTHOR_WARNING "Please download Seeta model files from"
             " https://github.com/KangLin/SeetaFace2/releases/tag/model"
             " to ${CMAKE_SOURCE_DIR}/model/Seeta")
+        
+        DOWNLOAD(FILENAME "fd_2_00.dat"
+            HASH e88669e5f1301ca56162de8aef1fd5d5
+            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+            STATUS retval RELATIVE_URL)
+        DOWNLOAD(FILENAME "fr_2_10.dat"
+            HASH 2d637aad8b1b7ae62154a877ec291c99
+            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+            STATUS retval RELATIVE_URL)
+        DOWNLOAD(FILENAME "pd_2_00_pts5.dat"
+            HASH 877a44aa6f07cb3064ad2828f50f261a
+            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+            STATUS retval RELATIVE_URL)
+        DOWNLOAD(FILENAME "pd_2_00_pts81.dat"
+            HASH f3f812f01121b5a80384af3c35211bdd
+            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+            STATUS retval RELATIVE_URL)
+        
     endif()
 endif()
 

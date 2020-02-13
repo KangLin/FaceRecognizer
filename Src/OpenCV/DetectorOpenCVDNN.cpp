@@ -133,8 +133,9 @@ int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
             LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
             return -1;
         }
-    } catch (...) {
-        szErr = "Load model fail";
+    } catch (cv::Exception e) {
+        szErr = "Load model fail:";
+        szErr += e.msg.c_str();
         LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
         return -2;
     }

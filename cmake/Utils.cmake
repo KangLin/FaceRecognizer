@@ -1,6 +1,6 @@
 include (CMakeParseArguments)
 
-#产生android平台分发设置
+# 产生android平台分发设置
 function(GENERATED_DEPLOYMENT_SETTINGS)
     cmake_parse_arguments(PARA "" "NAME;APPLACTION" "" ${ARGN})
 

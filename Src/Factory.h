@@ -8,7 +8,9 @@
 
 /**
  * @brief The CFactory class
- * @details 此类提供人脸功能接口
+ * @details 此类提供人脸功能接口。
+ *          如果使用自动，则使用开发定的接口。
+ *          如果仅要指定某个库，则使用SetLibType
  */
 class FACERECOGNIZER_EXPORT CFactory : public QObject
 {
