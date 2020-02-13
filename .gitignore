@@ -1,3 +1,4 @@
+model/
 *.swp
 Makefile.Debug
 Makefile.Release
@@ -16,7 +17,6 @@ test.xml
 CMakeSettings.json
 build_
 modul/
-*/
 build-*/
 build/
 build_android/

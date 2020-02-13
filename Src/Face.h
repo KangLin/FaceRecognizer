@@ -20,6 +20,8 @@ public:
     explicit CFace(QObject *parent = nullptr);
     virtual ~CFace();
     
+    bool IsValid();
+
     virtual CDetector* GetDector() = 0;
     virtual CTracker* GetTracker() = 0;
     virtual CLandmarker* GetLandmarker() = 0;

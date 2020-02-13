@@ -65,17 +65,25 @@ if(USE_OPENCV)
                     COMPONENT Runtime)
             endif()
             
+            if(opencv_component STREQUAL "opencv_dnn")
+                set(SOURCES_FILES
+                    ${SOURCES_FILES}
+                    OpenCV/DetectorOpenCVDNN.cpp
+                    )
+                set(HEADER_FILES
+                    ${HEADER_FILES}
+                    OpenCV/DetectorOpenCVDNN.h
+                    )
+            endif()
         endforeach()
         
         set(SOURCES_FILES
             ${SOURCES_FILES}
             OpenCV/FaceOpenCV.cpp
-            OpenCV/DetectorOpenCV.cpp
             )
         set(HEADER_FILES
             ${HEADER_FILES}
             OpenCV/FaceOpenCV.h
-            OpenCV/DetectorOpenCV.h
             )
         
         # Install model files

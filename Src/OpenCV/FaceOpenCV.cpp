@@ -1,6 +1,11 @@
 #include "FaceOpenCV.h"
 #include "ParameterFactory.h"
-#include "DetectorOpenCV.h"
+
+#include <opencv2/opencv.hpp>
+
+#ifdef HAVE_OPENCV_DNN
+    #include "DetectorOpenCVDNN.h"
+#endif
 
 CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent),
     m_pDetector(nullptr),
@@ -11,7 +16,7 @@ CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent),
 {
     CParameterFactory* pFactory = CParameterFactory::Instance();
 #ifdef HAVE_OPENCV_DNN
-    m_pDetector = new CDetectorOpenCV();
+    m_pDetector = new CDetectorOpenCVDNN();
     if(m_pDetector) m_pDetector->SetParameter(pFactory->GetParameterDetector());
 #endif
 }

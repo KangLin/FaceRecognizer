@@ -1,4 +1,4 @@
-#include "DetectorOpenCV.h"
+#include "DetectorOpenCVDNN.h"
 #include "Log.h"
 #include "Performance.h"
 
@@ -10,31 +10,16 @@
 // opencv基于DNN的人脸检测:    https://blog.csdn.net/qq_30815237/article/details/87914775
 // OpenCV4.0 DNN-googleNet: https://blog.csdn.net/u011028771/article/details/84901361
 // GPU编程--OpenCL基本概念: https://blog.csdn.net/w1992wishes/article/details/80426476
-CDetectorOpenCV::CDetectorOpenCV(QObject *parent)
+CDetectorOpenCVDNN::CDetectorOpenCVDNN(QObject *parent)
     : CDetector(parent),
       m_bInit(false)
 {
 }
 
-CDetectorOpenCV::~CDetectorOpenCV()
+CDetectorOpenCVDNN::~CDetectorOpenCVDNN()
 {}
 
-int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
-{
-#ifdef HAVE_OPENCV_DNN
-    return DetectDNN(image, faces);
-#endif
-}
-
-int CDetectorOpenCV::UpdateParameter(QString &szErr)
-{
-#ifdef HAVE_OPENCV_DNN
-    return UpdateParameterDNN(szErr);
-#endif
-}
-
-#ifdef HAVE_OPENCV_DNN
-int CDetectorOpenCV::DetectDNN(const QImage &image, QVector<QRect> &faces)
+int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
 {
     int nRet = 0;
     if(image.isNull()) return -1;
@@ -72,7 +57,7 @@ int CDetectorOpenCV::DetectDNN(const QImage &image, QVector<QRect> &faces)
     // so they are not used here, and set to -1
     cv::Mat detection = m_Net.forward("detection_out");
     
-    //LOG_MODEL_DEBUG("CDetectorOpenCV", m_Net.dump().c_str());
+    //LOG_MODEL_DEBUG("CDetectorOpenCVDNN", m_Net.dump().c_str());
     
     //101*7矩阵
     cv::Mat detectionMat(detection.size[2], detection.size[3],
@@ -100,7 +85,7 @@ int CDetectorOpenCV::DetectDNN(const QImage &image, QVector<QRect> &faces)
     return nRet;
 }
 
-int CDetectorOpenCV::UpdateParameterDNN(QString &szErr)
+int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
 {
     int nRet = 0;
     
@@ -116,7 +101,7 @@ int CDetectorOpenCV::UpdateParameterDNN(QString &szErr)
     QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
     QDir d;
     if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
-    LOG_MODEL_ERROR("CDetectorOpenCV", "The model files path: %s",
+    LOG_MODEL_ERROR("CDetectorOpenCVDNN", "The model files path: %s",
                     szPath.toStdString().c_str());
     QString modelCaffDesc = szPath + QDir::separator() + "deploy.prototxt";
     QString modelCaffBinary = szPath + QDir::separator() + "res10_300x300_ssd_iter_140000_fp16.caffemodel";
@@ -145,16 +130,15 @@ int CDetectorOpenCV::UpdateParameterDNN(QString &szErr)
             szErr = szErr + "<OPENCV_SRC_DIR>/samples/dnn/face_detector";
             szErr = szErr + "or here:";
             szErr = szErr + "https://github.com/opencv/opencv/tree/master/samples/dnn/face_detector";
-            LOG_MODEL_ERROR("CDetectorOpenCV", szErr.toStdString().c_str());
+            LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
             return -1;
         }
     } catch (...) {
         szErr = "Load model fail";
-        LOG_MODEL_ERROR("CDetectorOpenCV", szErr.toStdString().c_str());
+        LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
         return -2;
     }
 
     m_bInit = true;
     return nRet;
 }
-#endif //HAVE_OPENCV_DNN
