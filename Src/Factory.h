@@ -6,6 +6,10 @@
 #include "facerecognizer_export.h"
 #include "Face.h"
 
+/**
+ * @brief The CFactory class
+ * @details 此类提供人脸功能接口
+ */
 class FACERECOGNIZER_EXPORT CFactory : public QObject
 {
     Q_OBJECT
@@ -31,9 +35,12 @@ public:
     virtual CDatabase* GetDatabase(LIB_TYPE type = AUTO);
     
     bool bIsValid(LIB_TYPE type = AUTO);
+    int SetLibType(LIB_TYPE type, bool bOnly = true);
     
 private:
     CFace* m_Face[AUTO];
+    LIB_TYPE m_CurrentLIb;
+    bool m_bOnlyUserCurrent;
 };
 
 #endif // CFACTORY_H_KL_2019_10_21

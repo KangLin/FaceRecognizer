@@ -12,15 +12,14 @@ CRecognizerVideo::CRecognizerVideo(QObject *parent) : QObject(parent)
 void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker::strFace> &faces)
 {
     if(image.isNull() || faces.isEmpty()) return;
-    
-    CFace *pFace = CFactory::Instance()->GetFace();
-    if(!pFace) return;
+
+    if(!CFactory::Instance()->bIsValid()) return;
 
     PERFORMANCE(CRecognizerVideo)
     QMap<int, QString> faceInfo;
     foreach (auto face, faces) {
         QVector<QPointF> points;
-        pFace->GetLandmarker()->Mark(image, face.rect, points);
+        CFactory::Instance()->GetLandmarker()->Mark(image, face.rect, points);
         PERFORMANCE_ADD_TIME(CRecognizerVideo,
                              "Mark points:" + QString::number(points.size()))
         if(points.isEmpty())
@@ -28,7 +27,7 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
             LOG_MODEL_ERROR("CRecognizerVideo", "points is empty");
             continue;
         }
-        qint64 index = pFace->GetRecognizer()->Query(image, points);
+        qint64 index = CFactory::Instance()->GetRecognizer()->Query(image, points);
         PERFORMANCE_ADD_TIME(CRecognizerVideo, "Query")
         if(-1 == index)
         {
@@ -36,7 +35,7 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
             continue;
         }
         CDataRegister data;
-        int nRet = pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(index, &data);
+        int nRet = CFactory::Instance()->GetDatabase()->GetTableRegister()->GetRegisterInfo(index, &data);
         PERFORMANCE_ADD_TIME(CRecognizerVideo, "GetRegisterInfo")
         if(nRet)
             continue;
