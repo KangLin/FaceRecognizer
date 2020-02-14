@@ -107,7 +107,7 @@ CDetector* CFactoryFace::GetDector(LIB_TYPE type)
         if(m_bOnlyUserCurrent)
             return GetFace(m_CurrentLIb)->GetDector();
         
-        //TODO: 优化：使用性能高
+        //TODO: 优化：使用性能高的库
         
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i]->GetDector()) return m_Face[i]->GetDector();

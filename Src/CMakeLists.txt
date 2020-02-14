@@ -91,14 +91,18 @@ if(USE_OPENCV)
                 endif()
             endif()
             
-            set(SOURCES_FILES
-                ${SOURCES_FILES}
-                OpenCV/LandmarkerOpenCV.cpp
-                )
-            set(HEADER_FILES
-                ${HEADER_FILES}
-                OpenCV/LandmarkerOpenCV.h
-                )
+            if(opencv_component STREQUAL "opencv_face")
+                set(SOURCES_FILES
+                    ${SOURCES_FILES}
+                    OpenCV/DetectorOpenCV.cpp
+                    OpenCV/LandmarkerOpenCV.cpp
+                    )
+                set(HEADER_FILES
+                    ${HEADER_FILES}
+                    OpenCV/DetectorOpenCV.h
+                    OpenCV/LandmarkerOpenCV.h
+                    )
+            endif()
         endforeach()
         
         set(SOURCES_FILES
@@ -133,9 +137,11 @@ if(USE_OPENCV)
         if(ANDROID)
             set(MODEL_FILES ${OpenCV_DIR}/../../etc)
         endif(ANDROID)
-        INSTALL(DIRECTORY ${MODEL_FILES}/
-            DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
-            COMPONENT Runtime)
+        if(EXISTS ${MODEL_FILES})
+            INSTALL(DIRECTORY ${MODEL_FILES}/
+                DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
+                COMPONENT Runtime)
+        endif()
     endif()
 endif(USE_OPENCV)
 

@@ -16,13 +16,15 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
 # Download model files
-echo "Download model files"
-mkdir -p ${SOURCE_DIR}/model/Seeta
-cd ${SOURCE_DIR}/model/Seeta
-wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
-wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
-wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
-wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+if [ ! -d ${SOURCE_DIR}/model/Seeta ]; then
+    echo "Download model files"
+    mkdir -p ${SOURCE_DIR}/model/Seeta
+    cd ${SOURCE_DIR}/model/Seeta
+    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
+    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
+    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
+    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+fi
 
 cd ${SOURCE_DIR}
 

@@ -13,8 +13,7 @@
 CDetectorOpenCVDNN::CDetectorOpenCVDNN(QObject *parent)
     : CDetector(parent),
       m_bInit(false)
-{
-}
+{}
 
 CDetectorOpenCVDNN::~CDetectorOpenCVDNN()
 {}
@@ -92,7 +91,7 @@ int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
     if(!m_pParameter)
     {
         szErr = "The parameter is null";
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
         return -1;
     }
     
