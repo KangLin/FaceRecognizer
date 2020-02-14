@@ -1,4 +1,4 @@
-#include "Factory.h"
+#include "FactoryFace.h"
 #include "Log.h"
 #ifdef HAVE_SEETA_FACE
     #include "Seeta/FaceSeeta.h"
@@ -8,7 +8,7 @@
 #endif
 #include "ParameterFactory.h"
 
-CFactory::CFactory(QObject *parent): QObject(parent),
+CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     m_CurrentLIb(AUTO),
     m_bOnlyUserCurrent(false)
 {
@@ -28,19 +28,19 @@ CFactory::CFactory(QObject *parent): QObject(parent),
     SetLibType(AUTO, false);
 }
 
-CFactory::~CFactory()
+CFactoryFace::~CFactoryFace()
 {
 }
 
-CFactory* CFactory::Instance()
+CFactoryFace* CFactoryFace::Instance()
 {
-    static CFactory* p = nullptr;
+    static CFactoryFace* p = nullptr;
     if(!p)
-        p = new CFactory();
+        p = new CFactoryFace();
     return p;
 }
 
-bool CFactory::bIsValid(LIB_TYPE type)
+bool CFactoryFace::bIsValid(LIB_TYPE type)
 {
     if(!GetFace(type))
     {
@@ -80,14 +80,14 @@ bool CFactory::bIsValid(LIB_TYPE type)
     return true;
 }
 
-int CFactory::SetLibType(LIB_TYPE type, bool bOnly)
+int CFactoryFace::SetLibType(LIB_TYPE type, bool bOnly)
 {
     m_CurrentLIb = type;
     m_bOnlyUserCurrent = bOnly;
     return 0;
 }
 
-CFace* CFactory::GetFace(LIB_TYPE type)
+CFace* CFactoryFace::GetFace(LIB_TYPE type)
 {
     if(AUTO == type)
     {
@@ -100,7 +100,7 @@ CFace* CFactory::GetFace(LIB_TYPE type)
     return m_Face[type];
 }
 
-CDetector* CFactory::GetDector(LIB_TYPE type)
+CDetector* CFactoryFace::GetDector(LIB_TYPE type)
 {
     if(AUTO == type)
     {
@@ -117,7 +117,7 @@ CDetector* CFactory::GetDector(LIB_TYPE type)
     return GetFace(type)->GetDector();
 }
 
-CTracker* CFactory::GetTracker(LIB_TYPE type)
+CTracker* CFactoryFace::GetTracker(LIB_TYPE type)
 {
     if(AUTO == type)
     {
@@ -130,7 +130,7 @@ CTracker* CFactory::GetTracker(LIB_TYPE type)
     return GetFace(type)->GetTracker();
 }
 
-CLandmarker* CFactory::GetLandmarker(LIB_TYPE type)
+CLandmarker* CFactoryFace::GetLandmarker(LIB_TYPE type)
 {
     if(AUTO == type)
     {
@@ -143,7 +143,7 @@ CLandmarker* CFactory::GetLandmarker(LIB_TYPE type)
     return GetFace(type)->GetLandmarker();
 }
 
-CRecognizer* CFactory::GetRecognizer(LIB_TYPE type)
+CRecognizer* CFactoryFace::GetRecognizer(LIB_TYPE type)
 {
     if(AUTO == type)
     {
@@ -157,7 +157,7 @@ CRecognizer* CFactory::GetRecognizer(LIB_TYPE type)
     return GetFace(type)->GetRecognizer();
 }
 
-CFaceTools* CFactory::GetFaceTools(LIB_TYPE type)
+CFaceTools* CFactoryFace::GetFaceTools(LIB_TYPE type)
 {
     if(AUTO == type)
     {
@@ -170,7 +170,7 @@ CFaceTools* CFactory::GetFaceTools(LIB_TYPE type)
     return GetFace(type)->GetFaceTools();
 }
 
-CDatabase* CFactory::GetDatabase(LIB_TYPE type)
+CDatabase* CFactoryFace::GetDatabase(LIB_TYPE type)
 {
     if(AUTO == type)
     {

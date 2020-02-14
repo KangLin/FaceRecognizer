@@ -13,7 +13,7 @@
 #include "FrmRecognizerImage.h"
 #include "ManageRegisterVideo.h"
 #include "ManageRecognizerVideo.h"
-#include "Factory.h"
+#include "FactoryFace.h"
 #include "Log.h"
 
 #include <QIcon>
@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
 
 #ifdef HAVE_SEETA_FACE
-    if(CFactory::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
+    if(CFactoryFace::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
     {
         ui->actionRecognizerVideo->setChecked(true);
         on_actionRecognizerVideo_triggered();

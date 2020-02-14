@@ -53,6 +53,8 @@ if("Debug" STREQUAL CMAKE_BUILD_TYPE)
     add_definitions(-D_DEBUG)
 endif()
 
+OPTION(AUTO_DOWNLOAD "Automation download" OFF)
+
 #需要的QT组件
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -148,7 +150,10 @@ else()
     message(FATAL_ERROR "       cmake -DRabbitCommon_DIR= ")
 endif()
 add_subdirectory(Src)
-add_subdirectory(App)
+option(BUILD_APP "Build applaction" ON)
+if(BUILD_APP)
+    add_subdirectory(App)
+endif(BUILD_APP)
 
 add_custom_target(install-runtime
   COMMAND
@@ -175,3 +180,4 @@ endif()
 
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")
+message(STATUS "== Build applcation: ${BUILD_APP}")

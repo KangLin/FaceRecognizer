@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QMutex>
 
-#include "Face.h"
+#include "FactoryFace.h"
 
 namespace Ui {
 class CFrmRecognizerVideo;
@@ -39,7 +39,7 @@ private:
 private:
     Ui::CFrmRecognizerVideo *ui;
     QImage m_Image;
-    CFace* m_pFace;
+    CFactoryFace* m_pFace;
     QMap<int, QString> m_FaceInfo;
     QMutex m_Mutex;
 };

@@ -3,7 +3,7 @@
 
 #pragma once
 #include <QObject>
-#include "Factory.h"
+#include "FactoryFace.h"
 
 class CRecognizerVideo : public QObject
 {

@@ -1,7 +1,7 @@
 #include "FrmRecognizerImage.h"
 #include "ui_FrmRecognizerImage.h"
 #include "RabbitCommonDir.h"
-#include "Factory.h"
+#include "FactoryFace.h"
 
 #include <QPainter>
 #include <QStandardItemModel>
@@ -32,7 +32,7 @@ CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     model->setHorizontalHeaderItem(2, new QStandardItem(tr("name")));
     */
     
-    m_pFace = CFactory::Instance()->GetFace();
+    m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
         throw std::runtime_error("CFrmRecognizerImage consturct allocte memory fail");
     
@@ -134,7 +134,7 @@ int CFrmRecognizerImage::MarkFace(QImage &image, int nSelect)
 
 int CFrmRecognizerImage::RecognizeFace(QImage &image)
 {
-    if(!CFactory::Instance()->bIsValid()) return -1;
+    if(!m_pFace->bIsValid()) return -1;
 
     m_Info.clear();
     
@@ -143,15 +143,15 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     pModel->removeRows(0, pModel->rowCount());
     
     QVector<QRect> faces;
-    CFactory::Instance()->GetDector()->Detect(image, faces);
+    m_pFace->GetDector()->Detect(image, faces);
     foreach (auto f, faces) {
         FACE_INFO info;
         info.face = f;
-        CFactory::Instance()->GetLandmarker()->Mark(image, f, info.points);
-        info.index = CFactory::Instance()->GetRecognizer()->Query(image, info.points);
+        m_pFace->GetLandmarker()->Mark(image, f, info.points);
+        info.index = m_pFace->GetRecognizer()->Query(image, info.points);
         if(info.index < 0)
             continue;
-        CFactory::Instance()->GetDatabase()->GetTableRegister()->GetRegisterInfo(info.index, &info.data);
+        m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(info.index, &info.data);
         m_Info.push_back(info);
 
         QList<QStandardItem*> items;
@@ -181,11 +181,11 @@ void CFrmRecognizerImage::on_tvInformation_clicked(const QModelIndex &index)
 {
     if(!index.isValid())
         return;
-    if(!CFactory::Instance()->bIsValid()) return;
+    if(!m_pFace->bIsValid()) return;
     
     ui->tvInformation->selectRow(index.row());
     ui->frmOldImage->slotDisplay(
-                        QImage(CFactory::Instance()->GetRecognizer()->GetRegisterImage(
+                        QImage(m_pFace->GetRecognizer()->GetRegisterImage(
                                              m_Info[index.row()].index)));
     MarkFace(m_Image, index.row());
 }

@@ -245,7 +245,9 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
     fi
     cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
         -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-        -DCMAKE_VERBOSE=ON \
+        -DAUTO_DOWNLOAD=ON \
+        -DBUILD_APP=ON \
+        -DCMAKE_VERBOSE_MAKEFILE=ON \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DCMAKE_PREFIX_PATH=${QT_ROOT} \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
@@ -273,7 +275,9 @@ else
     fi
     cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
         -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-        -DCMAKE_VERBOSE=ON \
+        -DCMAKE_VERBOSE_MAKEFILE=ON \
+        -DAUTO_DOWNLOAD=ON \
+        -DBUILD_APP=ON \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
         -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \

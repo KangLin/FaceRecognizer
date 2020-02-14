@@ -91,27 +91,23 @@ if(USE_OPENCV)
                 endif()
             endif()
             
-            if(opencv_component STREQUAL "opencv_face")
-                set(SOURCES_FILES
-                    ${SOURCES_FILES}
-                    OpenCV/FaceOpenCV.cpp
-                    )
-                set(HEADER_FILES
-                    ${HEADER_FILES}
-                    OpenCV/FaceOpenCV.h
-                    )
-            endif()
+            set(SOURCES_FILES
+                ${SOURCES_FILES}
+                OpenCV/LandmarkerOpenCV.cpp
+                )
+            set(HEADER_FILES
+                ${HEADER_FILES}
+                OpenCV/LandmarkerOpenCV.h
+                )
         endforeach()
         
         set(SOURCES_FILES
             ${SOURCES_FILES}
             OpenCV/FaceOpenCV.cpp
-            OpenCV/LandmarkerOpenCV.cpp
             )
         set(HEADER_FILES
             ${HEADER_FILES}
             OpenCV/FaceOpenCV.h
-            OpenCV/LandmarkerOpenCV.h
             )
         
         # Install model files
@@ -120,16 +116,24 @@ if(USE_OPENCV)
                 DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
                 COMPONENT Runtime)
         else()
-            message(AUTHOR_WARNING "Please download Opencv from"
-                " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
-                " to ${CMAKE_SOURCE_DIR}/model/Opencv")
-            DOWNLOAD(FILENAME "lbfmodel.yaml"
-                HASH 3521fd7e2a0eb3d14634ec640e8b430d
-                URL "https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml"
-                DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
-                STATUS RETVAL)
+            if(AUTO_DOWNLOAD)
+                DOWNLOAD(FILENAME "lbfmodel.yaml"
+                    HASH 3521fd7e2a0eb3d14634ec640e8b430d
+                    URL "https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml"
+                    DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
+                    STATUS RETVAL)
+            else(AUTO_DOWNLOAD)
+                message(AUTHOR_WARNING "Please download Opencv from"
+                    " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
+                    " to ${CMAKE_SOURCE_DIR}/model/Opencv")
+            endif(AUTO_DOWNLOAD)
         endif()
-        INSTALL(DIRECTORY ${OpenCV_DIR}/etc
+        
+        set(MODEL_FILES ${OpenCV_DIR}/etc)
+        if(ANDROID)
+            set(MODEL_FILES ${OpenCV_DIR}/../../etc)
+        endif(ANDROID)
+        INSTALL(DIRECTORY ${MODEL_FILES}/
             DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
             COMPONENT Runtime)
     endif()
@@ -184,31 +188,32 @@ if(SeetaFace_FOUND)
             DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
             COMPONENT Runtime)
     else()
-        message(AUTHOR_WARNING "Please download Seeta model files from"
-            " https://github.com/KangLin/SeetaFace2/releases/tag/model"
-            " to ${CMAKE_SOURCE_DIR}/model/Seeta")
-        
-        DOWNLOAD(FILENAME "fd_2_00.dat"
-            HASH e88669e5f1301ca56162de8aef1fd5d5
-            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
-            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
-            STATUS retval RELATIVE_URL)
-        DOWNLOAD(FILENAME "fr_2_10.dat"
-            HASH 2d637aad8b1b7ae62154a877ec291c99
-            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
-            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
-            STATUS retval RELATIVE_URL)
-        DOWNLOAD(FILENAME "pd_2_00_pts5.dat"
-            HASH 877a44aa6f07cb3064ad2828f50f261a
-            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
-            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
-            STATUS retval RELATIVE_URL)
-        DOWNLOAD(FILENAME "pd_2_00_pts81.dat"
-            HASH f3f812f01121b5a80384af3c35211bdd
-            URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
-            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
-            STATUS retval RELATIVE_URL)
-        
+        if(AUTO_DOWNLOAD)
+            DOWNLOAD(FILENAME "fd_2_00.dat"
+                HASH e88669e5f1301ca56162de8aef1fd5d5
+                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+                STATUS retval RELATIVE_URL)
+            DOWNLOAD(FILENAME "fr_2_10.dat"
+                HASH 2d637aad8b1b7ae62154a877ec291c99
+                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+                STATUS retval RELATIVE_URL)
+            DOWNLOAD(FILENAME "pd_2_00_pts5.dat"
+                HASH 877a44aa6f07cb3064ad2828f50f261a
+                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+                STATUS retval RELATIVE_URL)
+            DOWNLOAD(FILENAME "pd_2_00_pts81.dat"
+                HASH f3f812f01121b5a80384af3c35211bdd
+                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
+                STATUS retval RELATIVE_URL)
+        else(AUTO_DOWNLOAD)
+            message(AUTHOR_WARNING "Please download Seeta model files from"
+                " https://github.com/KangLin/SeetaFace2/releases/tag/model"
+                " to ${CMAKE_SOURCE_DIR}/model/Seeta")
+        endif(AUTO_DOWNLOAD)
     endif()
 endif()
 
@@ -223,7 +228,7 @@ set(SOURCES_FILES
     ParameterLandmark.cpp
     ParameterRecognizer.cpp
     ParameterFaceTools.cpp
-    Factory.cpp
+    FactoryFace.cpp
     Face.cpp
     Detector.cpp
     Tracker.cpp
@@ -238,7 +243,7 @@ set(SOURCES_FILES
 set(INSTALLHEADER_FILES
     ImageTool.h
     CameraQtCaptureVideoFrame.h
-    Factory.h
+    FactoryFace.h
     Face.h
     Detector.h
     Tracker.h

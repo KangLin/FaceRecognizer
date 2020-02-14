@@ -16,7 +16,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
 {
     ui->setupUi(this);
     ShowReplaceUI(false);
-    m_pFace = CFactory::Instance()->GetFace();
+    m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
         throw std::runtime_error("CFrmRegisterImage consturct allocte memory fail");
     
@@ -26,8 +26,8 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
 
 CFrmRegisterImage::~CFrmRegisterImage()
 {
-    if(m_bRegister && CFactory::Instance()->GetRecognizer())
-        CFactory::Instance()->GetRecognizer()->Save();
+    if(m_bRegister && m_pFace && m_pFace->GetRecognizer())
+        m_pFace->GetRecognizer()->Save();
     delete ui;
 }
 
@@ -74,18 +74,18 @@ void CFrmRegisterImage::on_pbBrower_clicked()
 
 int CFrmRegisterImage::MarkFace(QImage &image)
 {
-   if(!CFactory::Instance()->bIsValid()) return -1;
+   if(!m_pFace->bIsValid()) return -1;
     
     QPainter painter(&image);
     QPen pen(Qt::green);
     pen.setWidth(2);
     painter.setPen(pen);
     QVector<QRect> faces;
-    CFactory::Instance()->GetDector()->Detect(image, faces);
+    m_pFace->GetDector()->Detect(image, faces);
     foreach (auto f, faces) {
         painter.drawRect(f.x(), f.y(), f.width(), f.height());
         QVector<QPointF> points;
-        CFactory::Instance()->GetLandmarker()->Mark(image, f, points);
+        m_pFace->GetLandmarker()->Mark(image, f, points);
         for (auto &point : points)
         {
             {
@@ -99,7 +99,7 @@ int CFrmRegisterImage::MarkFace(QImage &image)
 
 void CFrmRegisterImage::on_pbRegister_clicked()
 {
-    if(!CFactory::Instance()->bIsValid()) return;
+    if(!m_pFace->bIsValid()) return;
     if(Check())
         return;
     
@@ -107,7 +107,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     QImage image = m_Image;
     QVector<QRect> faces;
     
-    CFactory::Instance()->GetDector()->Detect(image, faces);
+    m_pFace->GetDector()->Detect(image, faces);
     if(faces.size() != 1)
     {
         QString szMsg = tr("Please select a photo with only one person");
@@ -118,10 +118,10 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     
     foreach (auto f, faces) {
         QVector<QPointF> points;
-        CFactory::Instance()->GetLandmarker()->Mark(image, f, points);
+        m_pFace->GetLandmarker()->Mark(image, f, points);
         if(ui->cbQuality->isChecked())
         {
-            if(0.0f == CFactory::Instance()->GetFaceTools()->EvaluateQuality(m_Image, f, points))
+            if(0.0f == m_pFace->GetFaceTools()->EvaluateQuality(m_Image, f, points))
             {
                 SetStatusInformation(tr(" The image quality is lower"));
                 continue;
@@ -130,18 +130,18 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         
         if(!m_bReplace)
         {
-            auto index = CFactory::Instance()->GetRecognizer()->Query(image, points);
+            auto index = m_pFace->GetRecognizer()->Query(image, points);
             if(index > -1)
             {
                 CDataRegister data;
-                if(CFactory::Instance()->GetDatabase()->GetTableRegister()->GetRegisterInfo(index, &data))
+                if(m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(index, &data))
                    return;
                 ShowReplaceUI(true);
                 ui->leNoOld->setText(QString::number(data.getNo()));
                 ui->leNameOld->setText(data.getName());
                 ui->lbIDOld->setText(QString::number(index));
                 ui->wgOldImage->slotDisplay(
-                    QImage(CFactory::Instance()->GetRecognizer()->GetRegisterImage(index)));
+                    QImage(m_pFace->GetRecognizer()->GetRegisterImage(index)));
 
                 QString szMsg = tr("This person already exists. index:");
                 szMsg += QString::number(data.getIdx()) + "; ";
@@ -152,7 +152,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
             }
         }
         ShowReplaceUI(false);
-        qint64 index = CFactory::Instance()->GetRecognizer()->Register(
+        qint64 index = m_pFace->GetRecognizer()->Register(
                     image, points);
         if(-1 == index)
         {
@@ -166,9 +166,9 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         data.setIdx(index);
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
-        if(CFactory::Instance()->GetDatabase()->GetTableRegister()->Register(index, &data))
+        if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
         {
-            CFactory::Instance()->GetRecognizer()->Delete(index);
+            m_pFace->GetRecognizer()->Delete(index);
             szMsg = "Write database fail.";
             SetStatusInformation(szMsg, -1, ERROR);
         } else {
@@ -192,12 +192,12 @@ void CFrmRegisterImage::on_pbCancel_clicked()
 
 void CFrmRegisterImage::on_pbReplace_clicked()
 {
-    if(!CFactory::Instance()->bIsValid()) return;
+    if(!m_pFace->bIsValid()) return;
     
     QString szMsg;
     QImage image = m_Image;
     QVector<QRect> faces;
-    CFactory::Instance()->GetDector()->Detect(image, faces);
+    m_pFace->GetDector()->Detect(image, faces);
     if(faces.size() != 1)
     {
         QString szMsg = tr("Please select a photo with only one person");
@@ -209,21 +209,21 @@ void CFrmRegisterImage::on_pbReplace_clicked()
 
     foreach (auto f, faces) {
         QVector<QPointF> points;
-        CFactory::Instance()->GetLandmarker()->Mark(image, f, points);
+        m_pFace->GetLandmarker()->Mark(image, f, points);
         
         if(m_bReplace)
         {
             qint64 index = ui->lbIDOld->text().toLongLong();
-            CFactory::Instance()->GetRecognizer()->Delete(index);
+            m_pFace->GetRecognizer()->Delete(index);
             // Delete item from database
-            CFactory::Instance()->GetDatabase()->GetTableRegister()->Delete(index);
+            m_pFace->GetDatabase()->GetTableRegister()->Delete(index);
         }
         
         if(Check())
             return;
         
         ShowReplaceUI(false);
-        qint64 index = CFactory::Instance()->GetRecognizer()->Register(
+        qint64 index = m_pFace->GetRecognizer()->Register(
                     image, points);
         if(-1 == index)
         {
@@ -237,9 +237,9 @@ void CFrmRegisterImage::on_pbReplace_clicked()
         data.setIdx(index);
         data.setNo(ui->leNo->text().toLongLong());
         data.setName(ui->leName->text());
-        if(CFactory::Instance()->GetDatabase()->GetTableRegister()->Register(index, &data))
+        if(m_pFace->GetDatabase()->GetTableRegister()->Register(index, &data))
         {            
-            CFactory::Instance()->GetRecognizer()->Delete(index);
+            m_pFace->GetRecognizer()->Delete(index);
             szMsg = tr("Write database fail. The no is exists?");
             SetStatusInformation(szMsg, -1, ERROR); 
         } else {
@@ -296,7 +296,7 @@ int CFrmRegisterImage::Check()
         return SetStatusInformation(tr("Please input name"), -2, ERROR); 
     }
     
-    if(CFactory::Instance()->GetDatabase()->GetTableRegister()->IsExistNo(ui->leNo->text().toLongLong()))
+    if(m_pFace->GetDatabase()->GetTableRegister()->IsExistNo(ui->leNo->text().toLongLong()))
     {
         return SetStatusInformation(tr("The no is exists"), -3, ERROR); 
     }

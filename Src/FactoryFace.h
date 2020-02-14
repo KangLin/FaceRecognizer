@@ -6,20 +6,22 @@
 #include "facerecognizer_export.h"
 #include "Face.h"
 
+// @defgroup CFactoryFace Face factory
+
 /**
- * @brief The CFactory class
+ * @brief The CFactoryFace class
  * @details 此类提供人脸功能接口。
  *          如果使用自动，则使用开发定的接口。
  *          如果仅要指定某个库，则使用SetLibType
  */
-class FACERECOGNIZER_EXPORT CFactory : public QObject
+class FACERECOGNIZER_EXPORT CFactoryFace : public QObject
 {
     Q_OBJECT
 public:
-    CFactory(QObject* parent = nullptr);
-    virtual ~CFactory();
+    CFactoryFace(QObject* parent = nullptr);
+    virtual ~CFactoryFace();
 
-    static CFactory* Instance();
+    static CFactoryFace* Instance();
     
     enum LIB_TYPE{
         OPENCV,

@@ -2,8 +2,8 @@
 #define FRMREGISTERVIDEO_H
 
 #include <QWidget>
-#include <Face.h>
 
+#include "FactoryFace.h"
 #include "ParameterRegisterImage.h"
 
 namespace Ui {
@@ -43,7 +43,7 @@ private:
 private:
     Ui::CFrmRegisterVideo *ui;
     QImage m_Image;
-    CFace* m_pFace;
+    CFactoryFace* m_pFace;
     QVector<QRect> m_Faces;
     QRect m_box;
     int m_nImageWidth, m_nImageHeight;

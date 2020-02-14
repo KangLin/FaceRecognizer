@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "Factory.h"
+#include "FactoryFace.h"
 #include "ParameterRegisterImage.h"
 
 namespace Ui {
@@ -47,7 +47,7 @@ private:
 private:
     Ui::CFrmRegisterImage *ui;
     
-    CFace* m_pFace;
+    CFactoryFace* m_pFace;
     QImage m_Image;
     bool m_bRegister;
     bool m_bReplace;

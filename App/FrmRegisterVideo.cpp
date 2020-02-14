@@ -3,7 +3,7 @@
 #include "Performance.h"
 
 #include <QPainter>
-#include <Factory.h>
+#include <FactoryFace.h>
 
 CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
     QWidget(parent),
@@ -13,7 +13,7 @@ CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
     m_nImageHeight = 0;
     ui->setupUi(this);
     SetStatusInformation(tr("Please face into box"));
-    m_pFace = CFactory::Instance()->GetFace();
+    m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
     {
         throw std::runtime_error("CFrmRegisterVideo consturct allocte memory fail");
@@ -108,7 +108,7 @@ int CFrmRegisterVideo::MarkFace(QPainter &painter, const QVector<QRect> &faces)
 void CFrmRegisterVideo::slotDisplay(const QImage &image)
 {
     if(isHidden() || !m_pFace) return;
-    if(!CFactory::Instance()->GetDector()) return;
+    if(!m_pFace->GetDector()) return;
 
     m_Image = image;
     QImage img = image;
@@ -133,7 +133,7 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
  
     PERFORMANCE(CFrmRegisterVideo)
     m_Faces.clear();
-    CFactory::Instance()->GetDector()->Detect(image, m_Faces);
+    m_pFace->GetDector()->Detect(image, m_Faces);
     PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "Dectect")
     MarkFace(painter, m_Faces);
     PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "MarkFace")

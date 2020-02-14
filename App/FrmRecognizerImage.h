@@ -2,7 +2,7 @@
 #define FRMRECOGNIZERIMAGE_H
 
 #include <QWidget>
-#include "Face.h"
+#include "FactoryFace.h"
 
 namespace Ui {
 class CFrmRecognizerImage;
@@ -43,7 +43,7 @@ private:
     
 private:
     Ui::CFrmRecognizerImage *ui;
-    CFace* m_pFace;
+    CFactoryFace* m_pFace;
     QImage m_Image;
 };
 
