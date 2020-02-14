@@ -54,6 +54,7 @@ int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
     if(!m_bInit) return -2;
     if(m_haar_cascade->empty()) return -3;
     
+    PERFORMANCE(OpencvDectect)
     QImage img = image;
     if(img.format() != QImage::Format_Grayscale8)
     {
@@ -69,7 +70,9 @@ int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
 	cv::Mat gray(img.height(), img.width(), CV_8UC1, img.bits());
     cv::equalizeHist(gray, gray);
     std::vector<cv::Rect> fs;
+    PERFORMANCE_START(OpencvDectect)
     m_haar_cascade->detectMultiScale(gray, fs);
+    PERFORMANCE_ADD_TIME(OpencvDectect, "detectMultiScale")
     foreach(auto f, fs)
     {
         QRect r(f.x, f.y, f.width, f.height);

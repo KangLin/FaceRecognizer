@@ -25,12 +25,13 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
     if(!m_bInit) return -2;
     if(m_Net.empty()) return -3;
     
+    PERFORMANCE(OpencvDnnDectect)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
-        PERFORMANCE_START(OpencvDectect)
+        PERFORMANCE_START(OpencvDnnDectect)
         img = img.convertToFormat(QImage::Format_RGB888);     
-        PERFORMANCE_ADD_TIME(OpencvDectect,
+        PERFORMANCE_ADD_TIME(OpencvDnnDectect,
                              "conver format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
@@ -46,6 +47,7 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
     // Load image
 	cv::Mat frame(img.height(), img.width(), CV_8UC3, img.bits());
     
+    PERFORMANCE_START(OpencvDnnDectect)
     // Prepare blob
     cv::Mat inputBlob = cv::dnn::blobFromImage(frame, inScaleFactor,
               cv::Size(inWidth, inHeight), meanVal, false, false);
@@ -61,6 +63,8 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
     //101*7矩阵
     cv::Mat detectionMat(detection.size[2], detection.size[3],
                          CV_32F, detection.ptr<float>());
+
+    PERFORMANCE_ADD_TIME(OpencvDnnDectect, "detectionMat")
 
     for (int i = 0; i < detectionMat.rows; i++)  
     {  

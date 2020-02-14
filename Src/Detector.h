@@ -26,7 +26,7 @@ public:
      * @param faces
      * @return 
      */
-    virtual int Detect(const QImage &image,  QVector<QRect> &faces) = 0;
+    virtual int Detect(const QImage &image, QVector<QRect> &faces) = 0;
 
 public Q_SLOTS:
     void slotParameterUpdate();

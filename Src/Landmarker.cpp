@@ -26,6 +26,21 @@ int CLandmarker::SetParameter(CParameterLandmark *pPara)
     return 0;
 }
 
+int CLandmarker::Mark(const QImage &image,
+                      const QVector<QRect> &faces,
+                      QVector<QVector<QPointF> > &points)
+{
+    int nRet = 0;
+    foreach(auto face, faces)
+    {
+        QVector<QPointF> p;
+        nRet = Mark(image, face, p);
+        if(nRet) return nRet;
+        points.push_back(p);
+    }
+    return nRet;
+}
+
 void CLandmarker::slotParameterDelete()
 {
     m_pParameter = nullptr;

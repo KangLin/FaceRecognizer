@@ -20,7 +20,12 @@ public:
     virtual ~CLandmarker();
 
     virtual int SetParameter(CParameterLandmark *pPara);
-    virtual int Mark(const QImage &image, const QRect &face, QVector<QPointF> &points) = 0;
+    virtual int Mark(const QImage &image,
+                     const QRect &face,
+                     QVector<QPointF> &points) = 0;
+    virtual int Mark(const QImage &image,
+                     const QVector<QRect> &faces,
+                     QVector<QVector<QPointF> > &points);
 
 public Q_SLOTS:
     void slotParameterUpdate();

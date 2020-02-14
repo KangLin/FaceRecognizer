@@ -1,24 +1,23 @@
 #TODO: Change version
 version: 'v0.0..{build}'
 
-
 cache:
   - model\Seeta
      
 environment:
   matrix: 
   ##### msvc 2013 ########
-  - BUILD_TARGERT: windows_msvc
-    GENERATORS: "Visual Studio 12 2013"
-    TOOLCHAIN_VERSION: 12
-    QT_ROOT: C:\Qt\5.6\msvc2013
-    BUILD_ARCH: x86
+  #- BUILD_TARGERT: windows_msvc
+  #  GENERATORS: "Visual Studio 12 2013"
+  #  TOOLCHAIN_VERSION: 12
+  #  QT_ROOT: C:\Qt\5.6\msvc2013
+  #  BUILD_ARCH: x86
     
-  - BUILD_TARGERT: windows_msvc
-    GENERATORS: "Visual Studio 12 2013 Win64"
-    TOOLCHAIN_VERSION: 12
-    QT_ROOT: C:\Qt\5.6\msvc2013_64
-    BUILD_ARCH: x64
+  #- BUILD_TARGERT: windows_msvc
+  #  GENERATORS: "Visual Studio 12 2013 Win64"
+  #  TOOLCHAIN_VERSION: 12
+  #  QT_ROOT: C:\Qt\5.6\msvc2013_64
+  #  BUILD_ARCH: x64
 
   ##### msvc 2015 ########
   - BUILD_TARGERT: windows_msvc
@@ -26,28 +25,28 @@ environment:
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.10\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x86.tar.gz
 
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.10\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x64.tar.gz
     
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.6\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x86.tar.gz
 
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.6\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc14_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc14_x64.tar.gz
 
   ##### msvc 2017 ########
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -57,7 +56,7 @@ environment:
     QT_ROOT: C:\Qt\5.12\msvc2017
     BUILD_ARCH: x86
     STATIC: ON
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.0/windows_msvc15_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_msvc15_x86.tar.gz
     
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     GENERATORS: "Visual Studio 15 2017 Win64"
@@ -90,19 +89,21 @@ environment:
     TOOLCHAIN_VERSION: 492_32
     QT_ROOT: C:\Qt\5.6\mingw49_32
     BUILD_ARCH: x86
-
+    
   - BUILD_TARGERT: windows_mingw
     GENERATORS: "MSYS Makefiles"
     TOOLCHAIN_VERSION: 530_32
     QT_ROOT: C:\Qt\5.10\mingw53_32
     BUILD_ARCH: x86
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_mingw530_32_x86.tar.gz
     
   - BUILD_TARGERT: windows_mingw
     GENERATORS: "MSYS Makefiles"
     TOOLCHAIN_VERSION: 730_64
     QT_ROOT: C:\Qt\5.12\mingw73_64
     BUILD_ARCH: x64
-
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.2/windows_mingw730_64_x64.tar.gz
+    
   ##### android ########
   - BUILD_TARGERT: android
     GENERATORS: "MSYS Makefiles"
