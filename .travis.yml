@@ -11,8 +11,8 @@ addons:
       
 cache:
   - apt
-  - directories:
-     - model/Seeta
+#  - directories:
+#     - model/Seeta
 #    - Package
 
 compiler:

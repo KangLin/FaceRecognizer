@@ -17,9 +17,9 @@ else()
     set(INSTALL_DATA_PREFIX data)
 endif()
     
-OPTION(HAVE_PERFORMANCE "Set to ON to build performance)." OFF)
-if(HAVE_PERFORMANCE)
-    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_PERFORMANCE)
+OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
+if(BUILD_PERFORMANCE)
+    set(LIBS_DEFINES ${LIBS_DEFINES} BUILD_PERFORMANCE)
     set(SOURCES_FILES ${SOURCES_FILES} Performance.cpp)
 endif()
 
@@ -115,14 +115,10 @@ if(USE_OPENCV)
             )
         
         # Install model files
-        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
-            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
-                DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
-                COMPONENT Runtime)
-        else()
+        if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
             if(AUTO_DOWNLOAD)
                 DOWNLOAD(FILENAME "lbfmodel.yaml"
-                    HASH 3521fd7e2a0eb3d14634ec640e8b430d
+                    HASH 96034b93743e1f7f9748797fb8222dd9
                     URL "https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml"
                     DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
                     STATUS RETVAL)
@@ -131,6 +127,11 @@ if(USE_OPENCV)
                     " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
                     " to ${CMAKE_SOURCE_DIR}/model/Opencv")
             endif(AUTO_DOWNLOAD)
+        endif()
+        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
+            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
+                DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
+                COMPONENT Runtime)
         endif()
         
         set(MODEL_FILES ${OpenCV_DIR}/etc)
@@ -186,33 +187,26 @@ if(SeetaFace_FOUND)
         )
     
     # Install model files
-    if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
-                ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
-                ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
-                ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
-            DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
-            COMPONENT Runtime)
-    else()
+    if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
         if(AUTO_DOWNLOAD)
             DOWNLOAD(FILENAME "fd_2_00.dat"
                 HASH e88669e5f1301ca56162de8aef1fd5d5
-                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
                 DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
                 STATUS retval RELATIVE_URL)
             DOWNLOAD(FILENAME "fr_2_10.dat"
                 HASH 2d637aad8b1b7ae62154a877ec291c99
-                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
                 DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
                 STATUS retval RELATIVE_URL)
             DOWNLOAD(FILENAME "pd_2_00_pts5.dat"
                 HASH 877a44aa6f07cb3064ad2828f50f261a
-                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
                 DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
                 STATUS retval RELATIVE_URL)
             DOWNLOAD(FILENAME "pd_2_00_pts81.dat"
                 HASH f3f812f01121b5a80384af3c35211bdd
-                URL "https://github.com/KangLin/SeetaFace2/releases/tag/model/"
+                URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
                 DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
                 STATUS retval RELATIVE_URL)
         else(AUTO_DOWNLOAD)
@@ -220,6 +214,15 @@ if(SeetaFace_FOUND)
                 " https://github.com/KangLin/SeetaFace2/releases/tag/model"
                 " to ${CMAKE_SOURCE_DIR}/model/Seeta")
         endif(AUTO_DOWNLOAD)
+        
+        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
+            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
+                    ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
+                    ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
+                    ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
+                DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
+                COMPONENT Runtime)
+        endif()
     endif()
 endif()
 
@@ -396,8 +399,8 @@ IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
     #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
 
-message("== HAVE_PERFORMANCE:${HAVE_PERFORMANCE}")
 message("== OpenCV:${OpenCV_FOUND}")
 message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
 message("== SeetaFac:${SeetaFace_FOUND}")
+message("== Build PERFORMANCE:${BUILD_PERFORMANCE}")

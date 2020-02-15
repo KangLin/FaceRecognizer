@@ -15,16 +15,16 @@ function version_le() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" 
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
 function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
 
-# Download model files
-if [ ! -d ${SOURCE_DIR}/model/Seeta ]; then
-    echo "Download model files"
-    mkdir -p ${SOURCE_DIR}/model/Seeta
-    cd ${SOURCE_DIR}/model/Seeta
-    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
-    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
-    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
-    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
-fi
+## Download model files
+#if [ ! -d ${SOURCE_DIR}/model/Seeta ]; then
+#    echo "Download model files"
+#    mkdir -p ${SOURCE_DIR}/model/Seeta
+#    cd ${SOURCE_DIR}/model/Seeta
+#    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fd_2_00.dat
+#    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/fr_2_10.dat
+#    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts5.dat
+#    wget -c -nv https://github.com/KangLin/SeetaFace2/releases/download/model/pd_2_00_pts81.dat
+#fi
 
 cd ${SOURCE_DIR}
 
@@ -122,22 +122,22 @@ echo "PWD:`pwd`"
 if [ "${BUILD_TARGERT}" = "android" ]; then
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=MinSizeRel \
+         -DCMAKE_VERBOSE_MAKEFILE=ON \
+         -DCMAKE_BUILD_TYPE=Release \
          -DBUILD_EXAMPLE=OFF \
          -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
          -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
 else
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE=ON \
-         -DCMAKE_BUILD_TYPE=MinSizeRel \
+         -DCMAKE_VERBOSE_MAKEFILE=ON \
+         -DCMAKE_BUILD_TYPE=Release \
          -DBUILD_EXAMPLE=OFF
 fi
 if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
-    cmake --build . --config MinSizeRel --target install
+    cmake --build . --config Release --target install
 else
-    cmake --build . --config MinSizeRel --target install/strip
+    cmake --build . --config Release --target install/strip
 fi
 
 cd ${SOURCE_DIR}
@@ -162,6 +162,9 @@ fi
 if [ -z "$VERSION" ]; then
     export VERSION="v0.0.3"
 fi
+export UPLOADTOOL_BODY="Release FaceRecognizer ${VERSION}. The change see [ChangeLog.md](ChangeLog.md)"
+#export UPLOADTOOL_PR_BODY=
+        
 if [ "${BUILD_TARGERT}" = "unix" ]; then
     cd $SOURCE_DIR
     if [ "${DOWNLOAD_QT}" != "TRUE" -a "${DOWNLOAD_QT}" != "APT" ]; then
@@ -215,8 +218,6 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
         --url "https://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/FaceRecognizer_${VERSION}.tar.gz"
     
     if [ "$TRAVIS_TAG" != "" -a "${QT_VERSION}" = "5.12.3" ]; then
-        export UPLOADTOOL_BODY="Release FaceRecognizer ${VERSION}"
-        #export UPLOADTOOL_PR_BODY=
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
         chmod u+x upload.sh
         ./upload.sh $SOURCE_DIR/../facerecognizer_*_amd64.deb 
@@ -250,7 +251,7 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         -DAUTO_DOWNLOAD=ON \
         -DBUILD_APP=ON \
         -DCMAKE_VERBOSE_MAKEFILE=ON \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_PREFIX_PATH=${QT_ROOT} \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
         -DQt5Core_DIR=${QT_ROOT}/lib/cmake/Qt5Core \
@@ -280,7 +281,7 @@ else
         -DCMAKE_VERBOSE_MAKEFILE=ON \
         -DAUTO_DOWNLOAD=ON \
         -DBUILD_APP=ON \
-        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_BUILD_TYPE=Release \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
         -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake \
         -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake \
@@ -288,11 +289,14 @@ else
         -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
         -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
 fi
-cmake --build . --config MinSizeRel -- ${RABBIT_MAKE_JOB_PARA}
+
+ls ${SOURCE_DIR}/model/Seeta
+
+cmake --build . --config Release -- ${RABBIT_MAKE_JOB_PARA}
 if [ "$TRAVIS_TAG" != "" ]; then
-    cmake --build . --config MinSizeRel --target install-runtime -- ${RABBIT_MAKE_JOB_PARA}
+    cmake --build . --config Release --target install-runtime -- ${RABBIT_MAKE_JOB_PARA}
 else
-    cmake --build . --config MinSizeRel --target install -- ${RABBIT_MAKE_JOB_PARA}
+    cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
 fi
 
 if [ "${BUILD_TARGERT}" = "android" ]; then
@@ -322,8 +326,6 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         sed -i "s/<MD5SUM>.*</<MD5SUM>${MD5}</g" update_android.xml
         sed -i "s:<URL>.*<:<URL>https\://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/${APK_NAME}<:g" update_android.xml
 
-        export UPLOADTOOL_BODY="Release FaceRecognizer ${VERSION}"
-        #export UPLOADTOOL_PR_BODY=
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
         chmod u+x upload.sh
         ./upload.sh ${APK_FILE}

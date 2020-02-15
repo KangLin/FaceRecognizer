@@ -3,7 +3,7 @@
 
 #pragma once
 
-#ifndef HAVE_PERFORMANCE
+#ifndef BUILD_PERFORMANCE
     #define PERFORMANCE(name)
     #define PERFORMANCE_START(name)
     #define PERFORMANCE_ADD_TIME(name, message)
@@ -131,6 +131,6 @@ private:
     QString GetColor(COLOR color);
 };
 
-#endif //HAVE_PERFORMANCE
+#endif //BUILD_PERFORMANCE
 
 #endif // CPERFORMANCE_H

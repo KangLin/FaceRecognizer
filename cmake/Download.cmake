@@ -12,6 +12,7 @@
 #             but will fail in case when other operations (copy, remove, etc.) failed
 #    UNPACK - downloaded file will be unpacked to DESTINATION_DIR
 #    RELATIVE_URL - if set, then URL is treated as a base, and FILENAME will be appended to it
+#    SHOW_PROGRESS - if set, then show download progress. as file(Download ... SHOW_PROGRESS)
 #  Note: uses DOWNLOAD_PATH folder as cache, default is <opencv>/.cache
 
 # assert macro
@@ -50,7 +51,7 @@ file(REMOVE "${DOWNLOAD_WITH_CURL}")
 file(REMOVE "${DOWNLOAD_WITH_WGET}")
 
 function(download)
-  cmake_parse_arguments(DL "UNPACK;RELATIVE_URL" "FILENAME;HASH;DESTINATION_DIR;ID;STATUS" "URL" ${ARGN})
+  cmake_parse_arguments(DL "UNPACK;RELATIVE_URL;SHOW_PROGRESS" "FILENAME;HASH;DESTINATION_DIR;ID;STATUS" "URL" ${ARGN})
 
   function(download_log)
     file(APPEND "${DOWNLOAD_LOG}" "${ARGN}\n")
@@ -79,6 +80,10 @@ function(download)
     set(${DL_STATUS} TRUE PARENT_SCOPE)
   endif()
 
+  if(DL_SHOW_PROGRESS)
+    set(DOWNLOAD_PARAMS ${DOWNLOAD_PARAMS} SHOW_PROGRESS)
+  endif()
+  
   # Check CMake cache for already processed tasks
   string(FIND "${DL_DESTINATION_DIR}" "${CMAKE_BINARY_DIR}" DL_BINARY_PATH_POS)
   if(DL_BINARY_PATH_POS EQUAL 0)

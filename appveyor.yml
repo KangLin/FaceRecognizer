@@ -1,8 +1,8 @@
 #TODO: Change version
 version: 'v0.0..{build}'
 
-cache:
-  - model\Seeta
+#cache:
+#  - model\Seeta
      
 environment:
   matrix: 
@@ -109,6 +109,7 @@ environment:
     GENERATORS: "MSYS Makefiles"
     BUILD_ARCH: "armeabi-v7a"
     ANDROID_ARM_NEON: ON
+    QT_ROOT: NO
     QT_VERSION_DIR: 5.12
     QT_VERSION: 5.12.6
     ANDROID_API: android-24
@@ -139,7 +140,8 @@ before_build:
   - git submodule update --init --recursive
   - git clone https://github.com/KangLin/RabbitCommon.git
   - set RabbitCommon_DIR=%APPVEYOR_BUILD_FOLDER%/RabbitCommon
-  - if "%BUILD_TARGERT%" == "android" C:\msys64\usr\bin\bash.exe %APPVEYOR_BUILD_FOLDER%\ci\build-install-tools-windows.sh
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - C:\msys64\usr\bin\bash.exe %APPVEYOR_BUILD_FOLDER%\ci\build-install-tools-windows.sh
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
