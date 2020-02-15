@@ -11,7 +11,7 @@ class CDetectorSeeta : public CDetector
 {
     Q_OBJECT
 public:
-    CDetectorSeeta(QObject *parent = nullptr);
+    CDetectorSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CDetectorSeeta();
     
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);

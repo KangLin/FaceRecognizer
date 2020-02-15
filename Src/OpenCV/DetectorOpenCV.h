@@ -10,7 +10,7 @@ class CDetectorOpenCV : public CDetector
 {
     Q_OBJECT
 public:
-    explicit CDetectorOpenCV(QObject *parent = nullptr);
+    explicit CDetectorOpenCV(CFace* pFace = nullptr, QObject *parent = nullptr);
     
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     

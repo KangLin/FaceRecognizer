@@ -12,11 +12,12 @@
 #include "facerecognizer_export.h"
 #include "ParameterDetector.h"
 
+class CFace;
 class FACERECOGNIZER_EXPORT CDetector : public QObject
 {
     Q_OBJECT
 public:
-    CDetector(QObject *parent = nullptr);
+    CDetector(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CDetector();
 
     virtual int SetParameter(CParameterDetector *pPara);
@@ -35,6 +36,7 @@ public Q_SLOTS:
 protected:
     virtual int UpdateParameter(QString &szErr) = 0;
     CParameterDetector* m_pParameter;
+    CFace* m_pFace;
 };
 
 #endif // CDETECTOR_H_KL_2019_10_21

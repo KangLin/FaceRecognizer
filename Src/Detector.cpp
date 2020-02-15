@@ -1,8 +1,9 @@
 #include "Detector.h"
 #include "Log.h"
 
-CDetector::CDetector(QObject *parent) : QObject(parent),
-    m_pParameter(nullptr)
+CDetector::CDetector(CFace *pFace, QObject *parent) : QObject(parent),
+    m_pParameter(nullptr),
+    m_pFace(pFace)
 {}
 
 CDetector::~CDetector()

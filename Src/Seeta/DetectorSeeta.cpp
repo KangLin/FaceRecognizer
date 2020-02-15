@@ -3,8 +3,8 @@
 #include <QDir>
 #include "Performance.h"
 
-CDetectorSeeta::CDetectorSeeta(QObject *parent) 
-    : CDetector(parent)
+CDetectorSeeta::CDetectorSeeta(CFace *pFace, QObject *parent) 
+    : CDetector(pFace, parent)
 {
     m_bInit = false;
 }

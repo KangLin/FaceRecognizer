@@ -11,7 +11,7 @@ class CTrackerSeeta : public CTracker
 {
     Q_OBJECT
 public:
-    explicit CTrackerSeeta(QObject *parent = nullptr);
+    explicit CTrackerSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
     
     virtual int Track(const QImage &image, QVector<strFace> &faces);
     

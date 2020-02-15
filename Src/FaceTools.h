@@ -7,11 +7,12 @@
 #include "facerecognizer_export.h"
 #include "ParameterFaceTools.h"
 
+class CFace;
 class FACERECOGNIZER_EXPORT CFaceTools : public QObject
 {
     Q_OBJECT
 public:
-    explicit CFaceTools(QObject *parent = nullptr);
+    explicit CFaceTools(CFace* pFace = nullptr, QObject *parent = nullptr);
     
     virtual int SetParameter(CParameterFaceTools *pPara);
     virtual float EvaluateQuality(const QImage &image,
@@ -25,6 +26,7 @@ public Q_SLOTS:
 protected:
     virtual int UpdateParameter(QString &szErr) = 0;
     CParameterFaceTools* m_pParameter;
+    CFace* m_pFace;
 };
 
 #endif // CFACETOOLS_H

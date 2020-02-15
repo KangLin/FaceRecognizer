@@ -4,7 +4,8 @@
 
 #include <QDir>
 
-CTrackerSeeta::CTrackerSeeta(QObject *parent) : CTracker(parent)
+CTrackerSeeta::CTrackerSeeta(CFace *pFace, QObject *parent)
+    : CTracker(pFace, parent)
 {
     m_bInit = false;
 }

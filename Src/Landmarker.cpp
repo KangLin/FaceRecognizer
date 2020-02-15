@@ -1,9 +1,10 @@
 #include "Landmarker.h"
 #include "Log.h"
 
-CLandmarker::CLandmarker(QObject *parent)
+CLandmarker::CLandmarker(CFace *pFace, QObject *parent)
     : QObject(parent),
-      m_pParameter(nullptr)
+      m_pParameter(nullptr),
+      m_pFace(pFace)
 {}
 
 CLandmarker::~CLandmarker()

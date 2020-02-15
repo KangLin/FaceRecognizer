@@ -5,8 +5,8 @@
 
 #include <QDir>
 
-CRecognizerSeeta::CRecognizerSeeta(QObject *parent)
-    : CRecognizer(parent)
+CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
+    : CRecognizer(pFace, parent)
 {
     m_bInit = false;
     m_fThreshold = 0.7f;
@@ -65,16 +65,24 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
 
     m_bInit = true;
     
-    Load();
+    return Load();
+}
+
+qint64 CRecognizerSeeta::Register(const QImage &image, const QRect &face)
+{
+    qint64 index = -1;
+    if(image.isNull() || !m_bInit || !m_pFace)
+        return -1;
+    
+    return index;
 }
 
 qint64 CRecognizerSeeta::Register(const QImage &image,
                                   const QVector<QPointF> &points)
 {
-    int64_t index = 0;
+    int64_t index = -1;
 
-    if(image.isNull()) return -1;
-    if(!m_bInit) return -2;
+    if(image.isNull() || !m_bInit) return -1;
     
     PERFORMANCE(SeetaRegister);
     QImage img = image;
@@ -116,9 +124,20 @@ int CRecognizerSeeta::Delete(const qint64 &index)
     }
     return -1;
 }
-qint64 CRecognizerSeeta::Query(/*[in]*/ const QImage &image,
-                                /*[in]*/ const QVector<QPointF> &points)
+
+qint64 CRecognizerSeeta::Query(const QImage &image, const QRect &face)
 {
+    qint64 index = -1;
+    if(image.isNull() || !m_bInit) return -1;
+    
+    return index;
+}
+
+qint64 CRecognizerSeeta::Query(/*[in]*/ const QImage &image,
+                               /*[in]*/ const QVector<QPointF> &points)
+{
+    if(image.isNull() || !m_bInit) return -1;
+    
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {

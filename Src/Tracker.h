@@ -10,11 +10,12 @@
 #include "facerecognizer_export.h"
 #include "ParameterDetector.h"
 
+class CFace;
 class FACERECOGNIZER_EXPORT CTracker : public QObject
 {
     Q_OBJECT
 public:
-    explicit CTracker(QObject *parent = nullptr);
+    explicit CTracker(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual int SetParameter(CParameterDetector *pPara);
     
     struct strFace
@@ -32,6 +33,7 @@ public Q_SLOTS:
 protected:
     virtual int UpdateParameter(QString &szErr) = 0;
     CParameterDetector* m_pParameter;
+    CFace* m_pFace;
 };
 
 Q_DECLARE_METATYPE(CTracker::strFace);

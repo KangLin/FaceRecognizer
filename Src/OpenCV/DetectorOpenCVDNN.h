@@ -10,7 +10,7 @@ class CDetectorOpenCVDNN : public CDetector
 {
     Q_OBJECT
 public:
-    explicit CDetectorOpenCVDNN(QObject *parent = nullptr);
+    explicit CDetectorOpenCVDNN(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CDetectorOpenCVDNN();
 
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);

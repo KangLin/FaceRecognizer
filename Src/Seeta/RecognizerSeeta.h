@@ -11,9 +11,15 @@ class CRecognizerSeeta : public CRecognizer
     Q_OBJECT
     
 public:
-    CRecognizerSeeta(QObject *parent = nullptr);
+    CRecognizerSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CRecognizerSeeta();
 
+    /**
+     * @brief Register face and save register image
+     * @param image: face image
+     * @return register index. other return -1.
+     */
+    virtual qint64 Register(const QImage& image, const QRect &face = QRect());
     /**
      * @brief Register face and save register image
      * @param image: face image
@@ -23,6 +29,12 @@ public:
     virtual qint64 Register(const QImage &image,
                             const QVector<QPointF> &points);
     virtual int Delete(const qint64 &index);
+    /**
+     * @brief Query register face
+     * @param image: query face image
+     * @return find index. other return -1
+     */
+    virtual qint64 Query(const QImage& image, const QRect &face = QRect());
     /**
      * @brief Query register face
      * @param image: query face image
@@ -48,6 +60,7 @@ protected:
     virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceDatabase> m_Recognizer;
     float m_fThreshold;
+
     bool m_bInit;
 };
 

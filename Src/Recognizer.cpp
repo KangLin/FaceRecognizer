@@ -2,9 +2,10 @@
 #include <QDir>
 #include "Log.h"
 
-CRecognizer::CRecognizer(QObject *parent)
+CRecognizer::CRecognizer(CFace *pFace, QObject *parent)
     : QObject(parent),
-      m_pParameter(nullptr)
+      m_pParameter(nullptr),
+      m_pFace(pFace)
 {}
 
 CRecognizer::~CRecognizer()

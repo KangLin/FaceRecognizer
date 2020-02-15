@@ -4,7 +4,8 @@
 
 #include <QDir>
 
-CDetectorOpenCV::CDetectorOpenCV(QObject *parent) : CDetector(parent),
+CDetectorOpenCV::CDetectorOpenCV(CFace *pFace, QObject *parent)
+    : CDetector(pFace, parent),
     m_bInit(false)
 {}
 

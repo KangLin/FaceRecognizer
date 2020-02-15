@@ -13,7 +13,7 @@ class CLandmarkerSeeta : public CLandmarker
     Q_OBJECT
     
 public:
-    CLandmarkerSeeta(QObject* parent = nullptr);
+    CLandmarkerSeeta(CFace* pFace = nullptr, QObject* parent = nullptr);
     virtual ~CLandmarkerSeeta();
 
     virtual int Mark(const QImage &image, const QRect &face, QVector<QPointF> &points);

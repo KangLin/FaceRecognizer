@@ -2,7 +2,8 @@
 #include "Log.h"
 #include "Performance.h"
 
-CFaceToolsSeeta::CFaceToolsSeeta(QObject *parent) : CFaceTools(parent)
+CFaceToolsSeeta::CFaceToolsSeeta(CFace *pFace, QObject *parent)
+    : CFaceTools(pFace, parent)
 {}
 
 int CFaceToolsSeeta::UpdateParameter(QString &szErr)

@@ -10,8 +10,8 @@
 // opencv基于DNN的人脸检测:    https://blog.csdn.net/qq_30815237/article/details/87914775
 // OpenCV4.0 DNN-googleNet: https://blog.csdn.net/u011028771/article/details/84901361
 // GPU编程--OpenCL基本概念: https://blog.csdn.net/w1992wishes/article/details/80426476
-CDetectorOpenCVDNN::CDetectorOpenCVDNN(QObject *parent)
-    : CDetector(parent),
+CDetectorOpenCVDNN::CDetectorOpenCVDNN(CFace *pFace, QObject *parent)
+    : CDetector(pFace, parent),
       m_bInit(false)
 {}
 

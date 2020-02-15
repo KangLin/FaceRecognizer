@@ -12,11 +12,12 @@
 #include "facerecognizer_export.h"
 #include "ParameterLandmark.h"
 
+class CFace;
 class FACERECOGNIZER_EXPORT CLandmarker : public QObject
 {
     Q_OBJECT
 public:
-    CLandmarker(QObject *parent = nullptr);
+    CLandmarker(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CLandmarker();
 
     virtual int SetParameter(CParameterLandmark *pPara);
@@ -34,6 +35,7 @@ public Q_SLOTS:
 protected:
     virtual int UpdateParameter(QString &szErr) = 0;
     CParameterLandmark *m_pParameter;
+    CFace* m_pFace;
 };
 
 #endif // CLANDMARKER_H_KL_2019_10_21

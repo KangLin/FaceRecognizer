@@ -4,8 +4,8 @@
 
 #include <QDir>
 
-CLandmarkerSeeta::CLandmarkerSeeta(QObject *parent)
-    : CLandmarker(parent)
+CLandmarkerSeeta::CLandmarkerSeeta(CFace *pFace, QObject *parent)
+    : CLandmarker(pFace, parent)
 {
     m_bInit = false;
 }

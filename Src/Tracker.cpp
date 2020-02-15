@@ -3,7 +3,9 @@
 
 static int gTrackStrFaceId = qRegisterMetaType<CTracker::strFace>();
 static int gVectorTrackStrFaceId = qRegisterMetaType<QVector<CTracker::strFace> >();
-CTracker::CTracker(QObject *parent) : QObject(parent)
+CTracker::CTracker(CFace *pFace, QObject *parent) : QObject(parent),
+    m_pParameter(nullptr),
+    m_pFace(pFace)
 {}
 
 int CTracker::SetParameter(CParameterDetector *pPara)

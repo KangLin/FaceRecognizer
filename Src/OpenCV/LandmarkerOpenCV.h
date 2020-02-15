@@ -24,7 +24,7 @@ class CLandmarkerOpenCV : public CLandmarker
 {
     Q_OBJECT
 public:
-    explicit CLandmarkerOpenCV(QObject *parent = nullptr);
+    explicit CLandmarkerOpenCV(CFace* pFace = nullptr, QObject *parent = nullptr);
     
     virtual int Mark(const QImage &image,
                      const QRect &face,

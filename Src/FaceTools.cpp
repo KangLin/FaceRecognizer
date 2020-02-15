@@ -1,7 +1,9 @@
 #include "FaceTools.h"
 #include "Log.h"
 
-CFaceTools::CFaceTools(QObject *parent) : QObject(parent)
+CFaceTools::CFaceTools(CFace *pFace, QObject *parent) : QObject(parent),
+    m_pParameter(nullptr),
+    m_pFace(pFace)
 {}
     
 int CFaceTools::SetParameter(CParameterFaceTools *pPara)

@@ -4,8 +4,8 @@
 
 #include <QDir>
 
-CLandmarkerOpenCV::CLandmarkerOpenCV(QObject *parent)
-    : CLandmarker(parent),
+CLandmarkerOpenCV::CLandmarkerOpenCV(CFace *pFace, QObject *parent)
+    : CLandmarker(pFace, parent),
       m_bInit(false)
 {}
 
