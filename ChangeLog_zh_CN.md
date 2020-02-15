@@ -1,6 +1,10 @@
 - v0.0.4
   + 增加 opencv 人脸检测
     - 增加 opencv dnn 人脸检测
+  + 修改人脸接口
+    - 修改 CLandmarker 类
+    - 修改 CRecognizer 类
+    - 修改 CFactoryFace 类
 
 - v0.0.3
   + 增加数据库

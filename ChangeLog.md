@@ -1,6 +1,10 @@
 - v0.0.4
   + Add opencv face
-    + Add opencv dnn face detect
+    - Add opencv dnn face detect
+  + Modify face interface
+    - Modify CLandmarker class
+    - Modify CRecognizer class
+    - Modify CFactoryFace class
 
 - v0.0.3
   + Add database
