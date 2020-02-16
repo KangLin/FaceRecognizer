@@ -11,8 +11,8 @@ addons:
       
 cache:
   - apt
-#  - directories:
-#     - model/Seeta
+  - directories:
+     - model
 #    - Package
 
 compiler:
@@ -71,9 +71,10 @@ before_install:
   
 install:
   - cd ${SOURCE_DIR}
+  #- /bin/bash ci/backgroud_echo.sh &
   - git clone https://github.com/KangLin/RabbitCommon.git
   - export RabbitCommon_DIR="`pwd`/RabbitCommon"
-  - bash ci/build-install-tools.sh #> /dev/null
+  - bash ci/build-install-tools.sh > /dev/null
 #  - |
 #    if [ "$BUILD_TARGERT"="unix" -a -z "$RABBIT_ARCH" ]; then
 #        source /opt/qt511/bin/qt511-env.sh

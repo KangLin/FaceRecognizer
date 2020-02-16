@@ -26,7 +26,6 @@ build_unix/
 build_windows_msvc/
 *.ncb
 .metadata/
-*~
 debug/
 bin/
 *.class

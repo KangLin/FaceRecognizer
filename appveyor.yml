@@ -1,9 +1,10 @@
 #TODO: Change version
-version: 'v0.0..{build}'
 
-#cache:
-#  - model\Seeta
-     
+version: 'v0.0.3.{build}'
+
+cache:
+  - model
+  
 environment:
   matrix: 
   ##### msvc 2013 ########
@@ -160,7 +161,7 @@ test: off
 deploy:
   - provider: GitHub
     #release: FaceRecognizer$(appveyor_build_version)
-    description: 'Release FaceRecognizer $(APPVEYOR_REPO_TAG_NAME) on windows'
+    #description: 'Release FaceRecognizer $(APPVEYOR_REPO_TAG_NAME) on windows'
     #token : https://github.com/settings/tokens
     #password encrypt: https://ci.appveyor.com/tools/encrypt
     auth_token:

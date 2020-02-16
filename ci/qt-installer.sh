@@ -47,7 +47,6 @@ case $BUILD_ARCH in
         ;;
 esac
 
-
 cat <<EOF > $SCRIPT
 function Controller() {
     installer.autoRejectMessageBoxes();
