@@ -45,7 +45,7 @@ public:
     virtual int Delete(const qint64 &index) = 0;
 
     /**
-     * @brief Query register face
+     * @brief Query registed face
      * @param image: query face image
      * @return find index. other return -1
      */

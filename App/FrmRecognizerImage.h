@@ -35,7 +35,6 @@ private:
     struct FACE_INFO
     {
         QRect face;
-        QVector<QPointF> points;
         qint64 index;
         CDataRegister data;
     };

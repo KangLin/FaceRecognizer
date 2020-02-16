@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "RabbitCommonDir.h"
 #include "Performance.h"
+#include "Face.h"
 
 #include <QDir>
 
@@ -129,6 +130,15 @@ qint64 CRecognizerSeeta::Query(const QImage &image, const QRect &face)
 {
     qint64 index = -1;
     if(image.isNull() || !m_bInit) return -1;
+
+    QVector<QPointF> points;
+    if(m_pFace->GetLandmarker()->Mark(image, face, points))
+    {
+        LOG_MODEL_ERROR("RecognizerSeeta", "GetLandmarker()->Mark fail");
+        return -1;
+    }
+    
+    index = m_pFace->GetRecognizer()->Query(image, points);
     
     return index;
 }

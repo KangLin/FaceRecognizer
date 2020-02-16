@@ -122,10 +122,6 @@ int CFrmRecognizerImage::MarkFace(QImage &image, int nSelect)
         painter.drawRect(it->face.x(), it->face.y(), it->face.width(), it->face.height());
         if(!it->data.getName().isEmpty())
             painter.drawText(it->face.x(), it->face.y(), it->data.getName());
-        for (auto &point: it->points)
-        {
-            painter.drawPoint(point.x(), point.y());
-        }
         i++;
     }
     ui->frmImage->slotDisplay(image);
@@ -147,8 +143,7 @@ int CFrmRecognizerImage::RecognizeFace(QImage &image)
     foreach (auto f, faces) {
         FACE_INFO info;
         info.face = f;
-        m_pFace->GetLandmarker()->Mark(image, f, info.points);
-        info.index = m_pFace->GetRecognizer()->Query(image, info.points);
+        info.index = m_pFace->GetRecognizer()->Query(image, f);
         if(info.index < 0)
             continue;
         m_pFace->GetDatabase()->GetTableRegister()->GetRegisterInfo(info.index, &info.data);
