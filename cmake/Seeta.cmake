@@ -40,7 +40,7 @@ if(SeetaFace_FOUND)
     
     # Install model files
     if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-        if(AUTO_DOWNLOAD)
+        if(ENABLE_DOWNLOAD)
             DOWNLOAD(FILENAME "fd_2_00.dat"
                 HASH e88669e5f1301ca56162de8aef1fd5d5
                 URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
@@ -61,12 +61,13 @@ if(SeetaFace_FOUND)
                 URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
                 DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
                 STATUS retval RELATIVE_URL)
-        else(AUTO_DOWNLOAD)
-            message(AUTHOR_WARNING "Please download Seeta model files from"
+        else(ENABLE_DOWNLOAD)
+            message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+                " to automation download, or manual download Seeta model files from"
                 " https://github.com/KangLin/SeetaFace2/releases/tag/model"
                 " to ${CMAKE_SOURCE_DIR}/model/Seeta")
-        endif(AUTO_DOWNLOAD)
-        
+        endif(ENABLE_DOWNLOAD)
+
         if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
             INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
                     ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat

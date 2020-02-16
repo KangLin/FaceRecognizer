@@ -1,12 +1,17 @@
 #!/bin/bash
 
+function help()
+{
+    echo "$0 QT_ROOT RabbitCommon_DIR ENABLE_DOWNLOAD"
+    exit -1
+}
+
 if [ -n "$1" -a -z "$QT_ROOT" ]; then
 	QT_ROOT=$1
 fi
 
 if [ ! -f /usr/bin/qmake -a -z "$QT_ROOT" ]; then
-	echo "$0 QT_ROOT RabbitCommon_DIR"
-    exit -1
+    help
 fi
 
 if [ -n "$2" -a -z "$RabbitCommon_DIR" ]; then
@@ -18,8 +23,12 @@ if [ -z "$RabbitCommon_DIR" ]; then
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
-	echo "$0 QT_ROOT RabbitCommon_DIR"
-        exit -2
+    help
+fi
+
+export ENABLE_DOWNLOAD=OFF
+if [ -n "$3" ]; then
+    export ENABLE_DOWNLOAD=$3
 fi
 
 export RabbitCommon_DIR=$RabbitCommon_DIR

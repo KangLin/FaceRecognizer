@@ -29,7 +29,7 @@ if(USE_OPENCV)
                     )
                 # Install model files
                 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
-                    if(AUTO_DOWNLOAD)
+                    if(ENABLE_DOWNLOAD)
                         DOWNLOAD(FILENAME "deploy.prototxt"
                             HASH 6e1471d86330a9e7f9f5738318ede387
                             URL "https://github.com/opencv/opencv/raw/master/samples/dnn/face_detector/"
@@ -51,7 +51,8 @@ if(USE_OPENCV)
                             DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
                             STATUS RETVAL RELATIVE_URL)
                     else()
-                        message(AUTHOR_WARNING "Please download Opencv from"
+                        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+                            " to automation download, or manual download Opencv from"
                             " https://github.com/opencv/opencv , then download model files from"
                             " [opencv source directory]/samples/dnn/face_detector "
                             " execute download_weights.py to downlaod model files and copy"
@@ -93,17 +94,18 @@ if(USE_OPENCV)
         
         # Install model files
         if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
-            if(AUTO_DOWNLOAD)
+            if(ENABLE_DOWNLOAD)
                 DOWNLOAD(FILENAME "lbfmodel.yaml"
                     HASH 96034b93743e1f7f9748797fb8222dd9
                     URL "https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/"
                     DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
                     STATUS RETVAL RELATIVE_URL)
-            else(AUTO_DOWNLOAD)
-                message(AUTHOR_WARNING "Please download Opencv from"
+            else(ENABLE_DOWNLOAD)
+                message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+                    " to automation download, or manual download Opencv from"
                     " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
                     " to ${CMAKE_SOURCE_DIR}/model/Opencv")
-            endif(AUTO_DOWNLOAD)
+            endif(ENABLE_DOWNLOAD)
         endif()
         if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
             INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml

@@ -10,6 +10,10 @@ ThirdLibs_DIR=${TOOLS_DIR}/ThirdLibs
 cd ${SOURCE_DIR}
 export RabbitCommon_DIR="${SOURCE_DIR}/RabbitCommon"
 
+if [ -z "${ENABLE_DOWNLOAD}" ]; then
+    SET(ENABLE_DOWNLOAD ON)
+fi
+
 function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
 function version_le() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" == "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
@@ -123,21 +127,23 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
          -DCMAKE_VERBOSE_MAKEFILE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
+         -DCMAKE_BUILD_TYPE=MinSizeRel \
          -DBUILD_EXAMPLE=OFF \
          -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
          -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
+    cmake --build . --config MinSizeRel --target install/strip
 else
     cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
          -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
          -DCMAKE_VERBOSE_MAKEFILE=ON \
          -DCMAKE_BUILD_TYPE=Release \
          -DBUILD_EXAMPLE=OFF
-fi
-if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
-    cmake --build . --config Release --target install
-else
-    cmake --build . --config Release --target install/strip
+         
+    if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
+        cmake --build . --config Release --target install
+    else
+        cmake --build . --config Release --target install/strip
+    fi
 fi
 
 cd ${SOURCE_DIR}
@@ -248,10 +254,10 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
     fi
     cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
         -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-        -DAUTO_DOWNLOAD=ON \
+        -DENABLE_DOWNLOAD=${ENABLE_DOWNLOAD} \
         -DBUILD_APP=ON \
         -DCMAKE_VERBOSE_MAKEFILE=ON \
-        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DCMAKE_PREFIX_PATH=${QT_ROOT} \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
         -DQt5Core_DIR=${QT_ROOT}/lib/cmake/Qt5Core \
@@ -272,14 +278,17 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake \
         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
+        
+    cmake --build . --config MinSizeRel -- ${RABBIT_MAKE_JOB_PARA}
+    cmake --build . --config MinSizeRel --target install-runtime -- ${RABBIT_MAKE_JOB_PARA}  
 else
     if [ -d "${ThirdLibs_DIR}" ]; then
         CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}"
     fi
     cmake -G"${GENERATORS}" ${SOURCE_DIR} ${CONFIG_PARA} \
         -DCMAKE_INSTALL_PREFIX=`pwd`/install \
-        -DCMAKE_VERBOSE_MAKEFILE=ON \
-        -DAUTO_DOWNLOAD=ON \
+        -DCMAKE_VERBOSE_MAKEFILE=${ENABLE_DOWNLOAD} \
+        -DENABLE_DOWNLOAD=ON \
         -DBUILD_APP=ON \
         -DCMAKE_BUILD_TYPE=Release \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
@@ -288,15 +297,13 @@ else
         -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake \
         -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake \
         -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
-fi
-
-ls ${SOURCE_DIR}/model/Seeta
-
-cmake --build . --config Release -- ${RABBIT_MAKE_JOB_PARA}
-if [ "$TRAVIS_TAG" != "" ]; then
-    cmake --build . --config Release --target install-runtime -- ${RABBIT_MAKE_JOB_PARA}
-else
-    cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
+        
+    cmake --build . --config Release -- ${RABBIT_MAKE_JOB_PARA}
+    if [ "$TRAVIS_TAG" != "" ]; then
+        cmake --build . --config Release --target install-runtime -- ${RABBIT_MAKE_JOB_PARA}
+    else
+        cmake --build . --config Release --target install -- ${RABBIT_MAKE_JOB_PARA}
+    fi
 fi
 
 if [ "${BUILD_TARGERT}" = "android" ]; then

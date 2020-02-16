@@ -204,8 +204,12 @@ INSTALL(FILES ../Resource/db/database.sql
     DESTINATION ${INSTALL_DATA_PREFIX}/db
     COMPONENT Runtime)
 
-IF("Release" STREQUAL CMAKE_BUILD_TYPE AND WIN32 AND BUILD_SHARED_LIBS)
-    IF(CMAKE_BUILD_TYPE MATCHES Release AND MINGW)
+IF( ("Release" STREQUAL CMAKE_BUILD_TYPE)
+    OR ("MinSizeRel" STREQUAL CMAKE_BUILD_TYPE)
+    AND WIN32 AND BUILD_SHARED_LIBS)
+    IF( ("Release" STREQUAL CMAKE_BUILD_TYPE)
+        OR ("MinSizeRel" STREQUAL CMAKE_BUILD_TYPE)
+        AND MINGW)
         #windeployqt 分发时，是根据是否 strip 来判断是否是 DEBUG 版本,而用mingw编译时,qt没有自动 strip
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND strip "$<TARGET_FILE:${PROJECT_NAME}>"

@@ -91,6 +91,7 @@ int CLandmarkerOpenCV::Mark(const QImage &image,
     if(!m_Facemark) return -2;
     if(image.isNull()) return -1;
 
+    PERFORMANCE(OpenCVMark)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {

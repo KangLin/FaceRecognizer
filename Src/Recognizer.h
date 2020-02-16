@@ -32,7 +32,8 @@ public:
      * @param image: face image
      * @return register index. other return -1.
      */
-    virtual qint64 Register(const QImage& image, const QRect &face = QRect()) = 0;
+    virtual qint64 Register(const QImage& image,
+                            const QRect &face = QRect()) = 0;
     /**
      * @brief Register face and save register image
      * @param image: face image

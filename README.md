@@ -31,6 +31,7 @@
 - [x] 人脸识别框架
 - [x] 人脸识别常见应用
   - [x] 考勤
+  - [ ] 人流统计
   - [ ] 人脸特效
 - [x] 测试比较工具和框架
 - [ ] 人脸识别开源库测试比较
@@ -38,7 +39,14 @@
   + [ ] [dlib](https://github.com/davisking/dlib)
   + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
-
+  + [ ] [ncnn](https://github.com/Tencent/ncnn)
+    - https://github.com/MirrorYuChen/ncnn_example
+  + [x] 其他深度学习网络  
+    - https://github.com/deepinsight/mxnet-mtcnn
+    - https://github.com/SyGoing/LFFD-MNN
+    - https://github.com/deepinsight/mxnet-mtcnn
+    - https://github.com/imistyrain/MTCNN
+    
 ### 支持平台
 
   + [x] windows (windows xp 及已后)
