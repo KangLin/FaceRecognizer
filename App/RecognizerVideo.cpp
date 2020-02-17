@@ -28,7 +28,7 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
             LOG_MODEL_ERROR("CRecognizerVideo", "points is empty");
             continue;
         }
-        qint64 index = pFace->GetRecognizer()->Query(image, points);
+        qint64 index = pFace->GetRecognizer()->Query(image, face.rect);
         PERFORMANCE_ADD_TIME(CRecognizerVideo, "Query")
         if(-1 == index)
         {

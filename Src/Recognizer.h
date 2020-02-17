@@ -34,14 +34,7 @@ public:
      */
     virtual qint64 Register(const QImage& image,
                             const QRect &face = QRect()) = 0;
-    /**
-     * @brief Register face and save register image
-     * @param image: face image
-     * @param points: feature points
-     * @return register index. other return -1.
-     */
-    virtual qint64 Register(const QImage& image,
-                            const QVector<QPointF>& points) = 0;
+
     virtual int Delete(const qint64 &index) = 0;
 
     /**
@@ -50,14 +43,7 @@ public:
      * @return find index. other return -1
      */
     virtual qint64 Query(const QImage& image, const QRect &face = QRect()) = 0;
-    /**
-     * @brief Query register face
-     * @param image: query face image
-     * @param points: feature points
-     * @return find index. other return -1
-     */
-    virtual qint64 Query(/*[in]*/ const QImage& image,
-                         /*[in]*/ const QVector<QPointF>& points) = 0;
+
     /**
      * @brief Save feature to file
      * @param szFile: feature file name

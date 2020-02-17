@@ -2,7 +2,7 @@
 #include "Log.h"
 #include "RabbitCommonDir.h"
 #include "Performance.h"
-#include "Face.h"
+#include "FaceSeeta.h"
 
 #include <QDir>
 
@@ -71,11 +71,17 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
 
 qint64 CRecognizerSeeta::Register(const QImage &image, const QRect &face)
 {
-    qint64 index = -1;
     if(image.isNull() || !m_bInit || !m_pFace)
         return -1;
     
-    return index;
+    QVector<QPointF> points;
+    if(m_pFace->GetLandmarker()->Mark(image, face, points))
+    {
+        LOG_MODEL_ERROR("RecognizerSeeta", "GetLandmarker()->Mark fail");
+        return -1;
+    }
+    
+    return Register(image, points);
 }
 
 qint64 CRecognizerSeeta::Register(const QImage &image,
@@ -138,7 +144,7 @@ qint64 CRecognizerSeeta::Query(const QImage &image, const QRect &face)
         return -1;
     }
     
-    index = m_pFace->GetRecognizer()->Query(image, points);
+    index = Query(image, points);
     
     return index;
 }
@@ -191,8 +197,6 @@ int CRecognizerSeeta::Load(const QString &szFile)
     if(szFile.isEmpty())
         file = m_pParameter->GetFeatureFile();
     if(m_Recognizer->Load(file.toStdString().c_str()))
-    {
         return 0;
-    }
     return -1;
 }

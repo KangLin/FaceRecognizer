@@ -74,8 +74,8 @@ void CFrmRegisterImage::on_pbBrower_clicked()
 
 int CFrmRegisterImage::MarkFace(QImage &image)
 {
-   if(!m_pFace->bIsValid()) return -1;
-    
+    if(!m_pFace->bIsValid()) return -1;
+
     QPainter painter(&image);
     QPen pen(Qt::green);
     pen.setWidth(2);
@@ -102,11 +102,11 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     if(!m_pFace->bIsValid()) return;
     if(Check())
         return;
-    
+
     QString szMsg;
     QImage image = m_Image;
     QVector<QRect> faces;
-    
+
     m_pFace->GetDector()->Detect(image, faces);
     if(faces.size() != 1)
     {
@@ -115,9 +115,11 @@ void CFrmRegisterImage::on_pbRegister_clicked()
         QMessageBox::critical(this, tr("Face register"), szMsg);
         return;
     }
-    
+
     foreach (auto f, faces) {
         QVector<QPointF> points;
+
+        //TODO: 修改质量接口
         m_pFace->GetLandmarker()->Mark(image, f, points);
         if(ui->cbQuality->isChecked())
         {
@@ -127,10 +129,10 @@ void CFrmRegisterImage::on_pbRegister_clicked()
                 continue;
             }
         }
-        
+
         if(!m_bReplace)
         {
-            auto index = m_pFace->GetRecognizer()->Query(image, points);
+            auto index = m_pFace->GetRecognizer()->Query(image, f);
             if(index > -1)
             {
                 CDataRegister data;
@@ -141,7 +143,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
                 ui->leNameOld->setText(data.getName());
                 ui->lbIDOld->setText(QString::number(index));
                 ui->wgOldImage->slotDisplay(
-                    QImage(m_pFace->GetRecognizer()->GetRegisterImage(index)));
+                     QImage(m_pFace->GetRecognizer()->GetRegisterImage(index)));
 
                 QString szMsg = tr("This person already exists. index:");
                 szMsg += QString::number(data.getIdx()) + "; ";
@@ -152,8 +154,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
             }
         }
         ShowReplaceUI(false);
-        qint64 index = m_pFace->GetRecognizer()->Register(
-                    image, points);
+        qint64 index = m_pFace->GetRecognizer()->Register(image, f);
         if(-1 == index)
         {
             SetStatusInformation(tr("Face register fail"), -2, FAIL);
@@ -224,7 +225,7 @@ void CFrmRegisterImage::on_pbReplace_clicked()
         
         ShowReplaceUI(false);
         qint64 index = m_pFace->GetRecognizer()->Register(
-                    image, points);
+                    image, f);
         if(-1 == index)
         {
             SetStatusInformation(tr("Face register fail"), -1, FAIL);

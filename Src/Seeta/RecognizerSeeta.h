@@ -20,14 +20,7 @@ public:
      * @return register index. other return -1.
      */
     virtual qint64 Register(const QImage& image, const QRect &face = QRect());
-    /**
-     * @brief Register face and save register image
-     * @param image: face image
-     * @param points: feature points
-     * @return register index. other return -1.
-     */
-    virtual qint64 Register(const QImage &image,
-                            const QVector<QPointF> &points);
+    
     virtual int Delete(const qint64 &index);
     /**
      * @brief Query register face
@@ -35,14 +28,7 @@ public:
      * @return find index. other return -1
      */
     virtual qint64 Query(const QImage& image, const QRect &face = QRect());
-    /**
-     * @brief Query register face
-     * @param image: query face image
-     * @param points: feature points
-     * @return find index. other return -1
-     */
-    virtual qint64 Query(/*[in]*/ const QImage &image,
-                        /*[in]*/ const QVector<QPointF> &points);
+
     /**
      * @brief Save feature to file
      * @param szFile: feature file name
@@ -62,6 +48,23 @@ protected:
     float m_fThreshold;
 
     bool m_bInit;
+    
+    /**
+     * @brief Register face and save register image
+     * @param image: face image
+     * @param points: feature points
+     * @return register index. other return -1.
+     */
+    virtual qint64 Register(const QImage &image,
+                            const QVector<QPointF> &points);
+    /**
+     * @brief Query register face
+     * @param image: query face image
+     * @param points: feature points
+     * @return find index. other return -1
+     */
+    virtual qint64 Query(/*[in]*/ const QImage &image,
+                         /*[in]*/ const QVector<QPointF> &points);
 };
 
 #endif // CRECOGNIZERSEETA_H

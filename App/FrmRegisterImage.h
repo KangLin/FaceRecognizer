@@ -13,11 +13,11 @@ class CFrmRegisterImage;
 class CFrmRegisterImage : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit CFrmRegisterImage(QWidget *parent = nullptr);
     ~CFrmRegisterImage();
-    
+
 Q_SIGNALS:
     void sigFinish();
 
@@ -29,7 +29,7 @@ private slots:
     void on_pbRegister_clicked();
     void on_pbCancel_clicked();
     void on_pbReplace_clicked();
-    
+
 private:
     int ProcessImage(const QImage &image);
     int MarkFace(QImage &image);
@@ -43,10 +43,10 @@ private:
         SUCCESS
     };
     int SetStatusInformation(const QString &szInfo, int nRet = 0, STATUS_TYPE type = NORMAL);
-    
+
 private:
     Ui::CFrmRegisterImage *ui;
-    
+
     CFactoryFace* m_pFace;
     QImage m_Image;
     bool m_bRegister;
