@@ -1,6 +1,7 @@
 #include "FaceToolsSeeta.h"
 #include "Log.h"
 #include "Performance.h"
+#include "Face.h"
 
 CFaceToolsSeeta::CFaceToolsSeeta(CFace *pFace, QObject *parent)
     : CFaceTools(pFace, parent)
@@ -14,7 +15,7 @@ int CFaceToolsSeeta::UpdateParameter(QString &szErr)
     return 0;
 }
 
-float CFaceToolsSeeta::EvaluateQuality(const QImage &image, const QRect &face, const QVector<QPointF> &points)
+float CFaceToolsSeeta::EvaluateQuality(const QImage &image, const QRect &face)
 {
     if(image.isNull()) return -1;
     PERFORMANCE(CFaceToolsSeeta)
@@ -38,6 +39,10 @@ float CFaceToolsSeeta::EvaluateQuality(const QImage &image, const QRect &face, c
     data.data = img.bits();
     
     SeetaRect rect = {face.x(), face.y(), face.width(), face.height()};
+    
+    QVector<QPointF> points;
+    int nRet = m_pFace->GetLandmarker()->Mark(image, face, points);
+    if(nRet) return 0;
     std::vector<SeetaPointF> p;
     foreach (QPointF point, points) {
         SeetaPointF pp = {point.x(), point.y()};

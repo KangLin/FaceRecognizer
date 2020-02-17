@@ -15,9 +15,7 @@ public:
     explicit CFaceTools(CFace* pFace = nullptr, QObject *parent = nullptr);
     
     virtual int SetParameter(CParameterFaceTools *pPara);
-    virtual float EvaluateQuality(const QImage &image,
-                           const QRect &face,
-                           const QVector<QPointF> &points) = 0;
+    virtual float EvaluateQuality(const QImage &image, const QRect &face) = 0;
 
 public Q_SLOTS:
     void slotParameterUpdate();

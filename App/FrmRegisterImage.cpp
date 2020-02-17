@@ -119,11 +119,10 @@ void CFrmRegisterImage::on_pbRegister_clicked()
     foreach (auto f, faces) {
         QVector<QPointF> points;
 
-        //TODO: 修改质量接口
         m_pFace->GetLandmarker()->Mark(image, f, points);
         if(ui->cbQuality->isChecked())
         {
-            if(0.0f == m_pFace->GetFaceTools()->EvaluateQuality(m_Image, f, points))
+            if(0.0f == m_pFace->GetFaceTools()->EvaluateQuality(m_Image, f))
             {
                 SetStatusInformation(tr(" The image quality is lower"));
                 continue;

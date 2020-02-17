@@ -25,7 +25,7 @@ int CDetectorOpenCV::UpdateParameter(QString &szErr)
     QDir d;
     if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
     szPath = szPath + QDir::separator() + "haarcascades";
-    LOG_MODEL_ERROR("CDetectorOpenCV", "The model files path: %s",
+    LOG_MODEL_DEBUG("CDetectorOpenCV", "The model files path: %s",
                     szPath.toStdString().c_str());
     QString szFile = szPath + QDir::separator() + "haarcascade_frontalface_alt2.xml";
     try{

@@ -12,9 +12,7 @@ class CFaceToolsSeeta : public CFaceTools
     Q_OBJECT
 public:
     explicit CFaceToolsSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
-    virtual float EvaluateQuality(const QImage &image,
-                           const QRect &face,
-                           const QVector<QPointF> &points);
+    virtual float EvaluateQuality(const QImage &image, const QRect &face);
 
 private:
     virtual int UpdateParameter(QString &szErr);

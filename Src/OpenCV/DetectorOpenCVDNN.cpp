@@ -104,7 +104,7 @@ int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
     QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
     QDir d;
     if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
-    LOG_MODEL_ERROR("CDetectorOpenCVDNN", "The model files path: %s",
+    LOG_MODEL_DEBUG("CDetectorOpenCVDNN", "The model files path: %s",
                     szPath.toStdString().c_str());
     QString modelCaffDesc = szPath + QDir::separator() + "deploy.prototxt";
     QString modelCaffBinary = szPath + QDir::separator() + "res10_300x300_ssd_iter_140000_fp16.caffemodel";
