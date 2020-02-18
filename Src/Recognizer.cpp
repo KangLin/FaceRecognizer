@@ -5,7 +5,8 @@
 CRecognizer::CRecognizer(CFace *pFace, QObject *parent)
     : QObject(parent),
       m_pParameter(nullptr),
-      m_pFace(pFace)
+      m_pFace(pFace),
+      m_bInit(false)
 {}
 
 CRecognizer::~CRecognizer()
@@ -54,4 +55,9 @@ QString CRecognizer::GetRegisterImage(qint64 index)
     return m_pParameter->GetRegisterImagePath()
             + QDir::separator()
             + QString::number(index) + ".png";
+}
+
+bool CRecognizer::IsValid()
+{
+    return m_bInit;
 }

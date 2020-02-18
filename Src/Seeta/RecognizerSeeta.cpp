@@ -9,7 +9,6 @@
 CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
     : CRecognizer(pFace, parent)
 {
-    m_bInit = false;
     m_fThreshold = 0.7f;
 }
 
@@ -20,7 +19,7 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
 {
     if(!m_pParameter)
     {
-        szErr =  "The parameter is null";
+        szErr = "The parameter is null";
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         return -1;
     }

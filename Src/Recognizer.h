@@ -65,6 +65,8 @@ public:
      */
     virtual QString GetRegisterImage(qint64 index = -1);
 
+    virtual bool IsValid();
+    
 public Q_SLOTS:
     void slotParameterUpdate();
     void slotParameterDelete();
@@ -74,6 +76,7 @@ protected:
 
     CParameterRecognizer* m_pParameter;
     CFace* m_pFace;
+    bool m_bInit;
 };
 
 #endif // CRECOGNIZER_H_KL_2019_10_21_

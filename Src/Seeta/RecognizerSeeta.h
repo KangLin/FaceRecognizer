@@ -47,8 +47,6 @@ protected:
     QSharedPointer<seeta::FaceDatabase> m_Recognizer;
     float m_fThreshold;
 
-    bool m_bInit;
-    
     /**
      * @brief Register face and save register image
      * @param image: face image
