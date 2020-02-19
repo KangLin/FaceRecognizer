@@ -29,7 +29,7 @@
   - [ ] 人脸特效
 - [x] 测试比较工具和框架
 - [ ] 人脸识别开源库测试比较
-  + [x] [opencv](https://github.com/opencv/opencv)
+  + [x] [opencv](https://github.com/opencv/opencv), [opencv_contrib](https://github.com/opencv/opencv_contrib)
   + [ ] [dlib](https://github.com/davisking/dlib)
   + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)

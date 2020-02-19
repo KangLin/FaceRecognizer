@@ -23,7 +23,7 @@
   - [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
-  - [可选] opencv: https://opencv.org/
+  - [可选] opencv: https://opencv.org/ opencv_contrib: https://opencv.org/opencv_contrib
   - [可选] dlib: https://github.com/davisking/dlib
   - [可选] ncnn:https://github.com/Tencent/ncnn
   
