@@ -127,7 +127,7 @@ if(USE_OPENCV)
                     if(ENABLE_DOWNLOAD)
                         set(__commit_hash "8afa57abc8229d611c4937165d20e2a2d9fc5a12")
                         set(__file_hash "7505c44ca4eb54b4ab1e4777cb96ac05")
-                        ocv_download(
+                        DOWNLOAD(
                             FILENAME face_landmark_model.dat
                             HASH ${__file_hash}
                             URL "https://raw.githubusercontent.com/opencv/opencv_3rdparty/${__commit_hash}/"

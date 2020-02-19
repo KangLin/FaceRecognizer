@@ -26,9 +26,11 @@ if [ ! -d "$RabbitCommon_DIR" ]; then
     help
 fi
 
-export ENABLE_DOWNLOAD=OFF
 if [ -n "$3" ]; then
     export ENABLE_DOWNLOAD=$3
+fi
+if [ -z "$ENABLE_DOWNLOAD" ]; then
+    export ENABLE_DOWNLOAD=OFF
 fi
 
 export RabbitCommon_DIR=$RabbitCommon_DIR

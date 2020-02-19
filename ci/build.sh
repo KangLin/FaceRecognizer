@@ -11,7 +11,7 @@ cd ${SOURCE_DIR}
 export RabbitCommon_DIR="${SOURCE_DIR}/RabbitCommon"
 
 if [ -z "${ENABLE_DOWNLOAD}" ]; then
-    ENABLE_DOWNLOAD=ON
+    export ENABLE_DOWNLOAD=ON
 fi
 
 function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
