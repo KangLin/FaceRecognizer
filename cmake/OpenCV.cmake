@@ -144,7 +144,7 @@ if(USE_OPENCV)
                 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
                     INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
                         DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
-                        COMPONENT Runtime)
+                            COMPONENT Runtime)
                 endif()
                 
             endif()

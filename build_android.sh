@@ -1,8 +1,10 @@
-QT_ROOT=/c/Qt/Qt5.12.6/5.12.6/android_armv7
-YUV_DIR=/d/Source/RabbitIm/ThirdLibrary/android24_arm_qt5.12.6_Release
-OPENCV_DIR=
+#!/bin/bash
+
+QT_ROOT=/c/Qt/Qt5.12.1/5.12.1/android_armv7
+YUV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release
+export OPENCV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release/sdk/native/jni
 FFMPEG_DIR=
-SeetaFace2_DIR=/d/Source/RabbitIm/ThirdLibrary/android24_arm_qt5.12.6_Release
+export SeetaFace2_DIR=/e/source/SeetaFace2/build_android/install
 if [ -n "$1" ]; then
     Qt5_ROOT=$1
 fi
@@ -31,7 +33,7 @@ else
     PARA="${PARA} -DUSE_YUV=OFF"
 fi
 if [ -n "$OPENCV_DIR" ]; then
-    PARA="${PARA} -DOPENCV_DIR=${OPENCV_DIR}"
+    PARA="${PARA} -DOpenCV_DIR=${OPENCV_DIR}"
 else
     PARA="${PARA} -DUSE_OPENCV=OFF"
 fi
@@ -57,14 +59,15 @@ fi
 cd build
 
 cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-    -DCMAKE_BUILD_TYPE=MinSizeRel \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI="armeabi-v7a with NEON" \
-    -DANDROID_PLATFORM=android-18 ${PARA}
+    -DANDROID_PLATFORM=android-24 ${PARA}
 
-cmake --build . --config MinSizeRel -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
+cmake --build . --config Release -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
 
-cmake --build . --config MinSizeRel --target install-runtime # -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
-cmake --build . --config MinSizeRel --target APK 
+cmake --build . --config Release --target install
+#-- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
+cmake --build . --config Release --target APK 
 
 cd ..

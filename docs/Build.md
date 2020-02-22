@@ -149,7 +149,7 @@
           cd build
           cmake .. -G"Unix Makefiles" \
                    -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-                   -DCMAKE_BUILD_TYPE=MinSizeRel \
+                   -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                    -DANDROID_ABI="armeabi-v7a with NEON" \
                    -DANDROID_PLATFORM=android-24 \
@@ -157,20 +157,20 @@
                    -DRabbitCommon_DIR= \
                    -DYUV_DIR= \
                    [其它可选 CMake 配置参数]
-          cmake --build . --config MinSizeRel
+          cmake --build . --config Release
 
     + 安装
       - 安装库和程序
 
-          cmake --build . --config MinSizeRel --target install/strip
+          cmake --build . --config Release --target install/strip
 
       - 仅安装程序
 
-          cmake --build . --config MinSizeRel --target install-runtime
+          cmake --build . --config Release --target install-runtime
 
     + 生成 APK
 
-	      cmake --build . --config MinSizeRel --target APK
+	      cmake --build . --config Release --target APK
 
   - 主机是 windows
     + windows 控制台
@@ -180,7 +180,7 @@
             mkdir build
             cd build
             cmake .. -DCMAKE_INSTALL_PREFIX=%cd%\android-build ^
-                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ^
+                     -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ^
                      -DCMAKE_TOOLCHAIN_FILE=%ANDROID_NDK%/build/cmake/android.toolchain.cmake ^
                      -DCMAKE_MAKE_PROGRAM=%ANDROID_NDK%/prebuilt/windows-x86_64/bin/make.exe ^
                      -DANDROID_ABI=arm64-v8a ^
@@ -190,20 +190,20 @@
                      -DRabbitCommon_DIR= ^
                      -DYUV_DIR= ^
                      [其它可选 CMake 配置参数]
-            cmake --build . --config MinSizeRel
+            cmake --build . --config Release
 
       - 安装
         + 安装库和程序
 
-              cmake --build . --config MinSizeRel --target install/strip
+              cmake --build . --config Release --target install/strip
 
         + 仅安装程序
 
-              cmake --build . --config MinSizeRel --target install-runtime
+              cmake --build . --config Release --target install-runtime
 
         + 生成 APK
 
-              cmake --build . --config MinSizeRel --target APK
+              cmake --build . --config Release --target APK
 
     + msys2 或 cygwin
 
@@ -211,7 +211,7 @@
           mkdir build
           cd build
           cmake .. -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-                   -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel \
+                   -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
                    -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                    -DCMAKE_MAKE_PROGRAM=${ANDROID_NDK}/prebuilt/windows-x86_64/bin/make.exe \
                    -DANDROID_ABI=arm64-v8a \
@@ -225,15 +225,15 @@
       - 安装
         + 安装库和程序
     
-              cmake --build . --config MinSizeRel --target install/strip
+              cmake --build . --config Release --target install/strip
     
         + 仅安装程序
     
-              cmake --build . --config MinSizeRel --target install-runtime
+              cmake --build . --config Release --target install-runtime
     
         + 生成 APK
     
-              cmake --build . --config MinSizeRel --target APK
+              cmake --build . --config Release --target APK
 
   - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：

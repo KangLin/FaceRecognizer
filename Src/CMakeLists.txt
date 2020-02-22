@@ -30,13 +30,13 @@ if(USE_YUV)
     if(YUV_FOUND)
         set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBYUV)
         set(LIBS ${LIBS} YUV)
-        if(ANDROID)
-            INSTALL(FILES $<TARGET_FILE:YUV>
-                    DESTINATION "libs/${ANDROID_ABI}")
-        else()
-            INSTALL(FILES $<TARGET_FILE:YUV>
-                    DESTINATION "${CMAKE_INSTALL_BINDIR}")
-        endif()
+#        if(ANDROID)
+#            INSTALL(FILES $<TARGET_FILE:YUV>
+#                    DESTINATION "libs/${ANDROID_ABI}")
+#        else()
+#            INSTALL(FILES $<TARGET_FILE:YUV>
+#                    DESTINATION "${CMAKE_INSTALL_BINDIR}")
+#        endif()
     endif()
 endif(USE_YUV)
 
@@ -202,7 +202,7 @@ install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATI
 # Install sql file
 INSTALL(FILES ../Resource/db/database.sql
     DESTINATION ${INSTALL_DATA_PREFIX}/db
-    COMPONENT Runtime)
+        COMPONENT Runtime)
 
 IF( ("Release" STREQUAL CMAKE_BUILD_TYPE)
     OR ("MinSizeRel" STREQUAL CMAKE_BUILD_TYPE)

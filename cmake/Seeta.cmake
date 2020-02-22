@@ -6,11 +6,11 @@ if(SeetaFace_FOUND)
         if(ANDROID)
             INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
                 DESTINATION "libs/${ANDROID_ABI}"
-                COMPONENT Runtime)
+                    COMPONENT Runtime)
         else()
             INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
                 DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                COMPONENT Runtime)
+                    COMPONENT Runtime)
         endif()
     endforeach()
     
@@ -67,14 +67,14 @@ if(SeetaFace_FOUND)
                 " https://github.com/KangLin/SeetaFace2/releases/tag/model"
                 " to ${CMAKE_SOURCE_DIR}/model/Seeta")
         endif(ENABLE_DOWNLOAD)
-
-        if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-            INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
-                    ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
-                    ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
-                    ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
-                DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
+    endif()
+    
+    if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
+        INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
+                ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
+                ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
+                ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
+            DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
                 COMPONENT Runtime)
-        endif()
     endif()
 endif()

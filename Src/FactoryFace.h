@@ -35,8 +35,8 @@ public:
     static CFactoryFace* Instance();
     
     enum LIB_TYPE{
-        OPENCV,
         SEETA,
+        OPENCV,
         DLIB,
         AUTO
     };
