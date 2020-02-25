@@ -1,10 +1,10 @@
 #!/bin/bash
 
-QT_ROOT=/c/Qt/Qt5.12.1/5.12.1/android_armv7
-YUV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release
+QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_armv7
+#YUV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release
 export OPENCV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release/sdk/native/jni
 FFMPEG_DIR=
-export SeetaFace2_DIR=/e/source/SeetaFace2/build_android/install
+export SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
 if [ -n "$1" ]; then
     Qt5_ROOT=$1
 fi
