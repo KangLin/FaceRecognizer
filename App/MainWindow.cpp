@@ -91,22 +91,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionUpdate_U->setIcon(updater.windowIcon());
 #endif
 
-#ifdef HAVE_SEETA_FACE
-    if(CFactoryFace::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
+    if(CFactoryFace::Instance()->bIsValid())
     {
-        ui->actionRecognizerVideo->setChecked(true);
-        on_actionRecognizerVideo_triggered();
+        if(CFactoryFace::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
+        {
+            ui->actionRecognizerVideo->setChecked(true);
+            on_actionRecognizerVideo_triggered();
+        } else {
+            ui->actionRegisterVideo->setChecked(true);
+            on_actionRegisterVideo_triggered();
+        }
     } else {
-        ui->actionRegisterVideo->setChecked(true);
-        on_actionRegisterVideo_triggered();
+        ui->menuRegister->setEnabled(false);
+        ui->menuRecognizer->setEnabled(false);
+        
+        ui->actionDisplay->setChecked(true);
+        on_actionDisplay_triggered();
     }
-#else
-    ui->menuRegister->setEnabled(false);
-    ui->menuRecognizer->setEnabled(false);
-    
-    ui->actionDisplay->setChecked(true);
-    on_actionDisplay_triggered();
-#endif
 }
 
 MainWindow::~MainWindow()
