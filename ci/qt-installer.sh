@@ -3,6 +3,7 @@
 #http://stackoverflow.com/questions/25105269/silent-install-qt-run-installer-on-ubuntu-server
 #http://doc.qt.io/qtinstallerframework/noninteractive.html
 #参考：https://github.com/benlau/qtci
+#     https://github.com/rabits/dockerfiles
 #     https://github.com/mjscosta/qt-silent-installer
 
 set -e #quit on error
@@ -66,6 +67,15 @@ Controller.prototype.WelcomePageCallback = function() {
 }
 
 Controller.prototype.CredentialsPageCallback = function() {
+    var login = installer.environmentVariable("QT_USER");
+    var password = installer.environmentVariable("QT_PASSWORD");
+    if( login === "" || password === "" ) {
+        console.log("No credentials provided - could stuck here forever");
+        gui.clickButton(buttons.CommitButton);
+    }
+    var widget = gui.currentPageWidget();
+    widget.loginWidget.EmailLineEdit.setText(login);
+    widget.loginWidget.PasswordLineEdit.setText(password);
     gui.clickButton(buttons.CommitButton);
 }
 

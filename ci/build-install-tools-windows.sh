@@ -1,6 +1,11 @@
 #!/bin/bash 
 #下载工具  
 
+# DOWNLOAD_THIRDLIBS_URL: 第三方库的下载地址
+# QT_ROOT： 如果设置为NO，则从 http://download.qt.io/official_releases/qt 下载QT
+# QT_VERSION：Qt 版本号
+# QT_VERSION_DIR：
+
 set -ev
 
 SOURCE_DIR="`pwd`"
@@ -14,15 +19,20 @@ if [ ! -d "${TOOLS_DIR}" ]; then
     mkdir ${TOOLS_DIR}
 fi
 
+if [ ! -d ${ThirdLibs_DIR} ]; then
+    mkdir -p ${ThirdLibs_DIR}
+fi
+
+if [ ! -d ${PACKAGE_DIR} ]; then
+    mkdir -p ${PACKAGE_DIR}
+fi
+
 function function_common()
 {
     cd ${TOOLS_DIR}
     
     # Download third libraries
     if [ -n "$DOWNLOAD_THIRDLIBS_URL" ]; then
-        if [ ! -d ${ThirdLibs_DIR} ]; then
-            mkdir -p ${ThirdLibs_DIR}
-        fi
         cd ${ThirdLibs_DIR}
         echo "ThirdLibs_DIR:`pwd`"
         ThirdLibs_File=third_libs.tar.gz
