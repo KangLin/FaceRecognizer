@@ -96,6 +96,7 @@ CFace* CFactoryFace::GetFace(LIB_TYPE type)
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i]) return m_Face[i];
         }
+        return nullptr;
     }
     return m_Face[type];
 }
@@ -110,11 +111,11 @@ CDetector* CFactoryFace::GetDector(LIB_TYPE type)
         //TODO: 优化：使用性能高的库
         
         for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]->GetDector()) return m_Face[i]->GetDector();
+            if(m_Face[i] && m_Face[i]->GetDector()) return m_Face[i]->GetDector();
         }
     }
     
-    return GetFace(type)->GetDector();
+    return GetFace(type) ? GetFace(type)->GetDector() : nullptr;
 }
 
 CTracker* CFactoryFace::GetTracker(LIB_TYPE type)
@@ -124,10 +125,10 @@ CTracker* CFactoryFace::GetTracker(LIB_TYPE type)
         if(m_bOnlyUserCurrent)
             return GetFace(m_CurrentLIb)->GetTracker();
         for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]->GetTracker()) return m_Face[i]->GetTracker();
+            if(m_Face[i] && m_Face[i]->GetTracker()) return m_Face[i]->GetTracker();
         }
     }
-    return GetFace(type)->GetTracker();
+    return GetFace(type) ? GetFace(type)->GetTracker() : nullptr;
 }
 
 CLandmarker* CFactoryFace::GetLandmarker(LIB_TYPE type)
@@ -137,10 +138,10 @@ CLandmarker* CFactoryFace::GetLandmarker(LIB_TYPE type)
         if(m_bOnlyUserCurrent)
             return GetFace(m_CurrentLIb)->GetLandmarker();
         for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]->GetLandmarker()) return m_Face[i]->GetLandmarker();
+            if(m_Face[i] && m_Face[i]->GetLandmarker()) return m_Face[i]->GetLandmarker();
         }
     }
-    return GetFace(type)->GetLandmarker();
+    return GetFace(type) ? GetFace(type)->GetLandmarker() : nullptr;
 }
 
 CRecognizer* CFactoryFace::GetRecognizer(LIB_TYPE type)
@@ -150,11 +151,11 @@ CRecognizer* CFactoryFace::GetRecognizer(LIB_TYPE type)
         if(m_bOnlyUserCurrent)
             return GetFace(m_CurrentLIb)->GetRecognizer();
         for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]->GetRecognizer()) return m_Face[i]->GetRecognizer();
+            if(m_Face[i] && m_Face[i]->GetRecognizer()) return m_Face[i]->GetRecognizer();
         }
     }
 
-    return GetFace(type)->GetRecognizer();
+    return GetFace(type) ? GetFace(type)->GetRecognizer() : nullptr;
 }
 
 CFaceTools* CFactoryFace::GetFaceTools(LIB_TYPE type)
@@ -164,10 +165,10 @@ CFaceTools* CFactoryFace::GetFaceTools(LIB_TYPE type)
         if(m_bOnlyUserCurrent)
             return GetFace(m_CurrentLIb)->GetFaceTools();
         for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]->GetFaceTools()) return m_Face[i]->GetFaceTools();
+            if(m_Face[i] && m_Face[i]->GetFaceTools()) return m_Face[i]->GetFaceTools();
         }
     }
-    return GetFace(type)->GetFaceTools();
+    return GetFace(type) ? GetFace(type)->GetFaceTools() : nullptr;
 }
 
 CDatabase* CFactoryFace::GetDatabase(LIB_TYPE type)
@@ -177,8 +178,8 @@ CDatabase* CFactoryFace::GetDatabase(LIB_TYPE type)
         if(m_bOnlyUserCurrent)
             return GetFace(m_CurrentLIb)->GetDatabase();
         for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]->GetDatabase()) return m_Face[i]->GetDatabase();
+            if(m_Face[i] && m_Face[i]->GetDatabase()) return m_Face[i]->GetDatabase();
         }
     }
-    return GetFace(type)->GetDatabase();
+    return GetFace(type) ? GetFace(type)->GetDatabase() : nullptr;
 }
