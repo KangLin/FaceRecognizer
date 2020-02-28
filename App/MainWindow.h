@@ -33,13 +33,12 @@ private slots:
     void on_actionUpdate_U_triggered();
     void on_actionDisplay_triggered();
     void on_actionFile_triggered();
-
     void on_actionExit_triggered();
-    
     void on_actionOpen_log_file_triggered();
     
 private:
     int CamerOrientation(int index);
+    int InitCamerOrientation();
 
 private:
     Ui::MainWindow *ui;

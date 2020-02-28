@@ -57,15 +57,6 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup1->addAction(ui->actionFile);
     pViewGroup1->addAction(ui->actionCamera);
     
-    QActionGroup *pCameraAngle = new QActionGroup(this);
-    pCameraAngle->addAction(ui->action0);
-    pCameraAngle->addAction(ui->action90);
-    pCameraAngle->addAction(ui->action180);
-    pCameraAngle->addAction(ui->action270);
-    bool check = connect(pCameraAngle, SIGNAL(triggered(QAction *)),
-                         this, SLOT(slotCameraOrientation(QAction *)));
-    Q_ASSERT(check);
-    
     if(!QCameraInfo::availableCameras().isEmpty())
     {
         QComboBox *cmbCameras = new QComboBox(ui->toolBar);
@@ -83,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 cmbCameras->addItem(cameraInfo.description());
             }
         }
+        InitCamerOrientation();
     } else 
         ui->actionFile->setChecked(true);
 
@@ -162,6 +154,39 @@ void MainWindow::slotCameraChanged(int index)
     }
 }
 
+int MainWindow::InitCamerOrientation()
+{
+    QActionGroup *pCameraAngle = new QActionGroup(this);
+    pCameraAngle->addAction(ui->action0);
+    pCameraAngle->addAction(ui->action90);
+    pCameraAngle->addAction(ui->action180);
+    pCameraAngle->addAction(ui->action270);
+    bool check = connect(pCameraAngle, SIGNAL(triggered(QAction *)),
+                         this, SLOT(slotCameraOrientation(QAction *)));
+    Q_ASSERT(check);
+    
+    int nAngle = 0;
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    nAngle = set.value("CameraOrientation", 0).toInt();
+    m_CaptureFrame.SetCameraAngle(nAngle);
+    switch (nAngle) {
+    case 0:
+        ui->action0->setChecked(true);
+        break;
+    case 90:
+        ui->action90->setChecked(true);
+        break;
+    case 180:
+        ui->action180->setChecked(true);
+        break;
+    case 270:
+        ui->action270->setChecked(true);
+        break;
+    }
+    return 0;    
+}
+
 void MainWindow::slotCameraOrientation(QAction *pAction)
 {
     int nAngle = 0;
@@ -174,6 +199,10 @@ void MainWindow::slotCameraOrientation(QAction *pAction)
     if(pAction == ui->action270)
         nAngle = 270;
     m_CaptureFrame.SetCameraAngle(nAngle);
+    
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    set.setValue("CameraOrientation", nAngle);
 }
 
 void MainWindow::on_actionFile_triggered()
