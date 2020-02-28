@@ -17,7 +17,7 @@ CFrmDisplay::~CFrmDisplay()
     delete ui;
 }
 
-int CFrmDisplay::SetAspectRatio(bool bAspectRation)
+int CFrmDisplay::slotSetAspectRatio(bool bAspectRation)
 {
     m_bAspectRation = bAspectRation;
     return 0;

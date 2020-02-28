@@ -62,10 +62,7 @@ endif()
 message("TRANSLATIONS_NAME:${TRANSLATIONS_NAME}")
 SET(TS_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Translations/${TRANSLATIONS_NAME}_zh.ts
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Translations/${TRANSLATIONS_NAME}_zh_CN.ts
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Translations/${TRANSLATIONS_NAME}_zh_rCN.ts
     ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Translations/${TRANSLATIONS_NAME}_zh_TW.ts
-    ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Translations/${TRANSLATIONS_NAME}_zh_rTW.ts
     )
 
 OPTION(OPTION_TRANSLATIONS "Refresh translations on compile" ON)

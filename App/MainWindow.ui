@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTools">
@@ -92,6 +92,7 @@
     <addaction name="actionSet_model_path"/>
     <addaction name="actionOptions_O"/>
     <addaction name="menuCamer_Orientation"/>
+    <addaction name="actionKeep_display_aspect_ratio"/>
    </widget>
    <widget class="QMenu" name="menuHelp_H">
     <property name="title">
@@ -410,6 +411,20 @@
    </property>
    <property name="text">
     <string>Open log file</string>
+   </property>
+  </action>
+  <action name="actionKeep_display_aspect_ratio">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Keep display aspect ratio</string>
+   </property>
+   <property name="statusTip">
+    <string>Keep display aspect ratio</string>
+   </property>
+   <property name="whatsThis">
+    <string>Keep display aspect ratio</string>
    </property>
   </action>
  </widget>

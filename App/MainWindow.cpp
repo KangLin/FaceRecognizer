@@ -330,10 +330,16 @@ void MainWindow::on_actionDisplay_triggered()
     CFrmDisplay *pDisplay = new CFrmDisplay(this);
     if(!pDisplay)
         return;
+    pDisplay->slotSetAspectRatio(ui->actionKeep_display_aspect_ratio->isChecked());
+    bool check = connect(ui->actionKeep_display_aspect_ratio, SIGNAL(triggered(bool)),
+                    pDisplay, SLOT(slotSetAspectRatio(bool)));
+    Q_ASSERT(check);
+    
     m_CaptureFrame.disconnect();
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
+    check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
                           pDisplay, SLOT(slotDisplay(const QImage &)));
     Q_ASSERT(check);
+
     this->setCentralWidget(pDisplay);
 }
 

@@ -15,12 +15,11 @@ class CFrmDisplay : public QWidget
     
 public:
     explicit CFrmDisplay(QWidget *parent = nullptr);
-    ~CFrmDisplay();
-
-    int SetAspectRatio(bool bAspectRation = true);
+    virtual ~CFrmDisplay();
     
 public Q_SLOTS:
     void slotDisplay(const QImage &image);
+    int slotSetAspectRatio(bool bAspectRation = true);
 
 protected:
     void paintEvent(QPaintEvent *event);
