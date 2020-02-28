@@ -140,7 +140,7 @@ IF(ANDROID)
         APPLACTION "${CMAKE_BINARY_DIR}/bin/lib${PROJECT_NAME}.so")
 
     add_custom_target(APK #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
-            DEPENDS install
+            #DEPENDS install
             COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
                 --output ${CMAKE_INSTALL_PREFIX}
                 --input ${JSON_FILE}
