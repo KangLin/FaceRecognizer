@@ -105,7 +105,7 @@ IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         add_compile_options(-g -ggdb)
     else()
-        add_compile_options(-O3 -Os)
+        add_compile_options(-O3)
     endif()
 ENDIF()
 SET(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs")
