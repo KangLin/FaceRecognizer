@@ -224,15 +224,15 @@
 
       - 安装
         + 安装库和程序
-    
+
               cmake --build . --config Release --target install/strip
-    
+
         + 仅安装程序
-    
+
               cmake --build . --config Release --target install-runtime
-    
+
         + 生成 APK
-    
+
               cmake --build . --config Release --target APK
 
   - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
