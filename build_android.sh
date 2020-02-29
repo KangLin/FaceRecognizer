@@ -1,8 +1,8 @@
 #!/bin/bash
 
-QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_armv7
-#YUV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release
-export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm_in_windows/sdk/native/jni
+QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_arm64_v8a
+export YUV_DIR=/d/Source/libyuv/build_android/install
+#export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm_in_windows/sdk/native/jni
 FFMPEG_DIR=
 export SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
 if [ -n "$1" ]; then
@@ -60,16 +60,17 @@ cd build_android
 
 cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
     -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_VERBOSE_MAKEFILE=TRUE \
     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-    -DANDROID_ABI="armeabi-v7a with NEON" \
+    -DANDROID_ABI="arm64-v8a" \
     -DANDROID_ARM_NEON=ON \
     -DBUILD_PERFORMANCE=ON \
     -DANDROID_PLATFORM=android-24 ${PARA}
 
 cmake --build . --config Release -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
 
-cmake --build . --config Release --target install
+cmake --build . --config Release --target install/strip
 #-- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
-cmake --build . --config Release --target APK 
+cmake --build . --config Release --target APK
 
 cd ..

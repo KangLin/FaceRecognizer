@@ -17,10 +17,14 @@ public:
     ~CDlgLog();
     
 private slots:
-    void on_buttonBox_accepted();
+    void on_pbOk_clicked();
+    
+    void on_pbClean_clicked();
     
 private:
     Ui::CDlgLog *ui;
+    
+    QString m_szFile;
 };
 
 #endif // DLGLOG_H

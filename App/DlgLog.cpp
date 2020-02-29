@@ -8,10 +8,11 @@ CDlgLog::CDlgLog(const QString &szLogFile, QWidget *parent) :
     ui(new Ui::CDlgLog)
 {
     ui->setupUi(this);
-    if(!szLogFile.isEmpty())
+    m_szFile = szLogFile;
+    if(!m_szFile.isEmpty())
     {
         QString szLog;
-        QFile f(szLogFile);
+        QFile f(m_szFile);
         if(!f.open(QFile::ReadOnly))
             return;
         szLog = f.readAll();
@@ -25,7 +26,13 @@ CDlgLog::~CDlgLog()
     delete ui;
 }
 
-void CDlgLog::on_buttonBox_accepted()
+void CDlgLog::on_pbOk_clicked()
 {
-    accept();
+    this->accept();
+}
+
+void CDlgLog::on_pbClean_clicked()
+{
+    ui->textEdit->clear();
+    QFile::remove(m_szFile);
 }

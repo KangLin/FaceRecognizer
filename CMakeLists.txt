@@ -97,6 +97,17 @@ ENDIF(MSVC)
 IF(MINGW)
     add_compile_options("-std=c++0x")
 ENDIF()
+IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+    OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+
+    add_compile_options(-std=c++0x -Wno-sign-compare -Wno-unused-parameter)
+    
+    if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        add_compile_options(-g -ggdb)
+    else()
+        add_compile_options(-O3 -Os)
+    endif()
+ENDIF()
 SET(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs")
 if (BUILD_SHARED_LIBS)
 	add_definitions(-DBUILD_SHARED_LIBS)
