@@ -2,7 +2,7 @@
 
 QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_armv7
 #YUV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release
-export OPENCV_DIR=/e/source/rabbitim/ThirdLibrary/android24_arm_qt5.13.2_Release/sdk/native/jni
+export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm_in_windows/sdk/native/jni
 FFMPEG_DIR=
 export SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
 if [ -n "$1" ]; then
@@ -53,15 +53,17 @@ if [ -n "$SeetaFace2_DIR" ]; then
 fi
 echo "PARA:$PARA"
 
-if [ ! -d build ]; then
-    mkdir -p build
+if [ ! -d build_android ]; then
+    mkdir -p build_android
 fi
-cd build
+cd build_android
 
 cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI="armeabi-v7a with NEON" \
+    -DANDROID_ARM_NEON=ON \
+    -DBUILD_PERFORMANCE=ON \
     -DANDROID_PLATFORM=android-24 ${PARA}
 
 cmake --build . --config Release -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`

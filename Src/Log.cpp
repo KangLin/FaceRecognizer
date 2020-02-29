@@ -76,9 +76,15 @@ int CLog::Log(const char *pszFile, int nLine, int nLevel,
     }
     szTemp += buf;
 
-    qDebug() << szTemp;
+    Log(szTemp);
 
-    emit sigLog(szTemp + "\n");
+    return 0;
+}
+
+int CLog::Log(const QString &szLog)
+{
+    qDebug() << szLog;
+    emit sigLog(szLog + "\n");
 
     if(!m_szFile.isEmpty())
     {
@@ -94,21 +100,27 @@ int CLog::Log(const char *pszFile, int nLine, int nLevel,
             return 0;
         }
         QTextStream out(&f);  
-        out << szTemp << endl;
+        out << szLog << endl;
         f.close();
     }
     
     return 0;
 }
 
-int CLog::SaveFile(const QString &szFile)
+int CLog::SetSaveFile(const QString &szFile)
 {
     m_szFile = szFile;
     return 0;
 }
 
+QString CLog::GetSaveFile()
+{
+    return m_szFile;
+}
+
 int CLog::OpneFile()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(m_szFile));
-    return 0;
+    if(QDesktopServices::openUrl(QUrl::fromLocalFile(m_szFile)))
+        return 0;
+    return -1;
 }

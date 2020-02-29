@@ -15,6 +15,7 @@
 #include "ManageRecognizerVideo.h"
 #include "FactoryFace.h"
 #include "Log.h"
+#include "DlgLog.h"
 
 #include <QIcon>
 #include <QCameraInfo>
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    CLog::Instance()->SaveFile(QStandardPaths::writableLocation(
+    CLog::Instance()->SetSaveFile(QStandardPaths::writableLocation(
                                    QStandardPaths::TempLocation)
                                + QDir::separator()
                                + qApp->applicationName() + ".log");
@@ -377,5 +378,12 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionOpen_log_file_triggered()
 {
-    CLog::Instance()->OpneFile();
+    int nRet = CLog::Instance()->OpneFile();
+    if(0 == nRet) return;
+    
+    CDlgLog log(CLog::Instance()->GetSaveFile());
+#if defined(Q_OS_ANDROID)
+    log.showMaximized();
+#endif
+    log.exec();
 }

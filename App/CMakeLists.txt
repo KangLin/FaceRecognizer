@@ -12,6 +12,7 @@ project(FaceRecognizerApp)
 
 set(SOURCES_FILES
     FrmDisplay.cpp
+    DlgLog.cpp
     main.cpp
     MainWindow.cpp
     FrmRegisterImage.cpp
@@ -27,6 +28,7 @@ set(SOURCES_FILES
 
 set(HEADER_FILES
     FrmDisplay.h
+    DlgLog.h
     MainWindow.h
     FrmRegisterImage.h
     FrmRecognizerImage.h
@@ -41,6 +43,7 @@ set(HEADER_FILES
 
 set(SOURCE_UI_FILES
     FrmDisplay.ui
+    DlgLog.ui
     MainWindow.ui
     FrmRegisterImage.ui
     FrmRecognizerImage.ui
@@ -140,7 +143,6 @@ IF(ANDROID)
         APPLACTION "${CMAKE_BINARY_DIR}/bin/lib${PROJECT_NAME}.so")
 
     add_custom_target(APK #注意 需要把 ${QT_INSTALL_DIR}/bin 加到环境变量PATH中
-            #DEPENDS install
             COMMAND "${QT_INSTALL_DIR}/bin/androiddeployqt"
                 --output ${CMAKE_INSTALL_PREFIX}
                 --input ${JSON_FILE}

@@ -28,7 +28,8 @@ public:
 
     static CLog* Instance();
 
-    int SaveFile(const QString &szFile);
+    int SetSaveFile(const QString &szFile);
+    QString GetSaveFile();
 public Q_SLOTS:
     int OpneFile();
 
@@ -44,6 +45,7 @@ public:
      */
     int Log(const char *pszFile, int nLine, int nLevel,
             const char* pszModelName, const char *pFormatString, ...);
+    int Log(const QString &szLog);
 
 signals:
     void sigLog(const QString &szLog);

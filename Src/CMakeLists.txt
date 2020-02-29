@@ -122,6 +122,16 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     PUBLIC_HEADER "${INSTALLHEADER_FILES}" # Install head files
     VERSION ${BUILD_VERSION})
 
+# Set flags
+if(ANDROID)
+    if(ANDROID_ARM_NEON)
+        target_compile_options(${PROJECT_NAME} PUBLIC -mfpu=neon-vfpv4)
+    endif()
+    
+    target_compile_options(${PROJECT_NAME} PUBLIC 
+        -frtti -fexceptions -funsafe-math-optimizations -ftree-vectorize -ffast-math)
+endif()
+
 target_compile_definitions(${PROJECT_NAME} PUBLIC RABBITCOMMON ${LIBS_DEFINES})
 target_link_libraries(${PROJECT_NAME} PUBLIC RabbitCommon ${QT_LIBRARIES} ${LIBS})
 target_include_directories(${PROJECT_NAME}

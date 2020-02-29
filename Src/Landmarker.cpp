@@ -50,7 +50,7 @@ void CLandmarker::slotParameterDelete()
 void CLandmarker::slotParameterUpdate()
 {
     QString szErr;
-    int nRet = -UpdateParameter(szErr);
+    int nRet = UpdateParameter(szErr);
     if(nRet)
         LOG_MODEL_ERROR("CLandmarker", "UpdateParameter: %s",
                          szErr.toStdString().c_str());
