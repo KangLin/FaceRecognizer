@@ -29,7 +29,7 @@ int CRecognizerOpenCV::UpdateParameter(QString &szErr)
                     szPath.toStdString().c_str());
     QString szFile = szPath + QDir::separator() + "haarcascade_frontalface_alt2.xml";
     try{
-        m_Recognizer = cv::face::FisherFaceRecognizer::create();
+        m_Recognizer = cv::face::LBPHFaceRecognizer::create();
         if(!m_Recognizer)
         {
             LOG_MODEL_ERROR("CDetectorOpenCV", "Load model file fail");

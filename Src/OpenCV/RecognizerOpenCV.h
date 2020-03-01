@@ -42,7 +42,7 @@ public:
 protected:
     virtual int UpdateParameter(QString &szErr);
 
-    cv::Ptr<cv::face::FisherFaceRecognizer> m_Recognizer;
+    cv::Ptr<cv::face::FaceRecognizer> m_Recognizer;
     qint64 m_nMaxIndex;
 };
 

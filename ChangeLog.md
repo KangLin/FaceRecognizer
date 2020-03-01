@@ -1,10 +1,13 @@
 - v0.0.4
   + Add opencv face
     - Add opencv dnn face detect
+    - Add opencv face face detect
+    - Add opencv facde landmark
   + Modify face interface
     - Modify CLandmarker class
     - Modify CRecognizer class
     - Modify CFactoryFace class
+  + Automatically generate android binary(APK) distributions under CI
 
 - v0.0.3
   + Add database
