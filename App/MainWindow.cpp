@@ -54,9 +54,39 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRecognizerImage);
     pViewGroup->addAction(ui->actionRecognizerVideo);
 
-    QActionGroup *pViewGroup1 = new QActionGroup(this);
-    pViewGroup1->addAction(ui->actionFile);
-    pViewGroup1->addAction(ui->actionCamera);
+    QActionGroup *pAiGroup = new QActionGroup(this);
+    const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();
+    int eCount = pObj->enumeratorCount();
+    for(int i = 0; i < eCount; i++)
+    {
+        int nSelect = 0;
+#ifdef RABBITCOMMON
+        QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                      QSettings::IniFormat);
+        nSelect = set.value("AI_Libraries", 0).toInt();
+#endif
+    
+        QMetaEnum e = pObj->enumerator(i);
+        if(strcmp(e.enumName(), "LIB_TYPE") == 0)
+        {
+            for(int j = 0; j < e.keyCount(); j++)
+            {
+                QAction* pA = ui->menuAI_libraries->addAction(e.key(j));
+                pA->setCheckable(true);
+                if(nSelect == e.value(j))
+                    pA->setChecked(true);
+                pA->setData(e.value(j));
+                pAiGroup->addAction(pA);
+            }
+            bool check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
+                    this, SLOT(on_actionAiLibraries_triggered(QAction*)));
+            Q_ASSERT(check);
+        }
+    }
+    
+    QActionGroup *pSourceGroup = new QActionGroup(this);
+    pSourceGroup->addAction(ui->actionFile);
+    pSourceGroup->addAction(ui->actionCamera);
     
     if(!QCameraInfo::availableCameras().isEmpty())
     {
@@ -197,9 +227,11 @@ int MainWindow::InitCamerOrientation()
     Q_ASSERT(check);
     
     int nAngle = 0;
+#ifdef RABBITCOMMON
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
     nAngle = set.value("CameraOrientation", 0).toInt();
+#endif
     m_CaptureFrame.SetCameraAngle(nAngle);
     switch (nAngle) {
     case 0:
@@ -231,9 +263,11 @@ void MainWindow::slotCameraOrientation(QAction *pAction)
         nAngle = 270;
     m_CaptureFrame.SetCameraAngle(nAngle);
     
+#ifdef RABBITCOMMON
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
     set.setValue("CameraOrientation", nAngle);
+#endif
 }
 
 void MainWindow::on_actionFile_triggered()
@@ -416,4 +450,16 @@ void MainWindow::on_actionOpen_log_file_triggered()
     log.showMaximized();
 #endif
     log.exec();
+}
+
+void MainWindow::on_actionAiLibraries_triggered(QAction* a)
+{
+    CFactoryFace::Instance()->SetLibType(
+                static_cast<CFactoryFace::LIB_TYPE>(a->data().toInt()),
+                false);
+#ifdef RABBITCOMMON
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    set.setValue("AI_Libraries", a->data().toInt());
+#endif
 }
