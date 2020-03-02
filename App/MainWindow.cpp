@@ -119,7 +119,7 @@ void MainWindow::slotCameraChanged(int index)
         }
 
         m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
-
+        if(nullptr == m_pCamera) return;
         /*        
         QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
 
@@ -150,6 +150,36 @@ void MainWindow::slotCameraChanged(int index)
         
         m_CaptureFrame.SetCameraAngle(CamerOrientation(index));
         m_pCamera->setViewfinder(&m_CaptureFrame);
+        
+        QCameraFocus* focus = m_pCamera->focus();
+        if(focus)
+        {
+            QCameraFocus::FocusMode focusMode = QCameraFocus::AutoFocus;
+//            if(focus->isFocusModeSupported(QCameraFocus::AutoFocus))
+//            {
+//                focusMode = QCameraFocus::AutoFocus;
+//            } else if(focus->isFocusModeSupported(QCameraFocus::QCameraFocus::ContinuousFocus))
+//            {
+//                focusMode = QCameraFocus::ContinuousFocus;
+//*/            } else if(focus->isFocusModeSupported(QCameraFocus::MacroFocus))
+//                focusMode = QCameraFocus::MacroFocus;
+//            else
+//                focusMode = QCameraFocus::ManualFocus;
+            LOG_MODEL_ERROR("MainWindow", "focusMode:0x%x", focusMode);
+            focus->setFocusMode(focusMode);
+            
+            focus->setFocusPointMode(QCameraFocus::FocusPointAuto);
+            QList<QCameraFocusZone> zones = focus->focusZones();
+//            foreach (QCameraFocusZone zone, zones) {
+//                if (zone.status() == QCameraFocusZone::Focused) {
+//                    // Draw a green box at zone.area()
+//                } else if (zone.status() == QCameraFocusZone::Selected) {
+//                    // This area is selected for autofocusing, but is not in focus
+//                    // Draw a yellow box at zone.area()
+//                }
+//            }
+            
+        }
     } else {
         QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
     }

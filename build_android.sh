@@ -1,8 +1,8 @@
 #!/bin/bash
 
 QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_arm64_v8a
-export YUV_DIR=/d/Source/libyuv/build_android/install
-#export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm_in_windows/sdk/native/jni
+#export YUV_DIR=/d/Source/libyuv/build_android/install
+export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm64/sdk/native/jni
 FFMPEG_DIR=
 export SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
 if [ -n "$1" ]; then

@@ -28,6 +28,7 @@
 class FACERECOGNIZER_EXPORT CFactoryFace : public QObject
 {
     Q_OBJECT
+    
 public:
     CFactoryFace(QObject* parent = nullptr);
     virtual ~CFactoryFace();
@@ -40,7 +41,9 @@ public:
         DLIB,
         AUTO
     };
-
+    Q_ENUM(LIB_TYPE)
+    int SetLibType(LIB_TYPE type, bool bOnly = true);
+    
     virtual CFace* GetFace(LIB_TYPE type = AUTO);
 
     virtual CDetector* GetDector(LIB_TYPE type = AUTO);
@@ -51,8 +54,7 @@ public:
     virtual CDatabase* GetDatabase(LIB_TYPE type = AUTO);
     
     bool bIsValid(LIB_TYPE type = AUTO);
-    int SetLibType(LIB_TYPE type, bool bOnly = true);
-    
+
 private:
     CFace* m_Face[AUTO];
     LIB_TYPE m_CurrentLIb;
