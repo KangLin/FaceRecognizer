@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
     
         QMetaEnum e = pObj->enumerator(i);
-        if(strcmp(e.enumName(), "LIB_TYPE") == 0)
+        if(strcmp(e.name(), "LIB_TYPE") == 0)
         {
             for(int j = 0; j < e.keyCount(); j++)
             {

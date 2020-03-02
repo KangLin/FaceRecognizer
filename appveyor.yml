@@ -1,6 +1,6 @@
 #TODO: Change version
 
-version: 'v0.0.3.{build}'
+version: 'v0...{build}'
 
 cache:
   - model

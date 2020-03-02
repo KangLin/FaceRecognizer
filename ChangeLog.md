@@ -8,7 +8,9 @@
     - Modify CRecognizer class
     - Modify CFactoryFace class
   + Automatically generate android binary(APK) distributions under CI
-
+  + UI
+    - Add log dialog
+    - Add select AI libraries menu
 - v0.0.3
   + Add database
   + Add register from image

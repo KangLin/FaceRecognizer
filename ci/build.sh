@@ -163,10 +163,10 @@ case ${BUILD_TARGERT} in
 esac
 
 if [ -n "$appveyor_build_version" -a -z "$VERSION" ]; then
-    export VERSION="v0.0.3"
+    export VERSION="v0.0.4"
 fi
 if [ -z "$VERSION" ]; then
-    export VERSION="v0.0.3"
+    export VERSION="v0.0.4"
 fi
 export UPLOADTOOL_BODY="Release FaceRecognizer ${VERSION}.<br/> The change see [ChangeLog.md](ChangeLog.md) or [ChangeLog_zh_CN.md](ChangeLog_zh_CN.md)"
 #export UPLOADTOOL_PR_BODY=
