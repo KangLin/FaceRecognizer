@@ -57,7 +57,7 @@ public:
 
 private:
     CFace* m_Face[AUTO];
-    LIB_TYPE m_CurrentLIb;
+    LIB_TYPE m_CurrentLib;
     bool m_bOnlyUserCurrent;
 };
 

@@ -74,7 +74,11 @@ MainWindow::MainWindow(QWidget *parent) :
                 QAction* pA = ui->menuAI_libraries->addAction(e.key(j));
                 pA->setCheckable(true);
                 if(nSelect == e.value(j))
+                {
+                    CFactoryFace::Instance()->SetLibType(
+                           static_cast<CFactoryFace::LIB_TYPE>(nSelect), false);
                     pA->setChecked(true);
+                }
                 pA->setData(e.value(j));
                 pAiGroup->addAction(pA);
             }
