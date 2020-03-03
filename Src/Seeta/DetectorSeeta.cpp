@@ -88,7 +88,7 @@ int CDetectorSeeta::UpdateParameter(QString &szErr)
                                   id);
         m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
     } catch (...) {
-        szErr = "Load model fail";
+        szErr = "Load model fail:" + szFile;
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         return -2;
     }

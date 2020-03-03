@@ -40,13 +40,12 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
     }
     
     int id = 0;
-    
-    try {
-        QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Seeta";
-        QDir d;
-        if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
-        QString szFile = szPath + QDir::separator() + "fr_2_10.dat";
-        
+
+    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Seeta";
+    QDir d;
+    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    QString szFile = szPath + QDir::separator() + "fr_2_10.dat";
+    try {     
         seeta::ModelSetting model(szFile.toStdString(),
                                   device,
                                   id);
@@ -58,7 +57,7 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
             return -2;
         }        
     } catch (...) {
-        szErr = "Load model fail";
+        szErr = "Load model fail：" + szFile;
         LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
         return -3;
     }

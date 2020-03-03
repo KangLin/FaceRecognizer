@@ -307,7 +307,7 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
     APK_NAME=FaceRecognizer_${BUILD_ARCH}_${VERSION}.apk
     mv -f ${APK_FILE} $SOURCE_DIR/${APK_NAME}
     APK_FILE=$SOURCE_DIR/${APK_NAME}
-    if [ "$TRAVIS_TAG" != "" \
+    if [ "$APPVEYOR_REPO_TAG" != "true" \
          -a "$BUILD_ARCH" = "armeabi-v7a" \
          -a "$QT_VERSION" = "5.12.6" ]; then
 

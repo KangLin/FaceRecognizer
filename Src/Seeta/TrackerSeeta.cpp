@@ -48,7 +48,7 @@ int CTrackerSeeta::UpdateParameter(QString &szErr)
                                   id);
         m_Tracker = QSharedPointer<seeta::FaceTracker>(new seeta::FaceTracker(model));
     }catch(...){
-        szErr = "Load model fail";
+        szErr = "Load model fail:" + szFile;
         LOG_MODEL_ERROR("CTrackerSeeta", szErr.toStdString().c_str());
         return -2;
     }

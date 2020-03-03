@@ -51,7 +51,7 @@ int CLandmarkerSeeta::UpdateParameter(QString &szErr)
         m_Landmarker = QSharedPointer<seeta::FaceLandmarker>(
                               new seeta::FaceLandmarker(model));   
     } catch (...) {
-        szErr = "Load model fail";
+        szErr = "Load model fail:" + szFile;
         LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
         return -1;
     }

@@ -1,12 +1,26 @@
 #include "Parameter.h"
 #include <QDir>
 #include "RabbitCommonDir.h"
+#include "Log.h"
 
 CParameter::CParameter(QObject *parent) : QObject(parent),
     m_Device(CPU)
 {
-    SetModelPath(RabbitCommon::CDir::Instance()->GetDirData(true)
-            + QDir::separator() + "model");
+    QString szPath = RabbitCommon::CDir::Instance()->GetDirData(false)
+            + QDir::separator() + "model";
+    LOG_MODEL_INFO("CParameter", "szPath:%s", szPath.toStdString().c_str());
+#if defined(Q_OS_ANDROID)
+    QDir d;
+    if(!d.exists(szPath))
+    {
+        d.mkpath(szPath);
+        RabbitCommon::CDir::CopyDirectory(
+                    RabbitCommon::CDir::Instance()->GetDirData(true)
+                                + QDir::separator() + "model",
+                    szPath);
+    }
+#endif
+    SetModelPath(szPath);
 }
 
 CParameter::~CParameter()
