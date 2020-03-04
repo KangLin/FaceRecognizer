@@ -98,7 +98,6 @@ SET(TRANSLATIONS_NAME ${PROJECT_NAME})
 include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
 
 SET(RCC_FILES
-    ../Resource/Resource.qrc
     ${TRANSLATIONS_RESOURCE_FILES})
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)

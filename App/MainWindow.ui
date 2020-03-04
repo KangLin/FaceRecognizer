@@ -20,7 +20,7 @@
    <string>Face recognizer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../Resource/Resource.qrc">
+   <iconset resource="Resource/Resource.qrc">
     <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
@@ -45,7 +45,7 @@
       <string>Register</string>
      </property>
      <property name="icon">
-      <iconset resource="../Resource/Resource.qrc">
+      <iconset resource="Resource/Resource.qrc">
        <normaloff>:/image/Register</normaloff>:/image/Register</iconset>
      </property>
      <addaction name="actionRegisterImage"/>
@@ -60,7 +60,7 @@
       <string>Recognizer</string>
      </property>
      <property name="icon">
-      <iconset resource="../Resource/Resource.qrc">
+      <iconset resource="Resource/Resource.qrc">
        <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
      </property>
      <addaction name="actionRecognizerImage"/>
@@ -71,7 +71,7 @@
       <string>AI libraries</string>
      </property>
      <property name="icon">
-      <iconset resource="../Resource/Resource.qrc">
+      <iconset resource="Resource/Resource.qrc">
        <normaloff>:/image/Tools</normaloff>:/image/Tools</iconset>
      </property>
     </widget>
@@ -144,7 +144,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Start</normaloff>:/image/Start</iconset>
    </property>
    <property name="text">
@@ -178,7 +178,7 @@
   </action>
   <action name="actionSet_model_path">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
    </property>
    <property name="text">
@@ -190,7 +190,7 @@
   </action>
   <action name="actionAbout_A">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
    </property>
    <property name="text">
@@ -228,7 +228,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -249,7 +249,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Video</normaloff>:/image/Video</iconset>
    </property>
    <property name="text">
@@ -261,7 +261,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -273,7 +273,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
    </property>
    <property name="text">
@@ -294,7 +294,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
    </property>
    <property name="text">
@@ -315,7 +315,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -336,7 +336,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
    </property>
    <property name="text">
@@ -357,7 +357,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -375,7 +375,7 @@
   </action>
   <action name="actionOptions_O">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Option</normaloff>:/image/Option</iconset>
    </property>
    <property name="text">
@@ -416,7 +416,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Exit</normaloff>:/image/Exit</iconset>
    </property>
    <property name="text">
@@ -431,7 +431,7 @@
   </action>
   <action name="actionOpen_log_file">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Log</normaloff>:/image/Log</iconset>
    </property>
    <property name="text">
@@ -454,7 +454,7 @@
   </action>
   <action name="actionStyle">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Sink</normaloff>:/image/Sink</iconset>
    </property>
    <property name="text">
@@ -475,7 +475,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../Resource/Resource.qrc"/>
+  <include location="Resource/Resource.qrc"/>
  </resources>
  <connections/>
 </ui>
