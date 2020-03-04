@@ -9,13 +9,6 @@ if(POLICY CMP0020)
 endif()
 
 project(FaceRecognizer)
-
-# Set install data prefix
-if(ANDROID)
-    set(INSTALL_DATA_PREFIX assets/data)
-else()
-    set(INSTALL_DATA_PREFIX data)
-endif()
     
 OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
 if(BUILD_PERFORMANCE)

@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_pCamera(nullptr)
 {
+    LoadStyle();
     ui->setupUi(this);
-
     CLog::Instance()->SetSaveFile(QStandardPaths::writableLocation(
                                    QStandardPaths::TempLocation)
                                + QDir::separator()
@@ -140,6 +140,58 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+int MainWindow::LoadStyle()
+{
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    QString szFile = set.value("Sink",
+                  RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
+                  + QDir::separator()
+                  + "data" + QDir::separator()
+                  + "style" + QDir::separator()
+                  + "black.qss").toString();
+    return  LoadStyle(szFile);
+}
+
+int MainWindow::LoadStyle(const QString &szFile)
+{
+    if(szFile.isEmpty())
+        qApp->setStyleSheet("");
+    else
+    {
+        QFile file(szFile);
+        if(file.open(QFile::ReadOnly))
+        {
+            QString stylesheet= file.readAll();
+            qApp->setStyleSheet(stylesheet);
+            file.close();
+        }
+        else
+        {
+            qDebug() << "file open file fail:" << szFile;                       
+        }
+    }
+    return 0;
+}
+
+void MainWindow::on_actionStyle_triggered()
+{
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    QString szFile = set.value("Sink",
+                  RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
+                  + QDir::separator()
+                  + "data" + QDir::separator()
+                  + "style" + QDir::separator()
+                  + "black.qss").toString();
+    szFile = RabbitCommon::CDir::GetOpenFileName(this, tr("Open sink"),
+                 szFile,
+                 tr("Style files(*.qss)"));
+    if(szFile.isEmpty()) return;
+    LoadStyle(szFile);
+    set.setValue("Sink", szFile);
 }
 
 void MainWindow::slotCameraChanged(int index)
@@ -467,3 +519,4 @@ void MainWindow::on_actionAiLibraries_triggered(QAction* a)
     set.setValue("AI_Libraries", a->data().toInt());
 #endif
 }
+

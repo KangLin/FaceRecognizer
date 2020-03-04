@@ -37,10 +37,14 @@ private slots:
     void on_actionOpen_log_file_triggered();
     void on_actionAiLibraries_triggered(QAction *action);
 
+    void on_actionStyle_triggered();
+    
 private:
     int CamerOrientation(int index);
     int InitCamerOrientation();
-
+    int LoadStyle();
+    int LoadStyle(const QString &szFile);
+    
 private:
     Ui::MainWindow *ui;
     

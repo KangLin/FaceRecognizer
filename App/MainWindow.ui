@@ -70,6 +70,10 @@
      <property name="title">
       <string>AI libraries</string>
      </property>
+     <property name="icon">
+      <iconset resource="../Resource/Resource.qrc">
+       <normaloff>:/image/Tools</normaloff>:/image/Tools</iconset>
+     </property>
     </widget>
     <addaction name="actionStart"/>
     <addaction name="separator"/>
@@ -101,6 +105,7 @@
     <addaction name="actionOptions_O"/>
     <addaction name="menuCamer_Orientation"/>
     <addaction name="actionKeep_display_aspect_ratio"/>
+    <addaction name="actionStyle"/>
    </widget>
    <widget class="QMenu" name="menuHelp_H">
     <property name="title">
@@ -138,6 +143,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Start</normaloff>:/image/Start</iconset>
+   </property>
    <property name="text">
     <string>Start</string>
    </property>
@@ -168,6 +177,10 @@
    </property>
   </action>
   <action name="actionSet_model_path">
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
+   </property>
    <property name="text">
     <string>Set model path</string>
    </property>
@@ -361,6 +374,10 @@
    </property>
   </action>
   <action name="actionOptions_O">
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Option</normaloff>:/image/Option</iconset>
+   </property>
    <property name="text">
     <string>Options(&amp;O)</string>
    </property>
@@ -433,6 +450,27 @@
    </property>
    <property name="whatsThis">
     <string>Keep display aspect ratio</string>
+   </property>
+  </action>
+  <action name="actionStyle">
+   <property name="icon">
+    <iconset resource="../Resource/Resource.qrc">
+     <normaloff>:/image/Sink</normaloff>:/image/Sink</iconset>
+   </property>
+   <property name="text">
+    <string>Style</string>
+   </property>
+   <property name="iconText">
+    <string>Load Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Load Style</string>
+   </property>
+   <property name="statusTip">
+    <string>Load Style</string>
+   </property>
+   <property name="whatsThis">
+    <string>Load Style</string>
    </property>
   </action>
  </widget>

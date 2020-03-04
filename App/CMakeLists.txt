@@ -63,6 +63,7 @@ add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
 SET(RCC_FILES
     ../Resource/Resource.qrc
+    Resource/Style.qrc
     ${TRANSLATIONS_RESOURCE_FILES})
 if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
@@ -122,19 +123,23 @@ else()
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         )        
 endif()
+# Install syle files
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/black.qss
+        DESTINATION ${INSTALL_DATA_PREFIX}/style
+            COMPONENT Runtime)
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../Resource/image/FaceRecognizer.ico
         DESTINATION .
-        COMPONENT Runtime)
+            COMPONENT Runtime)
 ENDIF()
 
 if(UNIX AND NOT ANDROID)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop
         DESTINATION "share/applications"
-        COMPONENT Runtime)
+            COMPONENT Runtime)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/Resource/image/FaceRecognizer.png
         DESTINATION "share/pixmaps"
-        COMPONENT Runtime)
+            COMPONENT Runtime)
 endif()
 
 IF(ANDROID)

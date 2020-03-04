@@ -12,5 +12,10 @@
         <file alias="Image">image/Image.png</file>
         <file alias="Exit">image/exit.png</file>
         <file alias="Log">image/log.png</file>
+        <file alias="Delete">image/delete.png</file>
+        <file alias="Sink">image/skin.png</file>
+        <file alias="Option">image/option.png</file>
+        <file alias="Tools">image/Tools.png</file>
+        <file alias="Wait">image/wait.png</file>
     </qresource>
 </RCC>
