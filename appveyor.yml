@@ -6,6 +6,12 @@ cache:
   - model
   
 environment:
+  STOREPASS:
+    secure: l9BZEU39F1a4vSkhwl0CHR+yh6CD1c7byGzMv+1NUa4=
+  QT_USER:
+    secure: EoBPaPuJ6u9UDYpQWjKhUg==
+  QT_PASSWORD:
+    secure: ejAYGgB+3sBispRxUSr0xw==
   matrix: 
   ##### msvc 2013 ########
   #- BUILD_TARGERT: windows_msvc
