@@ -72,15 +72,23 @@ MainWindow::MainWindow(QWidget *parent) :
             for(int j = 0; j < e.keyCount(); j++)
             {
                 QAction* pA = ui->menuAI_libraries->addAction(e.key(j));
+                pAiGroup->addAction(pA);
                 pA->setCheckable(true);
+                pA->setData(e.value(j));
+
+                CFace *pFace = CFactoryFace::Instance()->GetFace(
+                            static_cast<CFactoryFace::LIB_TYPE>(j));
+                if(nullptr == pFace)
+                {
+                    pA->setEnabled(false);
+                    continue;
+                }
                 if(nSelect == e.value(j))
                 {
                     CFactoryFace::Instance()->SetLibType(
                            static_cast<CFactoryFace::LIB_TYPE>(nSelect), false);
                     pA->setChecked(true);
                 }
-                pA->setData(e.value(j));
-                pAiGroup->addAction(pA);
             }
             bool check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
                     this, SLOT(on_actionAiLibraries_triggered(QAction*)));

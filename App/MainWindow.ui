@@ -293,6 +293,9 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
@@ -374,6 +377,9 @@
    </property>
   </action>
   <action name="actionOptions_O">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Option</normaloff>:/image/Option</iconset>

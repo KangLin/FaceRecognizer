@@ -63,7 +63,7 @@ add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
 SET(RCC_FILES
     Resource/Resource.qrc
-    ${TRANSLATIONS_RESOURCE_FILES}) #Resource/Style.qrc
+    ${TRANSLATIONS_RESOURCE_FILES})
 if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
 endif()
@@ -123,7 +123,7 @@ else()
         )        
 endif()
 # Install syle files
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/black.qss
+INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Style/
         DESTINATION ${INSTALL_DATA_PREFIX}/style
             COMPONENT Runtime)
 IF(WIN32)
