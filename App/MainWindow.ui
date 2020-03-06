@@ -20,7 +20,7 @@
    <string>Face recognizer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../Resource/Resource.qrc">
+   <iconset resource="Resource/Resource.qrc">
     <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
@@ -45,7 +45,7 @@
       <string>Register</string>
      </property>
      <property name="icon">
-      <iconset resource="../Resource/Resource.qrc">
+      <iconset resource="Resource/Resource.qrc">
        <normaloff>:/image/Register</normaloff>:/image/Register</iconset>
      </property>
      <addaction name="actionRegisterImage"/>
@@ -60,7 +60,7 @@
       <string>Recognizer</string>
      </property>
      <property name="icon">
-      <iconset resource="../Resource/Resource.qrc">
+      <iconset resource="Resource/Resource.qrc">
        <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
      </property>
      <addaction name="actionRecognizerImage"/>
@@ -69,6 +69,10 @@
     <widget class="QMenu" name="menuAI_libraries">
      <property name="title">
       <string>AI libraries</string>
+     </property>
+     <property name="icon">
+      <iconset resource="Resource/Resource.qrc">
+       <normaloff>:/image/Tools</normaloff>:/image/Tools</iconset>
      </property>
     </widget>
     <addaction name="actionStart"/>
@@ -101,6 +105,7 @@
     <addaction name="actionOptions_O"/>
     <addaction name="menuCamer_Orientation"/>
     <addaction name="actionKeep_display_aspect_ratio"/>
+    <addaction name="actionStyle"/>
    </widget>
    <widget class="QMenu" name="menuHelp_H">
     <property name="title">
@@ -138,6 +143,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="Resource/Resource.qrc">
+     <normaloff>:/image/Start</normaloff>:/image/Start</iconset>
+   </property>
    <property name="text">
     <string>Start</string>
    </property>
@@ -168,6 +177,10 @@
    </property>
   </action>
   <action name="actionSet_model_path">
+   <property name="icon">
+    <iconset resource="Resource/Resource.qrc">
+     <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
+   </property>
    <property name="text">
     <string>Set model path</string>
    </property>
@@ -177,7 +190,7 @@
   </action>
   <action name="actionAbout_A">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
    </property>
    <property name="text">
@@ -215,7 +228,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -236,7 +249,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Video</normaloff>:/image/Video</iconset>
    </property>
    <property name="text">
@@ -248,7 +261,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -260,7 +273,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
    </property>
    <property name="text">
@@ -280,8 +293,11 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
    </property>
    <property name="text">
@@ -302,7 +318,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -323,7 +339,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
    </property>
    <property name="text">
@@ -344,7 +360,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
    </property>
    <property name="text">
@@ -361,6 +377,13 @@
    </property>
   </action>
   <action name="actionOptions_O">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Resource/Resource.qrc">
+     <normaloff>:/image/Option</normaloff>:/image/Option</iconset>
+   </property>
    <property name="text">
     <string>Options(&amp;O)</string>
    </property>
@@ -399,7 +422,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Exit</normaloff>:/image/Exit</iconset>
    </property>
    <property name="text">
@@ -414,7 +437,7 @@
   </action>
   <action name="actionOpen_log_file">
    <property name="icon">
-    <iconset resource="../Resource/Resource.qrc">
+    <iconset resource="Resource/Resource.qrc">
      <normaloff>:/image/Log</normaloff>:/image/Log</iconset>
    </property>
    <property name="text">
@@ -435,9 +458,30 @@
     <string>Keep display aspect ratio</string>
    </property>
   </action>
+  <action name="actionStyle">
+   <property name="icon">
+    <iconset resource="Resource/Resource.qrc">
+     <normaloff>:/image/Sink</normaloff>:/image/Sink</iconset>
+   </property>
+   <property name="text">
+    <string>Style</string>
+   </property>
+   <property name="iconText">
+    <string>Load Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Load Style</string>
+   </property>
+   <property name="statusTip">
+    <string>Load Style</string>
+   </property>
+   <property name="whatsThis">
+    <string>Load Style</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../Resource/Resource.qrc"/>
+  <include location="Resource/Resource.qrc"/>
  </resources>
  <connections/>
 </ui>

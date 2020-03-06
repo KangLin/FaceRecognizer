@@ -9,13 +9,6 @@ if(POLICY CMP0020)
 endif()
 
 project(FaceRecognizer)
-
-# Set install data prefix
-if(ANDROID)
-    set(INSTALL_DATA_PREFIX assets/data)
-else()
-    set(INSTALL_DATA_PREFIX data)
-endif()
     
 OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
 if(BUILD_PERFORMANCE)
@@ -105,7 +98,6 @@ SET(TRANSLATIONS_NAME ${PROJECT_NAME})
 include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
 
 SET(RCC_FILES
-    ../Resource/Resource.qrc
     ${TRANSLATIONS_RESOURCE_FILES})
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)

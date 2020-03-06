@@ -28,7 +28,9 @@
 class FACERECOGNIZER_EXPORT CFactoryFace : public QObject
 {
     Q_OBJECT
-    
+#if (QT_VERSION < QT_VERSION_CHECK(5, 5, 0))
+    Q_ENUMS((LIB_TYPE)
+#endif
 public:
     CFactoryFace(QObject* parent = nullptr);
     virtual ~CFactoryFace();
@@ -41,7 +43,9 @@ public:
         DLIB,
         AUTO
     };
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
     Q_ENUM(LIB_TYPE)
+#endif
     int SetLibType(LIB_TYPE type, bool bOnly = true);
     
     virtual CFace* GetFace(LIB_TYPE type = AUTO);

@@ -6,6 +6,12 @@ cache:
   - model
   
 environment:
+  STOREPASS:
+    secure: l9BZEU39F1a4vSkhwl0CHR+yh6CD1c7byGzMv+1NUa4=
+  QT_USER:
+    secure: EoBPaPuJ6u9UDYpQWjKhUg==
+  QT_PASSWORD:
+    secure: ejAYGgB+3sBispRxUSr0xw==
   matrix: 
   ##### msvc 2013 ########
   #- BUILD_TARGERT: windows_msvc
@@ -26,28 +32,28 @@ environment:
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.10\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc14_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc14_x86.tar.gz
 
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.10\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc14_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc14_x64.tar.gz
     
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.6\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc14_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc14_x86.tar.gz
 
   - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
     QT_ROOT: C:\Qt\5.6\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc14_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc14_x64.tar.gz
 
   ##### msvc 2017 ########
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -57,7 +63,7 @@ environment:
     QT_ROOT: C:\Qt\5.12\msvc2017
     BUILD_ARCH: x86
     STATIC: ON
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc15_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc15_x86.tar.gz
     
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     GENERATORS: "Visual Studio 15 2017 Win64"
@@ -66,7 +72,7 @@ environment:
     QT_ROOT: C:\Qt\5.12\msvc2017_64
     BUILD_ARCH: x64
     STATIC: ON
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc15_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc15_x64.tar.gz
     
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     GENERATORS: "Visual Studio 15 2017 Win64"
@@ -74,7 +80,7 @@ environment:
     TOOLCHAIN_VERSION: 15
     QT_ROOT: C:\Qt\5.10\msvc2017_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc15_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc15_x64.tar.gz
   
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     GENERATORS: "Visual Studio 15 2017 Win64"
@@ -82,7 +88,7 @@ environment:
     TOOLCHAIN_VERSION: 15
     QT_ROOT: C:\Qt\5.9\msvc2017_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_msvc15_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_msvc15_x64.tar.gz
   
   ##### mingw ########
   - BUILD_TARGERT: windows_mingw
@@ -96,14 +102,14 @@ environment:
     TOOLCHAIN_VERSION: 530_32
     QT_ROOT: C:\Qt\5.10\mingw53_32
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_mingw530_32_x86.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_mingw530_32_x86.tar.gz
     
   - BUILD_TARGERT: windows_mingw
     GENERATORS: "MSYS Makefiles"
     TOOLCHAIN_VERSION: 730_64
     QT_ROOT: C:\Qt\5.12\mingw73_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/windows_mingw730_64_x64.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_mingw730_64_x64.tar.gz
     
   ##### android ########
   - BUILD_TARGERT: android
@@ -115,8 +121,19 @@ environment:
     QT_VERSION: 5.12.6
     ANDROID_API: android-24
     TOOLCHAIN_VERSION: 4.9
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.4/android4.9_arm_in_windows.tar.gz
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/android4.9_arm_in_windows.tar.gz
     
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "arm64-v8a"
+    ANDROID_ARM_NEON: ON
+    QT_ROOT: NO
+    QT_VERSION_DIR: 5.12
+    QT_VERSION: 5.12.6
+    ANDROID_API: android-24
+    TOOLCHAIN_VERSION: 4.9
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/android4.9_arm64_in_windows.tar.gz
+  
 matrix:
   fast_finish: false
 

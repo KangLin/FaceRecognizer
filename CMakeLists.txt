@@ -120,6 +120,13 @@ if (BUILD_SHARED_LIBS)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
+# Set install data prefix
+if(ANDROID)
+    set(INSTALL_DATA_PREFIX assets/data)
+else()
+    set(INSTALL_DATA_PREFIX data)
+endif()
+
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 include(GenerateExportHeader)

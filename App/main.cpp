@@ -43,6 +43,15 @@ int main(int argc, char *argv[])
         return 0; 
 #endif
 
+    QFile f(":/qss/black.qss");
+    if(f.open(QFile::ReadOnly))
+    {
+        QString szStyle = f.readAll();
+        qDebug() << "Style:" << szStyle;
+        qApp->setStyleSheet(szStyle);
+        f.close();
+    }
+    
     MainWindow w;
     
 #if defined (Q_OS_ANDROID)
