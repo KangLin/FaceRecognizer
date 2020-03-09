@@ -5,6 +5,7 @@ QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_arm64_v8a
 export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm64/sdk/native/jni
 FFMPEG_DIR=
 export SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
+export facedetection_DIR=/d/Source/ai/libfacedetection/build_android/install/lib/cmake
 if [ -n "$1" ]; then
     Qt5_ROOT=$1
 fi
@@ -43,13 +44,16 @@ else
     PARA="${PARA} -DUSE_FFMPEG=OFF"
 fi
 if [ -n "$SeetaFace2_DIR" ]; then
-    PARA="${PARA} -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake 
-            -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake 
-            -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake 
-            -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake 
-            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake 
-            -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake 
-            -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake "
+    PARA="${PARA} -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake
+            -DSeetaNet_DIR=${SeetaFace2_DIR}/lib/cmake
+            -DSeetaFaceDetector_DIR=${SeetaFace2_DIR}/lib/cmake
+            -DSeetaFaceLandmarker_DIR=${SeetaFace2_DIR}/lib/cmake
+            -DSeetaFaceRecognizer_DIR=${SeetaFace2_DIR}/lib/cmake
+            -DSeetaFaceTracker_DIR=${SeetaFace2_DIR}/lib/cmake
+            -DSeetaQualityAssessor_DIR=${SeetaFace2_DIR}/lib/cmake"
+fi
+if [ -n "facedetection_DIR" ]; then
+    PARA="${PARA} -Dfacedetection_DIR=${facedetection_DIR}"
 fi
 echo "PARA:$PARA"
 
