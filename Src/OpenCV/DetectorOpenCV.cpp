@@ -73,7 +73,10 @@ int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
     std::vector<cv::Rect> fs;
     PERFORMANCE_START(OpencvDectect)
     m_haar_cascade->detectMultiScale(gray, fs);
-    PERFORMANCE_ADD_TIME(OpencvDectect, "detectMultiScale")
+    PERFORMANCE_ADD_TIME(OpencvDectect, "detect:image width:"
+                         + QString::number(image.width())
+                         + ";Height:"
+                         + QString::number(image.height()))
     foreach(auto f, fs)
     {
         QRect r(f.x, f.y, f.width, f.height);

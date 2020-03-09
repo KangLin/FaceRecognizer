@@ -53,7 +53,7 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
               cv::Size(inWidth, inHeight), meanVal, false, false);
     m_Net.setInput(inputBlob, "data");	// set the network input
     
-    // Compute output，这是一个4D数，
+    // Compute output，这是一个4维数，
     // rows and cols can only hold 2 dimensions,
     // so they are not used here, and set to -1
     cv::Mat detection = m_Net.forward("detection_out");

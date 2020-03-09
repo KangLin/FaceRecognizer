@@ -18,7 +18,8 @@ CTableRegister::CTableRegister(QObject *parent) : QObject(parent)
 int CTableRegister::SetDatabase(const QSqlDatabase &db)
 {
     m_Database = db;
-    return 0;
+    if(m_Database.isOpen()) return 0;
+    return -1;
 }
 
 int CTableRegister::Register(qint64 index, CDataRegister *pData)
@@ -29,6 +30,12 @@ int CTableRegister::Register(qint64 index, CDataRegister *pData)
     if(pData->getIdx() != index)
         return -2;
 
+    if(!m_Database.isOpen())
+    {
+        LOG_MODEL_ERROR("CTableRegister", "database isn't open");
+        return -3;
+    }
+    
     QString szCol, szValue;
     int nCount = pData->metaObject()->propertyCount();
     for(int i = pData->metaObject()->propertyOffset(); i < nCount; i++)
@@ -66,6 +73,13 @@ int CTableRegister::Register(qint64 index, CDataRegister *pData)
 int CTableRegister::Delete(qint64 index)
 {
     int nRet = 0;
+    
+    if(!m_Database.isOpen())
+    {
+        LOG_MODEL_ERROR("CTableRegister", "database isn't open");
+        return -1;
+    }
+    
     QString szSql = "DELETE FROM Register WHERE idx="
             + QString::number(index) + ";";
     QSqlQuery query(m_Database);
@@ -84,13 +98,20 @@ int CTableRegister::GetRegisterInfo(qint64 index, CDataRegister *pData)
     if(!pData)
         return -1;
 
+    if(!m_Database.isOpen())
+    {
+        LOG_MODEL_ERROR("CTableRegister", "database isn't open");
+        return -2;
+    }
+    
     QString szSql = "SELECT * FROM Register WHERE idx="
             + QString::number(index) + ";";
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
-        LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
-                   m_Database.lastError().text().toStdString().c_str());
+        LOG_MODEL_ERROR("CDatabase", "Register fail: %s; sql: %s",
+                   m_Database.lastError().text().toStdString().c_str(),
+                        szSql.toStdString().c_str());
         return m_Database.lastError().nativeErrorCode().toInt();
     }
     while (query.next()) {
@@ -120,8 +141,9 @@ bool CTableRegister::IsExistNo(qint64 no)
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
-        LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
-                   m_Database.lastError().text().toStdString().c_str());
+        LOG_MODEL_ERROR("CDatabase", "Register fail: %s; sql: %s",
+                   m_Database.lastError().text().toStdString().c_str(),
+                        szSql.toStdString().c_str());
         return false;
     }
     if(query.next())

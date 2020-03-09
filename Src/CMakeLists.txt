@@ -42,6 +42,29 @@ include(OpenCV)
 
 include(Seeta)
 
+find_package(facedetection)
+if(facedetection_FOUND)
+    set(LIBS ${LIBS} facedetection)
+    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBFACEDETECTION)
+    
+    set(SOURCES_FILES
+        ${SOURCES_FILES}
+        libfacedetection/FaceLibfacedetection.cpp
+        libfacedetection/DetectorLibfacedetection.cpp)
+    set(HEADER_FILES
+        ${HEADER_FILES}
+        libfacedetection/FaceLibfacedetection.h
+        libfacedetection/DetectorLibfacedetection.h)
+    
+    if(ANDROID)
+        INSTALL(FILES $<TARGET_FILE:facedetection>
+            DESTINATION "libs/${ANDROID_ABI}")
+    else()
+        INSTALL(FILES $<TARGET_FILE:facedetection>
+            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    endif()
+endif()
+
 set(SOURCES_FILES
     ${SOURCES_FILES}
     CameraQtCaptureVideoFrame.cpp
@@ -232,4 +255,5 @@ message("== OpenCV:${OpenCV_FOUND}")
 message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
 message("== SeetaFac:${SeetaFace_FOUND}")
+message("== facedetection:${facedetection_FOUND}")
 message("== Build PERFORMANCE:${BUILD_PERFORMANCE}")

@@ -41,6 +41,7 @@ public:
         SEETA,
         OPENCV,
         DLIB,
+        LIBFACEDETECTION,
         AUTO
     };
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))

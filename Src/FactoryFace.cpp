@@ -6,6 +6,9 @@
 #ifdef HAVE_OPENCV
     #include "OpenCV/FaceOpenCV.h"
 #endif
+#ifdef HAVE_LIBFACEDETECTION
+    #include "libfacedetection/FaceLibfacedetection.h"
+#endif
 #include "ParameterFactory.h"
 
 CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
@@ -25,6 +28,10 @@ CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     m_Face[SEETA] = new CFaceSeeta();
 #endif
 
+#ifdef HAVE_LIBFACEDETECTION
+    m_Face[LIBFACEDETECTION] = new CFaceLibfacedetection();
+#endif
+    
     SetLibType(AUTO, false);
 }
 

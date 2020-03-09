@@ -34,6 +34,7 @@
   + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
   + [ ] [ncnn](https://github.com/Tencent/ncnn)
+  + [x] [libfacedetection](https://github.com/ShiqiYu/libfacedetection)
     - https://github.com/MirrorYuChen/ncnn_example
   + [x] 其他深度学习网络  
     - https://github.com/deepinsight/mxnet-mtcnn

@@ -54,7 +54,7 @@ int CDatabase::InitDatabase()
             QStringList sql = szSql.split(";");
             for(int i = 0; i < sql.size(); i++)
             {
-                qDebug() << sql[i];
+                LOG_MODEL_DEBUG("CDatabase", "sql: %s", sql[i].toStdString().c_str());
                 if(!query.exec(sql[i]) && m_Database.lastError().type() != QSqlError::NoError)
                 {
                     LOG_MODEL_ERROR("CDatabase", "Create database fail: %s",
