@@ -16,6 +16,23 @@ if(BUILD_PERFORMANCE)
     set(SOURCES_FILES ${SOURCES_FILES} Performance.cpp)
 endif()
 
+OPTION(USE_LOG4CPLUS "Use log4cplus" ON)
+if(USE_LOG4CPLUS)
+    find_package(log4cplus)
+    if(log4cplus_FOUND)
+        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LOG4CPLUS)
+        set(LIBS ${LIBS} log4cplus::log4cplusU)
+        
+        if(ANDROID)
+            INSTALL(FILES $<TARGET_FILE:log4cplus::log4cplusU>
+                DESTINATION "libs/${ANDROID_ABI}")
+        else()
+            INSTALL(FILES $<TARGET_FILE:log4cplus::log4cplusU>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}")
+        endif()
+    endif(log4cplus_FOUND)
+endif(USE_LOG4CPLUS)
+
 option(USE_YUV "Use libyuv" ON)
 if(USE_YUV)
     #Use: https://github.com/KangLin/libyuv
@@ -256,4 +273,5 @@ message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
 message("== SeetaFac:${SeetaFace_FOUND}")
 message("== libfacedetection:${facedetection_FOUND}")
+message("== log4cplus:${USE_LOG4CPLUS}")
 message("== Build PERFORMANCE:${BUILD_PERFORMANCE}")

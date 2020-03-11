@@ -11,8 +11,11 @@
     #include "FrmUpdater/FrmUpdater.h"
 #endif
 
+#include "Log.h"
+
 int main(int argc, char *argv[])
 {
+    LOG_INITIALIZER;
 #if (QT_VERSION > QT_VERSION_CHECK(5,6,0))
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -60,5 +63,9 @@ int main(int argc, char *argv[])
     w.show();
 #endif
     
-    return a.exec();
+    int nRet = a.exec();
+     
+    LOG_CLEAN;
+ 
+    return nRet;
 }
