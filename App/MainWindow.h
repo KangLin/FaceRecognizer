@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -14,7 +18,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -44,7 +48,8 @@ private:
     int InitCamerOrientation();
     int LoadStyle();
     int LoadStyle(const QString &szFile);
-    
+    int createDockWindows();
+
 private:
     Ui::MainWindow *ui;
     

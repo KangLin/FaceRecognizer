@@ -8,6 +8,7 @@
 class CFaceSeeta : public CFace
 {
     Q_OBJECT
+
 public:
     CFaceSeeta(QObject* parent = nullptr);
     virtual ~CFaceSeeta();

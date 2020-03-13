@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef MANAGERECOGNIZERVIDEO_H
 #define MANAGERECOGNIZERVIDEO_H
 
@@ -15,7 +19,7 @@ class CManageRecognizerVideo;
 class CManageRecognizerVideo : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit CManageRecognizerVideo(QWidget *parent = nullptr);
     virtual ~CManageRecognizerVideo() override;

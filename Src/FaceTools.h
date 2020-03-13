@@ -11,6 +11,7 @@ class CFace;
 class FACERECOGNIZER_EXPORT CFaceTools : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CFaceTools(CFace* pFace = nullptr, QObject *parent = nullptr);
     

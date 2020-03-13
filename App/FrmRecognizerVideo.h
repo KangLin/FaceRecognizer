@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef FRMRECOGNIZERVIDEO_H
 #define FRMRECOGNIZERVIDEO_H
 
@@ -14,7 +18,7 @@ class CFrmRecognizerVideo;
 class CFrmRecognizerVideo : public QWidget
 {
     Q_OBJECT
-    
+ 
 public:
     explicit CFrmRecognizerVideo(QWidget *parent = nullptr);
     virtual ~CFrmRecognizerVideo();

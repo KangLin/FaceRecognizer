@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef DLGLOG_H
 #define DLGLOG_H
 
@@ -10,7 +14,7 @@ class CDlgLog;
 class CDlgLog : public QDialog
 {
     Q_OBJECT
-    
+
 public:
     explicit CDlgLog(const QString &szLogFile = QString(),
                      QWidget *parent = nullptr);

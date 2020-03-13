@@ -56,6 +56,7 @@
 class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame : public QAbstractVideoSurface
 {
     Q_OBJECT
+
 public:
     explicit CCameraQtCaptureVideoFrame(QObject *parent = nullptr);
     virtual ~CCameraQtCaptureVideoFrame();

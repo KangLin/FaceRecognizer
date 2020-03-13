@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
@@ -16,6 +20,7 @@
 #include "FactoryFace.h"
 #include "Log.h"
 #include "DlgLog.h"
+#include "FrmPara.h"
 
 #include <QIcon>
 #include <QCameraInfo>
@@ -28,6 +33,7 @@
 #include <QActionGroup>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QDockWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -126,6 +132,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionUpdate_U->setIcon(updater.windowIcon());
 #endif
 
+    createDockWindows();
+    
     if(CFactoryFace::Instance()->bIsValid())
     {
         if(CFactoryFace::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
@@ -528,3 +536,15 @@ void MainWindow::on_actionAiLibraries_triggered(QAction* a)
 #endif
 }
 
+int MainWindow::createDockWindows()
+{
+    QDockWidget *dock = new QDockWidget(tr("Set parameters"), this);
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    CFrmPara *para = new CFrmPara(dock);
+    dock->setWidget(para);
+    addDockWidget(Qt::RightDockWidgetArea, dock);
+
+    ui->menuTools->addAction(dock->toggleViewAction());
+    
+    return 0;
+}

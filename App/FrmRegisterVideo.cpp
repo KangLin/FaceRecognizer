@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "FrmRegisterVideo.h"
 #include "ui_FrmRegisterVideo.h"
 #include "Performance.h"

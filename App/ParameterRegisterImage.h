@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef CPARAMETERREGISTERIMAGE_H
 #define CPARAMETERREGISTERIMAGE_H
 
@@ -7,6 +11,7 @@
 class CParameterRegisterImage : public QObject
 {
     Q_OBJECT
+
     Q_PROPERTY(qint64 no READ GetNo WRITE SetNo)
     Q_PROPERTY(QString name READ GetName WRITE SetName)
     Q_PROPERTY(QImage image READ GetImage WRITE SetImage)

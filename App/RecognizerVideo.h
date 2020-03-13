@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef CRECOGNIZERVIDEO_H
 #define CRECOGNIZERVIDEO_H
 
@@ -8,6 +12,7 @@
 class CRecognizerVideo : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CRecognizerVideo(QObject *parent = nullptr);
     

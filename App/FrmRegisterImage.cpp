@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "FrmRegisterImage.h"
 #include "ui_FrmRegisterImage.h"
 #include "Log.h"

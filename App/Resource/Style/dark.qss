@@ -17,6 +17,17 @@ QMainWindow::separator{
 QMainWindow::separator:hover{
     background: #66AAEE;
 }
+QDockWidget::close-button, QDockWidget::float-button {
+    border: 1px solid transparent;
+    background: darkgray;
+    padding: 0px;
+}
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+    background: gray;
+}
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+    padding: 1px -1px -1px 1px;
+}
 QSplitter::handle{
     border: 1px solid #666666;
     border-style: outset;

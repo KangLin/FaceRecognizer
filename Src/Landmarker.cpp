@@ -1,11 +1,27 @@
 #include "Landmarker.h"
 #include "Log.h"
+#include "RabbitCommonDir.h"
 
 CLandmarker::CLandmarker(CFace *pFace, QObject *parent)
     : QObject(parent),
       m_pParameter(nullptr),
       m_pFace(pFace)
-{}
+{
+    m_szModelPath = RabbitCommon::CDir::Instance()->GetDirData(false)
+            + QDir::separator() + "model";
+    LOG_MODEL_INFO("CParameter", "szPath:%s", m_szModelPath.toStdString().c_str());
+#if defined(Q_OS_ANDROID)
+    QDir d;
+    if(!d.exists(m_szModelPath))
+    {
+        d.mkpath(m_szModelPath);
+        RabbitCommon::CDir::CopyDirectory(
+                    RabbitCommon::CDir::Instance()->GetDirData(true)
+                                + QDir::separator() + "model",
+                    m_szModelPath);
+    }
+#endif
+}
 
 CLandmarker::~CLandmarker()
 {}
@@ -54,4 +70,15 @@ void CLandmarker::slotParameterUpdate()
     if(nRet)
         LOG_MODEL_ERROR("CLandmarker", "UpdateParameter: %s",
                          szErr.toStdString().c_str());
+}
+
+int CLandmarker::setModelPath(const QString &szPath)
+{
+    m_szModelPath = szPath;
+    return 0;
+}
+
+QString CLandmarker::getModelPath()
+{
+    return m_szModelPath;
 }

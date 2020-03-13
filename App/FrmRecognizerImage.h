@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef FRMRECOGNIZERIMAGE_H
 #define FRMRECOGNIZERIMAGE_H
 
@@ -11,7 +15,7 @@ class CFrmRecognizerImage;
 class CFrmRecognizerImage : public QWidget
 {
     Q_OBJECT
-    
+ 
 public:
     explicit CFrmRecognizerImage(QWidget *parent = nullptr);
     ~CFrmRecognizerImage();

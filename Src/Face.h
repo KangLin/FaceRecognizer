@@ -16,6 +16,7 @@
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CFace(QObject *parent = nullptr);
     virtual ~CFace();

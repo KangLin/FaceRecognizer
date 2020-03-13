@@ -9,6 +9,7 @@
 class FACERECOGNIZER_EXPORT CDatabase : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CDatabase(QObject *parent = nullptr);
     virtual ~CDatabase();

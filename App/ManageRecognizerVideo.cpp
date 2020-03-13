@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "ManageRecognizerVideo.h"
 #include "ui_ManageRecognizerVideo.h"
 #include "RecognizerThread.h"

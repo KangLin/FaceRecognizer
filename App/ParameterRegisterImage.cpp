@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "ParameterRegisterImage.h"
 
 CParameterRegisterImage::CParameterRegisterImage(QObject *parent) : QObject(parent)

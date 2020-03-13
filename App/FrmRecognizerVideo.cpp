@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "FrmRecognizerVideo.h"
 #include "ui_FrmRecognizerVideo.h"
 #include "FactoryFace.h"

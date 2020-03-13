@@ -9,7 +9,7 @@
 class CRecognizerSeeta : public CRecognizer
 {
     Q_OBJECT
-    
+
 public:
     CRecognizerSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CRecognizerSeeta();

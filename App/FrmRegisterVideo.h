@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef FRMREGISTERVIDEO_H
 #define FRMREGISTERVIDEO_H
 
@@ -13,7 +17,7 @@ class CFrmRegisterVideo;
 class CFrmRegisterVideo : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit CFrmRegisterVideo(QWidget *parent = nullptr);
     ~CFrmRegisterVideo();

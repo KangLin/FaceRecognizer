@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef CRECOGNIZERTHREAD_H
 #define CRECOGNIZERTHREAD_H
 
@@ -8,6 +12,7 @@
 class CRecognizerThread : public QThread
 {
     Q_OBJECT
+
 public:
     explicit CRecognizerThread(CManageRecognizerVideo *parent = nullptr);
     virtual ~CRecognizerThread() override;

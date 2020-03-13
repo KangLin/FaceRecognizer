@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef FRMREGISTERIMAGE_H
 #define FRMREGISTERIMAGE_H
 

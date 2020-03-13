@@ -33,7 +33,7 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuTools">
+   <widget class="QMenu" name="menuOperate">
     <property name="title">
      <string>Operate(&amp;O)</string>
     </property>
@@ -88,7 +88,7 @@
     <addaction name="actionExit"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="menuOptions">
+   <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools(&amp;T)</string>
     </property>
@@ -121,9 +121,9 @@
     <addaction name="actionCamera"/>
     <addaction name="actionFile"/>
    </widget>
-   <addaction name="menuTools"/>
+   <addaction name="menuOperate"/>
    <addaction name="menuSource"/>
-   <addaction name="menuOptions"/>
+   <addaction name="menuTools"/>
    <addaction name="menuHelp_H"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

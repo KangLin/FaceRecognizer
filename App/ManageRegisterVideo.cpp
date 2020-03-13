@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "ManageRegisterVideo.h"
 
 CManageRegisterVideo::CManageRegisterVideo(QWidget *parent) : QWidget(parent)

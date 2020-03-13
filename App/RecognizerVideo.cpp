@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "RecognizerVideo.h"
 #include "Log.h"
 #include "Performance.h"

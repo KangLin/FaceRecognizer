@@ -115,9 +115,13 @@ CDetector* CFactoryFace::GetDector(LIB_TYPE type)
         if(GetFace(m_CurrentLib))
         {
             CDetector* pDetect = GetFace(m_CurrentLib)->GetDector();
-            if(pDetect || m_bOnlyUserCurrent)
+            if(pDetect)
                 return pDetect;
         }
+        
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+        
         //TODO: 优化：使用性能高的库
         
         for (int i = 0; i < AUTO; i++) {
@@ -136,9 +140,12 @@ CTracker* CFactoryFace::GetTracker(LIB_TYPE type)
         if(GetFace(m_CurrentLib))
         {
             CTracker* pTracker = GetFace(m_CurrentLib)->GetTracker();
-            if(pTracker || m_bOnlyUserCurrent)
+            if(pTracker)
                 return pTracker;
         }
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+        
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i] && m_Face[i]->GetTracker())
                 return m_Face[i]->GetTracker();
@@ -154,9 +161,12 @@ CLandmarker* CFactoryFace::GetLandmarker(LIB_TYPE type)
         if(GetFace(m_CurrentLib))
         {
             CLandmarker* pLandmarker = GetFace(m_CurrentLib)->GetLandmarker();
-            if(pLandmarker || m_bOnlyUserCurrent)
+            if(pLandmarker)
                 return pLandmarker;
         }
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+        
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i] && m_Face[i]->GetLandmarker())
                 return m_Face[i]->GetLandmarker();
@@ -172,9 +182,12 @@ CRecognizer* CFactoryFace::GetRecognizer(LIB_TYPE type)
         if(GetFace(m_CurrentLib))
         {
             CRecognizer* pRecognizer = GetFace(m_CurrentLib)->GetRecognizer();
-            if(pRecognizer || m_bOnlyUserCurrent)
+            if(pRecognizer)
                 return pRecognizer;
         }
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+        
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i] && m_Face[i]->GetRecognizer())
                 return m_Face[i]->GetRecognizer();
@@ -191,9 +204,12 @@ CFaceTools* CFactoryFace::GetFaceTools(LIB_TYPE type)
         if(GetFace(m_CurrentLib))
         {
             CFaceTools* pTools = GetFace(m_CurrentLib)->GetFaceTools();
-            if(pTools || m_bOnlyUserCurrent)
+            if(pTools)
                 return pTools;
         }
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+        
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i] && m_Face[i]->GetFaceTools())
                 return m_Face[i]->GetFaceTools();
@@ -209,9 +225,12 @@ CDatabase* CFactoryFace::GetDatabase(LIB_TYPE type)
         if(GetFace(m_CurrentLib))
         {
             CDatabase* pDb = GetFace(m_CurrentLib)->GetDatabase();
-            if(pDb || m_bOnlyUserCurrent)
+            if(pDb)
                 return pDb;
         }
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+        
         for (int i = 0; i < AUTO; i++) {
             if(m_Face[i] && m_Face[i]->GetDatabase())
                 return m_Face[i]->GetDatabase();

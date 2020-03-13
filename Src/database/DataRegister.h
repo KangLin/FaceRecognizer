@@ -7,6 +7,7 @@
 class FACERECOGNIZER_EXPORT CDataRegister : public QObject
 {
     Q_OBJECT
+  
     Q_PROPERTY(qint64 idx READ getIdx WRITE setIdx)
     Q_PROPERTY(qint64 no READ getNo WRITE setNo)
     Q_PROPERTY(QString name READ getName WRITE setName)

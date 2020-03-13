@@ -21,6 +21,7 @@ class CFace;
 class FACERECOGNIZER_EXPORT CRecognizer : public QObject
 {
     Q_OBJECT
+
 public:
     CRecognizer(CFace* pFace = nullptr, QObject* parent = nullptr);
     virtual ~CRecognizer();

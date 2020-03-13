@@ -23,6 +23,7 @@
 class FACERECOGNIZER_EXPORT CPerformance : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CPerformance(const QString &szName = QString(),
                           QObject *parent = nullptr);

@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include <QApplication>
 #if defined(Q_OS_ANDROID)
     #include <QtAndroidExtras/QtAndroid>

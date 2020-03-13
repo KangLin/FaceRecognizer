@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef CMANAGEREGISTERVIDEO_H
 #define CMANAGEREGISTERVIDEO_H
 
@@ -11,6 +15,7 @@
 class CManageRegisterVideo : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit CManageRegisterVideo(QWidget *parent = nullptr);
 

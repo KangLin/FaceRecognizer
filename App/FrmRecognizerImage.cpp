@@ -1,3 +1,7 @@
+/**
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #include "FrmRecognizerImage.h"
 #include "ui_FrmRecognizerImage.h"
 #include "RabbitCommonDir.h"

@@ -24,6 +24,9 @@ set(SOURCES_FILES
     ManageRecognizerVideo.cpp
     RecognizerThread.cpp
     RecognizerVideo.cpp
+    FrmPara.cpp
+    DelegateParamter.cpp
+    FrmBroweFile.cpp
     )
 
 set(HEADER_FILES
@@ -39,6 +42,9 @@ set(HEADER_FILES
     ManageRecognizerVideo.h
     RecognizerThread.h
     RecognizerVideo.h
+    FrmPara.h
+    DelegateParamter.h
+    FrmBroweFile.h
     )
 
 set(SOURCE_UI_FILES
@@ -50,6 +56,8 @@ set(SOURCE_UI_FILES
     FrmRegisterVideo.ui
     FrmRecognizerVideo.ui
     ManageRecognizerVideo.ui
+    FrmPara.ui
+    FrmBroweFile.ui
     )
 
 #翻译

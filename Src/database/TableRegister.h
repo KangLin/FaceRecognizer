@@ -8,6 +8,7 @@
 class FACERECOGNIZER_EXPORT CTableRegister : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CTableRegister(QObject *parent = nullptr);
     

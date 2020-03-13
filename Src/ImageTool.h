@@ -29,6 +29,7 @@ extern "C" {
 class FACERECOGNIZER_EXPORT CImageTool : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CImageTool(QObject *parent = nullptr);
 

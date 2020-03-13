@@ -7,6 +7,7 @@
 class FACERECOGNIZER_EXPORT CParameter : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CParameter(QObject *parent = nullptr);
     virtual ~CParameter();

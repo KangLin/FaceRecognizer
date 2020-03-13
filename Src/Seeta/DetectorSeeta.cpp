@@ -7,6 +7,7 @@ CDetectorSeeta::CDetectorSeeta(CFace *pFace, QObject *parent)
     : CDetector(pFace, parent)
 {
     m_bInit = false;
+    m_MinFaceSize = 80;
 }
 
 CDetectorSeeta::~CDetectorSeeta()
@@ -97,5 +98,16 @@ int CDetectorSeeta::UpdateParameter(QString &szErr)
     }
     m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetMinFaceSize());
     m_bInit = true;
+    return 0;
+}
+
+int CDetectorSeeta::getMinFaceSize()
+{
+    return m_MinFaceSize;
+}
+
+int CDetectorSeeta::setMinFaceSize(int size)
+{
+    m_MinFaceSize = size;
     return 0;
 }

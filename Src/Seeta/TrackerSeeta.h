@@ -10,6 +10,7 @@
 class CTrackerSeeta : public CTracker
 {
     Q_OBJECT
+
 public:
     explicit CTrackerSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
     

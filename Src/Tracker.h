@@ -14,6 +14,7 @@ class CFace;
 class FACERECOGNIZER_EXPORT CTracker : public QObject
 {
     Q_OBJECT
+
 public:
     explicit CTracker(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual int SetParameter(CParameterDetector *pPara);

@@ -11,7 +11,7 @@
 class CLandmarkerSeeta : public CLandmarker
 {
     Q_OBJECT
-    
+
 public:
     CLandmarkerSeeta(CFace* pFace = nullptr, QObject* parent = nullptr);
     virtual ~CLandmarkerSeeta();
