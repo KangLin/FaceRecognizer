@@ -16,7 +16,7 @@ public:
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
 private:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
     bool m_bInit;
     cv::dnn::Net m_Net;
 

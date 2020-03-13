@@ -2,6 +2,7 @@
 #define CFACE_H
 
 #include <QObject>
+#include <QMetaClassInfo>
 
 #include "facerecognizer_export.h"
 
@@ -16,7 +17,8 @@
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
     Q_OBJECT
-
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    
 public:
     explicit CFace(QObject *parent = nullptr);
     virtual ~CFace();

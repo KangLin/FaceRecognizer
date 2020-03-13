@@ -11,19 +11,22 @@
 class CDetectorSeeta : public CDetector
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
     Q_PROPERTY(int minFaceSize READ getMinFaceSize WRITE setMinFaceSize)
 
 public:
     CDetectorSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
-    virtual ~CDetectorSeeta();
+    virtual ~CDetectorSeeta() override;
     
-    virtual int Detect(const QImage &image,  QVector<QRect> &faces);
+    virtual int Detect(const QImage &image,  QVector<QRect> &faces) override;
     
     int getMinFaceSize();
     int setMinFaceSize(int size);
-    
+
+protected:
+    virtual int UpdateParameter() override;
+
 private:
-    virtual int UpdateParameter(QString &szErr);
     QSharedPointer<seeta::FaceDetector> m_Dector;
     bool m_bInit;
     int m_MinFaceSize;

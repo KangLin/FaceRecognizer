@@ -95,6 +95,7 @@ set(SOURCES_FILES
     ParameterFaceTools.cpp
     FactoryFace.cpp
     Face.cpp
+    FaceBase.cpp
     Detector.cpp
     Tracker.cpp
     Landmarker.cpp
@@ -110,6 +111,7 @@ set(INSTALLHEADER_FILES
     CameraQtCaptureVideoFrame.h
     FactoryFace.h
     Face.h
+    FaceBase.h
     Detector.h
     Tracker.h
     Landmarker.h

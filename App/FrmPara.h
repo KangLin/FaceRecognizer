@@ -8,6 +8,7 @@
 
 #include <QWidget>
 #include <QStandardItemModel>
+#include <QMetaClassInfo>
 
 namespace Ui {
 class CFrmPara;
@@ -16,13 +17,14 @@ class CFrmPara;
 class CFrmPara : public QWidget
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
 
 public:
     explicit CFrmPara(QWidget *parent = nullptr);
     ~CFrmPara();
     
-    int SetParamter(QObject *pPara = nullptr);
-    
+public Q_SLOTS:
+    int slotUpdateParamter(QAction *pAction = nullptr);
 private Q_SLOTS:
     void slotItemChanged(QStandardItem *item);
     

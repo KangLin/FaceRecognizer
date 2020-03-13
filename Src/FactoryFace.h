@@ -6,6 +6,8 @@
 #include "facerecognizer_export.h"
 #include "Face.h"
 
+#include <QMetaClassInfo>
+
 // @defgroup CFactoryFace Face factory
 
 /**
@@ -28,7 +30,8 @@
 class FACERECOGNIZER_EXPORT CFactoryFace : public QObject
 {
     Q_OBJECT
-
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    
 #if (QT_VERSION < QT_VERSION_CHECK(5, 5, 0))
     Q_ENUMS((LIB_TYPE)
 #endif

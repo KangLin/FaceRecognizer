@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QVideoFrame>
+#include <QMetaClassInfo>
 
 namespace Ui {
 class CFrmDisplay;
@@ -17,6 +18,8 @@ class CFrmDisplay;
 class CFrmDisplay : public QWidget
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    Q_CLASSINFO("Description", "The form is display QImage")
 
 public:
     explicit CFrmDisplay(QWidget *parent = nullptr);

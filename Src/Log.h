@@ -16,13 +16,15 @@ Abstract:
 #ifndef CLOG_H
 #define CLOG_H
 #include <QObject>
+#include <QMetaClassInfo>
 
 #include "facerecognizer_export.h"
 
 class FACERECOGNIZER_EXPORT CLog : public QObject
 {
     Q_OBJECT
-
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    
 public:
     CLog();
 

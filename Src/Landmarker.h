@@ -8,42 +8,38 @@
 #include <QRect>
 #include <QString>
 #include <QVector>
+#include <QMetaClassInfo>
 
 #include "facerecognizer_export.h"
 #include "ParameterLandmark.h"
+#include "FaceBase.h"
 
 class CFace;
-class FACERECOGNIZER_EXPORT CLandmarker : public QObject
+class FACERECOGNIZER_EXPORT CLandmarker : public CFaceBase
 {
     Q_OBJECT
-    Q_PROPERTY(QString modelPath READ getModelPath WRITE setModelPath)
+    Q_PROPERTY(int points READ getPoints WRITE setPoints)
     
 public:
     CLandmarker(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual ~CLandmarker();
 
-    virtual int SetParameter(CParameterLandmark *pPara);
     virtual int Mark(const QImage &image,
                      const QRect &face,
                      QVector<QPointF> &points) = 0;
     virtual int Mark(const QImage &image,
                      const QVector<QRect> &faces,
                      QVector<QVector<QPointF> > &points);
-    
-    int setModelPath(const QString& szPath);
-    QString getModelPath();
-    
-public Q_SLOTS:
-    void slotParameterUpdate();
-    void slotParameterDelete();
 
+    virtual int getPoints();
+    virtual int setPoints(int nPoints);
 protected:
-    virtual int UpdateParameter(QString &szErr) = 0;
-    CParameterLandmark *m_pParameter;
+    virtual int UpdateParameter() = 0;
+
     CFace* m_pFace;
-    
+
 private:
-    QString m_szModelPath;
+    int m_nPoints;
 };
 
 #endif // CLANDMARKER_H_KL_2019_10_21

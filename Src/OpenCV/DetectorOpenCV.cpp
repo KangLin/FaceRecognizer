@@ -9,21 +9,15 @@ CDetectorOpenCV::CDetectorOpenCV(CFace *pFace, QObject *parent)
     m_bInit(false)
 {}
 
-int CDetectorOpenCV::UpdateParameter(QString &szErr)
+int CDetectorOpenCV::UpdateParameter()
 {
     int nRet = 0;
-    if(!m_pParameter)
-    {
-        szErr = "The parameter is null";
-        LOG_MODEL_ERROR("CDetectorOpenCV", szErr.toStdString().c_str());
-        return -1;
-    }
     
     m_bInit = false;
     
-    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
+    QString szPath = getModelPath() + QDir::separator() + "Opencv";
     QDir d;
-    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    if(!d.exists(szPath)) szPath = getModelPath();
     szPath = szPath + QDir::separator() + "haarcascades";
     LOG_MODEL_DEBUG("CDetectorOpenCV", "The model files path: %s",
                     szPath.toStdString().c_str());
@@ -37,7 +31,7 @@ int CDetectorOpenCV::UpdateParameter(QString &szErr)
             return -2;
         }
     } catch (cv::Exception e) {
-        szErr = "Load model fail:";
+        QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
         LOG_MODEL_ERROR("CDetectorOpenCV", szErr.toStdString().c_str());
         return -2;

@@ -17,17 +17,13 @@ CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent)
 
 #ifdef HAVE_OPENCV_DNN
     m_pDetector = new CDetectorOpenCVDNN(this);
-    if(m_pDetector) m_pDetector->SetParameter(pFactory->GetParameterDetector());
 #endif
 
 #ifdef HAVE_OPENCV_FACE
     if(!m_pDetector)
     {
         m_pDetector = new CDetectorOpenCV(this);
-        if(m_pDetector) m_pDetector->SetParameter(pFactory->GetParameterDetector());
     }
     m_pLandmarker = new CLandmarkerOpenCV(this);
-    if(m_pLandmarker)
-        m_pLandmarker->SetParameter(pFactory->GetParameterLandmark());
 #endif
 }

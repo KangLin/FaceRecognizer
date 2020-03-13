@@ -8,6 +8,7 @@
 class CFaceSeeta : public CFace
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
 
 public:
     CFaceSeeta(QObject* parent = nullptr);

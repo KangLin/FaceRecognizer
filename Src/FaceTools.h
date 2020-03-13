@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <QMetaClassInfo>
 #include <QObject>
 #include "facerecognizer_export.h"
 #include "ParameterFaceTools.h"
@@ -11,7 +12,8 @@ class CFace;
 class FACERECOGNIZER_EXPORT CFaceTools : public QObject
 {
     Q_OBJECT
-
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    
 public:
     explicit CFaceTools(CFace* pFace = nullptr, QObject *parent = nullptr);
     

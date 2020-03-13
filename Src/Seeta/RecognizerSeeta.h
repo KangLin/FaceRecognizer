@@ -9,6 +9,9 @@
 class CRecognizerSeeta : public CRecognizer
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+
+    Q_PROPERTY(float threshold READ getThreshold WRITE setThreshold)
 
 public:
     CRecognizerSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
@@ -42,8 +45,11 @@ public:
      */
     virtual int Load(const QString &szFile = QString());
     
+    float getThreshold();
+    int setThreshold(float threshold);
+    
 protected:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
     QSharedPointer<seeta::FaceDatabase> m_Recognizer;
     float m_fThreshold;
 

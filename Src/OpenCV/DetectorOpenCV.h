@@ -15,7 +15,7 @@ public:
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
 private:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
     
     cv::Ptr<cv::CascadeClassifier> m_haar_cascade;
     bool m_bInit;

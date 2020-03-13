@@ -88,22 +88,14 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
     return nRet;
 }
 
-int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
+int CDetectorOpenCVDNN::UpdateParameter()
 {
     int nRet = 0;
-    
-    if(!m_pParameter)
-    {
-        szErr = "The parameter is null";
-        LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
-        return -1;
-    }
-    
     m_bInit = false;
     
-    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
+    QString szPath = getModelPath() + QDir::separator() + "Opencv";
     QDir d;
-    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    if(!d.exists(szPath)) szPath = getModelPath();
     LOG_MODEL_DEBUG("CDetectorOpenCVDNN", "The model files path: %s",
                     szPath.toStdString().c_str());
     QString modelCaffDesc = szPath + QDir::separator() + "deploy.prototxt";
@@ -126,7 +118,7 @@ int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
                                           modelCaffBinary.toStdString());//*/
         if(m_Net.empty())
         {
-            szErr = "Can't load network by using the following files: ";
+            QString szErr = "Can't load network by using the following files: ";
             szErr = szErr + "prototxt:" + szPath;
             szErr = szErr + "caffemodel:" + szPath;
             szErr = szErr + "Models are available here:";
@@ -137,7 +129,7 @@ int CDetectorOpenCVDNN::UpdateParameter(QString &szErr)
             return -1;
         }
     } catch (cv::Exception e) {
-        szErr = "Load model fail:";
+        QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
         LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
         return -2;

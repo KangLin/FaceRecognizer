@@ -60,48 +60,6 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRecognizerImage);
     pViewGroup->addAction(ui->actionRecognizerVideo);
 
-    QActionGroup *pAiGroup = new QActionGroup(this);
-    const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();
-    int eCount = pObj->enumeratorCount();
-    for(int i = 0; i < eCount; i++)
-    {
-        int nSelect = 0;
-#ifdef RABBITCOMMON
-        QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                      QSettings::IniFormat);
-        nSelect = set.value("AI_Libraries", 0).toInt();
-#endif
-    
-        QMetaEnum e = pObj->enumerator(i);
-        if(strcmp(e.name(), "LIB_TYPE") == 0)
-        {
-            for(int j = 0; j < e.keyCount(); j++)
-            {
-                QAction* pA = ui->menuAI_libraries->addAction(e.key(j));
-                pAiGroup->addAction(pA);
-                pA->setCheckable(true);
-                pA->setData(e.value(j));
-
-                CFace *pFace = CFactoryFace::Instance()->GetFace(
-                            static_cast<CFactoryFace::LIB_TYPE>(j));
-                if(nullptr == pFace)
-                {
-                    pA->setEnabled(false);
-                    continue;
-                }
-                if(nSelect == e.value(j))
-                {
-                    CFactoryFace::Instance()->SetLibType(
-                           static_cast<CFactoryFace::LIB_TYPE>(nSelect), false);
-                    pA->setChecked(true);
-                }
-            }
-            bool check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
-                    this, SLOT(on_actionAiLibraries_triggered(QAction*)));
-            Q_ASSERT(check);
-        }
-    }
-    
     QActionGroup *pSourceGroup = new QActionGroup(this);
     pSourceGroup->addAction(ui->actionFile);
     pSourceGroup->addAction(ui->actionCamera);
@@ -132,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionUpdate_U->setIcon(updater.windowIcon());
 #endif
 
-    createDockWindows();
+    createDockPerameters();
     
     if(CFactoryFace::Instance()->bIsValid())
     {
@@ -536,7 +494,7 @@ void MainWindow::on_actionAiLibraries_triggered(QAction* a)
 #endif
 }
 
-int MainWindow::createDockWindows()
+int MainWindow::createDockPerameters()
 {
     QDockWidget *dock = new QDockWidget(tr("Set parameters"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -545,6 +503,52 @@ int MainWindow::createDockWindows()
     addDockWidget(Qt::RightDockWidgetArea, dock);
 
     ui->menuTools->addAction(dock->toggleViewAction());
+    
+    QActionGroup *pAiGroup = new QActionGroup(this);
+    const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();
+    int eCount = pObj->enumeratorCount();
+    for(int i = 0; i < eCount; i++)
+    {
+        int nSelect = 0;
+#ifdef RABBITCOMMON
+        QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                      QSettings::IniFormat);
+        nSelect = set.value("AI_Libraries", 0).toInt();
+#endif
+    
+        QMetaEnum e = pObj->enumerator(i);
+        if(strcmp(e.name(), "LIB_TYPE") == 0)
+        {
+            for(int j = 0; j < e.keyCount(); j++)
+            {
+                QAction* pA = ui->menuAI_libraries->addAction(e.key(j));
+                pAiGroup->addAction(pA);
+                pA->setCheckable(true);
+                pA->setData(e.value(j));
+
+                CFace *pFace = CFactoryFace::Instance()->GetFace(
+                            static_cast<CFactoryFace::LIB_TYPE>(j));
+                if(nullptr == pFace)
+                {
+                    pA->setEnabled(false);
+                    continue;
+                }
+                if(nSelect == e.value(j))
+                {
+                    CFactoryFace::Instance()->SetLibType(
+                           static_cast<CFactoryFace::LIB_TYPE>(nSelect), false);
+                    pA->setChecked(true);
+                }
+            }
+            bool check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
+                                 this, SLOT(on_actionAiLibraries_triggered(QAction*)));
+            Q_ASSERT(check);
+            check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
+                            para, SLOT(slotUpdateParamter(QAction*)));
+            Q_ASSERT(check);
+            para->slotUpdateParamter();
+        }
+    }
     
     return 0;
 }

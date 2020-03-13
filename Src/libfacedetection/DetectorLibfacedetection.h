@@ -12,7 +12,7 @@ public:
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
 private:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
 };
 
 #endif // CDETECTORLIBFACEDETECTION_H

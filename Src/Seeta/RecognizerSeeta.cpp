@@ -15,25 +15,19 @@ CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
 CRecognizerSeeta::~CRecognizerSeeta()
 {}
 
-int CRecognizerSeeta::UpdateParameter(QString &szErr)
+int CRecognizerSeeta::UpdateParameter()
 {
-    if(!m_pParameter)
-    {
-        szErr = "The parameter is null";
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
-        return -1;
-    }
     m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
-    switch (m_pParameter->GetDevice()) {
-    case CParameter::CPU:
+    switch (getDevice()) {
+    case CPU:
         device = seeta::ModelSetting::CPU;
         break;
-    case CParameter::GPU:
+    case GPU:
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        szErr = "Don't support device %d" +
+        QString szErr = "Don't support device %d" +
                 QString::number(m_pParameter->GetDevice());
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         break;
@@ -41,9 +35,9 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
     
     int id = 0;
 
-    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Seeta";
+    QString szPath = getModelPath() + QDir::separator() + "Seeta";
     QDir d;
-    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    if(!d.exists(szPath)) szPath = getModelPath();
     QString szFile = szPath + QDir::separator() + "fr_2_10.dat";
     try {     
         seeta::ModelSetting model(szFile.toStdString(),
@@ -52,12 +46,12 @@ int CRecognizerSeeta::UpdateParameter(QString &szErr)
         m_Recognizer = QSharedPointer<seeta::FaceDatabase>(new seeta::FaceDatabase(model));
         if(!m_Recognizer)
         {
-            szErr =  "new seeta::FaceDatabase fail";
+            QString szErr =  "new seeta::FaceDatabase fail";
             LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
             return -2;
         }        
     } catch (...) {
-        szErr = "Load model fail：" + szFile;
+        QString szErr = "Load model fail：" + szFile;
         LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
         return -3;
     }
@@ -89,7 +83,7 @@ qint64 CRecognizerSeeta::Register(const QImage &image,
 
     if(image.isNull() || !m_bInit) return -1;
     
-    PERFORMANCE(SeetaRegister);
+    PERFORMANCE(SeetaRegister)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
     {
@@ -197,4 +191,15 @@ int CRecognizerSeeta::Load(const QString &szFile)
     if(m_Recognizer->Load(file.toStdString().c_str()))
         return 0;
     return -1;
+}
+
+float CRecognizerSeeta::getThreshold()
+{
+    return m_fThreshold;
+}
+
+int CRecognizerSeeta::setThreshold(float threshold)
+{
+    m_fThreshold = threshold;
+    return 0;
 }

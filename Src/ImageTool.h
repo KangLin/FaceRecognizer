@@ -1,3 +1,8 @@
+/**
+  @brief: 提供一此工具函数  
+  @author: Kang Lin<kl222@126.com>
+  */
+
 #ifndef TOOL_H
 #define TOOL_H
 
@@ -21,6 +26,7 @@ extern "C" {
 #include <QWidget>
 #include <QVideoFrame>
 #include <QFileDialog>
+#include <QMetaClassInfo>
 
 /**
  * @brief 工具类。提供一此工具函数  
@@ -29,7 +35,8 @@ extern "C" {
 class FACERECOGNIZER_EXPORT CImageTool : public QObject
 {
     Q_OBJECT
-
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    
 public:
     explicit CImageTool(QObject *parent = nullptr);
 

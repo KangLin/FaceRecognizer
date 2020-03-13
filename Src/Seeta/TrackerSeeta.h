@@ -10,6 +10,7 @@
 class CTrackerSeeta : public CTracker
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
 
 public:
     explicit CTrackerSeeta(CFace* pFace = nullptr, QObject *parent = nullptr);
@@ -17,7 +18,7 @@ public:
     virtual int Track(const QImage &image, QVector<strFace> &faces);
     
 private:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
 
     QSharedPointer<seeta::FaceTracker> m_Tracker;
     bool m_bInit;    

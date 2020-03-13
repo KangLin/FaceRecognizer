@@ -13,33 +13,31 @@ CLandmarkerSeeta::CLandmarkerSeeta(CFace *pFace, QObject *parent)
 CLandmarkerSeeta::~CLandmarkerSeeta()
 {}
 
-int CLandmarkerSeeta::UpdateParameter(QString &szErr)
+int CLandmarkerSeeta::UpdateParameter()
 {
-    if(!m_pParameter)
-        return -1;
     m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
-    switch (m_pParameter->GetDevice()) {
-    case CParameter::CPU:
+    switch (getDevice()) {
+    case CPU:
         device = seeta::ModelSetting::CPU;
         break;
-    case CParameter::GPU:
+    case GPU:
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        szErr = "Don't support device" +
-                QString::number(m_pParameter->GetDevice());
+        QString szErr = "Don't support device" +
+                QString::number(getDevice());
         LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
         break;
     }
     
     int id = 0;
     
-    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Seeta";
+    QString szPath = getModelPath() + QDir::separator() + "Seeta";
     QDir d;
-    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    if(!d.exists(szPath)) szPath = getModelPath();
     QString szFile = szPath + QDir::separator();
-    if(m_pParameter->GetPoints() == 81)
+    if(getPoints() == 81)
         szFile += "pd_2_00_pts81.dat";
     else 
         szFile += "pd_2_00_pts5.dat";
@@ -51,7 +49,7 @@ int CLandmarkerSeeta::UpdateParameter(QString &szErr)
         m_Landmarker = QSharedPointer<seeta::FaceLandmarker>(
                               new seeta::FaceLandmarker(model));   
     } catch (...) {
-        szErr = "Load model fail:" + szFile;
+        QString szErr = "Load model fail:" + szFile;
         LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
         return -1;
     }

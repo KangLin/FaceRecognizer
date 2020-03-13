@@ -3,38 +3,6 @@
 
 static int gTrackStrFaceId = qRegisterMetaType<CTracker::strFace>();
 static int gVectorTrackStrFaceId = qRegisterMetaType<QVector<CTracker::strFace> >();
-CTracker::CTracker(CFace *pFace, QObject *parent) : QObject(parent),
-    m_pParameter(nullptr),
+CTracker::CTracker(CFace *pFace, QObject *parent) : CFaceBase(parent),
     m_pFace(pFace)
 {}
-
-int CTracker::SetParameter(CParameterDetector *pPara)
-{
-    if(!pPara)
-        return -1;
-    
-    m_pParameter = pPara;
-    bool bCheck = connect(m_pParameter, SIGNAL(destroyed()),
-                          this, SLOT(slotParameterDelete()));
-    Q_ASSERT(bCheck);
-    bCheck = connect(m_pParameter, SIGNAL(sigUpdate()),
-                     this, SLOT(slotParameterUpdate()));
-    Q_ASSERT(bCheck);
-    
-    emit m_pParameter->sigUpdate();
-    return 0;
-}
-
-void CTracker::slotParameterDelete()
-{
-    m_pParameter = nullptr;
-}
-
-void CTracker::slotParameterUpdate()
-{
-    QString szErr;
-    int nRet = -UpdateParameter(szErr);
-    if(nRet)
-        LOG_MODEL_ERROR("CTracker", "UpdateParameter: %s",
-                         szErr.toStdString().c_str());
-}

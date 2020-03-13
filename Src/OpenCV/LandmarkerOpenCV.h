@@ -33,7 +33,7 @@ public:
                      const QVector<QRect> &faces,
                      QVector<QVector<QPointF> > &points);
 private:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
     bool m_bInit;
     
     cv::Ptr<cv::face::Facemark> m_Facemark;

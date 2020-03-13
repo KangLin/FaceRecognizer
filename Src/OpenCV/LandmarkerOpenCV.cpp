@@ -9,14 +9,14 @@ CLandmarkerOpenCV::CLandmarkerOpenCV(CFace *pFace, QObject *parent)
       m_bInit(false)
 {}
 
-int CLandmarkerOpenCV::UpdateParameter(QString &szErr)
+int CLandmarkerOpenCV::UpdateParameter()
 {
     int nRet = 0;
     m_bInit = false;
 
-    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Opencv";
+    QString szPath = getModelPath() + QDir::separator() + "Opencv";
     QDir d;
-    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    if(!d.exists(szPath)) szPath = getModelPath();
     LOG_MODEL_DEBUG("CLandmarkerOpenCV", "The model files path: %s",
                     szPath.toStdString().c_str());
     QString szFile = szPath + QDir::separator() + "lbfmodel.yaml";
@@ -25,7 +25,7 @@ int CLandmarkerOpenCV::UpdateParameter(QString &szErr)
         m_Facemark = cv::face::FacemarkLBF::create();
         m_Facemark->loadModel(szFile.toStdString());
     } catch (cv::Exception e) {
-        szErr = "Load model fail:";
+        QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
         LOG_MODEL_ERROR("CLandmarkerOpenCV", szErr.toStdString().c_str());
         return -2;

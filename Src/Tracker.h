@@ -6,18 +6,20 @@
 #include <QString>
 #include <QImage>
 #include <QRect>
+#include <QMetaClassInfo>
 
 #include "facerecognizer_export.h"
 #include "ParameterDetector.h"
+#include "FaceBase.h"
 
 class CFace;
-class FACERECOGNIZER_EXPORT CTracker : public QObject
+class FACERECOGNIZER_EXPORT CTracker : public CFaceBase
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
 
 public:
     explicit CTracker(CFace* pFace = nullptr, QObject *parent = nullptr);
-    virtual int SetParameter(CParameterDetector *pPara);
     
     struct strFace
     {
@@ -27,13 +29,7 @@ public:
     
     virtual int Track(const QImage &image, QVector<strFace> &faces) = 0;
 
-public Q_SLOTS:
-    void slotParameterUpdate();
-    void slotParameterDelete();
-
 protected:
-    virtual int UpdateParameter(QString &szErr) = 0;
-    CParameterDetector* m_pParameter;
     CFace* m_pFace;
 };
 

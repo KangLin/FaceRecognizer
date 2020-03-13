@@ -20,12 +20,10 @@ CFrmPara::CFrmPara(QWidget *parent) :
     ui->setupUi(this);
     ui->treeView->setModel(&m_Model);
     ui->treeView->setItemDelegateForColumn(1, new CDelegateParamter(ui->treeView));
-    m_Model.setHorizontalHeaderLabels(QStringList() << tr("Property") << tr("Value"));
     bool check = connect(&m_Model, SIGNAL(itemChanged(QStandardItem *)),
                          this, SLOT(slotItemChanged(QStandardItem*)));
     Q_ASSERT(check);
-    
-    SetParamter();
+    slotUpdateParamter();
 }
 
 CFrmPara::~CFrmPara()
@@ -33,9 +31,13 @@ CFrmPara::~CFrmPara()
     delete ui;
 }
 
-int CFrmPara::SetParamter(QObject *pPara)
+int CFrmPara::slotUpdateParamter(QAction *pAction)
 {
-    Q_UNUSED(pPara)
+    Q_UNUSED(pAction)
+    m_Model.clear();
+    //qDebug() << "CFrmPara::slotUpdateParamter";
+    m_Model.setHorizontalHeaderLabels(QStringList() << tr("Property") << tr("Value"));
+    
     LoadObject(CFactoryFace::Instance()->GetDector());
     LoadObject(CFactoryFace::Instance()->GetLandmarker());
     LoadObject(CFactoryFace::Instance()->GetRecognizer());
@@ -48,13 +50,14 @@ int CFrmPara::LoadObject(QObject *pObject)
     int nRet = 0;
     if(!pObject) return -1;
 
-    qDebug() << "pObject:" << pObject;
     const QMetaObject *pMO = pObject->metaObject();
+    /*
+    qDebug() << "pObject:" << pObject;
     for(int info = 0; info < pMO->classInfoCount(); info++)
     {
         qDebug() << "class info:" << pMO->classInfo(info).name()
                  << pMO->classInfo(info).value();
-    }
+    }//*/
     QStandardItem *pClass = new QStandardItem(pMO->className());
     pClass->setEditable(false);
     m_Model.appendRow(pClass);
@@ -74,7 +77,7 @@ int CFrmPara::LoadObject(QObject *pObject)
         QStandardItem* pValue = new QStandardItem(p.read(pObject).toString());
         pValue->setEditable(p.isWritable());
         pValue->setData(p.name(), CDelegateParamter::ROLE_PROPERTY_NAME);
-        qDebug() << p.name() << p.read(pObject).toString() << p.isWritable();
+        //qDebug() << p.name() << p.read(pObject).toString() << p.isWritable();
         QVariant obj;
         obj.setValue(pObject);
         pValue->setData(obj, CDelegateParamter::ROLE_OBJECT);
@@ -93,9 +96,11 @@ int CFrmPara::LoadObject(QObject *pObject)
 
 void CFrmPara::slotItemChanged(QStandardItem* item)
 {
-    QObject* pObject = item->data(CDelegateParamter::ROLE_OBJECT).value<QObject*>();
+    QObject* pObject = item->data(CDelegateParamter::ROLE_OBJECT)
+            .value<QObject*>();
     if(pObject)
         pObject->setProperty(
-                item->data(CDelegateParamter::ROLE_PROPERTY_NAME).toString().toStdString().c_str(),
+                item->data(CDelegateParamter::ROLE_PROPERTY_NAME)
+                    .toString().toStdString().c_str(),
                 item->data(Qt::EditRole));
 }

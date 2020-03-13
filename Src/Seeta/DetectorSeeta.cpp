@@ -1,7 +1,9 @@
 #include "DetectorSeeta.h"
 #include "Log.h"
-#include <QDir>
 #include "Performance.h"
+
+#include <QDir>
+#include <QDebug>
 
 CDetectorSeeta::CDetectorSeeta(CFace *pFace, QObject *parent) 
     : CDetector(pFace, parent)
@@ -57,34 +59,29 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
     return 0;
 }
 
-int CDetectorSeeta::UpdateParameter(QString &szErr)
+int CDetectorSeeta::UpdateParameter()
 {
-    if(!m_pParameter)
-    {
-        szErr = "The parameter is null";
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
-        return -1;
-    }
+    qDebug() << "CDetectorSeeta::UpdateParameter()";
     m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
-    switch (m_pParameter->GetDevice()) {
-    case CParameter::CPU:
+    switch (getDevice()) {
+    case CPU:
         device = seeta::ModelSetting::CPU;
         break;
-    case CParameter::GPU:
+    case GPU:
         device = seeta::ModelSetting::GPU;
         break;
     default:
-        szErr =  "Don't support device " + QString::number(m_pParameter->GetDevice());
+        QString szErr =  "Don't support device " + QString::number(getDevice());
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         break;
     }
     
     int id = 0;
     
-    QString szPath = m_pParameter->GetModelPath() + QDir::separator() + "Seeta";
+    QString szPath = getModelPath() + QDir::separator() + "Seeta";
     QDir d;
-    if(!d.exists(szPath)) szPath = m_pParameter->GetModelPath();
+    if(!d.exists(szPath)) szPath = getModelPath();
     QString szFile = szPath + QDir::separator() + "fd_2_00.dat";
     try {
         seeta::ModelSetting model(szFile.toStdString(),
@@ -92,11 +89,11 @@ int CDetectorSeeta::UpdateParameter(QString &szErr)
                                   id);
         m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
     } catch (...) {
-        szErr = "Load model fail:" + szFile;
+        QString szErr = "Load model fail:" + szFile;
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         return -2;
     }
-    m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, m_pParameter->GetMinFaceSize());
+    m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, getMinFaceSize());
     m_bInit = true;
     return 0;
 }
@@ -109,5 +106,6 @@ int CDetectorSeeta::getMinFaceSize()
 int CDetectorSeeta::setMinFaceSize(int size)
 {
     m_MinFaceSize = size;
+    UpdateParameter();
     return 0;
 }

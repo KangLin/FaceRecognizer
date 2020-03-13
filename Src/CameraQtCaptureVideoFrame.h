@@ -46,6 +46,7 @@
 #endif
 #include <QCamera>
 #include <QImage>
+#include <QMetaClassInfo>
 
 #include "facerecognizer_export.h"
 
@@ -56,6 +57,7 @@
 class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame : public QAbstractVideoSurface
 {
     Q_OBJECT
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
 
 public:
     explicit CCameraQtCaptureVideoFrame(QObject *parent = nullptr);

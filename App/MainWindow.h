@@ -48,7 +48,7 @@ private:
     int InitCamerOrientation();
     int LoadStyle();
     int LoadStyle(const QString &szFile);
-    int createDockWindows();
+    int createDockPerameters();
 
 private:
     Ui::MainWindow *ui;

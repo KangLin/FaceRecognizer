@@ -6,7 +6,7 @@ CDetectorLibfacedetection::CDetectorLibfacedetection(CFace *pFace, QObject *pare
     : CDetector(pFace, parent)
 {}
 
-int CDetectorLibfacedetection::UpdateParameter(QString &szErr)
+int CDetectorLibfacedetection::UpdateParameter()
 {
     return 0;
 }

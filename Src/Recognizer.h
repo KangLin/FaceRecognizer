@@ -4,6 +4,7 @@
 #pragma once
 #include <QObject>
 #include <QImage>
+#include <QMetaClassInfo>
 
 /**
  * @defgroup RecognizerInterface recognizer interface
@@ -11,6 +12,7 @@
   
 #include "facerecognizer_export.h"
 #include "ParameterRecognizer.h"
+#include "FaceBase.h"
 
 class CFace;
 
@@ -18,15 +20,16 @@ class CFace;
  * @brief The CRecognizer class
  * @ingroup RecognizerInterface
  */
-class FACERECOGNIZER_EXPORT CRecognizer : public QObject
+class FACERECOGNIZER_EXPORT CRecognizer : public CFaceBase
 {
     Q_OBJECT
-
+    Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
+    
+    Q_PROPERTY(QString imagePath READ getImagePath WRITE setImagePath)
+    
 public:
     CRecognizer(CFace* pFace = nullptr, QObject* parent = nullptr);
     virtual ~CRecognizer();
-    
-    virtual int SetParameter(CParameterRecognizer *pPara);
     
     /**
      * @brief Register face and save register image
@@ -68,16 +71,14 @@ public:
 
     virtual bool IsValid();
     
-public Q_SLOTS:
-    void slotParameterUpdate();
-    void slotParameterDelete();
+    QString getImagePath();
+    int setImagePath(const QString &szPath);
 
 protected:
-    virtual int UpdateParameter(QString &szErr) = 0;
-
     CParameterRecognizer* m_pParameter;
     CFace* m_pFace;
     bool m_bInit;
+    QString m_szImagePath;
 };
 
 #endif // CRECOGNIZER_H_KL_2019_10_21_
