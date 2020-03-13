@@ -5,13 +5,25 @@
 
 CFaceToolsSeeta::CFaceToolsSeeta(CFace *pFace, QObject *parent)
     : CFaceTools(pFace, parent)
-{}
-
-int CFaceToolsSeeta::UpdateParameter(QString &szErr)
 {
-    if(!m_pParameter) return -1;
+    m_MinFaceSize = 80;
+}
 
-    m_QualityAssessor.setFaceSize(m_pParameter->GetMinFaceSize());
+int CFaceToolsSeeta::getMinFaceSize()
+{
+    return m_MinFaceSize;
+}
+
+int CFaceToolsSeeta::setMinFaceSize(int size)
+{
+    m_MinFaceSize = size;
+    UpdateParameter();
+    return 0;
+}
+
+int CFaceToolsSeeta::UpdateParameter()
+{
+    m_QualityAssessor.setFaceSize(getMinFaceSize());
     return 0;
 }
 

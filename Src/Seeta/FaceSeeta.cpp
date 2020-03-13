@@ -19,7 +19,6 @@ CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
     m_pLandmarker = new CLandmarkerSeeta(this);
     m_pRecognizer = new CRecognizerSeeta(this);
     m_pFaceTools = new CFaceToolsSeeta(this);
-    m_pFaceTools->SetParameter(pFactory->GetParameterFaceTools());
 }
 
 CFaceSeeta::~CFaceSeeta()

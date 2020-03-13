@@ -42,6 +42,8 @@ int CFrmPara::slotUpdateParamter(QAction *pAction)
     LoadObject(CFactoryFace::Instance()->GetLandmarker());
     LoadObject(CFactoryFace::Instance()->GetRecognizer());
     LoadObject(CFactoryFace::Instance()->GetTracker());
+    LoadObject(CFactoryFace::Instance()->GetFaceTools());
+    
     return 0;
 }
 
