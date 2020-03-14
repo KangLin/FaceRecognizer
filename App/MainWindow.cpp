@@ -19,7 +19,6 @@
 #include "FactoryFace.h"
 #include "Log.h"
 #include "DlgLog.h"
-#include "FrmPara.h"
 
 #include <QIcon>
 #include <QCameraInfo>
@@ -90,6 +89,14 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
 
     createDockPerameters();
+    
+    // Load model
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    QString szPath = set.value("ModuleDir",
+                               RabbitCommon::CDir::Instance()->GetDirData(false)
+                               + QDir::separator() + "model").toString();
+    setModelPath(szPath);
     
     if(CFactoryFace::Instance()->bIsValid())
     {
@@ -367,6 +374,35 @@ int MainWindow::CamerOrientation(int index)
     return rotation;
 }
 
+void MainWindow::on_actionSet_model_path_triggered()
+{
+#ifdef RABBITCOMMON
+   QString szPath = RabbitCommon::CDir::GetOpenDirectory(this,
+                        tr("Open model file path"));
+   QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                 QSettings::IniFormat);
+   set.setValue("ModuleDir", szPath);
+   setModelPath(szPath);
+#endif
+}
+
+int MainWindow::setModelPath(const QString &szPath)
+{
+    if(CFactoryFace::Instance()->GetDector())
+        CFactoryFace::Instance()->GetDector()->setModelPath(szPath);
+    if(CFactoryFace::Instance()->GetLandmarker())
+        CFactoryFace::Instance()->GetLandmarker()->setModelPath(szPath);
+    if(CFactoryFace::Instance()->GetTracker())
+        CFactoryFace::Instance()->GetTracker()->setModelPath(szPath);
+    if(CFactoryFace::Instance()->GetRecognizer())
+        CFactoryFace::Instance()->GetRecognizer()->setModelPath(szPath);
+    if(CFactoryFace::Instance()->GetFaceTools())
+        CFactoryFace::Instance()->GetFaceTools()->setModelPath(szPath);
+    if(m_Paramter)
+        m_Paramter->slotUpdateParamter();
+    return 0;
+}
+
 void MainWindow::on_actionRegisterImage_triggered()
 {
     m_CaptureFrame.disconnect();
@@ -483,13 +519,22 @@ void MainWindow::on_actionAiLibraries_triggered(QAction* a)
 int MainWindow::createDockPerameters()
 {
     QDockWidget *dock = new QDockWidget(tr("Set parameters"), this);
-    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    CFrmPara *para = new CFrmPara(dock);
-    dock->setWidget(para);
+    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
+    m_Paramter = QSharedPointer<CFrmPara>(new CFrmPara(dock));
+    if(!m_Paramter) 
+    {
+        LOG_MODEL_ERROR("MainWindow", "new CFrmPara fail");
+        return -1;
+    }
+    dock->setWidget(m_Paramter.data());
+#if defined (Q_OS_ANDROID)
+    dock->hide();
+    addDockWidget(Qt::BottomDockWidgetArea, dock);
+#else
     addDockWidget(Qt::RightDockWidgetArea, dock);
-
+#endif
     ui->menuTools->addAction(dock->toggleViewAction());
-    
+
     QActionGroup *pAiGroup = new QActionGroup(this);
     const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();
     int eCount = pObj->enumeratorCount();
@@ -501,7 +546,7 @@ int MainWindow::createDockPerameters()
                       QSettings::IniFormat);
         nSelect = set.value("AI_Libraries", 0).toInt();
 #endif
-    
+
         QMetaEnum e = pObj->enumerator(i);
         if(strcmp(e.name(), "LIB_TYPE") == 0)
         {
@@ -530,9 +575,9 @@ int MainWindow::createDockPerameters()
                                  this, SLOT(on_actionAiLibraries_triggered(QAction*)));
             Q_ASSERT(check);
             check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
-                            para, SLOT(slotUpdateParamter(QAction*)));
+                            m_Paramter.data(), SLOT(slotUpdateParamter(QAction*)));
             Q_ASSERT(check);
-            para->slotUpdateParamter();
+            m_Paramter->slotUpdateParamter();
         }
     }
     

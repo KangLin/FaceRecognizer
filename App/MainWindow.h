@@ -10,6 +10,7 @@
 #include <QMediaPlayer>
 
 #include "CameraQtCaptureVideoFrame.h"
+#include "FrmPara.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +33,7 @@ private slots:
     void on_actionRegisterImage_directory_triggered();
     void on_actionRecognizerImage_triggered();
     void on_actionRecognizerVideo_triggered();
+    void on_actionSet_model_path_triggered();    
     void on_actionAbout_A_triggered();
     void on_actionUpdate_U_triggered();
     void on_actionDisplay_triggered();
@@ -48,6 +50,7 @@ private:
     int LoadStyle();
     int LoadStyle(const QString &szFile);
     int createDockPerameters();
+    int setModelPath(const QString &szPath);
 
 private:
     Ui::MainWindow *ui;
@@ -55,7 +58,7 @@ private:
     CCameraQtCaptureVideoFrame m_CaptureFrame;
     QCamera* m_pCamera;
     QMediaPlayer m_Player;
-
+    QSharedPointer<CFrmPara> m_Paramter;
 };
 
 #endif // MAINWINDOW_H
