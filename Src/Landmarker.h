@@ -11,7 +11,6 @@
 #include <QMetaClassInfo>
 
 #include "facerecognizer_export.h"
-#include "ParameterLandmark.h"
 #include "FaceBase.h"
 
 class CFace;

@@ -32,7 +32,6 @@ private slots:
     void on_actionRegisterImage_directory_triggered();
     void on_actionRecognizerImage_triggered();
     void on_actionRecognizerVideo_triggered();
-    void on_actionSet_model_path_triggered();
     void on_actionAbout_A_triggered();
     void on_actionUpdate_U_triggered();
     void on_actionDisplay_triggered();

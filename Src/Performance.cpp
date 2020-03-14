@@ -1,7 +1,6 @@
 #include "Performance.h"
 #include <QDebug>
 
-
 CPerformance::CPerformance(const QString &szName, QObject *parent)
     : QObject(parent),
       m_szName(szName)

@@ -12,7 +12,6 @@
 #endif
 
 #include "FrmDisplay.h"
-#include "ParameterFactory.h"
 #include "FrmRegisterImage.h"
 #include "FrmRecognizerImage.h"
 #include "ManageRegisterVideo.h"
@@ -366,19 +365,6 @@ int MainWindow::CamerOrientation(int index)
     int a = cameraInfo.orientation();
     qDebug() << "Camer angle:" << a << rotation;
     return rotation;
-}
-
-void MainWindow::on_actionSet_model_path_triggered()
-{
-#ifdef RABBITCOMMON
-   QString szFile = RabbitCommon::CDir::GetOpenDirectory(this,
-                        tr("Open model file path"),
-                        CParameterFactory::Instance()->GetParameterDetector()->GetModelPath());
-   QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                 QSettings::IniFormat);
-   set.setValue("ModuleDir", szFile);
-   CParameterFactory::Instance()->SetModelPath(szFile);
-#endif
 }
 
 void MainWindow::on_actionRegisterImage_triggered()

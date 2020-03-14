@@ -40,7 +40,7 @@ public:
     virtual int Load(const QString &szFile = QString());
 
 protected:
-    virtual int UpdateParameter(QString &szErr);
+    virtual int UpdateParameter();
 
     cv::Ptr<cv::face::FaceRecognizer> m_Recognizer;
     qint64 m_nMaxIndex;

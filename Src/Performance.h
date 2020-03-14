@@ -18,7 +18,8 @@
 
 #include <QObject>
 #include <QTime>
-#include "ParameterRecognizer.h"
+
+#include "facerecognizer_export.h"
 
 class FACERECOGNIZER_EXPORT CPerformance : public QObject
 {

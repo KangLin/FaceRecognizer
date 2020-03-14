@@ -9,9 +9,8 @@
 /**
  * @defgroup RecognizerInterface recognizer interface
  */
-  
+
 #include "facerecognizer_export.h"
-#include "ParameterRecognizer.h"
 #include "FaceBase.h"
 
 class CFace;
@@ -75,7 +74,6 @@ public:
     int setImagePath(const QString &szPath);
 
 protected:
-    CParameterRecognizer* m_pParameter;
     CFace* m_pFace;
     bool m_bInit;
     QString m_szImagePath;

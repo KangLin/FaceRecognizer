@@ -1,5 +1,4 @@
 #include "FaceOpenCV.h"
-#include "ParameterFactory.h"
 
 #include <opencv2/opencv.hpp>
 
@@ -13,8 +12,6 @@
 
 CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent)
 {
-    CParameterFactory* pFactory = CParameterFactory::Instance();
-
 #ifdef HAVE_OPENCV_DNN
     m_pDetector = new CDetectorOpenCVDNN(this);
 #endif

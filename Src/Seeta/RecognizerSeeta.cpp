@@ -10,6 +10,12 @@ CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
     : CRecognizer(pFace, parent)
 {
     m_fThreshold = 0.7f;
+    m_szFeatureFile = RabbitCommon::CDir::Instance()->GetDirUserData()
+            + QDir::separator()
+            + "seeta_feature.dat";
+    QDir d(m_szFeatureFile);
+    if(!d.exists(m_szFeatureFile))
+        d.mkpath(m_szFeatureFile);    
 }
 
 CRecognizerSeeta::~CRecognizerSeeta()
@@ -28,7 +34,7 @@ int CRecognizerSeeta::UpdateParameter()
         break;
     default:
         QString szErr = "Don't support device %d" +
-                QString::number(m_pParameter->GetDevice());
+                QString::number(getDevice());
         LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
         break;
     }
@@ -177,7 +183,7 @@ int CRecognizerSeeta::Save(const QString &szFile)
 {
     QString file = szFile;
     if(szFile.isEmpty())
-        file = m_pParameter->GetFeatureFile();
+        file = getFeatureFile();
     if(m_Recognizer->Save(file.toStdString().c_str()))
         return 0;
     return -1;
@@ -187,7 +193,7 @@ int CRecognizerSeeta::Load(const QString &szFile)
 {
     QString file = szFile;
     if(szFile.isEmpty())
-        file = m_pParameter->GetFeatureFile();
+        file = getFeatureFile();
     if(m_Recognizer->Load(file.toStdString().c_str()))
         return 0;
     return -1;
@@ -201,5 +207,16 @@ float CRecognizerSeeta::getThreshold()
 int CRecognizerSeeta::setThreshold(float threshold)
 {
     m_fThreshold = threshold;
+    return 0;
+}
+
+QString CRecognizerSeeta::getFeatureFile()
+{
+    return m_szFeatureFile;
+}
+
+int CRecognizerSeeta::setFeatureFile(const QString &szFile)
+{
+    m_szFeatureFile = szFile;
     return 0;
 }

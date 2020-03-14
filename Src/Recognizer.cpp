@@ -5,7 +5,6 @@
 
 CRecognizer::CRecognizer(CFace *pFace, QObject *parent)
     : CFaceBase(parent),
-      m_pParameter(nullptr),
       m_pFace(pFace),
       m_bInit(false)
 {

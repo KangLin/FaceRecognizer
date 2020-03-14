@@ -87,12 +87,6 @@ set(SOURCES_FILES
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     Log.cpp
-    ParameterFactory.cpp
-    Parameter.cpp
-    ParameterDetector.cpp
-    ParameterLandmark.cpp
-    ParameterRecognizer.cpp
-    ParameterFaceTools.cpp
     FactoryFace.cpp
     Face.cpp
     FaceBase.cpp
@@ -118,12 +112,6 @@ set(INSTALLHEADER_FILES
     Recognizer.h
     FaceTools.h
     Performance.h
-    ParameterFactory.h
-    Parameter.h
-    ParameterDetector.h
-    ParameterLandmark.h
-    ParameterRecognizer.h
-    ParameterFaceTools.h
     )
 
 set(HEADER_FILES

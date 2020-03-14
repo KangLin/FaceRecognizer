@@ -6,7 +6,6 @@
 #include <QMetaClassInfo>
 #include <QObject>
 #include "facerecognizer_export.h"
-#include "ParameterFaceTools.h"
 #include "FaceBase.h"
 
 class CFace;

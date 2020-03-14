@@ -9,7 +9,6 @@
 #ifdef HAVE_LIBFACEDETECTION
     #include "libfacedetection/FaceLibfacedetection.h"
 #endif
-#include "ParameterFactory.h"
 
 CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     m_CurrentLib(AUTO),

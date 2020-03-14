@@ -11,7 +11,6 @@
 #include "Landmarker.h"
 #include "Recognizer.h"
 #include "FaceTools.h"
-#include "Parameter.h"
 #include "database/Database.h"
 
 class FACERECOGNIZER_EXPORT CFace : public QObject
