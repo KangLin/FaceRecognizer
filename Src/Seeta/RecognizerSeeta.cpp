@@ -13,9 +13,6 @@ CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
     m_szFeatureFile = RabbitCommon::CDir::Instance()->GetDirUserData()
             + QDir::separator()
             + "seeta_feature.dat";
-    QDir d(m_szFeatureFile);
-    if(!d.exists(m_szFeatureFile))
-        d.mkpath(m_szFeatureFile);    
 }
 
 CRecognizerSeeta::~CRecognizerSeeta()

@@ -53,46 +53,77 @@ int CFrmPara::LoadObject(QObject *pObject)
     if(!pObject) return -1;
 
     const QMetaObject *pMO = pObject->metaObject();
-    /*
-    qDebug() << "pObject:" << pObject;
-    for(int info = 0; info < pMO->classInfoCount(); info++)
-    {
-        qDebug() << "class info:" << pMO->classInfo(info).name()
-                 << pMO->classInfo(info).value();
-    }//*/
+
     QStandardItem *pClass = new QStandardItem(pMO->className());
     pClass->setEditable(false);
     m_Model.appendRow(pClass);
     int nCount = pMO->propertyCount();
-    //qDebug() << pMO->className() << "count:" << nCount;
+
     for(int i = 0; i < nCount; i++)
     {
         QMetaProperty p = pMO->property(i);
         if(!p.isValid())
         {
-            //qDebug() << "property isn't valid";
             continue;
         }
-        QStandardItem* pItem = new QStandardItem(p.name());
+
+        QString szName(p.name());
+        QStandardItem* pItem = new QStandardItem(szName);
         pItem->setEditable(false);
         pClass->appendRow(pItem);
-        QStandardItem* pValue = new QStandardItem(p.read(pObject).toString());
+
+        QStandardItem* pValue = new QStandardItem();
+        pClass->setChild(pItem->index().row(), 1,  pValue);
+        QVariant value = p.read(pObject);
+        pValue->setData(value, Qt::EditRole);
         pValue->setEditable(p.isWritable());
-        pValue->setData(p.name(), CDelegateParamter::ROLE_PROPERTY_NAME);
-        //qDebug() << p.name() << p.read(pObject).toString() << p.isWritable();
+
+        pValue->setData(szName, CDelegateParamter::ROLE_PROPERTY_NAME);
+
         QVariant obj;
         obj.setValue(pObject);
         pValue->setData(obj, CDelegateParamter::ROLE_OBJECT);
-        pClass->setChild(pItem->index().row(), 1,  pValue);
+
+        pValue->setData(CDelegateParamter::TYPE_OTHER,
+                        CDelegateParamter::ROLE_PROPERTY_TYPE);
+        if(p.isEnumType() || p.isFlagType())
+        {
+            int curValue = 0;
+            QString szEnum;
+            QMetaEnum em = p.enumerator();
+            for(int j = 0; j < em.keyCount(); j++)
+            {
+                QString szVal;
+                szEnum += em.key(j) + QString("=")
+                        + szVal.setNum(em.value(j)) + ";";
+                if(em.value(i) == value.toInt())
+                    curValue = i;
+            }
+
+            pValue->setData(em.key(curValue), Qt::DisplayRole);
+            pValue->setData(szEnum, CDelegateParamter::ROLE_PROPERTY_VALUE);
+            pValue->setData(CDelegateParamter::TYPE_ENUM,
+                            CDelegateParamter::ROLE_PROPERTY_TYPE);
+            continue;
+        }
+        
+        QRegExp rx(".*[Pp]ath.*");
+        if(rx.exactMatch(szName))
+        {
+            pValue->setData(CDelegateParamter::TYPE_DIRECTORY,
+                            CDelegateParamter::ROLE_PROPERTY_TYPE);
+            continue;
+        }
+        
+        rx = QRegExp(".*[Ff]ile.*");
+        if(rx.exactMatch(szName))
+        {
+            pValue->setData(CDelegateParamter::TYPE_FILE,
+                            CDelegateParamter::ROLE_PROPERTY_TYPE);
+            continue;
+        }
     }
-    
-//    int nEnumCount = pObj->enumeratorCount();
-//    for(int e = 0; e < nEnumCount; e++)
-//    {
-//        QMetaEnum em = pObj->enumerator(e);
-//        for(int j = 0; j < em.keyCount(); j++)
-//            qDebug() << "enum: " << em.name() << ";key: " << em.key(j);
-//    }
+
     return nRet;
 }
 

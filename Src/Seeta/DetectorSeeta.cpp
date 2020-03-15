@@ -61,7 +61,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
 
 int CDetectorSeeta::UpdateParameter()
 {
-    qDebug() << "CDetectorSeeta::UpdateParameter()";
+    //qDebug() << "CDetectorSeeta::UpdateParameter()";
     m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (getDevice()) {

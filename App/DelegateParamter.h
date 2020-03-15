@@ -15,8 +15,19 @@ public:
     explicit CDelegateParamter(QObject *parent = nullptr);
     enum ROLE
     {
-        ROLE_PROPERTY_NAME = Qt::UserRole,
+        ROLE_PROPERTY_TYPE = Qt::UserRole,
+        ROLE_PROPERTY_NAME,
+        ROLE_PROPERTY_VALUE,   
         ROLE_OBJECT
+    };
+
+    enum TYPE
+    {
+        TYPE_ENUM,
+        TYPE_DIRECTORY,
+        TYPE_FILE,
+        TYPE_STRING,
+        TYPE_OTHER
     };
 
 public:

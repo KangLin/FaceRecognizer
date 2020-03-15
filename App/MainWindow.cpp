@@ -548,9 +548,9 @@ int MainWindow::createDockPerameters()
     bool check = connect(dock->toggleViewAction(), SIGNAL(triggered(bool)),
                          this, SLOT(slotParaDock_triggered(bool)));
     Q_ASSERT(check);
-    check = connect(dock, SIGNAL(visibilityChanged(bool)),
-                    this, SLOT(slotParaDock_triggered(bool)));
-    Q_ASSERT(check);
+//    check = connect(dock, SIGNAL(visibilityChanged(bool)),
+//                    this, SLOT(slotParaDock_triggered(bool)));
+//    Q_ASSERT(check);
 
     QActionGroup *pAiGroup = new QActionGroup(this);
     const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();

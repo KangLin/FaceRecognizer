@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QEvent>
 #include <QPainter>
+#include <QComboBox>
 
 CDelegateParamter::CDelegateParamter(QObject *parent)
     : QStyledItemDelegate(parent)
@@ -18,64 +19,150 @@ CDelegateParamter::CDelegateParamter(QObject *parent)
 QSize CDelegateParamter::sizeHint(const QStyleOptionViewItem &option,
                                   const QModelIndex &index) const
 {
-    QRegExp rx(".*[Pp]ath.*");
-    if(!rx.exactMatch(index.data(ROLE_PROPERTY_NAME).toString())) 
-        return QStyledItemDelegate::sizeHint(option, index);
-    
     QSize s = option.rect.size();
-    CFrmBroweFile f;
-    f.setStyleOption(&option);
-    f.setFile(index.data(Qt::EditRole).toString());
-    s.setWidth(qMax(f.sizeHint().width(), s.width()));
-    s.setHeight(qMax(f.sizeHint().height(), s.height()));
-   
-    return s;
+
+    switch(index.data(ROLE_PROPERTY_TYPE).toInt())
+    {
+    case TYPE_DIRECTORY:
+    case TYPE_FILE:
+    {
+        CFrmBroweFile f;
+        f.setStyleOption(&option);
+        f.setFile(index.data(Qt::EditRole).toString());
+        s.setWidth(qMax(f.sizeHint().width(), s.width()));
+        s.setHeight(qMax(f.sizeHint().height(), s.height()));
+        return s;
+    }
+    case TYPE_ENUM:
+    {
+        QComboBox eCombaBox;
+        QString szEnum;
+        szEnum = index.data(ROLE_PROPERTY_VALUE).toString();
+        QStringList se;
+        se = szEnum.split(";");
+        foreach(auto e, se)
+        {
+            if(e.isEmpty())
+                continue;
+            QStringList szItem = e.split("=");
+            eCombaBox.addItem(szItem[0], szItem[1]);
+        }
+        s.setWidth(qMax(eCombaBox.sizeHint().width(), s.width()));
+        s.setHeight(qMax(eCombaBox.sizeHint().height(), s.height()));
+        return s;
+    }
+    default:
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
 }
 
 QWidget *CDelegateParamter::createEditor(QWidget *parent,
                                          const QStyleOptionViewItem &option,
                                          const QModelIndex &index) const
 {
-    //qDebug() << "CDelegateParamter::createEditor" << parent->metaObject()->className() << index;
-    QRegExp rx(".*[Pp]ath.*");
-    if(!rx.exactMatch(index.data(ROLE_PROPERTY_NAME).toString())) 
+    switch(index.data(ROLE_PROPERTY_TYPE).toInt())
+    {
+    case TYPE_DIRECTORY:
+    {
+        CFrmBroweFile *pW = new CFrmBroweFile(parent);
+        pW->setStyleOption(&option);
+        pW->setFile(index.data(Qt::EditRole).toString());
+        pW->setIsDirectory(true);
+        pW->resize(option.rect.size());
+        pW->setFocusPolicy(Qt::StrongFocus);
+        pW->setAutoFillBackground(true);
+        return pW;
+    }
+    case TYPE_FILE:
+    {
+        CFrmBroweFile *pW = new CFrmBroweFile(parent);
+        pW->setStyleOption(&option);
+        pW->setFile(index.data(Qt::EditRole).toString());
+        pW->resize(option.rect.size());
+        pW->setFocusPolicy(Qt::StrongFocus);
+        pW->setAutoFillBackground(true);
+        return pW;
+    }
+    case TYPE_ENUM:
+    {
+        QComboBox *pEnum = new QComboBox(parent);
+        QString szEnum;
+        szEnum = index.data(ROLE_PROPERTY_VALUE).toString();
+        QStringList se;
+        se = szEnum.split(";");
+        int curIndex = 0;
+        int i = 0;
+        foreach(auto e, se)
+        {
+            if(e.isEmpty())
+                continue;
+            QStringList szItem = e.split("=");
+            pEnum->addItem(szItem[0], szItem[1]);
+            if(szItem[0] == index.data(Qt::DisplayRole).toString())
+                curIndex = i;
+            i++;
+        }
+        pEnum->setCurrentIndex(curIndex);
+        return pEnum;
+    }
+    default:
         return QStyledItemDelegate::createEditor(parent, option, index);
+    }
 
-    CFrmBroweFile *pW = new CFrmBroweFile(parent);
-    pW->setStyleOption(&option);
-    pW->setFile(option.text);
-    pW->setIsDirectory(true);
-    pW->resize(option.rect.size());
-    pW->setFocusPolicy(Qt::StrongFocus);
-    pW->setAutoFillBackground(true);
-    return pW;
 }
 
 void CDelegateParamter::setEditorData(QWidget *editor,
                                       const QModelIndex &index) const
 {
-    //qDebug() << "CDelegateParamter::setEditorData" << editor << index;
-    if(editor->inherits("CFrmBroweFile"))
+    switch(index.data(ROLE_PROPERTY_TYPE).toInt())
+    {
+    case TYPE_DIRECTORY:
+    case TYPE_FILE:
     {
         CFrmBroweFile *pW = dynamic_cast<CFrmBroweFile*>(editor);
         pW->setFile(index.data(Qt::EditRole).toString());
-    } else{
+        return;
+    }
+    case TYPE_ENUM:
+    {
+        QComboBox *pEnum = dynamic_cast<QComboBox*>(editor);
+        pEnum->setCurrentText(index.data(Qt::DisplayRole).toString());
+        int curIndex = 0;
+        for(int i = 0; i < pEnum->count(); i++)
+        {
+            if(index.data(Qt::EditRole).toString()
+                    == pEnum->itemData(i).toString())
+                curIndex = i;
+        }
+        pEnum->setCurrentIndex(curIndex);
+        return;
+    }
+    default:
         QStyledItemDelegate::setEditorData(editor, index);
     }
-    
-    return;
 }
 
 void CDelegateParamter::setModelData(QWidget *editor,
                                      QAbstractItemModel *model,
                                      const QModelIndex &index) const
 {
-    //qDebug() << "CDelegateParamter::setModelData" << editor << index;
-    if(editor->inherits("CFrmBroweFile"))
+    switch(index.data(ROLE_PROPERTY_TYPE).toInt())
+    {
+    case TYPE_DIRECTORY:
+    case TYPE_FILE:
     {
         CFrmBroweFile *pW = dynamic_cast<CFrmBroweFile*>(editor);
         model->setData(index, pW->getFile());
-    }else{
+        return;
+    }
+    case TYPE_ENUM:
+    {
+        QComboBox *pEnum = dynamic_cast<QComboBox*>(editor);
+        model->setData(index, pEnum->currentData(), Qt::EditRole);
+        model->setData(index, pEnum->currentText(), Qt::DisplayRole);
+        return;
+    }
+    default:
         QStyledItemDelegate::setModelData(editor, model, index);
     }
 }
