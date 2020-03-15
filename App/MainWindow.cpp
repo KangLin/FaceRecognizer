@@ -518,6 +518,17 @@ void MainWindow::on_actionAiLibraries_triggered(QAction* a)
 
 int MainWindow::createDockPerameters()
 {
+#if defined (Q_OS_ANDROID)
+    bool bHide = true;
+#else
+    bool bHide = false;
+#endif
+#ifdef RABBITCOMMON
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    bHide = set.value("ParametersDockHide", bHide).toBool();
+#endif
+
     QDockWidget *dock = new QDockWidget(tr("Set parameters"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
     m_Paramter = QSharedPointer<CFrmPara>(new CFrmPara(dock));
@@ -527,13 +538,19 @@ int MainWindow::createDockPerameters()
         return -1;
     }
     dock->setWidget(m_Paramter.data());
+    if(bHide) dock->hide();
 #if defined (Q_OS_ANDROID)
-    dock->hide();
     addDockWidget(Qt::BottomDockWidgetArea, dock);
 #else
     addDockWidget(Qt::RightDockWidgetArea, dock);
 #endif
     ui->menuTools->addAction(dock->toggleViewAction());
+    bool check = connect(dock->toggleViewAction(), SIGNAL(triggered(bool)),
+                         this, SLOT(slotParaDock_triggered(bool)));
+    Q_ASSERT(check);
+    check = connect(dock, SIGNAL(visibilityChanged(bool)),
+                    this, SLOT(slotParaDock_triggered(bool)));
+    Q_ASSERT(check);
 
     QActionGroup *pAiGroup = new QActionGroup(this);
     const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();
@@ -582,4 +599,13 @@ int MainWindow::createDockPerameters()
     }
     
     return 0;
+}
+
+void MainWindow::slotParaDock_triggered(bool checked)
+{
+#ifdef RABBITCOMMON
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    set.setValue("ParametersDockHide", !checked);
+#endif
 }

@@ -41,8 +41,9 @@ private slots:
     void on_actionExit_triggered();
     void on_actionOpen_log_file_triggered();
     void on_actionAiLibraries_triggered(QAction *action);
-
     void on_actionStyle_triggered();
+    
+    void slotParaDock_triggered(bool checked);
     
 private:
     int CamerOrientation(int index);
