@@ -1,3 +1,9 @@
+- v0.0.5
+  + Add set parameters in main windows dock
+  + Modify Detect interface
+  + Delete parameter interface
+  + Add libfacedection 
+
 - v0.0.4
   + Add opencv face
     - Add opencv dnn face detect
