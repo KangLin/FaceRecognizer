@@ -3,7 +3,7 @@
 #ifdef HAVE_SEETA_FACE
     #include "Seeta/FaceSeeta.h"
 #endif
-#ifdef HAVE_OPENCV
+#ifdef HAVE_FACE_OPENCV
     #include "OpenCV/FaceOpenCV.h"
 #endif
 #ifdef HAVE_LIBFACEDETECTION
@@ -19,7 +19,7 @@ CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
         m_Face[i] = nullptr;
     }
 
-#ifdef HAVE_OPENCV
+#ifdef HAVE_FACE_OPENCV
     m_Face[OPENCV] = new CFaceOpenCV();
 #endif
 

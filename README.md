@@ -95,7 +95,7 @@
 ## 贡献
 
 问题： https://github.com/KangLin/FaceRecognizer/issues  
-项目位置： https://github.com/KangLin/FaceRecognizer
+项目位置： https://github.com/KangLin/FaceRecognizer  
 贡献者： https://github.com/KangLin/FaceRecognizer/graphs/contributors
 
 ## 许可协议

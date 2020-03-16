@@ -12,7 +12,7 @@
 CCameraQtCaptureVideoFrame::CCameraQtCaptureVideoFrame(QObject *parent) :
     QAbstractVideoSurface(parent)
 {
-    m_Rotation = 0;
+    m_Angle = 0;
 }
 
 CCameraQtCaptureVideoFrame::~CCameraQtCaptureVideoFrame()
@@ -77,15 +77,15 @@ bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
     PERFORMANCE(present)
     QImage img = CImageTool::ConverFormatToRGB888(frame);
     PERFORMANCE_ADD_TIME(present,
-             "conver format to RBG888, rotation:" + QString::number(m_Rotation))
-    if(m_Rotation)
-        img = img.transformed(QTransform().rotate(-1 * m_Rotation));
+             "conver format to RBG888, rotation:" + QString::number(m_Angle))
+    if(m_Angle)
+        img = img.transformed(QTransform().rotate(-1 * m_Angle));
     emit sigCaptureFrame(img);
     return true;
 }
 
-int CCameraQtCaptureVideoFrame::SetCameraAngle(int rotation)
+int CCameraQtCaptureVideoFrame::SetCameraAngle(int angle)
 {
-    m_Rotation = rotation;
+    m_Angle = angle;
     return 0;
 }

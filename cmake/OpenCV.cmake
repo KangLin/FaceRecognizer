@@ -6,7 +6,13 @@ if(USE_OPENCV)
         set(LIBS ${LIBS} ${OpenCV_LIBS})
         set(INCLUDE_DIRS ${INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
         message("OpenCV_LIBS:${OpenCV_LIBS}")
-
+        
+        if(OpenCV_VERSION VERSION_LESS "3.4.0")
+            return()
+        endif()
+        
+        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_FACE_OPENCV)
+        
         set(SOURCES_FILES
             ${SOURCES_FILES}
             OpenCV/FaceOpenCV.cpp

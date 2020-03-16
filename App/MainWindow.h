@@ -44,6 +44,7 @@ private slots:
     void on_actionStyle_triggered();
     
     void slotParaDock_triggered(bool checked);
+    void slotScreenOrientationChanged(Qt::ScreenOrientation orientation);
     
 private:
     int CamerOrientation(int index);

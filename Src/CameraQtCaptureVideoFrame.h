@@ -68,7 +68,7 @@ public:
             QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const;
     //bool isFormatSupported(const QVideoSurfaceFormat &format) const;
 
-    int SetCameraAngle(int rotation);
+    int SetCameraAngle(int angle);
     
 signals:
     //从摄像头捕获的原始帧  
@@ -83,7 +83,7 @@ private:
      QVideoProbe m_Probe;//android下,目前只能用probe捕获视频  
 #endif
      
-     int m_Rotation;
+     int m_Angle;
 };
 
 #endif // CAPTUREVIDEOFRAME_H

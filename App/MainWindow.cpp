@@ -32,6 +32,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QDockWidget>
+#include <QScreen>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -50,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionStart->setToolTip(tr("Start"));
     ui->actionStart->setStatusTip(tr("Start"));
     
+    // Operator menu
     QActionGroup *pViewGroup = new QActionGroup(this);
     pViewGroup->addAction(ui->actionDisplay);
     pViewGroup->addAction(ui->actionRegisterImage);
@@ -58,10 +60,12 @@ MainWindow::MainWindow(QWidget *parent) :
     pViewGroup->addAction(ui->actionRecognizerImage);
     pViewGroup->addAction(ui->actionRecognizerVideo);
 
+    // Source menu
     QActionGroup *pSourceGroup = new QActionGroup(this);
     pSourceGroup->addAction(ui->actionFile);
     pSourceGroup->addAction(ui->actionCamera);
     
+    // Camera
     if(!QCameraInfo::availableCameras().isEmpty())
     {
         QComboBox *cmbCameras = new QComboBox(ui->toolBar);
@@ -75,7 +79,8 @@ MainWindow::MainWindow(QWidget *parent) :
                     this, SLOT(slotCameraChanged(int)));
             QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
             foreach (const QCameraInfo &cameraInfo, cameras) {
-                //qDebug() << "Camer name:" << cameraInfo.deviceName();
+//                LOG_MODEL_DEBUG("MainWindows", "Camer name: %s",
+//                                cameraInfo.deviceName().toStdString().c_str());
                 cmbCameras->addItem(cameraInfo.description());
             }
         }
@@ -176,79 +181,81 @@ void MainWindow::on_actionStyle_triggered()
 
 void MainWindow::slotCameraChanged(int index)
 {
-    if(QCameraInfo::availableCameras().size() > 0 && index >= 0)
+    if(!(QCameraInfo::availableCameras().size() > 0 && index >= 0))
     {
-        if(m_pCamera)
-        {
-            m_pCamera->unload();
-            delete m_pCamera;
-        }
-
-        m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
-        if(nullptr == m_pCamera) return;
-        /*        
-        QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
-
-        m_pCamera->load();
-
-        qInfo() << "Camera support:";
-        qInfo() << "Resolutions:" << m_pCamera->supportedViewfinderResolutions(m_pCamera->viewfinderSettings());
-        QList<QCamera::FrameRateRange> ranges =  m_pCamera->supportedViewfinderFrameRateRanges();
-        for(auto &rang: ranges)
-        {
-            qInfo() << "Frame rate range:" << rang.maximumFrameRate << rang.maximumFrameRate;
-        }
-        qInfo() << "Pixel formate:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
-
-//        viewfinderSettings.setResolution(640, 480);
-//        viewfinderSettings.setMinimumFrameRate(10.0);
-//        viewfinderSettings.setMaximumFrameRate(30.0);
-//        m_pCamera->setViewfinderSettings(viewfinderSettings);
-        m_pCamera->unload();
-
-        qInfo() << "Current:";
-        qInfo() << "Resolutions:" << viewfinderSettings.resolution();
-        qInfo() << "Frame rate:" << viewfinderSettings.minimumFrameRate() << viewfinderSettings.maximumFrameRate();
-        qInfo() << "Pixel formate:" << viewfinderSettings.pixelFormat();
-        qInfo() << "" << viewfinderSettings.pixelAspectRatio();
-
-        //*/
-        
-        m_CaptureFrame.SetCameraAngle(CamerOrientation(index));
-        m_pCamera->setViewfinder(&m_CaptureFrame);
-        
-        QCameraFocus* focus = m_pCamera->focus();
-        if(focus)
-        {
-            QCameraFocus::FocusMode focusMode = QCameraFocus::AutoFocus;
-//            if(focus->isFocusModeSupported(QCameraFocus::AutoFocus))
-//            {
-//                focusMode = QCameraFocus::AutoFocus;
-//            } else if(focus->isFocusModeSupported(QCameraFocus::QCameraFocus::ContinuousFocus))
-//            {
-//                focusMode = QCameraFocus::ContinuousFocus;
-//*/            } else if(focus->isFocusModeSupported(QCameraFocus::MacroFocus))
-//                focusMode = QCameraFocus::MacroFocus;
-//            else
-//                focusMode = QCameraFocus::ManualFocus;
-            LOG_MODEL_ERROR("MainWindow", "focusMode:0x%x", focusMode);
-            focus->setFocusMode(focusMode);
-            
-            focus->setFocusPointMode(QCameraFocus::FocusPointAuto);
-            QList<QCameraFocusZone> zones = focus->focusZones();
-//            foreach (QCameraFocusZone zone, zones) {
-//                if (zone.status() == QCameraFocusZone::Focused) {
-//                    // Draw a green box at zone.area()
-//                } else if (zone.status() == QCameraFocusZone::Selected) {
-//                    // This area is selected for autofocusing, but is not in focus
-//                    // Draw a yellow box at zone.area()
-//                }
-//            }
-            
-        }
-    } else {
         QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
+        return;
     }
+    
+    if(m_pCamera)
+    {
+        m_pCamera->unload();
+        delete m_pCamera;
+    }
+    
+    m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
+    if(nullptr == m_pCamera) return;
+    /*        
+    QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
+    
+    m_pCamera->load();
+    
+    qInfo() << "Camera support:";
+    qInfo() << "Resolutions:" << m_pCamera->supportedViewfinderResolutions(m_pCamera->viewfinderSettings());
+    QList<QCamera::FrameRateRange> ranges =  m_pCamera->supportedViewfinderFrameRateRanges();
+    for(auto &rang: ranges)
+    {
+        qInfo() << "Frame rate range:" << rang.maximumFrameRate << rang.maximumFrameRate;
+    }
+    qInfo() << "Pixel formate:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
+    
+//    viewfinderSettings.setResolution(640, 480);
+//    viewfinderSettings.setMinimumFrameRate(10.0);
+//    viewfinderSettings.setMaximumFrameRate(30.0);
+//    m_pCamera->setViewfinderSettings(viewfinderSettings);
+    m_pCamera->unload();
+    
+    qInfo() << "Current:";
+    qInfo() << "Resolutions:" << viewfinderSettings.resolution();
+    qInfo() << "Frame rate:" << viewfinderSettings.minimumFrameRate() << viewfinderSettings.maximumFrameRate();
+    qInfo() << "Pixel formate:" << viewfinderSettings.pixelFormat();
+    qInfo() << "" << viewfinderSettings.pixelAspectRatio();
+    
+    //*/
+    
+    m_CaptureFrame.SetCameraAngle(CamerOrientation(index));
+    m_pCamera->setViewfinder(&m_CaptureFrame);
+    
+    QCameraFocus* focus = m_pCamera->focus();
+    if(focus)
+    {
+        QCameraFocus::FocusMode focusMode = QCameraFocus::AutoFocus;
+//        if(focus->isFocusModeSupported(QCameraFocus::AutoFocus))
+//        {
+//            focusMode = QCameraFocus::AutoFocus;
+//        } else if(focus->isFocusModeSupported(QCameraFocus::QCameraFocus::ContinuousFocus))
+//        {
+//            focusMode = QCameraFocus::ContinuousFocus;
+//            */            } else if(focus->isFocusModeSupported(QCameraFocus::MacroFocus))
+//            focusMode = QCameraFocus::MacroFocus;
+//        else
+//            focusMode = QCameraFocus::ManualFocus;
+        LOG_MODEL_DEBUG("MainWindow", "focusMode:0x%x", focusMode);
+        focus->setFocusMode(focusMode);
+        
+        focus->setFocusPointMode(QCameraFocus::FocusPointAuto);
+        QList<QCameraFocusZone> zones = focus->focusZones();
+//        foreach (QCameraFocusZone zone, zones) {
+//            if (zone.status() == QCameraFocusZone::Focused) {
+//                // Draw a green box at zone.area()
+//            } else if (zone.status() == QCameraFocusZone::Selected) {
+//                // This area is selected for autofocusing, but is not in focus
+//                // Draw a yellow box at zone.area()
+//            }
+//        }
+        
+    }
+    
 }
 
 int MainWindow::InitCamerOrientation()
@@ -258,15 +265,12 @@ int MainWindow::InitCamerOrientation()
     pCameraAngle->addAction(ui->action90);
     pCameraAngle->addAction(ui->action180);
     pCameraAngle->addAction(ui->action270);
-    bool check = connect(pCameraAngle, SIGNAL(triggered(QAction *)),
-                         this, SLOT(slotCameraOrientation(QAction *)));
-    Q_ASSERT(check);
-    
+
     int nAngle = 0;
 #ifdef RABBITCOMMON
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
-    nAngle = set.value("CameraOrientation", 0).toInt();
+    nAngle = set.value("CameraOrientation", nAngle).toInt();
 #endif
     m_CaptureFrame.SetCameraAngle(nAngle);
     switch (nAngle) {
@@ -283,6 +287,10 @@ int MainWindow::InitCamerOrientation()
         ui->action270->setChecked(true);
         break;
     }
+    
+    bool check = connect(pCameraAngle, SIGNAL(triggered(QAction *)),
+                         this, SLOT(slotCameraOrientation(QAction *)));
+    Q_ASSERT(check);
     return 0;    
 }
 
@@ -298,7 +306,7 @@ void MainWindow::slotCameraOrientation(QAction *pAction)
     if(pAction == ui->action270)
         nAngle = 270;
     m_CaptureFrame.SetCameraAngle(nAngle);
-    
+
 #ifdef RABBITCOMMON
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
@@ -357,11 +365,27 @@ int MainWindow::CamerOrientation(int index)
         return -1;
     
     QCameraInfo cameraInfo = QCameraInfo::availableCameras().at(index);
-
+    
     // Get the current display orientation
-    const QScreen *screen = QGuiApplication::primaryScreen();
-    const int screenAngle = screen->angleBetween(screen->nativeOrientation(),
+    QScreen *screen = QGuiApplication::primaryScreen();
+    screen->setOrientationUpdateMask(Qt::LandscapeOrientation
+                                     | Qt::PortraitOrientation
+                                     | Qt::InvertedLandscapeOrientation
+                                     | Qt::InvertedPortraitOrientation);
+    bool check = connect(screen, SIGNAL(orientationChanged(Qt::ScreenOrientation)),
+            this, SLOT(slotScreenOrientationChanged(Qt::ScreenOrientation)));
+    Q_ASSERT(check);
+
+    int screenAngle = 0;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+    qDebug() << "orientation:" << screen->orientation()
+             << screen->nativeOrientation()
+             << screen->orientationUpdateMask();
+    screenAngle = screen->angleBetween(screen->nativeOrientation(),
                                                  screen->orientation());
+#endif
+    qDebug() << "screenAngle:" << screenAngle
+             << "camer orientation:" << cameraInfo.orientation();
     int rotation;
     if (cameraInfo.position() == QCamera::BackFace) {
         rotation = (cameraInfo.orientation() - screenAngle) % 360;
@@ -370,8 +394,19 @@ int MainWindow::CamerOrientation(int index)
         rotation = (360 - cameraInfo.orientation() + screenAngle) % 360;
     }
     int a = cameraInfo.orientation();
-    qDebug() << "Camer angle:" << a << rotation;
+    LOG_MODEL_DEBUG("MainWindow", "Camer angle: %d; %d", a, rotation);
+    qDebug() << "orientation1:" << a << rotation;
     return rotation;
+}
+
+void MainWindow::slotScreenOrientationChanged(Qt::ScreenOrientation orientation)
+{
+    QScreen *screen = QGuiApplication::primaryScreen();
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
+    qDebug() << "slotScreenOrientationChanged:" << orientation
+             <<screen->nativeOrientation()
+            << screen->orientation();
+#endif
 }
 
 void MainWindow::on_actionSet_model_path_triggered()
