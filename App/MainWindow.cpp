@@ -75,16 +75,27 @@ MainWindow::MainWindow(QWidget *parent) :
             cmbCameras->setToolTip(tr("Select camera"));
             cmbCameras->setStatusTip(tr("Select camera"));
             ui->toolBar->addWidget(cmbCameras);
-            connect(cmbCameras, SIGNAL(currentIndexChanged(int)),
-                    this, SLOT(slotCameraChanged(int)));
             QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
             foreach (const QCameraInfo &cameraInfo, cameras) {
-//                LOG_MODEL_DEBUG("MainWindows", "Camer name: %s",
-//                                cameraInfo.deviceName().toStdString().c_str());
+                //                LOG_MODEL_DEBUG("MainWindows", "Camer name: %s",
+                //                                cameraInfo.deviceName().toStdString().c_str());
                 cmbCameras->addItem(cameraInfo.description());
             }
+
+            connect(cmbCameras, SIGNAL(currentIndexChanged(int)),
+                    this, SLOT(slotCameraChanged(int)));
+
+#ifdef RABBITCOMMON
+            QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                          QSettings::IniFormat);
+            int index = set.value("CameraIndex", 0).toInt();
+            cmbCameras->setCurrentIndex(index);
+            slotCameraChanged(index);
+#endif
+            
+            InitCamerOrientation();
         }
-        InitCamerOrientation();
+        
     } else 
         ui->actionFile->setChecked(true);
 
@@ -255,6 +266,12 @@ void MainWindow::slotCameraChanged(int index)
 //        }
         
     }
+    
+#ifdef RABBITCOMMON
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    set.setValue("CameraIndex", index);
+#endif
     
 }
 
