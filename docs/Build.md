@@ -12,8 +12,8 @@
   + [Qt](http://qt.io/)
   + 编译器
     - For linux or android
-        + GNU Make 工具
-        + GCC 或者 Clang 编译器
+        + GNU GCC
+        + Clang
     - For windows
         + [MSVC](http://msdn.microsoft.com/zh-cn/vstudio)
         + [MSYS2/MinGW](http://sourceforge.net/projects/msys2/)
