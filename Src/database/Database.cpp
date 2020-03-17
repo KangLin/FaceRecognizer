@@ -14,6 +14,7 @@
 CDatabase::CDatabase(QObject *parent)
     : QObject(parent)
 {
+    m_szFile = RabbitCommon::CDir::Instance()->GetDirUserDatabaseFile();
     if(InitDatabase())
     {
         throw std::runtime_error("Init database fail");
@@ -27,13 +28,10 @@ CDatabase::~CDatabase()
 
 int CDatabase::InitDatabase()
 {
-    QString szFile;
-    szFile = RabbitCommon::CDir::Instance()->GetDirUserDatabaseFile();
-    
     m_Database = QSqlDatabase::addDatabase("QSQLITE");
-    m_Database.setDatabaseName(szFile);
+    m_Database.setDatabaseName(m_szFile);
     QDir d;
-    if(!d.exists(szFile))
+    if(!d.exists(m_szFile))
     {
         if(!m_Database.open())
         {
@@ -62,7 +60,7 @@ int CDatabase::InitDatabase()
                     file.close();
                     m_Database.close();
                     QDir d;
-                    d.remove(szFile);
+                    d.remove(m_szFile);
                     return -1;
                 }
             }
@@ -85,4 +83,15 @@ int CDatabase::InitDatabase()
 CTableRegister* CDatabase::GetTableRegister()
 {
     return &m_TableRegister;
+}
+
+QString CDatabase::getDbFile()
+{
+    return m_szFile;
+}
+
+int CDatabase::setDbFile(const QString &szFile)
+{
+    m_szFile = szFile;
+    return 0;
 }
