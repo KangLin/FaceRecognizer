@@ -43,6 +43,7 @@ int CFrmPara::slotUpdateParamter(QAction *pAction)
     LoadObject(CFactoryFace::Instance()->GetRecognizer());
     LoadObject(CFactoryFace::Instance()->GetTracker());
     LoadObject(CFactoryFace::Instance()->GetFaceTools());
+    LoadObject(CFactoryFace::Instance()->GetDatabase());
     
     return 0;
 }
@@ -57,15 +58,14 @@ int CFrmPara::LoadObject(QObject *pObject)
     QStandardItem *pClass = new QStandardItem(pMO->className());
     pClass->setEditable(false);
     m_Model.appendRow(pClass);
-    int nCount = pMO->propertyCount();
+    m_Model.itemFromIndex(pClass->index().siblingAtColumn(1))->setEditable(false);
 
+    int nCount = pMO->propertyCount();
     for(int i = 0; i < nCount; i++)
     {
         QMetaProperty p = pMO->property(i);
         if(!p.isValid())
-        {
             continue;
-        }
 
         QString szName(p.name());
         QStandardItem* pItem = new QStandardItem(szName);

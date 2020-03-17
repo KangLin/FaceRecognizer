@@ -23,11 +23,11 @@ public:
 
     enum TYPE
     {
+        TYPE_OTHER,
         TYPE_ENUM,
         TYPE_DIRECTORY,
         TYPE_FILE,
-        TYPE_STRING,
-        TYPE_OTHER
+        TYPE_STRING
     };
 
 public:

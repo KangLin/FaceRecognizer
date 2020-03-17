@@ -1,7 +1,10 @@
 #include "DataRegister.h"
 
 CDataRegister::CDataRegister(QObject *parent) : QObject(parent)
-{}
+{
+    m_nIdx = -1;
+    m_nNo = -1;
+}
 
 CDataRegister::CDataRegister(const CDataRegister &other)
 {
