@@ -1,37 +1,24 @@
 #include "FactoryFace.h"
 #include "Log.h"
-#ifdef HAVE_SEETA_FACE
-    #include "Seeta/FaceSeeta.h"
-#endif
-#ifdef HAVE_FACE_OPENCV
-    #include "OpenCV/FaceOpenCV.h"
-#endif
-#ifdef HAVE_LIBFACEDETECTION
-    #include "libfacedetection/FaceLibfacedetection.h"
+
+#ifdef RABBITCOMMON
+    #include <RabbitCommonDir.h>
 #endif
 
+#include <QPluginLoader>
+#include <QDebug>
+
 CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
-    m_CurrentLib(AUTO),
+    m_CurrentLib(-1),
     m_bOnlyUserCurrent(false)
 {
     Q_UNUSED(parent)
-    for (int i = 0; i < AUTO; i++) {
-        m_Face[i] = nullptr;
-    }
 
-#ifdef HAVE_FACE_OPENCV
-    m_Face[OPENCV] = new CFaceOpenCV();
-#endif
-
-#ifdef HAVE_SEETA_FACE
-    m_Face[SEETA] = new CFaceSeeta();
-#endif
-
-#ifdef HAVE_LIBFACEDETECTION
-    m_Face[LIBFACEDETECTION] = new CFaceLibfacedetection();
+#ifdef RABBITCOMMON
+    int nRet = FindPlugins(RabbitCommon::CDir::Instance()->GetDirPlugs());
 #endif
     
-    SetLibType(AUTO, false);
+    SetLibType(QString(), false);
 }
 
 CFactoryFace::~CFactoryFace()
@@ -46,39 +33,81 @@ CFactoryFace* CFactoryFace::Instance()
     return p;
 }
 
-bool CFactoryFace::bIsValid(LIB_TYPE type)
+int CFactoryFace::RegisterFace(const QString &szName,
+                               CFace* pFace,
+                               const QString &szDescript)
 {
-    if(!GetFace(type))
+    int nIndex = -1;
+    FACE_DATA data{szName, szDescript, pFace};
+    foreach(auto d, m_Face)
+    {
+        nIndex++;
+        if(d.szName == szName)
+        {
+            d.pFace->Clean(this);
+            break;
+        }
+    }
+
+    if(nIndex >= m_Face.size() - 1)
+        m_Face.push_back(data);
+    else
+        m_Face[nIndex] = data;
+
+    return 0;
+}
+
+int CFactoryFace::RemoveFace(const QString &szName)
+{
+    int nIndex = 0;
+    foreach(auto d, m_Face)
+    {
+        if(d.szName == szName)
+        {
+            d.pFace->Clean(this);
+            m_Face.remove(nIndex);
+            break;
+        }
+        nIndex++;
+    }
+    if(m_CurrentLib >= m_Face.size())
+        m_CurrentLib = m_Face.size() - 1;
+    return 0;
+}
+
+bool CFactoryFace::bIsValid(const QString &szName)
+{
+    if(!GetFace(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetFace is null");
         return false;
     }
-    if(!GetDector(type))
+    if(!GetDector(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetDector is null");
         return false;
     }
-    if(!GetTracker(type))
+    if(!GetTracker(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetTracker is null");
         return false;
     }
-    if(!GetLandmarker(type))
+    if(!GetLandmarker(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetLandmarker is null");
         return false;
     }
-    if(!GetRecognizer(type))
+    if(!GetRecognizer(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetRecognizer is null");
         return false;
     }
-    if(!GetFaceTools(type))
+    if(!GetFaceTools(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetFaceTools is null");
         return false;
     }
-    if(!GetDatabase(type))
+    if(!GetDatabase(szName))
     {
         LOG_MODEL_ERROR("CFactory", "CFactory::GetDatabase is null");
         return false;
@@ -86,34 +115,65 @@ bool CFactoryFace::bIsValid(LIB_TYPE type)
     return true;
 }
 
-int CFactoryFace::SetLibType(LIB_TYPE type, bool bOnly)
+int CFactoryFace::SetLibType(const QString &szName, bool bOnly)
 {
-    m_CurrentLib = type;
+    int nIndex = -1;
+    if(0 < m_Face.size())
+        m_CurrentLib = 0;
+    else
+        m_CurrentLib = -1;
     m_bOnlyUserCurrent = bOnly;
+    
+    if(!szName.isEmpty())
+        foreach(auto d, m_Face)
+        {
+            nIndex++;
+            if(d.szName == szName)
+            {
+                m_CurrentLib = nIndex;
+                break;
+            }
+        }
+
     return 0;
 }
 
-CFace* CFactoryFace::GetFace(LIB_TYPE type)
+int CFactoryFace::GetLibType(QVector<QString> &szLibs, QVector<QString> &szDescript)
 {
-    if(AUTO == type)
+    foreach(auto d, m_Face)
     {
-        if(m_bOnlyUserCurrent)
-            return m_Face[m_CurrentLib];
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i]) return m_Face[i];
-        }
-        return nullptr;
+        szDescript.push_back(d.szDescript);
+        szLibs.push_back(d.szName);
     }
-    return m_Face[type];
+    return 0;
 }
 
-CDetector* CFactoryFace::GetDector(LIB_TYPE type)
+CFace* CFactoryFace::GetFace(const QString &szName)
 {
-    if(AUTO == type)
+    if(szName.isEmpty())
     {
-        if(GetFace(m_CurrentLib))
+        if(m_CurrentLib >= 0 && m_CurrentLib < m_Face.size())
+            return m_Face[m_CurrentLib].pFace;
+        if(m_bOnlyUserCurrent)
+            return nullptr;
+
+        foreach(auto d, m_Face)
+            if(d.pFace) return d.pFace;
+        return nullptr;
+    }
+
+    foreach(auto d, m_Face)
+        if(d.szName == szName) return d.pFace;
+    return nullptr;
+}
+
+CDetector* CFactoryFace::GetDector(const QString &szName)
+{
+    if(szName.isEmpty())
+    {
+        if(GetFace(szName))
         {
-            CDetector* pDetect = GetFace(m_CurrentLib)->GetDector();
+            CDetector* pDetect = GetFace(szName)->GetDector();
             if(pDetect)
                 return pDetect;
         }
@@ -123,117 +183,149 @@ CDetector* CFactoryFace::GetDector(LIB_TYPE type)
         
         //TODO: 优化：使用性能高的库
         
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i] && m_Face[i]->GetDector())
-                return m_Face[i]->GetDector();
+        foreach(auto d, m_Face) {
+            if(d.pFace && d.pFace->GetDector())
+                return d.pFace->GetDector();
         }
     }
     
-    return GetFace(type) ? GetFace(type)->GetDector() : nullptr;
+    return GetFace(szName) ? GetFace(szName)->GetDector() : nullptr;
 }
 
-CTracker* CFactoryFace::GetTracker(LIB_TYPE type)
+CTracker* CFactoryFace::GetTracker(const QString &szName)
 {
-    if(AUTO == type)
+    if(szName.isEmpty())
     {
-        if(GetFace(m_CurrentLib))
+        if(GetFace(szName))
         {
-            CTracker* pTracker = GetFace(m_CurrentLib)->GetTracker();
+            CTracker* pTracker = GetFace(szName)->GetTracker();
             if(pTracker)
                 return pTracker;
         }
         if(m_bOnlyUserCurrent)
             return nullptr;
         
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i] && m_Face[i]->GetTracker())
-                return m_Face[i]->GetTracker();
+        foreach(auto d, m_Face) {
+            if(d.pFace && d.pFace->GetTracker())
+                return d.pFace->GetTracker();
         }
     }
-    return GetFace(type) ? GetFace(type)->GetTracker() : nullptr;
+    return GetFace(szName) ? GetFace(szName)->GetTracker() : nullptr;
 }
 
-CLandmarker* CFactoryFace::GetLandmarker(LIB_TYPE type)
+CLandmarker* CFactoryFace::GetLandmarker(const QString &szName)
 {
-    if(AUTO == type)
+    if(szName.isEmpty())
     {
-        if(GetFace(m_CurrentLib))
+        if(GetFace(szName))
         {
-            CLandmarker* pLandmarker = GetFace(m_CurrentLib)->GetLandmarker();
+            CLandmarker* pLandmarker = GetFace(szName)->GetLandmarker();
             if(pLandmarker)
                 return pLandmarker;
         }
         if(m_bOnlyUserCurrent)
             return nullptr;
         
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i] && m_Face[i]->GetLandmarker())
-                return m_Face[i]->GetLandmarker();
+        foreach(auto d, m_Face) {
+            if(d.pFace && d.pFace->GetLandmarker())
+                return d.pFace->GetLandmarker();
         }
     }
-    return GetFace(type) ? GetFace(type)->GetLandmarker() : nullptr;
+    return GetFace(szName) ? GetFace(szName)->GetLandmarker() : nullptr;
 }
 
-CRecognizer* CFactoryFace::GetRecognizer(LIB_TYPE type)
+CRecognizer* CFactoryFace::GetRecognizer(const QString &szName)
 {
-    if(AUTO == type)
+    if(szName.isEmpty())
     {
-        if(GetFace(m_CurrentLib))
+        if(GetFace(szName))
         {
-            CRecognizer* pRecognizer = GetFace(m_CurrentLib)->GetRecognizer();
+            CRecognizer* pRecognizer = GetFace(szName)->GetRecognizer();
             if(pRecognizer)
                 return pRecognizer;
         }
         if(m_bOnlyUserCurrent)
             return nullptr;
         
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i] && m_Face[i]->GetRecognizer())
-                return m_Face[i]->GetRecognizer();
+        foreach(auto d, m_Face) {
+            if(d.pFace && d.pFace->GetRecognizer())
+                return d.pFace->GetRecognizer();
         }
     }
 
-    return GetFace(type) ? GetFace(type)->GetRecognizer() : nullptr;
+    return GetFace(szName) ? GetFace(szName)->GetRecognizer() : nullptr;
 }
 
-CFaceTools* CFactoryFace::GetFaceTools(LIB_TYPE type)
+CFaceTools* CFactoryFace::GetFaceTools(const QString &szName)
 {
-    if(AUTO == type)
+    if(szName.isEmpty())
     {
-        if(GetFace(m_CurrentLib))
+        if(GetFace(szName))
         {
-            CFaceTools* pTools = GetFace(m_CurrentLib)->GetFaceTools();
+            CFaceTools* pTools = GetFace(szName)->GetFaceTools();
             if(pTools)
                 return pTools;
         }
         if(m_bOnlyUserCurrent)
             return nullptr;
         
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i] && m_Face[i]->GetFaceTools())
-                return m_Face[i]->GetFaceTools();
+        foreach(auto d, m_Face) {
+            if(d.pFace && d.pFace->GetFaceTools())
+                return d.pFace->GetFaceTools();
         }
     }
-    return GetFace(type) ? GetFace(type)->GetFaceTools() : nullptr;
+    return GetFace(szName) ? GetFace(szName)->GetFaceTools() : nullptr;
 }
 
-CDatabase* CFactoryFace::GetDatabase(LIB_TYPE type)
+CDatabase* CFactoryFace::GetDatabase(const QString &szName)
 {
-    if(AUTO == type)
+    if(szName.isEmpty())
     {
-        if(GetFace(m_CurrentLib))
+        if(GetFace(szName))
         {
-            CDatabase* pDb = GetFace(m_CurrentLib)->GetDatabase();
+            CDatabase* pDb = GetFace(szName)->GetDatabase();
             if(pDb)
                 return pDb;
         }
         if(m_bOnlyUserCurrent)
             return nullptr;
         
-        for (int i = 0; i < AUTO; i++) {
-            if(m_Face[i] && m_Face[i]->GetDatabase())
-                return m_Face[i]->GetDatabase();
+        foreach(auto d, m_Face) {
+            if(d.pFace && d.pFace->GetDatabase())
+                return d.pFace->GetDatabase();
         }
     }
-    return GetFace(type) ? GetFace(type)->GetDatabase() : nullptr;
+    return GetFace(szName) ? GetFace(szName)->GetDatabase() : nullptr;
+}
+
+int CFactoryFace::FindPlugins(QDir dir)
+{
+    QString szPath = dir.path();
+    QString fileName;
+    QStringList filters;
+    filters << "*Plug*.so" << "*Plug*.dll";
+    foreach (fileName, dir.entryList(filters, QDir::Files)) {
+        QString szPlugins = dir.absoluteFilePath(fileName);
+        QPluginLoader loader(szPlugins);
+        QObject *plugin = loader.instance();
+        if (plugin) {
+            CFace* pPlugFace = qobject_cast<CFace*>(plugin);
+            if(pPlugFace)
+            {
+                pPlugFace->Initialize(this);
+                continue;
+            }
+        }else{
+            LOG_MODEL_ERROR("CManager", "load plugin error:%s",
+                            loader.errorString().toStdString().c_str());
+        }
+    }
+
+    foreach (fileName, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        QDir pluginDir = dir;
+        if(pluginDir.cd(fileName))
+            FindPlugins(pluginDir);
+    }
+
+    return 0;
 }

@@ -123,9 +123,12 @@ endif()
 # Set install data prefix
 if(ANDROID)
     set(INSTALL_DATA_PREFIX assets/data)
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${ANDROID_ABI}/plugs") 
 else()
     set(INSTALL_DATA_PREFIX data)
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugs)
 endif()
+set(FACE_RECOGNIZER_PLUGS_BINARY_DIR ${CMAKE_BINARY_DIR}/plugs)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)

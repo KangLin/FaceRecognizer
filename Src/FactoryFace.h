@@ -7,6 +7,8 @@
 #include "Face.h"
 
 #include <QMetaClassInfo>
+#include <QDir>
+#include <QVector>
 
 // @defgroup CFactoryFace Face factory
 
@@ -19,13 +21,13 @@
  *
  *        例如仅使用 SEETA ：
  * 
- *        CFactoryFace* pFace = CFactoryFace::Instance()->SetLibType(SEETA, true);
+ *        CFactoryFace* pFace = CFactoryFace::Instance()->SetLibType("Seeta", true);
  *        或者：
  *        CFace* pFace = CFactoryFace::Instance()->GetFace(SEETA);
  * 
  *     3. 当指定的某个库接口没有完全实现时，自动使用其他库的接口
  *        例如开发时使用 OPENCV ，但他有接口没有实现：
- *        CFactoryFace* pFace = CFactoryFace::Instance()->SetLibType(OPENCV, false);
+ *        CFactoryFace* pFace = CFactoryFace::Instance()->SetLibType("OpenCV", false);
  */
 class FACERECOGNIZER_EXPORT CFactoryFace : public QObject
 {
@@ -40,34 +42,44 @@ public:
     virtual ~CFactoryFace();
 
     static CFactoryFace* Instance();
-    
-    enum LIB_TYPE{
-        SEETA,
-        OPENCV,
-        DLIB,
-        LIBFACEDETECTION,
-        AUTO
-    };
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
-    Q_ENUM(LIB_TYPE)
-#endif
-    int SetLibType(LIB_TYPE type, bool bOnly = true);
-    
-    virtual CFace* GetFace(LIB_TYPE type = AUTO);
 
-    virtual CDetector* GetDector(LIB_TYPE type = AUTO);
-    virtual CTracker* GetTracker(LIB_TYPE type = AUTO);
-    virtual CLandmarker* GetLandmarker(LIB_TYPE type = AUTO);
-    virtual CRecognizer* GetRecognizer(LIB_TYPE type = AUTO);
-    virtual CFaceTools* GetFaceTools(LIB_TYPE type = AUTO);
-    virtual CDatabase* GetDatabase(LIB_TYPE type = AUTO);
+    int SetLibType(const QString &szName = QString(), bool bOnly = true);
+    int GetLibType(QVector<QString> &szLibs, QVector<QString> &szDescript);
+
+    virtual CFace* GetFace(const QString &szName = QString());
+
+    virtual CDetector* GetDector(const QString &szName = QString());
+    virtual CTracker* GetTracker(const QString &szName = QString());
+    virtual CLandmarker* GetLandmarker(const QString &szName = QString());
+    virtual CRecognizer* GetRecognizer(const QString &szName = QString());
+    virtual CFaceTools* GetFaceTools(const QString &szName = QString());
+    virtual CDatabase* GetDatabase(const QString &szName = QString());
     
-    bool bIsValid(LIB_TYPE type = AUTO);
+    bool bIsValid(const QString &szName = QString());
+    
+    /**
+     * @brief RegisterFace
+     * @param szName
+     * @param pFace
+     * @param szDescript
+     * @return
+     */
+    virtual int RegisterFace(const QString &szName, CFace* pFace,
+                             const QString &szDescript = QString());
+    virtual int RemoveFace(const QString &szName);
 
 private:
-    CFace* m_Face[AUTO];
-    LIB_TYPE m_CurrentLib;
+    int FindPlugins(QDir dir);
+private:
+    int m_CurrentLib;
     bool m_bOnlyUserCurrent;
+    struct FACE_DATA
+    {
+        QString szName;
+        QString szDescript;
+        CFace* pFace;
+    };
+    QVector<FACE_DATA> m_Face;
 };
 
 #endif // CFACTORY_H_KL_2019_10_21

@@ -558,13 +558,11 @@ void MainWindow::on_actionOpen_log_file_triggered()
 
 void MainWindow::on_actionAiLibraries_triggered(QAction* a)
 {
-    CFactoryFace::Instance()->SetLibType(
-                static_cast<CFactoryFace::LIB_TYPE>(a->data().toInt()),
-                false);
+    CFactoryFace::Instance()->SetLibType(a->data().toString(), false);
 #ifdef RABBITCOMMON
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
-    set.setValue("AI_Libraries", a->data().toInt());
+    set.setValue("AI_Libraries", a->data().toString());
 #endif
 }
 
@@ -605,50 +603,36 @@ int MainWindow::createDockPerameters()
 //    Q_ASSERT(check);
 
     QActionGroup *pAiGroup = new QActionGroup(this);
-    const QMetaObject* pObj = CFactoryFace::Instance()->metaObject();
-    int eCount = pObj->enumeratorCount();
-    for(int i = 0; i < eCount; i++)
-    {
-        int nSelect = 0;
+    ui->menuAI_libraries->setEnabled(false);
+    QVector<QString> szLibName, szLibDescript;
+    CFactoryFace::Instance()->GetLibType(szLibName, szLibDescript);
+    qDebug() << szLibName << szLibDescript;
+    QString szSelect;
+    if(!szLibName.empty())
+        szSelect = szLibName[0];
 #ifdef RABBITCOMMON
-        QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                      QSettings::IniFormat);
-        nSelect = set.value("AI_Libraries", 0).toInt();
+    QSettings setAILibs(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    szSelect = setAILibs.value("AI_Libraries", szSelect).toString();
 #endif
-
-        QMetaEnum e = pObj->enumerator(i);
-        if(strcmp(e.name(), "LIB_TYPE") == 0)
-        {
-            for(int j = 0; j < e.keyCount(); j++)
-            {
-                QAction* pA = ui->menuAI_libraries->addAction(e.key(j));
-                pAiGroup->addAction(pA);
-                pA->setCheckable(true);
-                pA->setData(e.value(j));
-
-                CFace *pFace = CFactoryFace::Instance()->GetFace(
-                            static_cast<CFactoryFace::LIB_TYPE>(j));
-                if(nullptr == pFace)
-                {
-                    pA->setEnabled(false);
-                    continue;
-                }
-                if(nSelect == e.value(j))
-                {
-                    CFactoryFace::Instance()->SetLibType(
-                           static_cast<CFactoryFace::LIB_TYPE>(nSelect), false);
-                    pA->setChecked(true);
-                }
-            }
-            bool check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
-                                 this, SLOT(on_actionAiLibraries_triggered(QAction*)));
-            Q_ASSERT(check);
-            check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
-                            m_Paramter.data(), SLOT(slotUpdateParamter(QAction*)));
-            Q_ASSERT(check);
-            m_Paramter->slotUpdateParamter();
-        }
+    CFactoryFace::Instance()->SetLibType(szSelect, false);
+    for(int i = 0; i < szLibName.size(); i++)
+    {
+        ui->menuAI_libraries->setEnabled(true);
+        QAction* pA = ui->menuAI_libraries->addAction(szLibDescript[i]);
+        pAiGroup->addAction(pA);
+        pA->setCheckable(true);
+        pA->setData(szLibName[i]);
+        if(szSelect == szLibName[i])
+            pA->setChecked(true);
     }
+    check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
+                         this, SLOT(on_actionAiLibraries_triggered(QAction*)));
+    Q_ASSERT(check);
+    check = connect(pAiGroup, SIGNAL(triggered(QAction*)),
+                    m_Paramter.data(), SLOT(slotUpdateParamter(QAction*)));
+    Q_ASSERT(check);
+    m_Paramter->slotUpdateParamter();
     
     return 0;
 }

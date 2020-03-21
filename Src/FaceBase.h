@@ -2,8 +2,9 @@
 #define CFACEBASE_H
 
 #include <QObject>
+#include "facerecognizer_export.h"
 
-class CFaceBase : public QObject
+class FACERECOGNIZER_EXPORT CFaceBase : public QObject
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

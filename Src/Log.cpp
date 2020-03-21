@@ -21,27 +21,34 @@ Abstract:
 #include <QUrl>
 #include <QDesktopServices>
 
+#define LOG_BUFFER_LENGTH 1024
+
 CLog::CLog() : QObject()
 {
+    m_pBuffer = new char[LOG_BUFFER_LENGTH];
+}
+
+CLog::~CLog()
+{
+    if(m_pBuffer) delete []m_pBuffer;
 }
 
 CLog* CLog::Instance()
 {
-    static CLog* p = NULL;
+    static CLog* p = nullptr;
     if(!p)
         p = new CLog;
     return p;
 }
 
-#define LOG_BUFFER_LENGTH 1024
 int CLog::Log(const char *pszFile, int nLine, int nLevel,
               const char* pszModelName, const char *pFormatString, ...)
 {
-    char buf[LOG_BUFFER_LENGTH];
+    if(!m_pBuffer) return -1;
     QString szTemp = pszFile;
     szTemp += "(";
-    sprintf(buf, "%d", nLine);
-    szTemp += buf;
+    sprintf(m_pBuffer, "%d", nLine);
+    szTemp += m_pBuffer;
     szTemp += "):";
     switch(nLevel)
     {
@@ -64,17 +71,17 @@ int CLog::Log(const char *pszFile, int nLine, int nLevel,
 
     va_list args;
     va_start (args, pFormatString);
-    int nRet = vsnprintf(buf, LOG_BUFFER_LENGTH, pFormatString, args);
+    int nRet = vsnprintf(m_pBuffer, LOG_BUFFER_LENGTH, pFormatString, args);
     va_end (args);
     if(nRet < 0 || nRet >= LOG_BUFFER_LENGTH)
     {
         LOG_MODEL_ERROR("Global",
                         "vsprintf buf is short, %d > %d. Truncated it:%d",
                         nRet > LOG_BUFFER_LENGTH, LOG_BUFFER_LENGTH);
-        buf[LOG_BUFFER_LENGTH - 1] = 0;
+        m_pBuffer[LOG_BUFFER_LENGTH - 1] = 0;
         //return nRet;
     }
-    szTemp += buf;
+    szTemp += m_pBuffer;
 
     Log(szTemp);
 
@@ -83,7 +90,7 @@ int CLog::Log(const char *pszFile, int nLine, int nLevel,
 
 int CLog::Log(const QString &szLog)
 {
-    qDebug() << szLog;
+    qCritical() << szLog;
     emit sigLog(szLog + "\n");
 
     if(!m_szFile.isEmpty())

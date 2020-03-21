@@ -13,6 +13,7 @@
 #include "FaceTools.h"
 #include "database/Database.h"
 
+class CFactoryFace;
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
     Q_OBJECT
@@ -21,6 +22,9 @@ class FACERECOGNIZER_EXPORT CFace : public QObject
 public:
     explicit CFace(QObject *parent = nullptr);
     virtual ~CFace();
+    
+    virtual int Initialize(CFactoryFace* pFactoryFace) = 0;
+    virtual int Clean(CFactoryFace* pFactoryFace = nullptr) = 0;
     
     bool IsValid();
 
@@ -41,5 +45,7 @@ protected:
 private:
     CDatabase* m_pDatabase;
 };
+
+Q_DECLARE_INTERFACE(CFace, "KangLinStudio.Rabbit.FaceRecognizer.Plugs.Interface.CFace")
 
 #endif // CFACE_H

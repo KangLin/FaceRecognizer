@@ -53,37 +53,16 @@ endif(USE_YUV)
 option(USE_FFMPEG "Use ffmpeg" ON)
 if(USE_FFMPEG)
     find_package(FFMPEG)
-    if(FFMPEG_FOUND)
-        target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
-        target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
-        target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
-    endif()
 endif(USE_FFMPEG)
 
-include(OpenCV)
-
-include(Seeta)
-
-find_package(facedetection)
-if(facedetection_FOUND)
-    set(LIBS ${LIBS} facedetection)
-    set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBFACEDETECTION)
-    
-    set(SOURCES_FILES
-        ${SOURCES_FILES}
-        libfacedetection/FaceLibfacedetection.cpp
-        libfacedetection/DetectorLibfacedetection.cpp)
-    set(HEADER_FILES
-        ${HEADER_FILES}
-        libfacedetection/FaceLibfacedetection.h
-        libfacedetection/DetectorLibfacedetection.h)
-    
-    if(ANDROID)
-        INSTALL(FILES $<TARGET_FILE:facedetection>
-            DESTINATION "libs/${ANDROID_ABI}")
-    else()
-        INSTALL(FILES $<TARGET_FILE:facedetection>
-            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+option(USE_OPENCV "Use opencv" ON)
+if(USE_OPENCV)
+    find_package(OpenCV)
+    message("== OpenCV:${OpenCV_FOUND}")
+    if(OpenCV_FOUND)
+        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
+        set(LIBS ${OpenCV_LIBS})
+        set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
     endif()
 endif()
 
@@ -168,7 +147,13 @@ target_include_directories(${PROJECT_NAME}
 
 if(BUILD_VERSION)
     target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
-    set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+    #set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
+endif()
+
+if(FFMPEG_FOUND)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
 endif()
 
 GENERATE_EXPORT_HEADER(${PROJECT_NAME})
@@ -189,7 +174,7 @@ if(ANDROID)
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
             PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/FaceReconginzer
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            )    
+            )
 else()
     # Install target
     if(WIN32)
@@ -257,10 +242,9 @@ IF( ("Release" STREQUAL CMAKE_BUILD_TYPE)
     #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
 
-message("== OpenCV:${OpenCV_FOUND}")
+add_subdirectory(Plugs)
+
 message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
-message("== SeetaFac:${SeetaFace_FOUND}")
-message("== libfacedetection:${facedetection_FOUND}")
 message("== log4cplus:${log4cplus_FOUND}")
 message("== Build PERFORMANCE:${BUILD_PERFORMANCE}")

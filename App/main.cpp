@@ -26,10 +26,14 @@ int main(int argc, char *argv[])
 #if defined(Q_OS_ANDROID) && QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     QtAndroid::hideSplashScreen();
 #endif
-    QApplication a(argc, argv);
-    a.setApplicationName("FaceRecognizer");
-
+    QApplication app(argc, argv);   
+    app.setApplicationName("FaceRecognizer");
+    app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugs());
+    
 #ifdef RABBITCOMMON
+    LOG_MODEL_INFO("main", "GetDirApplication:%s",
+                    RabbitCommon::CDir::Instance()->GetDirApplication().toStdString().c_str());
+    
     RabbitCommon::CTools::Instance()->Init();
 
     QString szTranslator = RabbitCommon::CDir::Instance()->GetDirTranslations()
@@ -38,10 +42,10 @@ int main(int argc, char *argv[])
     qDebug() << "Translator:" << szTranslator;
     QTranslator translator;
     translator.load(szTranslator);
-    a.installTranslator(&translator);
+    app.installTranslator(&translator);
 #endif
    
-    a.setApplicationDisplayName(QObject::tr("Face recognizer"));
+    app.setApplicationDisplayName(QObject::tr("Face recognizer"));
     
 #ifdef RABBITCOMMON 
     CFrmUpdater *pUpdate = new CFrmUpdater();
@@ -58,7 +62,7 @@ int main(int argc, char *argv[])
         qApp->setStyleSheet(szStyle);
         f.close();
     }
-    
+
     MainWindow w;
     
 #if defined (Q_OS_ANDROID)
@@ -67,7 +71,7 @@ int main(int argc, char *argv[])
     w.show();
 #endif
     
-    int nRet = a.exec();
+    int nRet = app.exec();
      
     LOG_CLEAN;
  
