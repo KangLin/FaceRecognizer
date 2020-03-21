@@ -53,6 +53,11 @@ endif(USE_YUV)
 option(USE_FFMPEG "Use ffmpeg" ON)
 if(USE_FFMPEG)
     find_package(FFMPEG)
+    if(FFMPEG_FOUND)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
+        target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
+        target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
+    endif()
 endif(USE_FFMPEG)
 
 include(OpenCV)
@@ -172,12 +177,6 @@ set(INSTALLHEADER_FILES ${INSTALLHEADER_FILES}
     ${CMAKE_CURRENT_BINARY_DIR}/${LOWER_PROJECT_NAME}_export.h)
 file(COPY ${CMAKE_CURRENT_BINARY_DIR}/${LOWER_PROJECT_NAME}_export.h
     DESTINATION ${CMAKE_BINARY_DIR})
-
-if(FFMPEG_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
-    target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
-endif()
 
 if(ANDROID)
     # Install target
