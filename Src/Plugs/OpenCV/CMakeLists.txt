@@ -1,18 +1,18 @@
 PROJECT(PlugOpenCV)
 
-option(USE_OPENCV "Use opencv" ON)
+#option(USE_OPENCV "Use opencv" ON)
 if(NOT USE_OPENCV)
     return()
 endif()
-find_package(OpenCV)
+#find_package(OpenCV)
 message("== Plug OpenCV:${OpenCV_FOUND}")
 if(NOT OpenCV_FOUND)
     return()
 endif()
 
-set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
-set(LIBS ${OpenCV_LIBS})
-set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
+#set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
+#set(LIBS ${OpenCV_LIBS})
+#set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
 #message("OpenCV_LIBS:${OpenCV_LIBS}")
 
 if(OpenCV_VERSION VERSION_LESS "3.4.0")
