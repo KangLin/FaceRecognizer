@@ -91,8 +91,6 @@ int CLog::Log(const char *pszFile, int nLine, int nLevel,
 int CLog::Log(const QString &szLog)
 {
     qCritical() << szLog;
-    emit sigLog(szLog + "\n");
-
     if(!m_szFile.isEmpty())
     {
         QFile f(m_szFile);
@@ -111,6 +109,7 @@ int CLog::Log(const QString &szLog)
         f.close();
     }
     
+    emit sigLog(szLog + "\n");
     return 0;
 }
 
