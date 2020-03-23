@@ -26,6 +26,9 @@ if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-ndk
     if [ -n "$APPVEYOR" ]; then
         #export JAVA_HOME="/C/Program Files (x86)/Java/jdk1.8.0"
+        if [ -z "${NDK_VERSION} " ]; then
+            NDK_VERSION=20.0.5594570
+        fi
         export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-sdk/ndk-bundle
     fi
     #if [ "$TRAVIS" = "true" ]; then

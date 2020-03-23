@@ -77,20 +77,20 @@ function function_android()
     if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
         cd ${TOOLS_DIR}
     
-        ANDROID_STUDIO_VERSION=191.5900203
-        wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
+        ANDROID_STUDIO_VERSION=192.6241897
+        wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.6.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
         unzip -q android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
         rm android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
         export JAVA_HOME=${TOOLS_DIR}/android-studio/jre
         export PATH=${JAVA_HOME}/bin:$PATH
         
-        ANDROID_SDK_VERSION=4333796
-        wget -c -nv https://dl.google.com/android/repository/sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
+        SDK_VERSION=4333796
+        wget -c -nv https://dl.google.com/android/repository/sdk-tools-windows-${SDK_VERSION}.zip
         mkdir android-sdk
         cd android-sdk
-        mv ../sdk-tools-windows-${ANDROID_SDK_VERSION}.zip .
-        unzip -q sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
-        rm sdk-tools-windows-${ANDROID_SDK_VERSION}.zip
+        mv ../sdk-tools-windows-${SDK_VERSION}.zip .
+        unzip -q sdk-tools-windows-${SDK_VERSION}.zip
+        rm sdk-tools-windows-${SDK_VERSION}.zip
     
         echo "Install sdk and ndk ......"
         if [ -n "${ANDROID_API}" ]; then

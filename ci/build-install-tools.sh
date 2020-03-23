@@ -86,20 +86,32 @@ function install_android()
     cd ${TOOLS_DIR}
     if [ ! -d "`pwd`/android-sdk" ]; then
         cd ${PACKAGE_DIR}
-        ANDROID_STUDIO_VERSION=191.5900203
+        ANDROID_STUDIO_VERSION=192.6241897
         if [ ! -f android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz ]; then
-            wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
+            wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.6.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
         fi
         cp android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz ${TOOLS_DIR}/.
         cd ${TOOLS_DIR}
         tar xzf android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
         export JAVA_HOME=`pwd`/android-studio/jre
         export PATH=${JAVA_HOME}/bin:$PATH
-        wget -c -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+
+        echo "Download sdk tools ..."
+        if [ -z "$SDK_VERSION" ]; then
+            SDK_VERSION=4333796
+        fi
+        cd ${PACKAGE_DIR}
+        #wget -c -nv https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
+        wget -c -nv https://dl.google.com/android/repository/sdk-tools-linux-${SDK_VERSION}.zip
+
         mkdir android-sdk
         cd android-sdk
-        cp ../sdk-tools-linux-4333796.zip .
-        unzip -q sdk-tools-linux-4333796.zip
+        #cp ${PACKAGE_DIR}/commandlinetools-linux-6200805_latest.zip .
+        #unzip -q commandlinetools-linux-6200805_latest.zip
+        cp ${PACKAGE_DIR}/sdk-tools-linux-${SDK_VERSION}.zip .
+        unzip -q sdk-tools-linux-${SDK_VERSION}.zip
+        rm sdk-tools-linux-${SDK_VERSION}.zip
+
         echo "Install sdk and ndk ......"
         if [ -n "${ANDROID_API}" ]; then
             PLATFORMS="platforms;${ANDROID_API}"
@@ -109,10 +121,21 @@ function install_android()
         if [ -z "${BUILD_TOOS_VERSION}" ]; then
             BUILD_TOOS_VERSION="28.0.3"
         fi
+        if [ -n "${NDK_VERSION}" ]; then
+            NDK_BUNDLE="ndk;${NDK_VERSION}"
+        else
+            NDK_BUNDLE="ndk-bundle"
+        fi
+        echo "./tools/bin/sdkmanager --verbose \"platform-tools\" \"build-tools;${BUILD_TOOS_VERSION}\" \"${PLATFORMS}\" \"${NDK_BUNDLE}\" "
         (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
-        | ./tools/bin/sdkmanager "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
+        | ./tools/bin/sdkmanager --verbose "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "${NDK_BUNDLE}" 
+        
         if [ ! -d ${TOOLS_DIR}/android-ndk ]; then
-            ln -s ${TOOLS_DIR}/android-sdk/ndk-bundle ${TOOLS_DIR}/android-ndk
+            if [ -z "${NDK_VERSION} " ]; then
+                ln -s ${TOOLS_DIR}/android-sdk/ndk-bundle ${TOOLS_DIR}/android-ndk
+            else
+                ln -s ${TOOLS_DIR}/android-sdk/ndk/${NDK_VERSION} ${TOOLS_DIR}/android-ndk
+            fi
         fi
     fi
 }
@@ -133,8 +156,8 @@ function function_android()
     sudo apt-get install libicu-dev -qq -y
     sudo apt-get install -qq -y libxkbcommon-x11-dev libglu1-mesa-dev
 
-    function_common
     install_android
+    function_common
 
     cd ${SOURCE_DIR}
 }
