@@ -58,8 +58,11 @@ int CFrmPara::LoadObject(QObject *pObject)
     QStandardItem *pClass = new QStandardItem(pMO->className());
     pClass->setEditable(false);
     m_Model.appendRow(pClass);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     m_Model.itemFromIndex(pClass->index().siblingAtColumn(1))->setEditable(false);
-
+#else
+    m_Model.itemFromIndex(pClass->index().sibling(pClass->index().row(), 1))->setEditable(false);
+#endif
     int nCount = pMO->propertyCount();
     for(int i = 0; i < nCount; i++)
     {
