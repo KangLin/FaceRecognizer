@@ -71,6 +71,31 @@ foreach(opencv_component ${OpenCV_LIBS})
             #ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
             )
         
+        # Install target
+        INSTALL(TARGETS ${PROJECT_NAME}DNN
+            EXPORT ${PROJECT_NAME}DNNConfig
+            RUNTIME DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+                COMPONENT Runtime
+            LIBRARY DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+                COMPONENT Runtime
+            ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+            )
+        
+        export(TARGETS ${PROJECT_NAME}DNN
+               APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}DNNConfig.cmake
+        )
+        
+        # Install cmake configure files
+        install(EXPORT ${PROJECT_NAME}DNNConfig
+                DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
+                )
+        write_basic_package_version_file(
+            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}DNNConfigVersion.cmake"
+            VERSION ${BUILD_VERSION}
+            COMPATIBILITY AnyNewerVersion)
+        install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}DNNConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+        
+        
         # Install model files
         if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
             if(ENABLE_DOWNLOAD)
@@ -146,12 +171,28 @@ foreach(opencv_component ${OpenCV_LIBS})
         
         # Install target
         INSTALL(TARGETS ${PROJECT_NAME}
+            EXPORT ${PROJECT_NAME}Config
             RUNTIME DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-            COMPONENT Runtime
+                COMPONENT Runtime
             LIBRARY DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-            COMPONENT Runtime
-            #ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+                COMPONENT Runtime
+            ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
             )
+        
+        export(TARGETS ${PROJECT_NAME}
+               APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        )
+        
+        # Install cmake configure files
+        install(EXPORT ${PROJECT_NAME}Config
+                DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
+                )
+        write_basic_package_version_file(
+            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+            VERSION ${BUILD_VERSION}
+            COMPATIBILITY AnyNewerVersion)
+        install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+        
         
         # Install model files
         set(MODEL_FILES ${OpenCV_DIR}/etc)

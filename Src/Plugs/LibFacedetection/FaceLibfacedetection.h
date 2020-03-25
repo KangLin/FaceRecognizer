@@ -5,11 +5,11 @@
 
 #include "Face.h"
 
-class CFaceLibfacedetection : public CFace
+class CFaceLibFacedetection : public CFace
 {
     Q_OBJECT
 public:
-    CFaceLibfacedetection(QObject *parent = nullptr);
+    CFaceLibFacedetection(QObject *parent = nullptr);
     
     Q_INTERFACES(CFace)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))

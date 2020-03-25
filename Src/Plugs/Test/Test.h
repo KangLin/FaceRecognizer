@@ -4,12 +4,12 @@
 #include <QObject>
 #include "FactoryFace.h"
 
-class CTest : public CFace
+class CFaceTest : public CFace
 {
     Q_OBJECT
 public:
-    explicit CTest(QObject *parent = nullptr);
-    virtual ~CTest() override;
+    explicit CFaceTest(QObject *parent = nullptr);
+    virtual ~CFaceTest() override;
 
     Q_INTERFACES(CFace)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))

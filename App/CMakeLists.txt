@@ -63,7 +63,6 @@ set(SOURCE_UI_FILES
 #翻译
 SET(TRANSLATIONS_NAME ${PROJECT_NAME})
 include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/Utils.cmake)
 
 add_definitions(-DBUILD_VERSION="${BUILD_VERSION}")
 add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
@@ -76,7 +75,7 @@ if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
 endif()
 if(ANDROID)
-    add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+    add_library(${PROJECT_NAME} SHARED ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 else()
     add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 endif()

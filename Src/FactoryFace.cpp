@@ -14,6 +14,15 @@ CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
 {
     Q_UNUSED(parent)
 
+    foreach (QObject *plugin, QPluginLoader::staticInstances())
+    {
+        CFace* pPlugFace = qobject_cast<CFace*>(plugin);
+        if(pPlugFace)
+        {
+            pPlugFace->Initialize(this);
+            continue;
+        }        
+    }
 #ifdef RABBITCOMMON
     //LOG_MODEL_INFO("FactoryFace", "Plugs dir:%s", RabbitCommon::CDir::Instance()->GetDirPlugs().toStdString().c_str());
     int nRet = FindPlugins(RabbitCommon::CDir::Instance()->GetDirPlugs());

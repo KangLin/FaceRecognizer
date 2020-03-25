@@ -1,4 +1,4 @@
-project(PlugSeetaFace)
+project(PlugSeeta)
 find_package(SeetaFace)
 message("== Plugs SeetaFac:${SeetaFace_FOUND}")
 if(NOT SeetaFace_FOUND)
@@ -99,9 +99,25 @@ endif()
 
 # Install target
 INSTALL(TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Config
     RUNTIME DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-    COMPONENT Runtime
+        COMPONENT Runtime
     LIBRARY DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-    COMPONENT Runtime
-    #ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+        COMPONENT Runtime
+    ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
     )
+
+export(TARGETS ${PROJECT_NAME}
+       APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+)
+
+# Install cmake configure files
+install(EXPORT ${PROJECT_NAME}Config
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
+        )
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION ${BUILD_VERSION}
+    COMPATIBILITY AnyNewerVersion)
+install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+

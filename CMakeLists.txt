@@ -110,7 +110,7 @@ IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
 ENDIF()
 SET(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs")
 if (BUILD_SHARED_LIBS)
-	add_definitions(-DBUILD_SHARED_LIBS)
+    add_definitions(-DBUILD_SHARED_LIBS)
     if (CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
        # Just setting CMAKE_POSITION_INDEPENDENT_CODE should be enough to set
        # -fPIC for GCC but sometimes it still doesn't get set, so make sure it
@@ -118,7 +118,9 @@ if (BUILD_SHARED_LIBS)
        add_definitions("-fPIC")
     endif()
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
+else(BUILD_SHARED_LIBS)
+    add_definitions(-DQT_STATICPLUGIN)
+endif(BUILD_SHARED_LIBS)
 
 # Set install data prefix
 if(ANDROID)
@@ -137,6 +139,7 @@ include(CheckIncludeFile)
 include(CheckIncludeFileCXX)
 include(CheckFunctionExists)
 include(${CMAKE_SOURCE_DIR}/cmake/Download.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Utils.cmake)
 
 #CHECK_INCLUDE_FILE_CXX("string" HAVE_STRING_H)
 #check_include_file("math.h" HAVE_MATH_H)

@@ -10,7 +10,22 @@ endif()
 
 project(FaceRecognizerPlugs)
 
-add_subdirectory(Seeta)
-add_subdirectory(libfacedetection)
-add_subdirectory(OpenCV)
-#add_subdirectory(test)
+SUBDIRLIST(sublist ${CMAKE_CURRENT_SOURCE_DIR})
+
+foreach(sub ${sublist})
+    add_subdirectory(${sub})
+    if(TARGET Plug${sub})
+        set(PLUG_LIBS ${PLUG_LIBS} Plug${sub})
+        SET(PLUG_CONTENT "${PLUG_CONTENT}\nQ_IMPORT_PLUGIN(CFace${sub})")
+    endif()
+endforeach()
+if(NOT BUILD_SHARED_LIBS)
+    set(PLUGS_SOURCES_FILE ${CMAKE_BINARY_DIR}/PlugsSource.cpp)
+    
+    FILE(WRITE ${PLUGS_SOURCES_FILE} "#include <QtPlugin>\n")
+    FILE(APPEND ${PLUGS_SOURCES_FILE} "#include <QObject>\n")
+    FILE(APPEND ${PLUGS_SOURCES_FILE} "${PLUG_CONTENT}\n")
+
+    set(SOURCES_FILES ${SOURCES_FILES} ${PLUGS_SOURCES_FILE} PARENT_SCOPE)
+    set(LIBS ${LIBS} ${PLUG_LIBS} PARENT_SCOPE)    
+endif()

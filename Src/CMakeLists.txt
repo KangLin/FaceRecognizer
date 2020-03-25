@@ -9,7 +9,7 @@ if(POLICY CMP0020)
 endif()
 
 project(FaceRecognizer)
-    
+
 OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
 if(BUILD_PERFORMANCE)
     set(LIBS_DEFINES ${LIBS_DEFINES} BUILD_PERFORMANCE)
@@ -119,6 +119,8 @@ if(BUILD_TYPE STREQUAL "debug")
     set(LIBS_DEFINES ${LIBS_DEFINES} DEBUG)
     SET(RCC_FILES ${RCC_FILES} ../Resource/ResourceSql.qrc)
 endif()
+
+add_subdirectory(Plugs)
 
 add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${RCC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -241,8 +243,6 @@ IF( ("Release" STREQUAL CMAKE_BUILD_TYPE)
         )
     #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
-
-add_subdirectory(Plugs)
 
 message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
