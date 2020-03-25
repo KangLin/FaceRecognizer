@@ -15,6 +15,7 @@ CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     Q_UNUSED(parent)
 
 #ifdef RABBITCOMMON
+    //LOG_MODEL_INFO("FactoryFace", "Plugs dir:%s", RabbitCommon::CDir::Instance()->GetDirPlugs().toStdString().c_str());
     int nRet = FindPlugins(RabbitCommon::CDir::Instance()->GetDirPlugs());
 #endif
     
@@ -303,8 +304,14 @@ int CFactoryFace::FindPlugins(QDir dir)
     QString szPath = dir.path();
     QString fileName;
     QStringList filters;
-    filters << "*Plug*.so" << "*Plug*.dll";
-    foreach (fileName, dir.entryList(filters, QDir::Files)) {
+#if defined (Q_OS_WINDOWS)
+    filters << "*Plug*.dll";
+#else
+    filters << "*Plug*.so";
+#endif
+    QStringList files = dir.entryList(filters, QDir::Files);
+    foreach (fileName, files) {
+        //LOG_MODEL_INFO("CFactoryFace", "file name:%s", fileName.toStdString().c_str());
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
@@ -316,7 +323,7 @@ int CFactoryFace::FindPlugins(QDir dir)
                 continue;
             }
         }else{
-            LOG_MODEL_ERROR("CManager", "load plugin error:%s",
+            LOG_MODEL_ERROR("CFactoryFace", "load plugin error:%s",
                             loader.errorString().toStdString().c_str());
         }
     }

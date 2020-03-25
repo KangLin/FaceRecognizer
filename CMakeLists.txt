@@ -123,7 +123,7 @@ endif()
 # Set install data prefix
 if(ANDROID)
     set(INSTALL_DATA_PREFIX assets/data)
-    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${ANDROID_ABI}/plugs") 
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/plugs")
 else()
     set(INSTALL_DATA_PREFIX data)
     set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugs)
