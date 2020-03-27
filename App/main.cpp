@@ -22,9 +22,6 @@ int main(int argc, char *argv[])
 {
     LOG_INITIALIZER;
 
-    CPlugsManager manager;
-    manager.LoadPlugs();
-
 #if (QT_VERSION > QT_VERSION_CHECK(5,6,0))
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -33,8 +30,7 @@ int main(int argc, char *argv[])
 #endif
     QApplication app(argc, argv);   
     app.setApplicationName("FaceRecognizer");
-    app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugs());
-    
+
 #ifdef RABBITCOMMON
     LOG_MODEL_INFO("main", "GetDirApplication:%s",
                     RabbitCommon::CDir::Instance()->GetDirApplication().toStdString().c_str());
@@ -67,6 +63,10 @@ int main(int argc, char *argv[])
         qApp->setStyleSheet(szStyle);
         f.close();
     }
+
+    app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugs());
+    CPlugsManager manager;
+    manager.LoadPlugs();
 
     MainWindow w;
     

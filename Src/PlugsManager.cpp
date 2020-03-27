@@ -5,6 +5,7 @@
 #include "Face.h"
 #include "FactoryFace.h"
 #include "RabbitCommonDir.h"
+#include "ImageTool.h"
 
 CPlugsManager::CPlugsManager(QObject *parent) : QObject(parent)
 {}
@@ -49,6 +50,13 @@ int CPlugsManager::FindPlugins(QDir dir)
             if(pPlugFace)
             {
                 pPlugFace->Initialize(CFactoryFace::Instance());
+                continue;
+            }
+
+            CConverFormat* pCF = qobject_cast<CConverFormat*>(plugin);
+            if(pCF)
+            {
+                pCF->Initialize(CImageTool::Instance());
                 continue;
             }
         }else{

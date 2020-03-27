@@ -1,14 +1,62 @@
 PROJECT(PlugOpenCV)
 
-#option(USE_OPENCV "Use opencv" ON)
+option(USE_OPENCV "Use opencv" ON)
 if(NOT USE_OPENCV)
     return()
 endif()
-#find_package(OpenCV)
+find_package(OpenCV)
 message("== Plug OpenCV:${OpenCV_FOUND}")
 if(NOT OpenCV_FOUND)
     return()
 endif()
+
+set(LIBS_DEFINES ${LIBS_DEFINES} OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
+set(LIBS ${OpenCV_LIBS})
+set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
+
+set(SOURCES_FILES
+    ConverFormatOpenCV.cpp
+    )
+set(HEADER_FILES
+    ConverFormatOpenCV.h
+    )
+
+add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
+    VERSION ${BUILD_VERSION})
+target_link_libraries(${PROJECT_NAME} PUBLIC FaceRecognizer RabbitCommon ${QT_LIBRARIES} ${LIBS})
+target_include_directories(${PROJECT_NAME}
+    PRIVATE ${RabbitCommon_DIR}/Src
+    ${CMAKE_SOURCE_DIR}/Src
+    ${CMAKE_BINARY_DIR}
+    ${INCLUDE_DIRS})
+
+# Install target
+INSTALL(TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Config
+    RUNTIME DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+        COMPONENT Runtime
+    LIBRARY DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+        COMPONENT Runtime
+    ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
+    )
+
+export(TARGETS ${PROJECT_NAME}
+       APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+)
+
+# Install cmake configure files
+install(EXPORT ${PROJECT_NAME}Config
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
+        )
+write_basic_package_version_file(
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION ${BUILD_VERSION}
+    COMPATIBILITY AnyNewerVersion)
+install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
 
 #set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
 #set(LIBS ${OpenCV_LIBS})
@@ -18,11 +66,6 @@ endif()
 if(OpenCV_VERSION VERSION_LESS "3.4.0")
     return()
 endif()
-
-set(SOURCES_FILES
-    )
-set(HEADER_FILES
-    )
 
 foreach(opencv_component ${OpenCV_LIBS})
     if(ANDROID)
@@ -152,26 +195,26 @@ foreach(opencv_component ${OpenCV_LIBS})
             RecognizerOpenCV.h
             FaceOpenCV.h
             )
-        add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES})
-        set_target_properties(${PROJECT_NAME} PROPERTIES
+        add_library(${PROJECT_NAME}Face ${SOURCES_FILES} ${HEADER_FILES})
+        set_target_properties(${PROJECT_NAME}Face PROPERTIES
             LIBRARY_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
             ARCHIVE_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
             RUNTIME_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
             VERSION ${BUILD_VERSION})
-        target_link_libraries(${PROJECT_NAME} PUBLIC FaceRecognizer RabbitCommon ${QT_LIBRARIES} ${LIBS})
-        target_include_directories(${PROJECT_NAME}
+        target_link_libraries(${PROJECT_NAME}Face PUBLIC FaceRecognizer RabbitCommon ${QT_LIBRARIES} ${LIBS})
+        target_include_directories(${PROJECT_NAME}Face
             PRIVATE ${RabbitCommon_DIR}/Src
             ${CMAKE_SOURCE_DIR}/Src
             ${CMAKE_BINARY_DIR}
             ${INCLUDE_DIRS})
         
         if(BUILD_VERSION)
-            target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
+            target_compile_definitions(${PROJECT_NAME}Face PRIVATE -DBUILD_VERSION="${BUILD_VERSION}")
         endif()
         
         # Install target
-        INSTALL(TARGETS ${PROJECT_NAME}
-            EXPORT ${PROJECT_NAME}Config
+        INSTALL(TARGETS ${PROJECT_NAME}Face
+            EXPORT ${PROJECT_NAME}FaceConfig
             RUNTIME DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
                 COMPONENT Runtime
             LIBRARY DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
@@ -179,19 +222,19 @@ foreach(opencv_component ${OpenCV_LIBS})
             ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
             )
         
-        export(TARGETS ${PROJECT_NAME}
-               APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        export(TARGETS ${PROJECT_NAME}Face
+               APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}FaceConfig.cmake
         )
         
         # Install cmake configure files
-        install(EXPORT ${PROJECT_NAME}Config
+        install(EXPORT ${PROJECT_NAME}FaceConfig
                 DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
                 )
         write_basic_package_version_file(
-            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}FaceConfigVersion.cmake"
             VERSION ${BUILD_VERSION}
             COMPATIBILITY AnyNewerVersion)
-        install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+        install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}FaceConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
         
         
         # Install model files

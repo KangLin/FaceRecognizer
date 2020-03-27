@@ -55,22 +55,12 @@ if(USE_FFMPEG)
     find_package(FFMPEG)
 endif(USE_FFMPEG)
 
-option(USE_OPENCV "Use opencv" ON)
-if(USE_OPENCV)
-    find_package(OpenCV)
-    message("== OpenCV:${OpenCV_FOUND}")
-    if(OpenCV_FOUND)
-        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_OPENCV OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
-        set(LIBS ${OpenCV_LIBS})
-        set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
-    endif()
-endif()
-
 set(SOURCES_FILES
     ${SOURCES_FILES}
     PlugsManager.cpp
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
+    ConverFormat.cpp
     Log.cpp
     FactoryFace.cpp
     Face.cpp
@@ -86,8 +76,9 @@ set(SOURCES_FILES
     )
 
 set(INSTALLHEADER_FILES
-    PlugsManager.cpp
+    PlugsManager.h
     ImageTool.h
+    ConverFormat.h
     CameraQtCaptureVideoFrame.h
     FactoryFace.h
     Face.h
