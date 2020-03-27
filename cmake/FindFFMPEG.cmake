@@ -55,7 +55,7 @@ foreach(comp ${FFMPEG_FIND_COMPONENTS})
                 ENV FFMPEG_DIR
 			PATHS
 				/usr /usr/local /opt/local /sw
-			PATH_SUFFIXES ${comp} lib${comp}
+			PATH_SUFFIXES lib ${comp} lib${comp}
 			DOC "FFMPEG ${comp} library")
 	else()
 		SET(FFMPEG_${comp}_LIBRARY ${_${comp}_LIBRARIES})

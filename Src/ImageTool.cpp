@@ -1,6 +1,7 @@
 #include "ImageTool.h"
 #include "Log.h"
 #include "Performance.h"
+#include "PlugsManager.h"
 
 #if HAVE_LIBYUV
     #include "libyuv.h"
@@ -47,9 +48,10 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_YUYV:
     case QVideoFrame::Format_UYVY:
     {
-        if(!m_ConverFormat.isEmpty())
+        CConverFormat* pCV = CPlugsManager::Instance()->GetConverFormat();
+        if(pCV)
         {
-            QImage image = m_ConverFormat.begin()->pConverFormat->onConverFormatToRGB888(frame);
+            QImage image = pCV->onConverFormatToRGB888(frame);
             if(!image.isNull()) return image;
         }
 
@@ -274,30 +276,3 @@ void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int widt
 	}
 }
 
-int CImageTool::Register(CConverFormat *pCF, const QString &szName)
-{
-    int nRet = 0;
-    foreach (CONVERFORMAT_TYPE p, m_ConverFormat) {
-        if(p.szName == szName)
-        {
-            p.pConverFormat = pCF;
-            break;
-        }
-    }
-    CONVERFORMAT_TYPE c = {szName, pCF};
-    m_ConverFormat.push_back(c);
-    return nRet;
-}
-
-int CImageTool::Remove(const QString &szName)
-{
-    int nIndex = 0;
-    foreach (CONVERFORMAT_TYPE p, m_ConverFormat) {
-        if(p.szName == szName)
-        {
-            m_ConverFormat.remove(nIndex);
-        }
-        nIndex++;
-    }
-    return 0;
-}

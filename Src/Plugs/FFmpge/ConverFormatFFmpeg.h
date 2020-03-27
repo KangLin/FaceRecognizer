@@ -2,13 +2,12 @@
 #define CCONVERFORMATFFMPEG_H
 
 #include "ConverFormat.h"
-#ifdef HAVE_FFMPEG
+
 extern "C" {
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
 #undef PixelFormat
 }
-#endif
 
 class CConverFormatFFmpeg : public CConverFormat
 {
@@ -22,7 +21,7 @@ public:
     Q_PLUGIN_METADATA(IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.ImageTool.ConverFormat.FFmpeg")
 #endif
 
-#ifdef HAVE_FFMPEG
+
     //设置ffmpeg日志输出
     static int SetFFmpegLog();
 
@@ -59,7 +58,6 @@ private:
                              /*[in]*/  int nOutWidth,                /** 转换后的帧的宽度 */
                              /*[in]*/  int nOutHeight,               /** 转换后的帧的高度 */
                              /*[in]*/  AVPixelFormat outPixelFormat);/** 转换后的帧的格式 */
-#endif
 };
 
 #endif // CCONVERFORMATFFMPEG_H

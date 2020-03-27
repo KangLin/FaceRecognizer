@@ -50,11 +50,6 @@ if(USE_YUV)
     endif()
 endif(USE_YUV)
 
-option(USE_FFMPEG "Use ffmpeg" ON)
-if(USE_FFMPEG)
-    find_package(FFMPEG)
-endif(USE_FFMPEG)
-
 set(SOURCES_FILES
     ${SOURCES_FILES}
     PlugsManager.cpp
@@ -145,12 +140,6 @@ if(BUILD_VERSION)
     #set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${BUILD_VERSION})
 endif()
 
-if(FFMPEG_FOUND)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
-    target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
-endif()
-
 GENERATE_EXPORT_HEADER(${PROJECT_NAME})
 string(TOLOWER ${PROJECT_NAME} LOWER_PROJECT_NAME)
 set(INSTALLHEADER_FILES ${INSTALLHEADER_FILES} 
@@ -237,7 +226,6 @@ IF( ("Release" STREQUAL CMAKE_BUILD_TYPE)
     #INSTALL(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${CMAKE_INSTALL_BINDIR}")
 ENDIF()
 
-message("== FFMPGE:${FFMPEG_FOUND}")
 message("== LIBYUV:${YUV_FOUND}")
 message("== log4cplus:${log4cplus_FOUND}")
 message("== Build PERFORMANCE:${BUILD_PERFORMANCE}")

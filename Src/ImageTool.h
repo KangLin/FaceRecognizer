@@ -39,16 +39,7 @@ public:
     static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
     QImage ConverFormatToRGB888(const QVideoFrame &frame);
 
-    int Register(CConverFormat* pCF, const QString &szName);
-    int Remove(const QString &szName);
-
 private:
-    struct CONVERFORMAT_TYPE
-    {
-        QString szName;
-        CConverFormat* pConverFormat;
-    };
-    QVector<CONVERFORMAT_TYPE> m_ConverFormat;
 
 #if HAVE_LIBYUV
     static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);

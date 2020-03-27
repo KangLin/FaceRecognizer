@@ -3,9 +3,10 @@
 
 #include <QObject>
 #include <QVideoFrame>
+#include "facerecognizer_export.h"
 
-class CImageTool;
-class CConverFormat : public QObject
+class FACERECOGNIZER_EXPORT CPlugsManager;
+class FACERECOGNIZER_EXPORT CConverFormat : public QObject
 {
     Q_OBJECT
 public:
@@ -13,8 +14,8 @@ public:
 
     virtual QImage onConverFormatToRGB888(const QVideoFrame &frame) = 0;
 
-    virtual int Initialize(CImageTool* pTool);
-    virtual int Clean(CImageTool* pTool = nullptr);
+    virtual int Initialize();
+    virtual int Clean();
 
     virtual QString getName();
 };

@@ -10,6 +10,14 @@
 CPlugsManager::CPlugsManager(QObject *parent) : QObject(parent)
 {}
 
+CPlugsManager* CPlugsManager::Instance()
+{
+    CPlugsManager* p = nullptr;
+    if(!p)
+        p = new CPlugsManager();
+    return p;
+}
+
 int CPlugsManager::LoadPlugs()
 {
     int nRet = 0;
@@ -56,7 +64,7 @@ int CPlugsManager::FindPlugins(QDir dir)
             CConverFormat* pCF = qobject_cast<CConverFormat*>(plugin);
             if(pCF)
             {
-                pCF->Initialize(CImageTool::Instance());
+                m_ConverFormat[pCF->getName()] = pCF;
                 continue;
             }
         }else{
@@ -72,4 +80,16 @@ int CPlugsManager::FindPlugins(QDir dir)
     }
 
     return 0;
+}
+
+CConverFormat* CPlugsManager::GetConverFormat(const QString &szName)
+{
+    QMap<QString, CConverFormat*>::iterator it = m_ConverFormat.find(szName);
+    if(m_ConverFormat.end() != it)
+        return it.value();
+
+    if(szName.isEmpty() && !m_ConverFormat.isEmpty())
+        return m_ConverFormat.begin().value();
+
+    return nullptr;
 }

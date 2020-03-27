@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
     }
 
     app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugs());
-    CPlugsManager manager;
-    manager.LoadPlugs();
+
+    CPlugsManager::Instance()->LoadPlugs();
 
     MainWindow w;
     

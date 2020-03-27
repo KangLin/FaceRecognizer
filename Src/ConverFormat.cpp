@@ -1,17 +1,17 @@
 #include "ConverFormat.h"
-#include "ImageTool.h"
+#include "PlugsManager.h"
 
 CConverFormat::CConverFormat(QObject *parent) : QObject(parent)
 {}
 
-int CConverFormat::Initialize(CImageTool *pTool)
+int CConverFormat::Initialize()
 {
-    return pTool->Register(this, getName());
+    return 0;
 }
 
-int CConverFormat::Clean(CImageTool *pTool)
+int CConverFormat::Clean()
 {
-    return pTool->Remove(getName());
+    return 0;
 }
 
 QString CConverFormat::getName()

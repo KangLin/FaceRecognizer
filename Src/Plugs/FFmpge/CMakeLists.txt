@@ -1,3 +1,15 @@
+option(USE_FFMPEG "Use ffmpeg" ON)
+if(NOT USE_FFMPEG)
+    return()
+endif()
+
+find_package(FFMPEG)
+if(NOT FFMPEG_FOUND)
+    return()
+endif()
+
+message("== FFMPGE:${FFMPEG_FOUND}")
+
 project(PlugFFMpeg)
 
 set(SOURCES_FILES
@@ -9,7 +21,6 @@ set(HEADER_FILES
     )
 
 set(SOURCE_UI_FILES
-    ${SOURCE_UI_FILES}
     )
 
 add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES})
@@ -24,6 +35,10 @@ target_include_directories(${PROJECT_NAME}
     ${CMAKE_SOURCE_DIR}/Src
     ${CMAKE_BINARY_DIR}
     ${INCLUDE_DIRS})
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC ${FFMPEG_DEFINITIONS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${FFMPEG_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${FFMPEG_INCLUDE_DIRS})
 
 # Install target
 INSTALL(TARGETS ${PROJECT_NAME}
