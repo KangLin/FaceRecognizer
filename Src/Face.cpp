@@ -6,9 +6,14 @@ CFace::CFace(QObject *parent) : QObject(parent),
     m_pTracker(nullptr),
     m_pLandmarker(nullptr),
     m_pRecognizer(nullptr),
-    m_pFaceTools(nullptr)
+    m_pFaceTools(nullptr),
+    m_pDatabase(nullptr)
 {
-    m_pDatabase = new CDatabase();
+    try {
+        m_pDatabase = new CDatabase();
+    } catch (...) {
+        LOG_MODEL_ERROR("CFace", "new CDatabase fail");
+    }
 }
 
 CFace::~CFace()

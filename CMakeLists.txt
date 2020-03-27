@@ -125,7 +125,7 @@ endif(BUILD_SHARED_LIBS)
 # Set install data prefix
 if(ANDROID)
     set(INSTALL_DATA_PREFIX assets/data)
-    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/plugs")
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${CMAKE_ANDROID_ARCH_ABI}")
 else()
     set(INSTALL_DATA_PREFIX data)
     set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugs)

@@ -318,7 +318,7 @@ int CFactoryFace::FindPlugins(QDir dir)
 #else
     filters << "*Plug*.so";
 #endif
-    QStringList files = dir.entryList(filters, QDir::Files);
+    QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
     foreach (fileName, files) {
         //LOG_MODEL_INFO("CFactoryFace", "file name:%s", fileName.toStdString().c_str());
         QString szPlugins = dir.absoluteFilePath(fileName);

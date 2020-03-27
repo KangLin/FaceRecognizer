@@ -1,11 +1,21 @@
 #!/bin/bash
+HOST=`uname -s`
 
-QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_arm64_v8a
-#export YUV_DIR=/d/Source/libyuv/build_android/install
-export OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm64/sdk/native/jni
-FFMPEG_DIR=
-export SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
-export facedetection_DIR=/d/Source/ai/libfacedetection/build_android/install/lib/cmake
+if [ "$HOST" = "Linux" ]; then
+    QT_ROOT=/opt/Qt5.13.2/5.13.2/android_arm64_v8a
+    OPENCV_DIR=/home/RabbitIm/ThirdLibrary/android24_arm64_qt5.13.2_Release/sdk/native/jni
+    FFMPEG_DIR=
+    SeetaFace2_DIR=/home/SeetaFace/build_android/install
+    facedetection_DIR=
+else
+    QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_arm64_v8a
+    #export YUV_DIR=/d/Source/libyuv/build_android/install
+    OPENCV_DIR=/c/Users/k/Downloads/android4.9_arm64/sdk/native/jni
+    FFMPEG_DIR=
+    SeetaFace2_DIR=/d/Source/SeetaFace/build_android/install
+    facedetection_DIR=/d/Source/ai/libfacedetection/build_android/install/lib/cmake
+fi
+
 if [ -n "$1" ]; then
     Qt5_ROOT=$1
 fi
@@ -63,7 +73,6 @@ fi
 cd build_android
 
 cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
-    -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_VERBOSE_MAKEFILE=TRUE \
     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \

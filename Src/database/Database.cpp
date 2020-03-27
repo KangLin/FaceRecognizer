@@ -35,8 +35,9 @@ int CDatabase::InitDatabase()
     {
         if(!m_Database.open())
         {
-            LOG_MODEL_ERROR("CDatabase", "Open database fail: %s",
-                       m_Database.lastError().text().toStdString().c_str());
+            LOG_MODEL_ERROR("CDatabase", "Open database fail: %s; %s",
+                            m_Database.lastError().text().toStdString().c_str(),
+                            m_szFile.toStdString().c_str());
             return m_Database.lastError().nativeErrorCode().toInt();
         }
 #if defined (_DEBUG) || defined(DEBUG)
