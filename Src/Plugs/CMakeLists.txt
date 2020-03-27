@@ -11,7 +11,7 @@ endif()
 project(FaceRecognizerPlugs)
 
 #SUBDIRLIST(sublist ${CMAKE_CURRENT_SOURCE_DIR})
-set(sublist LibFacedetection OpenCV Seeta Test FFmpge)
+set(sublist LibFacedetection OpenCV Seeta FFmpge)
 foreach(sub ${sublist})
     add_subdirectory(${sub})
     if(TARGET Plug${sub})

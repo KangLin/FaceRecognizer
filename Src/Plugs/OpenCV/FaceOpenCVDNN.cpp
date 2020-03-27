@@ -10,13 +10,13 @@ CFaceOpenCVDNN::CFaceOpenCVDNN(QObject *parent) : CFace(parent)
 int CFaceOpenCVDNN::Initialize(CFactoryFace *pFactoryFace)
 {
     int nRet = 0;
-    nRet = pFactoryFace->RegisterFace("OpenCVDNN", this, tr("OpenCVDNN"));
+    nRet = pFactoryFace->RegisterFace("OpenCV_DNN", this, tr("OpenCV_DNN"));
     return nRet;
 }
 
 int CFaceOpenCVDNN::Clean(CFactoryFace* pFactoryFace)
 {
     int nRet = 0;
-    nRet = pFactoryFace->RemoveFace("OpenCVDNN");
+    nRet = pFactoryFace->RemoveFace("OpenCV_DNN");
     return nRet;
 }

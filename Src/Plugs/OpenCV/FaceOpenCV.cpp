@@ -13,13 +13,13 @@ CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent)
 int CFaceOpenCV::Initialize(CFactoryFace *pFactoryFace)
 {
     int nRet = 0;
-    nRet = pFactoryFace->RegisterFace("OpenCV", this, tr("OpenCV"));
+    nRet = pFactoryFace->RegisterFace("OpenCV_Face", this, tr("OpenCV_Face"));
     return nRet;
 }
 
 int CFaceOpenCV::Clean(CFactoryFace* pFactoryFace)
 {
     int nRet = 0;
-    nRet = pFactoryFace->RemoveFace("OpenCV");
+    nRet = pFactoryFace->RemoveFace("OpenCV_Face");
     return nRet;
 }
