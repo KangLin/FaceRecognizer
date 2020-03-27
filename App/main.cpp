@@ -16,10 +16,15 @@
 #endif
 
 #include "Log.h"
+#include "PlugsManager.h"
 
 int main(int argc, char *argv[])
 {
     LOG_INITIALIZER;
+
+    CPlugsManager manager;
+    manager.LoadPlugs();
+
 #if (QT_VERSION > QT_VERSION_CHECK(5,6,0))
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif

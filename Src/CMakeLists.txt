@@ -68,6 +68,7 @@ endif()
 
 set(SOURCES_FILES
     ${SOURCES_FILES}
+    PlugsManager.cpp
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     Log.cpp
@@ -85,6 +86,7 @@ set(SOURCES_FILES
     )
 
 set(INSTALLHEADER_FILES
+    PlugsManager.cpp
     ImageTool.h
     CameraQtCaptureVideoFrame.h
     FactoryFace.h
