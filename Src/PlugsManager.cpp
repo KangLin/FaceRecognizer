@@ -12,7 +12,7 @@ CPlugsManager::CPlugsManager(QObject *parent) : QObject(parent)
 
 CPlugsManager* CPlugsManager::Instance()
 {
-    CPlugsManager* p = nullptr;
+    static CPlugsManager* p = nullptr;
     if(!p)
         p = new CPlugsManager();
     return p;
