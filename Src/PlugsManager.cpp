@@ -10,6 +10,9 @@
 CPlugsManager::CPlugsManager(QObject *parent) : QObject(parent)
 {}
 
+CPlugsManager::~CPlugsManager()
+{}
+
 CPlugsManager* CPlugsManager::Instance()
 {
     static CPlugsManager* p = nullptr;

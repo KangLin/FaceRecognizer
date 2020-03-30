@@ -21,9 +21,9 @@
 #include <QFile>
 #include <QPainter>
 
-CImageTool::CImageTool(QObject *parent) :
-    QObject(parent)
+CImageTool::CImageTool(QObject *parent) : QObject(parent)
 {
+    m_pConverFormat = CPlugsManager::Instance()->GetConverFormat();
 }
 
 CImageTool* CImageTool::Instance()
@@ -48,10 +48,9 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     case QVideoFrame::Format_YUYV:
     case QVideoFrame::Format_UYVY:
     {
-        CConverFormat* pCV = CPlugsManager::Instance()->GetConverFormat();
-        if(pCV)
+        if(m_pConverFormat)
         {
-            QImage image = pCV->onConverFormatToRGB888(frame);
+            QImage image = m_pConverFormat->onConverFormatToRGB888(frame);
             if(!image.isNull()) return image;
         }
 

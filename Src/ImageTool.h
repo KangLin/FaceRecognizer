@@ -40,7 +40,7 @@ public:
     QImage ConverFormatToRGB888(const QVideoFrame &frame);
 
 private:
-
+    CConverFormat* m_pConverFormat;
 #if HAVE_LIBYUV
     static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);
 #endif

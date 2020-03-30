@@ -61,7 +61,7 @@ function function_common()
     cd ${TOOLS_DIR}
     if [ "$DOWNLOAD_QT" = "TRUE" ]; then
         QT_DIR=${TOOLS_DIR}/Qt/${QT_VERSION}
-        cd ${PACKAGE_DIR}
+        #cd ${PACKAGE_DIR}
         if [ ! -d "${QT_DIR}" ]; then
             if [ "${QT_VERSION}" = "5.6.3" ]; then
                 if [ ! -f qt-opensource-linux-x64-android-${QT_VERSION}.run ]; then
@@ -95,7 +95,12 @@ function install_android()
         tar xzf android-studio-ide-${ANDROID_STUDIO_VERSION}-linux.tar.gz
         export JAVA_HOME=`pwd`/android-studio/jre
         export PATH=${JAVA_HOME}/bin:$PATH
-        wget -c -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+        cd ${PACKAGE_DIR}
+        if [ ! -f sdk-tools-linux-4333796.zip ]; then
+            wget -c -nv https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+        fi
+        cp sdk-tools-linux-4333796.zip ${TOOLS_DIR}/.
+        cd ${TOOLS_DIR}
         mkdir android-sdk
         cd android-sdk
         cp ../sdk-tools-linux-4333796.zip .

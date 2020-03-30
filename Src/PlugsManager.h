@@ -12,7 +12,8 @@ class FACERECOGNIZER_EXPORT CPlugsManager : public QObject
     Q_OBJECT
 public:
     explicit CPlugsManager(QObject *parent = nullptr);
-
+    virtual ~CPlugsManager();
+    
     static CPlugsManager* Instance();
 
     int LoadPlugs();
