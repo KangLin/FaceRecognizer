@@ -69,8 +69,6 @@ public:
     virtual int RemoveFace(const QString &szName);
 
 private:
-    int FindPlugins(QDir dir);
-private:
     int m_CurrentLib;
     bool m_bOnlyUserCurrent;
     struct FACE_DATA
