@@ -440,16 +440,8 @@ void MainWindow::on_actionSet_model_path_triggered()
 
 int MainWindow::setModelPath(const QString &szPath)
 {
-    if(CFactoryFace::Instance()->GetDector())
-        CFactoryFace::Instance()->GetDector()->setModelPath(szPath);
-    if(CFactoryFace::Instance()->GetLandmarker())
-        CFactoryFace::Instance()->GetLandmarker()->setModelPath(szPath);
-    if(CFactoryFace::Instance()->GetTracker())
-        CFactoryFace::Instance()->GetTracker()->setModelPath(szPath);
-    if(CFactoryFace::Instance()->GetRecognizer())
-        CFactoryFace::Instance()->GetRecognizer()->setModelPath(szPath);
-    if(CFactoryFace::Instance()->GetFaceTools())
-        CFactoryFace::Instance()->GetFaceTools()->setModelPath(szPath);
+    CFactoryFace::Instance()->setModelPath(szPath);
+ 
     if(m_Paramter)
         m_Paramter->slotUpdateParamter();
     return 0;

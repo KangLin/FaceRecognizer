@@ -292,3 +292,24 @@ CDatabase* CFactoryFace::GetDatabase(const QString &szName)
     }
     return GetFace(szName) ? GetFace(szName)->GetDatabase() : nullptr;
 }
+
+int CFactoryFace::setModelPath(const QString &szPath)
+{
+    foreach(FACE_DATA d, m_Face)
+    {
+        CFace* pFace = d.pFace;
+        if(!pFace) continue;
+
+        if(pFace->GetDector())
+            pFace->GetDector()->setModelPath(szPath);
+        if(pFace->GetLandmarker())
+            pFace->GetLandmarker()->setModelPath(szPath);
+        if(pFace->GetTracker())
+            pFace->GetTracker()->setModelPath(szPath);
+        if(pFace->GetRecognizer())
+            pFace->GetRecognizer()->setModelPath(szPath);
+        if(pFace->GetFaceTools())
+            pFace->GetFaceTools()->setModelPath(szPath);
+    }
+    return 0;
+}

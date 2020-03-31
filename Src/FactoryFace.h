@@ -68,6 +68,8 @@ public:
                              const QString &szDescript = QString());
     virtual int RemoveFace(const QString &szName);
 
+    int setModelPath(const QString &szPath);
+    
 private:
     int m_CurrentLib;
     bool m_bOnlyUserCurrent;
