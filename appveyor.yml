@@ -4,6 +4,7 @@ version: 'v0.0.4.{build}'
 
 cache:
   - model
+  - Package
   
 environment:
   STOREPASS:
@@ -113,27 +114,27 @@ environment:
     DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/windows_mingw730_64_x64.tar.gz
 
   ##### android ########
-#  - BUILD_TARGERT: android
-#    GENERATORS: "MSYS Makefiles"
-#    BUILD_ARCH: "armeabi-v7a"
-#    ANDROID_ARM_NEON: ON
-#    QT_ROOT: NO
-#    QT_VERSION_DIR: 5.12
-#    QT_VERSION: 5.12.6
-#    ANDROID_API: android-24
-#    TOOLCHAIN_VERSION: 4.9
-#    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/android4.9_arm_in_windows.tar.gz
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "armeabi-v7a"
+    ANDROID_ARM_NEON: ON
+    QT_ROOT: NO
+    QT_VERSION_DIR: 5.12
+    QT_VERSION: 5.12.6
+    ANDROID_API: android-24
+    TOOLCHAIN_VERSION: 4.9
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/android4.9_arm_in_windows.tar.gz
 
-#  - BUILD_TARGERT: android
-#    GENERATORS: "MSYS Makefiles"
-#    BUILD_ARCH: "arm64-v8a"
-#    ANDROID_ARM_NEON: ON
-#    QT_ROOT: NO
-#    QT_VERSION_DIR: 5.12
-#    QT_VERSION: 5.12.6
-#    ANDROID_API: android-24
-#    TOOLCHAIN_VERSION: 4.9
-#    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/android4.9_arm64_in_windows.tar.gz
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "arm64-v8a"
+    ANDROID_ARM_NEON: ON
+    QT_ROOT: NO
+    QT_VERSION_DIR: 5.12
+    QT_VERSION: 5.12.6
+    ANDROID_API: android-24
+    TOOLCHAIN_VERSION: 4.9
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.5/android4.9_arm64_in_windows.tar.gz
 
 matrix:
   fast_finish: false

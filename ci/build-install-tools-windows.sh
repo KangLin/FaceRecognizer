@@ -45,7 +45,7 @@ function function_common()
     if [ "${QT_ROOT}" = "NO" ]; then
         QT_DIR=C:/projects/${APPVEYOR_PROJECT_NAME}/Tools/Qt/${QT_VERSION}
         if [ ! -d "${QT_DIR}" ]; then
-            cd ${PACKAGE_DIR}
+            #cd ${PACKAGE_DIR}
             wget -c --no-check-certificate -nv http://download.qt.io/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/qt-opensource-windows-x86-${QT_VERSION}.exe
             bash ${SOURCE_DIR}/ci/qt-installer.sh qt-opensource-windows-x86-${QT_VERSION}.exe ${QT_DIR}
             rm qt-opensource-windows-x86-${QT_VERSION}.exe
@@ -75,20 +75,29 @@ function function_android()
     
     #Download android sdk  
     if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
-        cd ${TOOLS_DIR}
-    
+        
+        cd ${PACKAGE_DIR}
         ANDROID_STUDIO_VERSION=192.6241897
-        wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.6.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
+        if [ ! -f android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip ]; then
+            wget -c -nv https://dl.google.com/dl/android/studio/ide-zips/3.6.1.0/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
+        fi
+        
+        cd ${TOOLS_DIR}
+        cp ${PACKAGE_DIR}/android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip .
         unzip -q android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
         rm android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
         export JAVA_HOME=${TOOLS_DIR}/android-studio/jre
         export PATH=${JAVA_HOME}/bin:$PATH
         
         SDK_VERSION=4333796
-        wget -c -nv https://dl.google.com/android/repository/sdk-tools-windows-${SDK_VERSION}.zip
+        cd ${PACKAGE_DIR}
+        if [ ! -f sdk-tools-windows-${SDK_VERSION}.zip ]; then
+            wget -c -nv https://dl.google.com/android/repository/sdk-tools-windows-${SDK_VERSION}.zip
+        fi
+        cd ${TOOLS_DIR}
         mkdir android-sdk
         cd android-sdk
-        mv ../sdk-tools-windows-${SDK_VERSION}.zip .
+        mv ${PACKAGE_DIR}/sdk-tools-windows-${SDK_VERSION}.zip .
         unzip -q sdk-tools-windows-${SDK_VERSION}.zip
         rm sdk-tools-windows-${SDK_VERSION}.zip
     
