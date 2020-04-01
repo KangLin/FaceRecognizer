@@ -68,7 +68,6 @@ foreach(comp ${FFMPEG_FIND_COMPONENTS})
 		list(APPEND FFMPEG_INCLUDE_DIRS ${FFMPEG_${comp}_INCLUDE_DIR})
 		list(APPEND FFMPEG_LIBRARIES ${FFMPEG_${comp}_LIBRARY})
 	endif()
-	
 endforeach(comp)
 
 # Run checks via find_package_handle_standard_args

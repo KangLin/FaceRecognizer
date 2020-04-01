@@ -10,6 +10,10 @@ endif()
 
 message("== FFMPGE:${FFMPEG_FOUND}")
 
+#INSTALL(FILES ${FFMPEG_LIBRARIES}
+#    DESTINATION "${CMAKE_INSTALL_BINDIR}"
+#        COMPONENT Runtime)
+
 project(PlugFFMpeg)
 
 set(SOURCES_FILES
@@ -51,8 +55,8 @@ INSTALL(TARGETS ${PROJECT_NAME}
     )
 
 export(TARGETS ${PROJECT_NAME}
-       APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-)
+    APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    )
 
 # Install cmake configure files
 install(EXPORT ${PROJECT_NAME}Config
@@ -62,4 +66,5 @@ write_basic_package_version_file(
     "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
     VERSION ${BUILD_VERSION}
     COMPATIBILITY AnyNewerVersion)
-install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")

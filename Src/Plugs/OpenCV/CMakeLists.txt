@@ -59,10 +59,6 @@ write_basic_package_version_file(
     COMPATIBILITY AnyNewerVersion)
 install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
 
-if(OpenCV_VERSION VERSION_LESS "3.4.0")
-    return()
-endif()
-
 foreach(opencv_component ${OpenCV_LIBS})
     if(ANDROID)
         INSTALL(FILES $<TARGET_FILE:${opencv_component}>
@@ -74,11 +70,13 @@ foreach(opencv_component ${OpenCV_LIBS})
             COMPONENT Runtime)
     endif(ANDROID)
     
-    if(opencv_component STREQUAL "opencv_dnn")
+    if((opencv_component STREQUAL "opencv_dnn")
+            AND (OpenCV_VERSION VERSION_GREATER_EQUAL "2.4.0"))
         include(OpenCV_DNN.cmake)
     endif()
     
-    if(opencv_component STREQUAL "opencv_face")
+    if(opencv_component STREQUAL "opencv_face"
+            AND OpenCV_VERSION VERSION_GREATER_EQUAL "3.4.0")
         include(OpenCV_Face.cmake)
-    endif(opencv_component STREQUAL "opencv_face")
+    endif()
 endforeach()
