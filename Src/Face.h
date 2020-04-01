@@ -13,18 +13,29 @@
 #include "FaceTools.h"
 #include "database/Database.h"
 
-class CFactoryFace;
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
     
+    Q_PROPERTY(QString name READ GetName)
+    Q_PROPERTY(QString descritp READ GetDescript)
+    Q_PROPERTY(int level READ GetLevel)
 public:
     explicit CFace(QObject *parent = nullptr);
     virtual ~CFace();
     
-    virtual int Initialize(CFactoryFace* pFactoryFace) = 0;
-    virtual int Clean(CFactoryFace* pFactoryFace = nullptr) = 0;
+    virtual int Initialize();
+    virtual int Clean();
+    virtual QString GetName();
+    virtual QString GetDescript();
+    enum LEVEL
+    {
+        HEIGHT = 1,
+        NORMAL = 0,
+        LOWER = -1
+    };
+    virtual int GetLevel();
     
     bool IsValid();
 

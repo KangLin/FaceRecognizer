@@ -13,8 +13,7 @@ public:
     Q_PLUGIN_METADATA(IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.OpenCV.CFaceOpenCVDNN")
 #endif
 
-    int Initialize(CFactoryFace* pFactoryFace = nullptr) override;
-    int Clean(CFactoryFace* pFactoryFace = nullptr) override;
+    QString GetName() override; 
 };
 
 #endif // CFACEOPENCVDNN_H

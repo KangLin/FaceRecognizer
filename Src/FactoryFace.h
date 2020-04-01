@@ -44,7 +44,7 @@ public:
     static CFactoryFace* Instance();
 
     int SetLibType(const QString &szName = QString(), bool bOnly = true);
-    int GetLibType(QVector<QString> &szLibs, QVector<QString> &szDescript);
+    QVector<CFace*> GetLibType();
 
     virtual CFace* GetFace(const QString &szName = QString());
 
@@ -64,22 +64,15 @@ public:
      * @param szDescript
      * @return
      */
-    virtual int RegisterFace(const QString &szName, CFace* pFace,
-                             const QString &szDescript = QString());
-    virtual int RemoveFace(const QString &szName);
+    virtual int RegisterFace(CFace* pFace);
+    virtual int RemoveFace(const QString &szName, CFace* pFace = nullptr);
 
     int setModelPath(const QString &szPath);
     
 private:
     int m_CurrentLib;
     bool m_bOnlyUserCurrent;
-    struct FACE_DATA
-    {
-        QString szName;
-        QString szDescript;
-        CFace* pFace;
-    };
-    QVector<FACE_DATA> m_Face;
+    QVector<CFace*> m_Face;
 };
 
 #endif // CFACTORY_H_KL_2019_10_21

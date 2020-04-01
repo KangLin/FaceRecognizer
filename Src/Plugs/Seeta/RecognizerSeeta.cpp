@@ -2,7 +2,7 @@
 #include "Log.h"
 #include "RabbitCommonDir.h"
 #include "Performance.h"
-#include "FaceSeeta.h"
+#include "FaceSeeta2.h"
 
 #include <QDir>
 

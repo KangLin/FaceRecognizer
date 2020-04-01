@@ -19,7 +19,7 @@ foreach(componet_seetaFace ${SeetaFace_LIBRARIES})
 endforeach()
 
 set(SOURCES_FILES
-    FaceSeeta.cpp
+    FaceSeeta2.cpp
     DetectorSeeta.cpp
     TrackerSeeta.cpp
     LandmarkerSeeta.cpp
@@ -28,7 +28,7 @@ set(SOURCES_FILES
     )
 
 set(HEADER_FILES
-    FaceSeeta.h
+    FaceSeeta2.h
     DetectorSeeta.h
     TrackerSeeta.h
     LandmarkerSeeta.h

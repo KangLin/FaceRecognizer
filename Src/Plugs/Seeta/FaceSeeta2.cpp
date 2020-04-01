@@ -1,4 +1,4 @@
-#include "FaceSeeta.h"
+#include "FaceSeeta2.h"
 
 #include "Log.h"
 #include "DetectorSeeta.h"
@@ -6,11 +6,10 @@
 #include "LandmarkerSeeta.h"
 #include "RecognizerSeeta.h"
 #include "FaceToolsSeeta.h"
-#include "FactoryFace.h"
 
 #include <QDir>
 
-CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
+CFaceSeeta2::CFaceSeeta2(QObject *parent) : CFace(parent)
 {
     Q_UNUSED(parent)
     m_pDetector = new CDetectorSeeta(this);
@@ -20,19 +19,15 @@ CFaceSeeta::CFaceSeeta(QObject *parent) : CFace(parent)
     m_pFaceTools = new CFaceToolsSeeta(this);
 }
 
-CFaceSeeta::~CFaceSeeta()
+CFaceSeeta2::~CFaceSeeta2()
 {}
 
-int CFaceSeeta::Initialize(CFactoryFace *pFactoryFace)
+QString CFaceSeeta2::GetName()
 {
-    int nRet = 0;
-    nRet = pFactoryFace->RegisterFace("Seeta", this, tr("Seeta"));
-    return nRet;
+    return "SeetaFace2";
 }
 
-int CFaceSeeta::Clean(CFactoryFace* pFactoryFace)
+int CFaceSeeta2::GetLevel()
 {
-    int nRet = 0;
-    nRet = pFactoryFace->RemoveFace("Seeta");
-    return nRet;
+    return 10;
 }

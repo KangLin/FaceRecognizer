@@ -29,7 +29,14 @@ int CPlugsManager::LoadPlugs()
         CFace* pPlugFace = qobject_cast<CFace*>(plugin);
         if(pPlugFace)
         {
-            pPlugFace->Initialize(CFactoryFace::Instance());
+            CFactoryFace::Instance()->RegisterFace(pPlugFace);
+            continue;
+        }
+
+        CConverFormat* pCF = qobject_cast<CConverFormat*>(plugin);
+        if(pCF)
+        {
+            m_ConverFormat[pCF->getName()] = pCF;
             continue;
         }
     }
@@ -60,7 +67,7 @@ int CPlugsManager::FindPlugins(QDir dir)
             CFace* pPlugFace = qobject_cast<CFace*>(plugin);
             if(pPlugFace)
             {
-                pPlugFace->Initialize(CFactoryFace::Instance());
+                CFactoryFace::Instance()->RegisterFace(pPlugFace);
                 continue;
             }
 

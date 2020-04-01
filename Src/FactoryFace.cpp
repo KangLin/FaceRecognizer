@@ -28,38 +28,46 @@ CFactoryFace* CFactoryFace::Instance()
     return p;
 }
 
-int CFactoryFace::RegisterFace(const QString &szName,
-                               CFace* pFace,
-                               const QString &szDescript)
+int CFactoryFace::RegisterFace(CFace* pFace)
 {
+    if(!pFace) return -1;
     int nIndex = -1;
-    FACE_DATA data{szName, szDescript, pFace};
+    
     foreach(auto d, m_Face)
     {
         nIndex++;
-        if(d.szName == szName)
+        if(d->GetLevel() > pFace->GetLevel())
+            continue;
+        if(d->GetLevel() == pFace->GetLevel())
         {
-            d.pFace->Clean(this);
-            break;
+            if(d->GetName() == pFace->GetName())
+            {
+                d->Clean();
+                m_Face[nIndex] = pFace;
+                return 0;
+            }
+        }
+        if(d->GetLevel() < pFace->GetLevel())
+        {
+            m_Face.insert(nIndex, pFace);
+            return 0;
         }
     }
 
     if(nIndex >= m_Face.size() - 1)
-        m_Face.push_back(data);
-    else
-        m_Face[nIndex] = data;
-
+        m_Face.push_back(pFace);
+    
     return 0;
 }
 
-int CFactoryFace::RemoveFace(const QString &szName)
+int CFactoryFace::RemoveFace(const QString &szName, CFace *pFace)
 {
     int nIndex = 0;
     foreach(auto d, m_Face)
     {
-        if(d.szName == szName)
+        if(d->GetName() == pFace->GetName())
         {
-            d.pFace->Clean(this);
+            d->Clean();
             m_Face.remove(nIndex);
             break;
         }
@@ -123,7 +131,7 @@ int CFactoryFace::SetLibType(const QString &szName, bool bOnly)
         foreach(auto d, m_Face)
         {
             nIndex++;
-            if(d.szName == szName)
+            if(d->GetName() == szName)
             {
                 m_CurrentLib = nIndex;
                 break;
@@ -133,14 +141,9 @@ int CFactoryFace::SetLibType(const QString &szName, bool bOnly)
     return 0;
 }
 
-int CFactoryFace::GetLibType(QVector<QString> &szLibs, QVector<QString> &szDescript)
+QVector<CFace*> CFactoryFace::GetLibType()
 {
-    foreach(auto d, m_Face)
-    {
-        szDescript.push_back(d.szDescript);
-        szLibs.push_back(d.szName);
-    }
-    return 0;
+    return m_Face;
 }
 
 CFace* CFactoryFace::GetFace(const QString &szName)
@@ -148,17 +151,17 @@ CFace* CFactoryFace::GetFace(const QString &szName)
     if(szName.isEmpty())
     {
         if(m_CurrentLib >= 0 && m_CurrentLib < m_Face.size())
-            return m_Face[m_CurrentLib].pFace;
+            return m_Face[m_CurrentLib];
         if(m_bOnlyUserCurrent)
             return nullptr;
 
         foreach(auto d, m_Face)
-            if(d.pFace) return d.pFace;
+            if(d) return d;
         return nullptr;
     }
 
     foreach(auto d, m_Face)
-        if(d.szName == szName) return d.pFace;
+        if(d->GetName() == szName) return d;
     return nullptr;
 }
 
@@ -179,8 +182,8 @@ CDetector* CFactoryFace::GetDector(const QString &szName)
         //TODO: 优化：使用性能高的库
         
         foreach(auto d, m_Face) {
-            if(d.pFace && d.pFace->GetDector())
-                return d.pFace->GetDector();
+            if(d && d->GetDector())
+                return d->GetDector();
         }
     }
     
@@ -201,8 +204,8 @@ CTracker* CFactoryFace::GetTracker(const QString &szName)
             return nullptr;
         
         foreach(auto d, m_Face) {
-            if(d.pFace && d.pFace->GetTracker())
-                return d.pFace->GetTracker();
+            if(d && d->GetTracker())
+                return d->GetTracker();
         }
     }
     return GetFace(szName) ? GetFace(szName)->GetTracker() : nullptr;
@@ -222,8 +225,8 @@ CLandmarker* CFactoryFace::GetLandmarker(const QString &szName)
             return nullptr;
         
         foreach(auto d, m_Face) {
-            if(d.pFace && d.pFace->GetLandmarker())
-                return d.pFace->GetLandmarker();
+            if(d && d->GetLandmarker())
+                return d->GetLandmarker();
         }
     }
     return GetFace(szName) ? GetFace(szName)->GetLandmarker() : nullptr;
@@ -243,8 +246,8 @@ CRecognizer* CFactoryFace::GetRecognizer(const QString &szName)
             return nullptr;
         
         foreach(auto d, m_Face) {
-            if(d.pFace && d.pFace->GetRecognizer())
-                return d.pFace->GetRecognizer();
+            if(d && d->GetRecognizer())
+                return d->GetRecognizer();
         }
     }
 
@@ -265,8 +268,8 @@ CFaceTools* CFactoryFace::GetFaceTools(const QString &szName)
             return nullptr;
         
         foreach(auto d, m_Face) {
-            if(d.pFace && d.pFace->GetFaceTools())
-                return d.pFace->GetFaceTools();
+            if(d && d->GetFaceTools())
+                return d->GetFaceTools();
         }
     }
     return GetFace(szName) ? GetFace(szName)->GetFaceTools() : nullptr;
@@ -286,8 +289,8 @@ CDatabase* CFactoryFace::GetDatabase(const QString &szName)
             return nullptr;
         
         foreach(auto d, m_Face) {
-            if(d.pFace && d.pFace->GetDatabase())
-                return d.pFace->GetDatabase();
+            if(d && d->GetDatabase())
+                return d->GetDatabase();
         }
     }
     return GetFace(szName) ? GetFace(szName)->GetDatabase() : nullptr;
@@ -295,9 +298,9 @@ CDatabase* CFactoryFace::GetDatabase(const QString &szName)
 
 int CFactoryFace::setModelPath(const QString &szPath)
 {
-    foreach(FACE_DATA d, m_Face)
+    foreach(auto d, m_Face)
     {
-        CFace* pFace = d.pFace;
+        CFace* pFace = d;
         if(!pFace) continue;
 
         if(pFace->GetDector())

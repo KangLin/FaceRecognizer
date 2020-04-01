@@ -334,15 +334,19 @@ void MainWindow::slotCameraOrientation(QAction *pAction)
 void MainWindow::on_actionFile_triggered()
 {
 #ifdef RABBITCOMMON
-    QString szFile = RabbitCommon::CDir::GetOpenFileName(this,
+    QString szFile;
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    szFile = set.value("SourceFile").toString();
+
+    szFile = RabbitCommon::CDir::GetOpenFileName(this,
                                    tr("Open file"),
-                                   qApp->applicationDirPath());
+                                   szFile);
     if(szFile.isEmpty())
         return;
 
-    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                  QSettings::IniFormat);
     set.setValue("SourceFile", szFile);
+    
 
     QUrl url = QUrl::fromLocalFile(szFile);
     m_Player.setMedia(url);
@@ -611,26 +615,27 @@ int MainWindow::createDockPerameters()
 
     QActionGroup *pAiGroup = new QActionGroup(this);
     ui->menuAI_libraries->setEnabled(false);
-    QVector<QString> szLibName, szLibDescript;
-    CFactoryFace::Instance()->GetLibType(szLibName, szLibDescript);
-    qDebug() << szLibName << szLibDescript;
+    QVector<CFace*> faces = CFactoryFace::Instance()->GetLibType();
+    
     QString szSelect;
-    if(!szLibName.empty())
-        szSelect = szLibName[0];
+    if(!faces.empty())
+        szSelect = faces[0]->GetName();
 #ifdef RABBITCOMMON
     QSettings setAILibs(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
     szSelect = setAILibs.value("AI_Libraries", szSelect).toString();
 #endif
     CFactoryFace::Instance()->SetLibType(szSelect, false);
-    for(int i = 0; i < szLibName.size(); i++)
+    foreach(auto f, faces)
     {
         ui->menuAI_libraries->setEnabled(true);
-        QAction* pA = ui->menuAI_libraries->addAction(szLibDescript[i]);
+        QAction* pA = ui->menuAI_libraries->addAction(f->GetDescript());
+        pA->setStatusTip(f->GetDescript());
+        pA->setToolTip(f->GetDescript());
         pAiGroup->addAction(pA);
         pA->setCheckable(true);
-        pA->setData(szLibName[i]);
-        if(szSelect == szLibName[i])
+        pA->setData(f->GetName());
+        if(szSelect == f->GetName())
             pA->setChecked(true);
     }
     check = connect(pAiGroup, SIGNAL(triggered(QAction*)),

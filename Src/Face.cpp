@@ -31,6 +31,31 @@ CFace::~CFace()
         delete m_pDatabase;
 }
 
+int CFace::Initialize()
+{
+    return 0;
+}
+
+int CFace::Clean()
+{
+    return 0;
+}
+
+QString CFace::GetName()
+{
+    return this->metaObject()->className();
+}
+
+QString CFace::GetDescript()
+{
+    return GetName();
+}
+
+int CFace::GetLevel()
+{
+    return LOWER;
+}
+
 bool CFace::IsValid()
 {
     if(!GetDector())
