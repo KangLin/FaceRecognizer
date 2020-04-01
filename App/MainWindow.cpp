@@ -339,6 +339,11 @@ void MainWindow::on_actionFile_triggered()
                                    qApp->applicationDirPath());
     if(szFile.isEmpty())
         return;
+
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    set.setValue("SourceFile", szFile);
+
     QUrl url = QUrl::fromLocalFile(szFile);
     m_Player.setMedia(url);
     m_Player.setVideoOutput(&m_CaptureFrame);
@@ -356,6 +361,16 @@ void MainWindow::on_actionStart_triggered()
             m_pCamera->start();
         } else {
             m_Player.stop();
+            
+            QString szFile;
+            QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                          QSettings::IniFormat);
+            szFile = set.value("SourceFile").toString();
+        
+            QUrl url = QUrl::fromLocalFile(szFile);
+            m_Player.setMedia(url);
+            m_Player.setVideoOutput(&m_CaptureFrame);
+            
             m_Player.play();
         }
             
