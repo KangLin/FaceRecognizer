@@ -37,11 +37,15 @@ foreach(opencv_component ${OpenCV_LIBS})
         INSTALL(FILES $<TARGET_FILE:${opencv_component}>
             DESTINATION "libs/${ANDROID_ABI}"
             COMPONENT Runtime)
-    else(ANDROID)
+    elseif(WIN32)
         INSTALL(FILES $<TARGET_FILE:${opencv_component}>
             DESTINATION "${CMAKE_INSTALL_BINDIR}"
             COMPONENT Runtime)
-    endif(ANDROID)
+    else()
+        INSTALL(FILES $<TARGET_FILE:${opencv_component}>
+            DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+            COMPONENT Runtime)
+    endif()
     
     if((opencv_component STREQUAL "opencv_dnn")
             AND (OpenCV_VERSION VERSION_GREATER_EQUAL "3.4.0"))

@@ -9,11 +9,15 @@ foreach(componet_seetaFace ${SeetaFace_LIBRARIES})
     if(ANDROID)
         INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
             DESTINATION "libs/${ANDROID_ABI}"
-            COMPONENT Runtime)
-    else()
+                COMPONENT Runtime)
+    elseif(WIN32)
         INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
             DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            COMPONENT Runtime)
+                COMPONENT Runtime)
+    else()
+        INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
+            DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                COMPONENT Runtime)
     endif()
 endforeach()
 
