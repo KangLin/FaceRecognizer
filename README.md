@@ -34,14 +34,14 @@
   + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
   + [ ] [ncnn](https://github.com/Tencent/ncnn)
-  + [x] [libfacedetection](https://github.com/ShiqiYu/libfacedetection)
     - https://github.com/MirrorYuChen/ncnn_example
+  + [x] [libfacedetection](https://github.com/ShiqiYu/libfacedetection)
   + [x] 其他深度学习网络  
     - https://github.com/deepinsight/mxnet-mtcnn
     - https://github.com/SyGoing/LFFD-MNN
     - https://github.com/deepinsight/mxnet-mtcnn
     - https://github.com/imistyrain/MTCNN
-    
+
 ### 支持平台
 
   + [x] windows (windows xp 及已后)
@@ -49,7 +49,7 @@
   + [x] android (android 21 及已后)
   + [ ] mac
   + [ ] ios
-  + [x] 其它嵌入式平台，你自己移植，或者可联系本人（QQ:16614119），加好友前请你先[捐赠](#捐赠)支持本项目，验证信息为你的捐赠额:)
+  + [x] 其它嵌入式平台。你自己移植。也可联系本人（QQ:16614119），加好友前请你先[捐赠](#捐赠)支持本项目，验证信息为你的捐赠额:)
   
   mac 和 ios我没有设备，请有设备的同学自行编译测试。
 
