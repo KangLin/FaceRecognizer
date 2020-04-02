@@ -6,12 +6,34 @@
 #endif
 
 #include <QDebug>
+#include <QPluginLoader>
 
 CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     m_CurrentLib(-1),
     m_bOnlyUserCurrent(false)
 {
     Q_UNUSED(parent)
+    
+    foreach (QObject *plugin, QPluginLoader::staticInstances())
+    {
+        CFace* pPlugFace = qobject_cast<CFace*>(plugin);
+        if(pPlugFace)
+        {
+            RegisterFace(pPlugFace);
+        }
+    }
+
+    QString szPath = RabbitCommon::CDir::Instance()->GetDirPlugs();
+#if !defined (Q_OS_ANDROID)
+    szPath = szPath + QDir::separator() + "Face";
+#endif
+    QStringList filters;
+#if defined (Q_OS_WINDOWS)
+        filters << "*PlugFace*.dll";
+#else
+        filters << "*PlugFace*.so";
+#endif
+    FindPlugins(szPath, filters);
     
     SetLibType(QString(), false);
 }
@@ -314,5 +336,45 @@ int CFactoryFace::setModelPath(const QString &szPath)
         if(pFace->GetFaceTools())
             pFace->GetFaceTools()->setModelPath(szPath);
     }
+    return 0;
+}
+
+int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
+{
+    QString szPath = dir.path();
+    QString fileName;
+    if(filters.isEmpty())
+    {
+#if defined (Q_OS_WINDOWS)
+        filters << "*.dll";
+#else
+        filters << "*.so";
+#endif
+    }
+    QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
+    foreach (fileName, files) {
+        //LOG_MODEL_INFO("CFactoryFace", "file name:%s", fileName.toStdString().c_str());
+        QString szPlugins = dir.absoluteFilePath(fileName);
+        QPluginLoader loader(szPlugins);
+        QObject *plugin = loader.instance();
+        if (plugin) {
+            CFace* pPlugFace = qobject_cast<CFace*>(plugin);
+            if(pPlugFace)
+            {
+                RegisterFace(pPlugFace);
+                continue;
+            }
+        }else{
+            LOG_MODEL_ERROR("CFactoryFace", "load plugin error:%s",
+                            loader.errorString().toStdString().c_str());
+        }
+    }
+
+    foreach (fileName, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        QDir pluginDir = dir;
+        if(pluginDir.cd(fileName))
+            FindPlugins(pluginDir, filters);
+    }
+
     return 0;
 }

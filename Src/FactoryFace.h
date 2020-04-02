@@ -57,6 +57,14 @@ public:
     
     bool bIsValid(const QString &szName = QString());
     
+    int setModelPath(const QString &szPath);
+    
+private:
+    int m_CurrentLib;
+    bool m_bOnlyUserCurrent;
+    QVector<CFace*> m_Face;
+    
+private:
     /**
      * @brief RegisterFace
      * @param szName
@@ -66,13 +74,7 @@ public:
      */
     virtual int RegisterFace(CFace* pFace);
     virtual int RemoveFace(const QString &szName, CFace* pFace = nullptr);
-
-    int setModelPath(const QString &szPath);
-    
-private:
-    int m_CurrentLib;
-    bool m_bOnlyUserCurrent;
-    QVector<CFace*> m_Face;
+    int FindPlugins(QDir dir, QStringList filters);
 };
 
 #endif // CFACTORY_H_KL_2019_10_21

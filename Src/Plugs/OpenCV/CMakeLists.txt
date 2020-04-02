@@ -1,4 +1,4 @@
-PROJECT(PlugOpenCV)
+PROJECT(PlugConverFormatOpenCV)
 
 option(USE_OPENCV "Use opencv" ON)
 if(NOT USE_OPENCV)
@@ -10,10 +10,6 @@ if(NOT OpenCV_FOUND)
     return()
 endif()
 
-set(LIBS_DEFINES OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR})
-set(LIBS ${OpenCV_LIBS})
-set(INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
-
 set(SOURCES_FILES
     ConverFormatOpenCV.cpp
     )
@@ -21,43 +17,20 @@ set(HEADER_FILES
     ConverFormatOpenCV.h
     )
 
-add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES})
-target_compile_definitions(${PROJECT_NAME} PRIVATE ${LIBS_DEFINES})
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
-    ARCHIVE_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}
-    VERSION ${BUILD_VERSION})
-target_link_libraries(${PROJECT_NAME} PUBLIC FaceRecognizer RabbitCommon ${QT_LIBRARIES} ${LIBS})
-target_include_directories(${PROJECT_NAME}
-    PRIVATE ${RabbitCommon_DIR}/Src
-    ${CMAKE_SOURCE_DIR}/Src
-    ${CMAKE_BINARY_DIR}
-    ${INCLUDE_DIRS})
-
 # Install target
-INSTALL(TARGETS ${PROJECT_NAME}
-    EXPORT ${PROJECT_NAME}Config
-    RUNTIME DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-        COMPONENT Runtime
-    LIBRARY DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-        COMPONENT Runtime
-    ARCHIVE DESTINATION "${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}"
-    )
-
-export(TARGETS ${PROJECT_NAME}
-       APPEND FILE ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-)
-
-# Install cmake configure files
-install(EXPORT ${PROJECT_NAME}Config
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake"
-        )
-write_basic_package_version_file(
-    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    VERSION ${BUILD_VERSION}
-    COMPATIBILITY AnyNewerVersion)
-install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake" DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})
+if(NOT ANDROID)
+    set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}/ConverFormat)
+endif()
+ADD_PLUG_TARGET(NAME ${PROJECT_NAME}
+    SOURCES_FILES ${SOURCES_FILES}
+    HEADER_FILES ${HEADER_FILES}
+    LIBS ${OpenCV_LIBS}
+    INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}
+    DEFINITIONS OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR}
+    OUTPUT_DIR ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}/ConverFormat
+    INSTALL_DIR ${INSTALL_PATH}
+    VERSION ${BUILD_VERSION})
 
 foreach(opencv_component ${OpenCV_LIBS})
     if(ANDROID)
@@ -71,7 +44,7 @@ foreach(opencv_component ${OpenCV_LIBS})
     endif(ANDROID)
     
     if((opencv_component STREQUAL "opencv_dnn")
-            AND (OpenCV_VERSION VERSION_GREATER_EQUAL "2.4.0"))
+            AND (OpenCV_VERSION VERSION_GREATER_EQUAL "3.4.0"))
         include(OpenCV_DNN.cmake)
     endif()
     

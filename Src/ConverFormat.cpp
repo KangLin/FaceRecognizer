@@ -1,5 +1,4 @@
 #include "ConverFormat.h"
-#include "PlugsManager.h"
 
 CConverFormat::CConverFormat(QObject *parent) : QObject(parent)
 {}

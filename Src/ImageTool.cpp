@@ -1,11 +1,11 @@
 #include "ImageTool.h"
 #include "Log.h"
 #include "Performance.h"
-#include "PlugsManager.h"
 
 #if HAVE_LIBYUV
     #include "libyuv.h"
 #endif
+#include "RabbitCommonDir.h"
 
 #include <QFileInfo>
 #include <QDir>
@@ -20,10 +20,28 @@
 #include <QCryptographicHash>
 #include <QFile>
 #include <QPainter>
+#include <QPluginLoader>
 
-CImageTool::CImageTool(QObject *parent) : QObject(parent)
+CImageTool::CImageTool(QObject *parent) : QObject(parent), m_pConverFormat(nullptr)
 {
-    m_pConverFormat = CPlugsManager::Instance()->GetConverFormat();
+    foreach (QObject *plugin, QPluginLoader::staticInstances())
+    {
+        m_pConverFormat = qobject_cast<CConverFormat*>(plugin);
+        if(m_pConverFormat)
+            break;
+    }
+
+    QString szPath = RabbitCommon::CDir::Instance()->GetDirPlugs();
+#if !defined (Q_OS_ANDROID)
+    szPath = szPath + QDir::separator() + "ConverFormat";
+#endif
+    QStringList filters;
+#if defined (Q_OS_WINDOWS)
+        filters << "*PlugConverFormat*.dll";
+#else
+        filters << "*PlugConverFormat*.so";
+#endif
+    FindPlugins(szPath, filters);
 }
 
 CImageTool* CImageTool::Instance()
@@ -275,3 +293,42 @@ void CImageTool::YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int widt
 	}
 }
 
+
+int CImageTool::FindPlugins(QDir dir, QStringList filters)
+{
+    QString szPath = dir.path();
+    QString fileName;
+    if(filters.isEmpty())
+    {
+#if defined (Q_OS_WINDOWS)
+        filters << "*.dll";
+#else
+        filters << "*.so";
+#endif
+    }
+    QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
+    foreach (fileName, files) {
+        //LOG_MODEL_INFO("CImageTool", "file name:%s", fileName.toStdString().c_str());
+        QString szPlugins = dir.absoluteFilePath(fileName);
+        QPluginLoader loader(szPlugins);
+        QObject *plugin = loader.instance();
+        if (plugin) {
+            m_pConverFormat = qobject_cast<CConverFormat*>(plugin);
+            if(m_pConverFormat)
+            {
+                return 0;
+            }
+        }else{
+            LOG_MODEL_ERROR("CImageTool", "load plugin error:%s",
+                            loader.errorString().toStdString().c_str());
+        }
+    }
+
+    foreach (fileName, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        QDir pluginDir = dir;
+        if(pluginDir.cd(fileName))
+            FindPlugins(pluginDir, filters);
+    }
+
+    return 0;
+}

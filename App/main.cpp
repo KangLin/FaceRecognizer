@@ -16,7 +16,6 @@
 #endif
 
 #include "Log.h"
-#include "PlugsManager.h"
 
 int main(int argc, char *argv[])
 {
@@ -65,8 +64,6 @@ int main(int argc, char *argv[])
     }
 
     app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugs());
-
-    CPlugsManager::Instance()->LoadPlugs();
 
     MainWindow w;
     

@@ -52,7 +52,6 @@ endif(USE_YUV)
 
 set(SOURCES_FILES
     ${SOURCES_FILES}
-    PlugsManager.cpp
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     ConverFormat.cpp
@@ -71,7 +70,6 @@ set(SOURCES_FILES
     )
 
 set(INSTALLHEADER_FILES
-    PlugsManager.h
     ImageTool.h
     ConverFormat.h
     CameraQtCaptureVideoFrame.h

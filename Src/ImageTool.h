@@ -41,6 +41,9 @@ public:
 
 private:
     CConverFormat* m_pConverFormat;
+    
+    int FindPlugins(QDir dir, QStringList filters);
+    
 #if HAVE_LIBYUV
     static QImage LibyuvConverFormatToRGB888(const QVideoFrame &frame);
 #endif
