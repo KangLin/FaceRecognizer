@@ -58,7 +58,9 @@
 
     git clone https://github.com/KangLin/RabbitCommon.git
 
-- 从源码编译或安装可选库
+- 从源码编译或者安装预编好的可选库
+  + 从源码下载并编译可选的依赖库
+  + [预编译好的可选库](https://github.com/KangLin/RabbitThirdLibrary/releases)，下载最后版本的。
 
 #### linux 平台编译说明
 - 编译

@@ -5,10 +5,15 @@
 #include <QVideoFrame>
 #include "facerecognizer_export.h"
 
-class FACERECOGNIZER_EXPORT CPlugsManager;
+/**
+ * @brief The CConverFormat class. It is conver format of image,
+ *        implemented by plugin
+ */
 class FACERECOGNIZER_EXPORT CConverFormat : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString name READ getName)
+    
 public:
     explicit CConverFormat(QObject *parent = nullptr);
 

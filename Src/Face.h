@@ -1,3 +1,4 @@
+
 #ifndef CFACE_H
 #define CFACE_H
 
@@ -13,6 +14,9 @@
 #include "FaceTools.h"
 #include "database/Database.h"
 
+/**
+ * @brief The CFace class. It is a face interface of implemented by plugin
+ */
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
     Q_OBJECT
@@ -21,6 +25,7 @@ class FACERECOGNIZER_EXPORT CFace : public QObject
     Q_PROPERTY(QString name READ GetName)
     Q_PROPERTY(QString descritp READ GetDescript)
     Q_PROPERTY(int level READ GetLevel)
+
 public:
     explicit CFace(QObject *parent = nullptr);
     virtual ~CFace();
