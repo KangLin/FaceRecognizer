@@ -20,9 +20,7 @@ CFrmPara::CFrmPara(QWidget *parent) :
     ui->setupUi(this);
     ui->treeView->setModel(&m_Model);
     ui->treeView->setItemDelegateForColumn(1, new CDelegateParamter(ui->treeView));
-    bool check = connect(&m_Model, SIGNAL(itemChanged(QStandardItem *)),
-                         this, SLOT(slotItemChanged(QStandardItem*)));
-    Q_ASSERT(check);
+
     slotUpdateParamter();
 }
 
@@ -34,7 +32,11 @@ CFrmPara::~CFrmPara()
 int CFrmPara::slotUpdateParamter(QAction *pAction)
 {
     Q_UNUSED(pAction)
+    bool check = m_Model.disconnect(&m_Model, SIGNAL(itemChanged(QStandardItem *)),
+                                    this, SLOT(slotItemChanged(QStandardItem*)));
+    Q_ASSERT(check);
     m_Model.clear();
+    
     //qDebug() << "CFrmPara::slotUpdateParamter";
     m_Model.setHorizontalHeaderLabels(QStringList() << tr("Property") << tr("Value"));
     
@@ -45,6 +47,9 @@ int CFrmPara::slotUpdateParamter(QAction *pAction)
     LoadObject(CFactoryFace::Instance()->GetFaceTools());
     LoadObject(CFactoryFace::Instance()->GetDatabase());
     
+    check = connect(&m_Model, SIGNAL(itemChanged(QStandardItem *)),
+                    this, SLOT(slotItemChanged(QStandardItem*)));
+    Q_ASSERT(check);
     return 0;
 }
 
@@ -132,6 +137,7 @@ int CFrmPara::LoadObject(QObject *pObject)
 
 void CFrmPara::slotItemChanged(QStandardItem* item)
 {
+    //qDebug() << "CFrmPara::slotItemChanged";
     QObject* pObject = item->data(CDelegateParamter::ROLE_OBJECT)
             .value<QObject*>();
     if(pObject)

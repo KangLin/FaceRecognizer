@@ -106,6 +106,6 @@ int CDetectorSeeta::getMinFaceSize()
 int CDetectorSeeta::setMinFaceSize(int size)
 {
     m_MinFaceSize = size;
-    UpdateParameter();
+    m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, getMinFaceSize());
     return 0;
 }

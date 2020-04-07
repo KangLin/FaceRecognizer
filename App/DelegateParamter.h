@@ -1,5 +1,7 @@
 /**
   @author: Kang Lin<kl222@126.com>
+  @brief: The delegate of CFrmPara
+  @see: FrmPara.h
   */
 
 #ifndef CDELEGATEPARAMTER_H
