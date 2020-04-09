@@ -3,10 +3,10 @@ HOST=`uname -s`
 
 if [ "$HOST" = "Linux" ]; then
     QT_ROOT=/opt/Qt5.13.2/5.13.2/android_arm64_v8a
-    OPENCV_DIR=/home/RabbitIm/ThirdLibrary/android24_arm64_qt5.13.2_Release/sdk/native/jni
+    OPENCV_DIR=/home/RabbitIm/ThirdLibrary/android24_arm64_Release_qt5.13.2/sdk/native/jni
     FFMPEG_DIR=
     SeetaFace2_DIR=/home/SeetaFace/build_android/install
-    facedetection_DIR=
+#    facedetection_DIR=/home/libfacedetection/build_android/install/lib/cmake
 else
     QT_ROOT=/c/Qt/Qt5.13.2/5.13.2/android_arm64_v8a
     #export YUV_DIR=/d/Source/libyuv/build_android/install
