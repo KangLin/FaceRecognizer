@@ -105,38 +105,38 @@ export PATH=${QT_ROOT}/bin:$PATH
 echo "PATH:$PATH"
 echo "PKG_CONFIG:$PKG_CONFIG"
 
-echo "Build SeetaFace2 ......"
-export SeetaFace2_SOURCE=${SOURCE_DIR}/../SeetaFace2
-export SeetaFace2_DIR=${SeetaFace2_SOURCE}/install
-git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_SOURCE}
-cd ${SeetaFace2_SOURCE}
+#echo "Build SeetaFace2 ......"
+#export SeetaFace2_SOURCE=${SOURCE_DIR}/../SeetaFace2
+#export SeetaFace2_DIR=${SeetaFace2_SOURCE}/install
+#git clone -b develop https://github.com/KangLin/SeetaFace2.git ${SeetaFace2_SOURCE}
+#cd ${SeetaFace2_SOURCE}
 
-if [ -n "${STATIC}" ]; then
-    CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
-fi
-echo "PWD:`pwd`"
-if [ "${BUILD_TARGERT}" = "android" ]; then
-    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
-         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE_MAKEFILE=ON \
-         -DCMAKE_BUILD_TYPE=MinSizeRel \
-         -DBUILD_EXAMPLE=OFF \
-         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
-         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
-    cmake --build . --config MinSizeRel --target install/strip
-else
-    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
-         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
-         -DCMAKE_VERBOSE_MAKEFILE=ON \
-         -DCMAKE_BUILD_TYPE=Release \
-         -DBUILD_EXAMPLE=OFF
+#if [ -n "${STATIC}" ]; then
+#    CONFIG_PARA="${CONFIG_PARA} -DBUILD_SHARED_LIBS=${STATIC}"
+#fi
+#echo "PWD:`pwd`"
+#if [ "${BUILD_TARGERT}" = "android" ]; then
+#    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
+#         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
+#         -DCMAKE_VERBOSE_MAKEFILE=ON \
+#         -DCMAKE_BUILD_TYPE=MinSizeRel \
+#         -DBUILD_EXAMPLE=OFF \
+#         -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
+#         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake 
+#    cmake --build . --config MinSizeRel --target install/strip
+#else
+#    cmake -G"${GENERATORS}" ${SeetaFace2_SOURCE} ${CONFIG_PARA} \
+#         -DCMAKE_INSTALL_PREFIX=${SeetaFace2_DIR} \
+#         -DCMAKE_VERBOSE_MAKEFILE=ON \
+#         -DCMAKE_BUILD_TYPE=Release \
+#         -DBUILD_EXAMPLE=OFF
          
-    if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
-        cmake --build . --config Release --target install
-    else
-        cmake --build . --config Release --target install/strip
-    fi
-fi
+#    if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
+#        cmake --build . --config Release --target install
+#    else
+#        cmake --build . --config Release --target install/strip
+#    fi
+#fi
 
 cd ${SOURCE_DIR}
 
@@ -238,6 +238,7 @@ if [ -d "${ThirdLibs_DIR}" ]; then
     CONFIG_PARA="${CONFIG_PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake"
     CONFIG_PARA="${CONFIG_PARA} -DOPENSSL_ROOT_DIR=${ThirdLibs_DIR}"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
+    export SeetaFace2_DIR=${ThirdLibs_DIR}
 fi
 echo "Build FaceRecognizer ......"
 if [ "${BUILD_TARGERT}" = "android" ]; then
