@@ -37,10 +37,10 @@ foreach(comp ${FFMPEG_FIND_COMPONENTS})
 		find_path(FFMPEG_${comp}_INCLUDE_DIR
 			NAMES "lib${comp}/${comp}.h"
 			HINTS
-                ${FFMPEG_DIR}
-                ENV FFMPEG_DIR
+                            ${FFMPEG_DIR}
+                            ENV FFMPEG_DIR
 			PATHS
-				/usr /usr/local /opt/local /sw
+                            /usr /usr/local /opt/local /sw
 			PATH_SUFFIXES FFMPEG libav include lib${comp} include/lib${comp}
 			DOC "FFMPEG include directory")
 	else()
@@ -51,10 +51,10 @@ foreach(comp ${FFMPEG_FIND_COMPONENTS})
 		find_library(FFMPEG_${comp}_LIBRARY
 			NAMES ${comp} ${comp}-FFMPEG ${_${comp}_LIBRARIES}
 			HINTS
-                ${FFMPEG_DIR}
-                ENV FFMPEG_DIR
+                            ${FFMPEG_DIR}
+                            ENV FFMPEG_DIR
 			PATHS
-				/usr /usr/local /opt/local /sw
+                            /usr /usr/local /opt/local /sw
 			PATH_SUFFIXES lib ${comp} lib${comp}
 			DOC "FFMPEG ${comp} library")
 	else()

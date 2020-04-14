@@ -2,7 +2,7 @@
 
 function help()
 {
-    echo "$0 QT_ROOT RabbitCommon_DIR ENABLE_DOWNLOAD"
+    echo "$0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
     exit -1
 }
 
@@ -14,8 +14,21 @@ if [ ! -f /usr/bin/qmake -a -z "$QT_ROOT" ]; then
     help
 fi
 
-if [ -n "$2" -a -z "$RabbitCommon_DIR" ]; then
-	RabbitCommon_DIR=$2
+if [ -n "$2" ]; then
+    export ThirdLibs_DIR=$2
+fi
+if [ ! -d "$ThirdLibs_DIR" ]; then
+    help
+fi
+if [ -n "${ThirdLibs_DIR}" ]; then
+    export dlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
+    export ncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
+    export facedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
+    export SeetaFace_DIR=${SeetaFace_DIR}/lib/cmake
+fi
+
+if [ -n "$3" -a -z "$RabbitCommon_DIR" ]; then
+	RabbitCommon_DIR=$3
 fi
 
 if [ -z "$RabbitCommon_DIR" ]; then
@@ -26,8 +39,8 @@ if [ ! -d "$RabbitCommon_DIR" ]; then
     help
 fi
 
-if [ -n "$3" ]; then
-    export ENABLE_DOWNLOAD=$3
+if [ -n "$4" ]; then
+    export ENABLE_DOWNLOAD=$4
 fi
 if [ -z "$ENABLE_DOWNLOAD" ]; then
     export ENABLE_DOWNLOAD=OFF

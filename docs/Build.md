@@ -36,10 +36,12 @@
   - [可选] ENABLE_DOWNLOAD: 自动下载模型，默认 OFF
   - [可选] BUILD_APP: 编译应用程序,默认 ON
   - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
-  - [可选] SeetaFace_DIR: SeetaFace 库安装位置(指向安装的 SeetaFaceConfig.cmake 目录,默认为 安装目录/lib/cmake )
   - [可选] YUV_DIR: libyuv 库安装位置(指向安装的 YUVConfig.cmake 目录,默认为 安装目录/lib/cmake )
+  - [可选] FFMPEG_DIR: ffmpeg 库安装位置
   - [可选] OpenCV_DIR: OpenCV 库安装位置(指向安装的 OpenCVConfig.cmake 目录)
   - [可选] dlib_DIR: dlib 库安装位置
+  - [可选] ncnn_DIR: ncnn 库安装位置
+  - [可选] SeetaFace_DIR: SeetaFace 库安装位置(指向安装的 SeetaFaceConfig.cmake 目录,默认为 安装目录/lib/cmake )  
   - [可选] facedetection_DIR: libfacedetection 库安装位置
 
 ### 各平台编译

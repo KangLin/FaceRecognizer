@@ -14,16 +14,53 @@
 
 #export QT_SELECT=qt5
 
+ifdef ThirdLibs_DIR
+    PARAS += -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake
+    PARAS += -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
+    PARAS += -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake
+    PARAS += -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
+    PARAS += -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
+    PARAS += -DFFMPEG_DIR=${ThirdLibs_DIR}
+    PARAS += -DOpenCV_DIR=${ThirdLibs_DIR}/lib/cmake/opencv4/
+    PARAS += -DSeetaFace_DIR=$(ThirdLibs_DIR)/lib/cmake
+    LIB_PARAS += ${ThirdLibs_DIR}/lib
+else
+    ifdef SeetaFace_DIR
+        PARAS += -DSeetaFace_DIR=$(SeetaFace_DIR)
+        LIB_PARAS += $(SeetaFace_DIR)/..
+    endif
+    ifdef facedetection_DIR
+        PARAS += -Dfacedetection_DIR=${facedetection_DIR}
+        LIB_PARAS += $(facedetection_DIR)/../..
+    endif
+    ifdef ncnn_DIR
+        PARAS += -Dncnn_DIR=${ncnn_DIR}
+        LIB_PARAS += $(ncnn_DIR)/../..
+    endif
+    ifdef dlib_DIR
+        PARAS += -Ddlib_DIR=${dlib_DIR}
+        LIB_PARAS += $(dlib_DIR)/../..
+    endif
+    ifdef OpenCV_DIR
+        PARAS += -DOpenCV_DIR=${OpenCV_DIR}
+        LIB_PARAS += $(OpenCV_DIR)/../..
+    endif
+    ifdef FFMPEG_DIR
+        PARAS += -DFFMPEG_DIR=${FFMPEG_DIR}
+        LIB_PARAS += $(OpenCV_DIR)/lib
+    endif    
+endif
+
 %:
 	dh $@
 
 # dh_make generated override targets
 # This is example for Cmake (See https://bugs.debian.org/641051 )
 override_dh_auto_configure:
-	dh_auto_configure -- -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/FaceRecognizer -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 -DRabbitCommon_DIR=${RabbitCommon_DIR} -DSeetaFace_DIR=${SeetaFace2_DIR}/lib/cmake -DENABLE_DOWNLOAD=${ENABLE_DOWNLOAD}
+	dh_auto_configure -- -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/FaceRecognizer -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 -DRabbitCommon_DIR=${RabbitCommon_DIR} -DENABLE_DOWNLOAD=${ENABLE_DOWNLOAD} ${PARAS}
 
 override_dh_auto_build:
 	dh_auto_build -- $(if "`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`" = "0",, -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`)
 
 override_dh_shlibdeps:
-	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:${SeetaFace2_DIR}/lib
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:$(LIB_PARAS)
