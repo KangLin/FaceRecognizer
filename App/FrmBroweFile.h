@@ -12,6 +12,10 @@ namespace Ui {
 class CFrmBroweFile;
 }
 
+/**
+ * @brief The CFrmBroweFile class
+ *        提供打开文件或目录。用于 CFrmPara
+ */
 class CFrmBroweFile : public QWidget
 {
     Q_OBJECT
@@ -21,7 +25,7 @@ class CFrmBroweFile : public QWidget
     
 public:
     explicit CFrmBroweFile(QWidget *parent = nullptr);
-    ~CFrmBroweFile();
+    virtual ~CFrmBroweFile() override;
     
     QString getFile();
     int setFile(const QString &szFile);
