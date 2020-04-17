@@ -72,9 +72,18 @@ if [ -d "${ThirdLibs_DIR}" ]; then
     PARA="${PARA} -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib"
     PARA="${PARA} -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn"
     PARA="${PARA} -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection"
+    PARA="${PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
-    PARA="${PARA} -DSeetaFace_DIR=${ThirdLibs_DIR}/lib/cmake"
+    PARA="${PARA} -DSeetaFace_DIR=${ThirdLibs_DIR}/lib/cmake
+        -DSeetaNet_DIR=${ThirdLibs_DIR}/lib/cmake
+        -DSeetaFaceDetector_DIR=${ThirdLibs_DIR}/lib/cmake
+        -DSeetaFaceLandmarker_DIR=${ThirdLibs_DIR}/lib/cmake
+        -DSeetaFaceRecognizer_DIR=${ThirdLibs_DIR}/lib/cmake 
+        -DSeetaFaceTracker_DIR=${ThirdLibs_DIR}/lib/cmake 
+        -DSeetaQualityAssessor_DIR=${ThirdLibs_DIR}/lib/cmake "
 fi
+PARA="${PARA} -DUSE_FFMPEG=OFF"
+
 echo "PARA:$PARA"
 
 if [ ! -d build_android ]; then
