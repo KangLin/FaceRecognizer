@@ -1,6 +1,10 @@
 PROJECT(PlugConverFormatOpenCV)
 
-option(USE_OPENCV "Use opencv" ON)
+if(ANDROID)
+	option(USE_OPENCV "Use opencv" OFF)
+else()
+	option(USE_OPENCV "Use opencv" ON)
+endif()
 if(NOT USE_OPENCV)
     return()
 endif()

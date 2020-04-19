@@ -2,6 +2,7 @@
 
 function help()
 {
+	echo "Please set enviroment value ANDROID_NDK"
     echo "$0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
     exit -1
 }
@@ -10,7 +11,7 @@ if [ -n "$1" -a -z "$QT_ROOT" ]; then
 	QT_ROOT=$1
 fi
 
-if [ ! -f /usr/bin/qmake -a -z "$QT_ROOT" ]; then
+if [ ! -f $QT_ROOT/qmake ]; then
     help
 fi
 
@@ -25,6 +26,9 @@ if [ -n "${ThirdLibs_DIR}" ]; then
     export ncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
     export facedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
     export SeetaFace_DIR=${SeetaFace_DIR}/lib/cmake
+	export FFMPEG_DIR=${SeetaFace_DIR}
+	export OpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni
+	export YUV_DIR=${ThirdLibs_DIR}/lib/cmake
 fi
 
 if [ -n "$3" -a -z "$RabbitCommon_DIR" ]; then
@@ -67,12 +71,13 @@ if [ -n "$QT_ROOT" ]; then
 fi
 
 if [ -d "${ThirdLibs_DIR}" ]; then
-    PARA="${PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake"
+    PARA="${PARA} -DYUV_DIR=${YUV_DIR}"
     PARA="${PARA} -DOPENSSL_ROOT_DIR=${ThirdLibs_DIR}"
     PARA="${PARA} -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib"
     PARA="${PARA} -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn"
     PARA="${PARA} -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection"
-    PARA="${PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni"
+    PARA="${PARA} -DOpenCV_DIR=${OpenCV_DIR}"
+	PARA="${PARA} -DFFMPEG_DIR=${FFMPEG_DIR}"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
     PARA="${PARA} -DSeetaFace_DIR=${ThirdLibs_DIR}/lib/cmake
         -DSeetaNet_DIR=${ThirdLibs_DIR}/lib/cmake
@@ -82,7 +87,18 @@ if [ -d "${ThirdLibs_DIR}" ]; then
         -DSeetaFaceTracker_DIR=${ThirdLibs_DIR}/lib/cmake 
         -DSeetaQualityAssessor_DIR=${ThirdLibs_DIR}/lib/cmake "
 fi
-PARA="${PARA} -DUSE_FFMPEG=OFF"
+
+if [ -z "$FFMPEG_DIR" ]; then
+	PARA="${PARA} -DUSE_FFMPEG=OFF"
+fi
+
+if [ -z "$YUV_DIR" ]; then
+	PARA="${PARA} -DUSE_YUV=OFF"
+fi
+
+if [ -z "$OpenCV_DIR" ]; then
+	PARA="${PARA} -DUSE_OPENCV=OFF"
+fi
 
 echo "PARA:$PARA"
 

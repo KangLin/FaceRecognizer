@@ -35,9 +35,9 @@ function function_common()
     if [ -n "$DOWNLOAD_THIRDLIBS_URL" ]; then
         cd ${ThirdLibs_DIR}
         echo "ThirdLibs_DIR:`pwd`"
-        ThirdLibs_File=third_libs.tar.gz
+        ThirdLibs_File=third_libs.zip
         wget -c -nv --no-check-certificate $DOWNLOAD_THIRDLIBS_URL -O $ThirdLibs_File
-        tar xzf $ThirdLibs_File
+        unzip $ThirdLibs_File
     fi
 
     # Qt qt安装参见：https://github.com/benlau/qtci

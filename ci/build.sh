@@ -130,7 +130,7 @@ case ${BUILD_TARGERT} in
         ;;
     android)
         if [ -d "${ThirdLibs_DIR}" ]; then
-            CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni"
+            CONFIG_PARA="${CONFIG_PARA} -DOpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni -DUSE_OPENCV=ON"
         fi
         ;;
     *)
@@ -143,6 +143,7 @@ if [ -d "${ThirdLibs_DIR}" ]; then
     CONFIG_PARA="${CONFIG_PARA} -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib"
     CONFIG_PARA="${CONFIG_PARA} -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn"
     CONFIG_PARA="${CONFIG_PARA} -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection"
+	CONFIG_PARA="${CONFIG_PARA} -DFFMPEG_DIR=${ThirdLibs_DIR} -DUSE_FFMPEG=ON"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
     export SeetaFace_DIR=${ThirdLibs_DIR}
 fi
