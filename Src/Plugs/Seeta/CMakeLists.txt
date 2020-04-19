@@ -1,6 +1,6 @@
 project(PlugFaceSeeta)
 find_package(SeetaFace)
-message("== Plugs SeetaFac:${SeetaFace_FOUND}")
+message("== Plugs SeetaFace:${SeetaFace_FOUND}")
 if(NOT SeetaFace_FOUND)
     return()
 endif()
