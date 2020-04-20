@@ -21,10 +21,8 @@ if [ ! -d "$ThirdLibs_DIR" ]; then
     help
 fi
 if [ -n "${ThirdLibs_DIR}" ]; then
-    export dlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
-    export ncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
-    export facedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
-    export SeetaFace_DIR=${SeetaFace_DIR}/lib/cmake
+    export ThirdLibs_DIR=${ThirdLibs_DIR}
+    export PKG_CONFIG_PATH=${ThirdLibs_DIR}/lib/pkgconfig
 fi
 
 if [ -n "$3" -a -z "$RabbitCommon_DIR" ]; then

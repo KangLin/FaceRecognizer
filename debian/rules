@@ -15,15 +15,15 @@
 #export QT_SELECT=qt5
 
 ifdef ThirdLibs_DIR
-    PARAS += -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake
-    PARAS += -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
-    PARAS += -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake
-    PARAS += -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
-    PARAS += -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
-    PARAS += -DFFMPEG_DIR=${ThirdLibs_DIR}
     PARAS += -DOpenCV_DIR=${ThirdLibs_DIR}/lib/cmake/opencv4/
     PARAS += -DSeetaFace_DIR=$(ThirdLibs_DIR)/lib/cmake
+    PARAS += -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
+    PARAS += -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
+    PARAS += -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
+    PARAS += -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake
+    PARAS += -DFFMPEG_DIR=${ThirdLibs_DIR}
     LIB_PARAS += ${ThirdLibs_DIR}/lib
+    export PKG_CONFIG_PATH=${ThirdLibs_DIR}/lib/pkgconfig
 else
     ifdef SeetaFace_DIR
         PARAS += -DSeetaFace_DIR=$(SeetaFace_DIR)

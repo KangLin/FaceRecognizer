@@ -2,16 +2,15 @@
 
 function help()
 {
-	echo "Please set enviroment value ANDROID_NDK"
+    echo "Please set enviroment value ANDROID_NDK"
     echo "$0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
     exit -1
 }
 
-if [ -n "$1" -a -z "$QT_ROOT" ]; then
-	QT_ROOT=$1
+if [ -n "$1" ]; then
+    QT_ROOT=$1
 fi
-
-if [ ! -f $QT_ROOT/qmake ]; then
+if [ ! -f $QT_ROOT/bin/qmake ]; then
     help
 fi
 
@@ -22,21 +21,21 @@ if [ ! -d "$ThirdLibs_DIR" ]; then
     help
 fi
 if [ -n "${ThirdLibs_DIR}" ]; then
+    export SeetaFace_DIR=${SeetaFace_DIR}/lib/cmake
+    export OpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni
+    export facedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
     export dlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
     export ncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
-    export facedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
-    export SeetaFace_DIR=${SeetaFace_DIR}/lib/cmake
-	export FFMPEG_DIR=${SeetaFace_DIR}
-	export OpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni
-	export YUV_DIR=${ThirdLibs_DIR}/lib/cmake
+    export FFMPEG_DIR=${SeetaFace_DIR}
+    export YUV_DIR=${ThirdLibs_DIR}/lib/cmake
 fi
 
 if [ -n "$3" -a -z "$RabbitCommon_DIR" ]; then
-	RabbitCommon_DIR=$3
+    RabbitCommon_DIR=$3
 fi
 
 if [ -z "$RabbitCommon_DIR" ]; then
-	RabbitCommon_DIR=`pwd`/../RabbitCommon
+    RabbitCommon_DIR=`pwd`/../RabbitCommon
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
@@ -53,6 +52,7 @@ fi
 export RabbitCommon_DIR=$RabbitCommon_DIR
 export QT_ROOT=$QT_ROOT
 export PATH=$QT_ROOT/bin:$PATH
+ANDROID_ARM_NEON=OFF
 
 if [ -z "$ANDROID_NDK" ]; then
     help
@@ -89,15 +89,24 @@ if [ -d "${ThirdLibs_DIR}" ]; then
 fi
 
 if [ -z "$FFMPEG_DIR" ]; then
-	PARA="${PARA} -DUSE_FFMPEG=OFF"
+    PARA="${PARA} -DUSE_FFMPEG=OFF"
 fi
 
 if [ -z "$YUV_DIR" ]; then
-	PARA="${PARA} -DUSE_YUV=OFF"
+    PARA="${PARA} -DUSE_YUV=OFF"
 fi
 
 if [ -z "$OpenCV_DIR" ]; then
-	PARA="${PARA} -DUSE_OPENCV=OFF"
+    PARA="${PARA} -DUSE_OPENCV=OFF"
+fi
+
+if [ -z "$ANDROID_ABI" ]; then
+    ANDROID_ABI="arm64-v8a"
+    ANDROID_ARM_NEON=ON
+fi
+
+if [ -z "${ANDROID_PLATFORM}" ]; then
+    ANDROID_PLATFORM="android-24"
 fi
 
 echo "PARA:$PARA"
@@ -111,10 +120,10 @@ cmake .. -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=`pwd`/android-build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_VERBOSE_MAKEFILE=TRUE \
     -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-    -DANDROID_ABI="arm64-v8a" \
-    -DANDROID_ARM_NEON=ON \
+    -DANDROID_ABI="${ANDROID_ABI}" \
+    -DANDROID_ARM_NEON=${ANDROID_ARM_NEON} \
     -DBUILD_PERFORMANCE=ON \
-    -DANDROID_PLATFORM=android-24 ${PARA}
+    -DANDROID_PLATFORM=${ANDROID_PLATFORM} ${PARA}
 
 cmake --build . --config Release -- -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`
 

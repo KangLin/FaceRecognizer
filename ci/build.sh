@@ -10,6 +10,10 @@ ThirdLibs_DIR=${TOOLS_DIR}/ThirdLibs
 cd ${SOURCE_DIR}
 export RabbitCommon_DIR="${SOURCE_DIR}/RabbitCommon"
 export PKG_CONFIG_PATH=${ThirdLibs_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH}
+if [ -f ${ThirdLibs_DIR}/change_prefix.sh ]; then
+    cd ${ThirdLibs_DIR}
+    ./change_prefix.sh
+fi
 
 if [ -z "${ENABLE_DOWNLOAD}" ]; then
     export ENABLE_DOWNLOAD=ON
@@ -41,12 +45,18 @@ if [ "$BUILD_TARGERT" = "android" ]; then
         export QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android
     else
         case $BUILD_ARCH in
-            arm*)
-                export QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_armv7
+            arm)
+                QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_armv7
+                ;;
+            arm64)
+                QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_arm64_v8a/
                 ;;
             x86)
-            export QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_x86
-            ;;
+                QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_x86
+                ;;
+            x86_64)
+                QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_x86_64
+                ;;
         esac
     fi
     export PATH=${TOOLS_DIR}/apache-ant/bin:$JAVA_HOME/bin:$PATH
@@ -69,7 +79,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     fi
     export PATH=$QT_ROOT/bin:$PATH
     export LD_LIBRARY_PATH=$QT_ROOT/lib/i386-linux-gnu:$QT_ROOT/lib:$LD_LIBRARY_PATH
-    export PKG_CONFIG_PATH=$QT_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
+    #export PKG_CONFIG_PATH=$QT_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 fi
 
 if [ "$BUILD_TARGERT" != "windows_msvc" ]; then
@@ -138,12 +148,12 @@ case ${BUILD_TARGERT} in
         ;;
 esac
 if [ -d "${ThirdLibs_DIR}" ]; then
-    CONFIG_PARA="${CONFIG_PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake"
+    CONFIG_PARA="${CONFIG_PARA} -DYUV_DIR=${ThirdLibs_DIR}/lib/cmake -DUSE_YUV=OFF"
     CONFIG_PARA="${CONFIG_PARA} -DOPENSSL_ROOT_DIR=${ThirdLibs_DIR}"
     CONFIG_PARA="${CONFIG_PARA} -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib"
     CONFIG_PARA="${CONFIG_PARA} -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn"
     CONFIG_PARA="${CONFIG_PARA} -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection"
-	CONFIG_PARA="${CONFIG_PARA} -DFFMPEG_DIR=${ThirdLibs_DIR} -DUSE_FFMPEG=ON"
+    CONFIG_PARA="${CONFIG_PARA} -DFFMPEG_DIR=${ThirdLibs_DIR} -DUSE_FFMPEG=ON"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
     export SeetaFace_DIR=${ThirdLibs_DIR}
 fi
