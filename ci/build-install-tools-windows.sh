@@ -61,17 +61,13 @@ function function_windows_msvc()
     cd ${SOURCE_DIR}
 }
 
-function function_android()
+function install_android()
 {
     cd ${TOOLS_DIR}
-    
-    #下载ANT 
-    #wget -c -nv http://apache.fayea.com//ant/binaries/apache-ant-1.10.1-bin.tar.gz
-    #tar xzf apache-ant-1.10.1-bin.tar.gz
-    #rm -f apache-ant-1.10.1-bin.tar.gz
-    #mv apache-ant-1.10.1 apache-ant
-    
-    cd ${TOOLS_DIR}
+
+    if [ -n "$1" ]; then
+        NDK="ndk-bundle"
+    fi
     
     #Download android sdk  
     if [ ! -d "${TOOLS_DIR}/android-sdk" ]; then
@@ -111,17 +107,38 @@ function function_android()
             BUILD_TOOS_VERSION="28.0.3"
         fi
         (sleep 5 ; num=0 ; while [ $num -le 5 ] ; do sleep 1 ; num=$(($num+1)) ; printf 'y\r\n' ; done ) \
-        | ./tools/bin/sdkmanager.bat "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" "ndk-bundle"
+        | ./tools/bin/sdkmanager.bat "platform-tools" "build-tools;${BUILD_TOOS_VERSION}" "${PLATFORMS}" ${NDK}
         
         export ANDROID_SDK_ROOT=${TOOLS_DIR}/android-sdk
-        export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-sdk/ndk-bundle
-        
+        if [ -n "${NDK}" ]; then
+            mv ${TOOLS_DIR}/android-sdk/ndk-bundle ${TOOLS_DIR}/android-ndk
+        fi
         cd ${TOOLS_DIR}
     fi
- 
-    function_common
     
     cd ${SOURCE_DIR}
+}
+
+function install_android_sdk_and_ndk()
+{
+    install_android
+    NDK_VERSION=r21
+    NDK_PACKAGE=android-ndk-${NDK_VERSION}-windows-x86_64.zip
+    cd ${PACKAGE_DIR}
+    if [ ! -f ${NDK_PACKAGE} ]; then
+        wget -c -nv https://dl.google.com/android/repository/${NDK_PACKAGE}
+    fi
+    unzip -q ${NDK_PACKAGE} -d ${TOOLS_DIR}
+    cd ${TOOLS_DIR}
+    mv android-ndk-r21 android-ndk
+}
+
+function function_android()
+{
+    install_android_sdk_and_ndk
+    function_common
+    
+    cd ${TOOLS_DIR}
 }
 
 function function_mingw()

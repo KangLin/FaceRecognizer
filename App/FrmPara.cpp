@@ -32,7 +32,7 @@ CFrmPara::~CFrmPara()
 int CFrmPara::slotUpdateParamter(QAction *pAction)
 {
     Q_UNUSED(pAction)
-    bool check = m_Model.disconnect(&m_Model, SIGNAL(itemChanged(QStandardItem *)),
+    bool check = m_Model.disconnect(&m_Model, SIGNAL(itemChanged(QStandardItem*)),
                                     this, SLOT(slotItemChanged(QStandardItem*)));
     Q_ASSERT(check);
     m_Model.clear();
