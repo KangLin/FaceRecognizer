@@ -138,7 +138,7 @@ artifacts:
 
 test: off
 
-#See:https://www.appveyor.com/docs/deployment/github/
+#See: https://www.appveyor.com/docs/deployment/github/
 deploy:
   - provider: GitHub
     #release: FaceRecognizer$(appveyor_build_version)

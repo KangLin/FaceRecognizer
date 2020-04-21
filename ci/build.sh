@@ -45,10 +45,17 @@ if [ "$BUILD_TARGERT" = "android" ]; then
         export QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android
     else
         case $BUILD_ARCH in
-            arm)
+            armeabi|armeabi-v7a)
                 QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_armv7
+                if [ -z "${ANDROID_ARM_NEON}" ]; then
+                    ANDROID_ARM_NEON=OFF
+                fi
                 ;;
-            arm64)
+            "armeabi-v7a with NEON")
+                QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_armv7
+                ANDROID_ARM_NEON=ON
+                ;;
+            arm64-v8a)
                 QT_ROOT=${TOOLS_DIR}/Qt/${QT_VERSION}/${QT_VERSION}/android_arm64_v8a/
                 ;;
             x86)
@@ -175,7 +182,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
         cat ${SOURCE_DIR}/debian/postinst
         cat ${SOURCE_DIR}/debian/preinst
     fi
-    bash build_debpackage.sh ${QT_ROOT}
+    bash build_debpackage.sh ${QT_ROOT} ${ThirdLibs_DIR}
 
     sudo dpkg -i ../facerecognizer_*_amd64.deb
     echo "test ......"
@@ -222,7 +229,7 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
     if [ "$TRAVIS_TAG" != "" -a "${QT_VERSION}" = "5.12.3" ]; then
         wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
         chmod u+x upload.sh
-        ./upload.sh $SOURCE_DIR/../facerecognizer_*_amd64.deb 
+        ./upload.sh $SOURCE_DIR/../facerecognizer_*_amd64.deb
         ./upload.sh update_linux.xml update_linux_appimage.xml
         ./upload.sh FaceRecognizer_${VERSION}.tar.gz
     fi

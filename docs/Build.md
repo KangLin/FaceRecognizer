@@ -250,7 +250,7 @@
       有效的目标名称为：
       - armeabi：带软件浮点运算并基于 ARMv5TE 的 CPU。
       - armeabi-v7a：带硬件 FPU 指令 (VFPv3_D16) 并基于 ARMv7 的设备。
-      - armeabi-v7a with NEON：与 armeabi-v7a 相同，但启用 NEON 浮点指令。这相当于设置 -DANDROID_ABI=armeabi-v7a 和 -DANDROID_ARM_NEON=ON。
+      - armeabi-v7a with NEON：与 armeabi-v7a 相同，但启用 NEON 浮点指令。这相当于设置 -DANDROID_ABI=armeabi-v7a 和 -DANDROID_ARM_NEON=ON 。
       - arm64-v8a：ARMv8 AArch64 指令集。
       - x86：IA-32 指令集。
       - x86_64 - 用于 x86-64 架构的指令集。
