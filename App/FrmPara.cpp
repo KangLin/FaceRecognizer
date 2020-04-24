@@ -1,5 +1,5 @@
 /**
-  @author: Kang Lin<kl222@126.com>
+  * @author: Kang Lin <kl222@126.com>
   */
 
 #include "FrmPara.h"
@@ -21,7 +21,7 @@ CFrmPara::CFrmPara(QWidget *parent) :
     ui->treeView->setModel(&m_Model);
     ui->treeView->setItemDelegateForColumn(1, new CDelegateParamter(ui->treeView));
 
-    slotUpdateParamter();
+    //slotUpdateParamter();
 }
 
 CFrmPara::~CFrmPara()
@@ -34,7 +34,7 @@ int CFrmPara::slotUpdateParamter(QAction *pAction)
     Q_UNUSED(pAction)
     bool check = m_Model.disconnect(&m_Model, SIGNAL(itemChanged(QStandardItem*)),
                                     this, SLOT(slotItemChanged(QStandardItem*)));
-    Q_ASSERT(check);
+    //Q_ASSERT(check);
     m_Model.clear();
     
     //qDebug() << "CFrmPara::slotUpdateParamter";

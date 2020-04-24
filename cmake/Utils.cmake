@@ -185,3 +185,26 @@ function(ADD_PLUG_TARGET)
         DEFINITIONS ${PARA_DEFINITIONS}
         )
 endfunction()
+
+function(INSTALL_TARGETS)
+    cmake_parse_arguments(PARA "" "" "TARGETS" ${ARGN})
+    if(NOT DEFINED PARA_TARGETS)
+        return()
+    endif()
+
+    foreach(component ${PARA_TARGETS})
+        if(ANDROID)
+            INSTALL(FILES $<TARGET_FILE:${component}>
+                DESTINATION "libs/${ANDROID_ABI}"
+                    COMPONENT Runtime)
+        elseif(WIN32)
+            INSTALL(FILES $<TARGET_FILE:${component}>
+                DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                    COMPONENT Runtime)
+        else()
+            INSTALL(FILES $<TARGET_FILE:${component}>
+                DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                    COMPONENT Runtime)
+        endif()
+    endforeach()
+endfunction()

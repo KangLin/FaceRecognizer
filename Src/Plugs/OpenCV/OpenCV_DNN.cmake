@@ -24,6 +24,12 @@ ADD_PLUG_TARGET(NAME ${PROJECT_NAME}
     INSTALL_DIR ${INSTALL_PATH}
     VERSION ${BUILD_VERSION})
 
+# Install protobuf
+find_package(protobuf)
+if(protobuf_FOUND)
+    INSTALL_TARGETS(TARGETS protobuf::libprotobuf-lite protobuf::libprotobuf protobuf::libprotoc protobuf::protoc)
+endif()
+
 # Install model files
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
     if(ENABLE_DOWNLOAD)

@@ -16,6 +16,7 @@ public:
     Q_PLUGIN_METADATA(IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.Libfacedetection.CFaceLibfacedetection")
 #endif
 
+    virtual int Initialize() override; 
     QString GetName() override;
     int GetLevel() override; 
 };

@@ -3,6 +3,7 @@ if(ANDROID)
 else()
     option(USE_FFMPEG "Use ffmpeg" ON)
 endif()
+
 if(NOT USE_FFMPEG)
     return()
 endif()
@@ -14,9 +15,15 @@ endif()
 
 message("== FFMPGE:${FFMPEG_FOUND}")
 
-#INSTALL(FILES ${FFMPEG_LIBRARIES}
-#    DESTINATION "${CMAKE_INSTALL_BINDIR}"
-#        COMPONENT Runtime)
+if(ANDROID)
+    INSTALL(FILES ${FFMPEG_LIBRARIES}
+        DESTINATION "libs/${ANDROID_ABI}"
+            COMPONENT Runtime)
+elseif(WIN32)
+    INSTALL(FILES ${FFMPEG_LIBRARIES}
+        DESTINATION "${CMAKE_INSTALL_BINDIR}"
+            COMPONENT Runtime)
+endif()
 
 project(PlugConverFormatFFMpeg)
 

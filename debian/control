@@ -12,4 +12,4 @@ Package: facerecognizer
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Tasks
+Description: Face recognizer

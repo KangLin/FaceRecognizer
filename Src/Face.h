@@ -16,6 +16,7 @@
 
 /**
  * @brief The CFace class. It is a face interface of implemented by plugin
+ * @see CFactoryFace
  */
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
@@ -50,7 +51,7 @@ public:
     virtual CRecognizer* GetRecognizer();
     virtual CFaceTools* GetFaceTools();
     virtual CDatabase* GetDatabase();
-    
+
 protected:
     CDetector* m_pDetector;
     CTracker* m_pTracker;

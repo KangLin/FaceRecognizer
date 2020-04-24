@@ -26,6 +26,13 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 cd ${SOURCE_DIR}
 
+# Download model
+if [ ! -d model ]; then
+    mkdir model
+fi
+# Download ncnn model
+tar xzf model_ncnn.tar.gz -C model
+
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${TOOLS_DIR}/android-sdk
     export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-ndk
@@ -161,6 +168,7 @@ if [ -d "${ThirdLibs_DIR}" ]; then
     CONFIG_PARA="${CONFIG_PARA} -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn"
     CONFIG_PARA="${CONFIG_PARA} -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection"
     CONFIG_PARA="${CONFIG_PARA} -DFFMPEG_DIR=${ThirdLibs_DIR} -DUSE_FFMPEG=ON"
+    CONFIG_PARA="${CONFIG_PARA} -Dprotobuf_DIR=${ThirdLibs_DIR}/lib/cmake/protobuf"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
     export SeetaFace_DIR=${ThirdLibs_DIR}
 fi

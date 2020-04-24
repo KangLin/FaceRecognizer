@@ -12,8 +12,9 @@
 - [捐赠](#捐赠)
 - [贡献](#贡献)
 - [许可协议](#许可协议)
-- [编译](docs/Build.md)
-- [开发](docs/Develop.md)
+- [文档](#文档)
+  - [编译文档](docs/Build.md)
+  - [开发文档](docs/Develop.md)
 
 --------------------------------------------------------------------------------
 
@@ -21,9 +22,14 @@
 
 项目位置： https://github.com/KangLin/FaceRecognizer  
 
-本项目提供一些人脸常见应用。提供应用级人脸框架，方便自定义快速开发人脸应用。
+本项目提供一些人脸常见应用。提供应用级 AI （人脸）框架，方便自定义快速开发 AI （人脸） 应用。
 以及性能测试比较框架，方便对第三方人脸库做性能测试比较。
-如有定制开发，或移植可联系本人（QQ:16614119)。加好友前请你先[捐赠](#捐赠)支持本项目，验证信息为你的捐赠额:)
+
+- 欢迎 AI 开源库的开发者或自愿者使用本项目做为你库的测试程序或演示程序。
+  并向本项提供 AI 开源库的插件（如有需要，请联系本人 < QQ:16614119 >, 可以为你提供必要的帮助）。
+- 如有定制开发，或移植可联系本人 (QQ:16614119) 。加好友前请你先[捐赠](#捐赠)支持本项目，验证信息为你的捐赠额:)
+
+本项目具体功能如下：
 
 - [x] 人脸识别框架
 - [x] 人脸识别常见应用
@@ -95,15 +101,18 @@
 
 ![捐赠](https://github.com/KangLin/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠")
 
+- 捐赠后，请在 [Donate.md](Donate.md) 中留下你的姓名与捐赠金额
+- 感谢 [Donate.md](Donate.md) 中的捐赠者对本项目的支持
+
 ## 贡献
 
-问题： https://github.com/KangLin/FaceRecognizer/issues  
-项目位置： https://github.com/KangLin/FaceRecognizer  
-贡献者： https://github.com/KangLin/FaceRecognizer/graphs/contributors
+- 问题： https://github.com/KangLin/FaceRecognizer/issues
+- 感谢贡献者： https://github.com/KangLin/FaceRecognizer/graphs/contributors
 
 ## 许可协议
 - [本项目许可协议](License.md "License.md")  
 - 第三方库许可协议：详见各第三库许可协议。当你使用本项目依赖的第三方库时，同时请遵守其许可协议。
 
-## [编译](docs/Build.md)
-## [开发](docs/Develop.md)
+## 文档
+- [编译文档](docs/Build.md)
+- [开发文档](docs/Develop.md)

@@ -18,15 +18,8 @@ CFace::CFace(QObject *parent) : QObject(parent),
 
 CFace::~CFace()
 {
-    if(m_pDetector)
-        delete m_pDetector;
-    if(m_pTracker)
-        delete m_pTracker;
-    if(m_pLandmarker)
-        delete m_pLandmarker;
-    if(m_pRecognizer)
-        delete m_pRecognizer;
-    if(m_pFaceTools) delete m_pFaceTools;
+    Clean();
+
     if(m_pDatabase)
         delete m_pDatabase;
 }
@@ -38,6 +31,34 @@ int CFace::Initialize()
 
 int CFace::Clean()
 {
+    LOG_MODEL_DEBUG("CFace", "Clean %s", this->metaObject()->className());
+
+    if(m_pDetector)
+    {   
+        delete m_pDetector;
+        m_pDetector = nullptr;
+    }
+    if(m_pTracker)
+    {
+        delete m_pTracker;
+        m_pTracker = nullptr;
+    }
+    if(m_pLandmarker)
+    {
+        delete m_pLandmarker;
+        m_pLandmarker = nullptr;
+    }
+    if(m_pRecognizer)
+    {
+        delete m_pRecognizer;
+        m_pRecognizer = nullptr;
+    }
+    if(m_pFaceTools)
+    {
+        delete m_pFaceTools;
+        m_pFaceTools = nullptr;
+    }
+
     return 0;
 }
 

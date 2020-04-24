@@ -13,13 +13,7 @@ set(HEADER_FILES
     FaceLibfacedetection.h
     DetectorLibfacedetection.h)
 
-if(ANDROID)
-    INSTALL(FILES $<TARGET_FILE:facedetection>
-        DESTINATION "libs/${ANDROID_ABI}")
-else()
-    INSTALL(FILES $<TARGET_FILE:facedetection>
-        DESTINATION "${CMAKE_INSTALL_BINDIR}")
-endif()
+INSTALL_TARGETS(TARGETS facedetection)
 
 # Install target
 set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})

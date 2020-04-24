@@ -14,6 +14,11 @@ namespace Ui {
 class CFrmPara;
 }
 
+/**
+ * @brief The CFrmPara class
+ * @see CDelegateParamter
+ *      CFrmBroweFile
+ */
 class CFrmPara : public QWidget
 {
     Q_OBJECT

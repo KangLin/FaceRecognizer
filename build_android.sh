@@ -23,6 +23,7 @@ fi
 if [ -n "${ThirdLibs_DIR}" ]; then
     export SeetaFace_DIR=${SeetaFace_DIR}/lib/cmake
     export OpenCV_DIR=${ThirdLibs_DIR}/sdk/native/jni
+    export protobuf_DIR=${ThirdLibs_DIR}/lib/cmake/protobuf
     export facedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
     export dlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
     export ncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn
@@ -77,7 +78,8 @@ if [ -d "${ThirdLibs_DIR}" ]; then
     PARA="${PARA} -Dncnn_DIR=${ThirdLibs_DIR}/lib/cmake/ncnn"
     PARA="${PARA} -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection"
     PARA="${PARA} -DOpenCV_DIR=${OpenCV_DIR}"
-	PARA="${PARA} -DFFMPEG_DIR=${FFMPEG_DIR}"
+    PARA="${PARA} -Dprotobuf_DIR=${ThirdLibs_DIR}/lib/cmake/protobuf"
+    PARA="${PARA} -DFFMPEG_DIR=${FFMPEG_DIR}"
     export OPENSSL_ROOT_DIR=${ThirdLibs_DIR}
     PARA="${PARA} -DSeetaFace_DIR=${ThirdLibs_DIR}/lib/cmake
         -DSeetaNet_DIR=${ThirdLibs_DIR}/lib/cmake

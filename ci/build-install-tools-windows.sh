@@ -2,7 +2,7 @@
 #下载工具  
 
 # DOWNLOAD_THIRDLIBS_URL: 第三方库的下载地址
-# QT_ROOT： 如果设置为NO，则从 http://download.qt.io/official_releases/qt 下载QT
+# DOWNLOAD_QT: TRUE 从 http://download.qt.io/official_releases/qt 下载QT
 # QT_VERSION：Qt 版本号
 # QT_VERSION_DIR：
 
@@ -42,7 +42,7 @@ function function_common()
 
     # Qt qt安装参见：https://github.com/benlau/qtci
     cd ${TOOLS_DIR}
-    if [ "${QT_ROOT}" = "NO" ]; then
+    if [ "$DOWNLOAD_QT" = "TRUE" ]; then
         QT_DIR=C:/projects/${APPVEYOR_PROJECT_NAME}/Tools/Qt/${QT_VERSION}
         if [ ! -d "${QT_DIR}" ]; then
             #cd ${PACKAGE_DIR}

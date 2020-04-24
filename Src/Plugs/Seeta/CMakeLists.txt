@@ -5,21 +5,7 @@ if(NOT SeetaFace_FOUND)
     return()
 endif()
 
-foreach(componet_seetaFace ${SeetaFace_LIBRARIES})
-    if(ANDROID)
-        INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
-            DESTINATION "libs/${ANDROID_ABI}"
-                COMPONENT Runtime)
-    elseif(WIN32)
-        INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
-            DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                COMPONENT Runtime)
-    else()
-        INSTALL(FILES $<TARGET_FILE:${componet_seetaFace}>
-            DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-                COMPONENT Runtime)
-    endif()
-endforeach()
+INSTALL_TARGETS(TARGETS ${SeetaFace_LIBRARIES})
 
 set(SOURCES_FILES
     FaceSeeta2.cpp
@@ -37,10 +23,6 @@ set(HEADER_FILES
     LandmarkerSeeta.h
     RecognizerSeeta.h
     FaceToolsSeeta.h
-    )
-
-set(SOURCE_UI_FILES
-    ${SOURCE_UI_FILES}
     )
 
 # Install model files

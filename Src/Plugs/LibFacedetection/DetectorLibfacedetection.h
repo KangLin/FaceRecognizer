@@ -11,7 +11,7 @@ public:
     explicit CDetectorLibfacedetection(CFace* pFace = nullptr, QObject *parent = nullptr);
     virtual int Detect(const QImage &image,  QVector<QRect> &faces);
     
-private:
+protected:
     virtual int UpdateParameter();
 };
 

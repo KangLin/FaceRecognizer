@@ -14,6 +14,7 @@
 
 /**
  * @brief The CFactoryFace class
+ * 
  * @details 此类提供人脸功能接口。
  *     1. 如果使用自动，则使用开发定的接口。
  *        CFactoryFace* pFace = CFactoryFace::Instance();
@@ -28,6 +29,8 @@
  *     3. 当指定的某个库接口没有完全实现时，自动使用其他库的接口
  *        例如开发时使用 OPENCV ，但他有接口没有实现：
  *        CFactoryFace* pFace = CFactoryFace::Instance()->SetLibType("OpenCV", false);
+ * 
+ * @see CFace
  */
 class FACERECOGNIZER_EXPORT CFactoryFace : public QObject
 {
@@ -62,7 +65,7 @@ public:
 private:
     int m_CurrentLib;
     bool m_bOnlyUserCurrent;
-    QVector<CFace*> m_Face;
+    QVector<CFace*> m_Faces;
     
 private:
     /**

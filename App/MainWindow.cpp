@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
 
     createDockPerameters();
-    
+
     // Load model
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
@@ -113,7 +113,7 @@ MainWindow::MainWindow(QWidget *parent) :
                                RabbitCommon::CDir::Instance()->GetDirData(false)
                                + QDir::separator() + "model").toString();
     setModelPath(szPath);
-    
+
     if(CFactoryFace::Instance()->bIsValid())
     {
         if(CFactoryFace::Instance()->GetDatabase()->GetTableRegister()->IsExistNo())
@@ -127,7 +127,7 @@ MainWindow::MainWindow(QWidget *parent) :
     } else {
         ui->menuRegister->setEnabled(false);
         ui->menuRecognizer->setEnabled(false);
-        
+
         ui->actionDisplay->setChecked(true);
         on_actionDisplay_triggered();
     }
@@ -460,7 +460,6 @@ void MainWindow::on_actionSet_model_path_triggered()
 int MainWindow::setModelPath(const QString &szPath)
 {
     CFactoryFace::Instance()->setModelPath(szPath);
- 
     if(m_Paramter)
         m_Paramter->slotUpdateParamter();
     return 0;
@@ -474,9 +473,7 @@ void MainWindow::on_actionRegisterImage_triggered()
 }
 
 void MainWindow::on_actionRegisterImage_directory_triggered()
-{
-    
-}
+{}
 
 void MainWindow::on_actionRegisterVideo_triggered()
 {
@@ -616,7 +613,6 @@ int MainWindow::createDockPerameters()
     QActionGroup *pAiGroup = new QActionGroup(this);
     ui->menuAI_libraries->setEnabled(false);
     QVector<CFace*> faces = CFactoryFace::Instance()->GetLibType();
-    
     QString szSelect;
     if(!faces.empty())
         szSelect = faces[0]->GetName();

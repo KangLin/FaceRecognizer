@@ -10,17 +10,20 @@
 #include <QDir>
 
 CFaceSeeta2::CFaceSeeta2(QObject *parent) : CFace(parent)
+{}
+
+CFaceSeeta2::~CFaceSeeta2()
+{}
+
+int CFaceSeeta2::Initialize()
 {
-    Q_UNUSED(parent)
     m_pDetector = new CDetectorSeeta(this);
     m_pTracker = new CTrackerSeeta(this);
     m_pLandmarker = new CLandmarkerSeeta(this);
     m_pRecognizer = new CRecognizerSeeta(this);
     m_pFaceTools = new CFaceToolsSeeta(this);
+    return 0;
 }
-
-CFaceSeeta2::~CFaceSeeta2()
-{}
 
 QString CFaceSeeta2::GetName()
 {

@@ -2,11 +2,12 @@
   + 在主窗口中增加设置属性停泊条
   + 修改接口，增加参数属性
   + 删除参数接口
-  + 增加 libfacedection 库接口
   + 用 QT 插件方式管理 AI 库
+  + 增加 libfacedection 实现人脸接口
+  + 增加 ncnn 实现人脸接口
 
 - v0.0.4
-  + 增加 opencv 人脸检测
+  + 增加 opencv 实现人脸接口
     - 增加 opencv dnn 人脸检测
     - 增加 opencv face 人脸检测
     - 增加 opencv facde 特征点检测

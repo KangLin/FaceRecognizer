@@ -15,7 +15,8 @@
 #export QT_SELECT=qt5
 
 ifdef ThirdLibs_DIR
-    PARAS += -DOpenCV_DIR=${ThirdLibs_DIR}/lib/cmake/opencv4/
+    PARAS += -DOpenCV_DIR=${ThirdLibs_DIR}/lib/cmake/opencv4
+    PARAS += -Dprotobuf_DIR=${ThirdLibs_DIR}/lib/cmake/protobuf
     PARAS += -DSeetaFace_DIR=$(ThirdLibs_DIR)/lib/cmake
     PARAS += -Dfacedetection_DIR=${ThirdLibs_DIR}/lib/cmake/facedetection
     PARAS += -Ddlib_DIR=${ThirdLibs_DIR}/lib/cmake/dlib
@@ -61,6 +62,9 @@ override_dh_auto_configure:
 
 override_dh_auto_build:
 	dh_auto_build -- $(if "`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`" = "0",, -j`cat /proc/cpuinfo |grep 'cpu cores' |wc -l`)
+
+#override_dh_auto_install:
+#	cmake --build . --config Release --target install/strip
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:$(LIB_PARAS)

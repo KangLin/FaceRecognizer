@@ -324,6 +324,7 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
         }
     }
 
+    return 0; // Non-recursive directory
     foreach (fileName, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
         QDir pluginDir = dir;
         if(pluginDir.cd(fileName))
