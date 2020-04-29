@@ -192,8 +192,11 @@ void CFrmPara::slotItemChanged(QStandardItem* item)
     QObject* pObject = item->data(CDelegateParamter::ROLE_OBJECT)
             .value<QObject*>();
     if(pObject)
+    {
         pObject->setProperty(
                 item->data(CDelegateParamter::ROLE_PROPERTY_NAME)
                     .toString().toStdString().c_str(),
                 item->data(Qt::EditRole));
+        //slotUpdateParamter();
+    }
 }

@@ -7,7 +7,8 @@ class CFaceNcnn : public CFace
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
-    Q_PROPERTY(DectorAlgorithm dectorAlgorithm READ getDectorAlgorithm WRITE setDectorAlgorithm )
+    Q_PROPERTY(DectorAlgorithm dectorAlgorithm READ getDectorAlgorithm WRITE setDectorAlgorithm)
+
 public:
     explicit CFaceNcnn(QObject *parent = nullptr);
     virtual ~CFaceNcnn() override;

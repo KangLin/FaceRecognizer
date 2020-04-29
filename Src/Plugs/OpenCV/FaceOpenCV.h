@@ -6,6 +6,8 @@
 class CFaceOpenCV : public CFace
 {
     Q_OBJECT
+    Q_PROPERTY(Algorithm algorithm READ getAlgorithm WRITE setAlgorithm)
+
 public:
     explicit CFaceOpenCV(QObject *parent = nullptr);
     
@@ -16,6 +18,18 @@ public:
 
     virtual int Initialize() override; 
     QString GetName() override;
+    
+    enum Algorithm
+    {
+        OPENCV,
+        DNN,
+        NOT
+    };
+    Q_ENUM(Algorithm)
+    Algorithm getAlgorithm();
+    int setAlgorithm(Algorithm algorithm = OPENCV);
+private:
+    Algorithm m_Algorithm;
 };
 
 #endif // FACEOPENCV_H

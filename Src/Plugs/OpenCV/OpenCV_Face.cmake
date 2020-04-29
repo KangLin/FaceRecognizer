@@ -5,12 +5,14 @@ set(SOURCES_FILES
     LandmarkerOpenCV.cpp
     RecognizerOpenCV.cpp
     FaceOpenCV.cpp
+    ${SOURCES_FILES}
     )
 set(HEADER_FILES
     DetectorOpenCV.h
     LandmarkerOpenCV.h
     RecognizerOpenCV.h
     FaceOpenCV.h
+    ${HEADER_FILES}
     )
 
 # Install target
