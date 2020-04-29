@@ -37,7 +37,8 @@ private:
     Ui::CFrmPara *ui;
     QStandardItemModel m_Model;
     
-    int LoadObject(QObject* pObject);  
+    QStandardItem *LoadObject(QObject* pObject, QStandardItem *pRoot = nullptr);
+    int AddRoot(QStandardItem* pRoot);
 };
 
 #endif // FRMPARA_H
