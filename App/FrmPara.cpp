@@ -12,12 +12,14 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QStandardItem>
+#include <QHeaderView>
 
 CFrmPara::CFrmPara(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFrmPara)
 {
     ui->setupUi(this);
+    ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->treeView->setModel(&m_Model);
     ui->treeView->setItemDelegateForColumn(1, new CDelegateParamter(ui->treeView));
 
