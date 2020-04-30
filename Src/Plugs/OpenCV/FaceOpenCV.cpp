@@ -1,8 +1,8 @@
 #include "FaceOpenCV.h"
-
 #include "DetectorOpenCV.h"
 #include "LandmarkerOpenCV.h"
 #include "DetectorOpenCVDNN.h"
+#include <QDebug>
 
 CFaceOpenCV::CFaceOpenCV(QObject *parent) : CFace(parent),
     m_Algorithm(NOT)
@@ -26,6 +26,7 @@ CFaceOpenCV::Algorithm CFaceOpenCV::getAlgorithm()
 
 int CFaceOpenCV::setAlgorithm(Algorithm algorithm)
 {
+    qDebug() << "CFaceOpenCV::setAlgorithm" << algorithm;
     if(m_Algorithm == algorithm)
         return 0;
     m_Algorithm = algorithm;

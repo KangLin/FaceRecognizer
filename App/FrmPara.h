@@ -38,7 +38,6 @@ private:
     QStandardItemModel m_Model;
     
     QStandardItem *LoadObject(QObject* pObject, QStandardItem *pRoot = nullptr);
-    int AddRoot(QStandardItem* pRoot);
 };
 
 #endif // FRMPARA_H

@@ -86,18 +86,6 @@ int CFrmPara::slotUpdateParamter(QAction *pAction)
     return 0;
 }
 
-int CFrmPara::AddRoot(QStandardItem *pRoot)
-{
-    if(!pRoot) return -1;
-    m_Model.appendRow(pRoot);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-    m_Model.itemFromIndex(pRoot->index().siblingAtColumn(1))->setEditable(false);
-#else
-    m_Model.itemFromIndex(pRoot->index().sibling(pClass->index().row(), 1))->setEditable(false);
-#endif
-    return 0;
-}
-
 QStandardItem* CFrmPara::LoadObject(QObject *pObject, QStandardItem *pRoot)
 {
     if(!pObject) return nullptr;
@@ -188,7 +176,7 @@ QStandardItem* CFrmPara::LoadObject(QObject *pObject, QStandardItem *pRoot)
 
 void CFrmPara::slotItemChanged(QStandardItem* item)
 {
-    //qDebug() << "CFrmPara::slotItemChanged";
+    qDebug() << "CFrmPara::slotItemChanged";
     QObject* pObject = item->data(CDelegateParamter::ROLE_OBJECT)
             .value<QObject*>();
     if(pObject)
@@ -197,6 +185,5 @@ void CFrmPara::slotItemChanged(QStandardItem* item)
                 item->data(CDelegateParamter::ROLE_PROPERTY_NAME)
                     .toString().toStdString().c_str(),
                 item->data(Qt::EditRole));
-        //slotUpdateParamter();
     }
 }
