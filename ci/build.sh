@@ -26,13 +26,6 @@ function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)"
 
 cd ${SOURCE_DIR}
 
-# Download model
-if [ ! -d model ]; then
-    mkdir model
-fi
-# Download ncnn model
-tar xzf model_ncnn.tar.gz -C model
-
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${TOOLS_DIR}/android-sdk
     export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-ndk

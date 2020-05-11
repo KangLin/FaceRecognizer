@@ -18,12 +18,6 @@ set(HEADER_FILES
     DetectorNcnnRetina.h
     )
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/model/ncnn")
-    INSTALL(DIRECTORS ${CMAKE_SOURCE_DIR}/model/ncnn
-        DESTINATION ${INSTALL_DATA_PREFIX}/model
-            COMPONENT Runtime)
-endif()
-
 # Install target
 set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})
 if(NOT ANDROID)
@@ -36,3 +30,24 @@ ADD_PLUG_TARGET(NAME ${PROJECT_NAME}
     OUTPUT_DIR ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}/Face
     INSTALL_DIR ${INSTALL_PATH}
     VERSION ${BUILD_VERSION})
+
+# Install model files
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/ncnn")
+    if(ENABLE_DOWNLOAD)
+        DOWNLOAD(FILENAME "model_ncnn.tar.gz"
+            HASH fd4a88dcf16c29fdeadc852eb9776ffb
+            URL "https://github.com/KangLin/ncnn_example/releases/download/model/model_ncnn.tar.gz"
+            DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/ncnn"
+            STATUS retval UNPACK)
+    else(ENABLE_DOWNLOAD)
+        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+            " to automation download, or manual download ncnn model files from"
+            " https://github.com/KangLin/ncnn_example/releases/download/model/model_ncnn.tar.gz"
+            " to ${CMAKE_SOURCE_DIR}/model/ncnn and tar xzvf model_ncnn.tar.gz")
+    endif(ENABLE_DOWNLOAD)
+endif()
+if(EXISTS "${CMAKE_SOURCE_DIR}/model/ncnn")
+    INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/model/ncnn
+        DESTINATION ${INSTALL_DATA_PREFIX}/model
+            COMPONENT Runtime)
+endif()
