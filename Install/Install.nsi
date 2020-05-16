@@ -4,7 +4,7 @@
 !define PRODUCT_NAME "FaceRecognizer"
 !define PRODUCT_APP_NAME "FaceRecognizerApp"
 !define PRODUCT_VERSION "v0.0.4"
-!define PRODUCT_PUBLISHER "KangLin studio"
+!define PRODUCT_PUBLISHER "Kang Lin studio"
 !define PRODUCT_WEB_SITE "https://github.com/KangLin/${PRODUCT_NAME}"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_NAME}.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
