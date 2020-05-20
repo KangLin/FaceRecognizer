@@ -35,6 +35,11 @@ CFrmPara::~CFrmPara()
 int CFrmPara::slotUpdateParamter(QAction *pAction)
 {
     Q_UNUSED(pAction)
+    
+    CFace * pFace = CFactoryFace::Instance()->GetFace();
+    if(!pFace)
+        return -1;
+    
     bool check = m_Model.disconnect(&m_Model, SIGNAL(itemChanged(QStandardItem*)),
                                     this, SLOT(slotItemChanged(QStandardItem*)));
     //Q_ASSERT(check);
@@ -42,9 +47,7 @@ int CFrmPara::slotUpdateParamter(QAction *pAction)
     
     //qDebug() << "CFrmPara::slotUpdateParamter";
     m_Model.setHorizontalHeaderLabels(QStringList() << tr("Property") << tr("Value"));
-        
-    CFace * pFace = CFactoryFace::Instance()->GetFace();
-    
+
     QStandardItem* pRoot = LoadObject(pFace);
     
     CDetector* pDector = pFace->GetDector();
