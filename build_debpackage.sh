@@ -7,10 +7,10 @@ function help()
 }
 
 if [ -n "$1" -a -z "$QT_ROOT" ]; then
-	QT_ROOT=$1
+    QT_ROOT=$1
 fi
 
-if [ ! -f /usr/bin/qmake -a -z "$QT_ROOT" ]; then
+if [ -z "$QT_ROOT" ]; then
     help
 fi
 
@@ -26,11 +26,11 @@ if [ -n "${ThirdLibs_DIR}" ]; then
 fi
 
 if [ -n "$3" -a -z "$RabbitCommon_DIR" ]; then
-	RabbitCommon_DIR=$3
+    RabbitCommon_DIR=$3
 fi
 
 if [ -z "$RabbitCommon_DIR" ]; then
-	RabbitCommon_DIR=`pwd`/../RabbitCommon
+    RabbitCommon_DIR=`pwd`/../RabbitCommon
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
@@ -51,4 +51,3 @@ export LD_LIBRARY_PATH=$QT_ROOT/lib/i386-linux-gnu:$QT_ROOT/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=$QT_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 fakeroot debian/rules binary 
 #dpkg-buildpackage -us -uc -b
-
