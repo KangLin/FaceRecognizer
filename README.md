@@ -52,6 +52,10 @@
     - https://github.com/deepinsight/mxnet-mtcnn
     - https://github.com/imistyrain/MTCNN
 
+*图例:*
+- [x] 表示已完成的功能
+- [ ] 表示未完成的功能
+
 ### 支持平台
 
   + [x] windows (windows xp 及已后)
