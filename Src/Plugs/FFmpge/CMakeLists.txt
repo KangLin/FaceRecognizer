@@ -3,7 +3,7 @@ if(ANDROID)
 else()
     option(USE_FFMPEG "Use ffmpeg" ON)
 endif()
-
+message(STATUS "== Use ffmpeg: ${USE_FFMPEG}")
 if(NOT USE_FFMPEG)
     return()
 endif()

@@ -1,3 +1,9 @@
+option(USE_SEETA "Use SeetaFace" ON)
+message(STATUS "== Use seetaface: ${USE_SEETA}")
+if(NOT USE_SEETA)
+    return()
+endif()
+
 project(PlugFaceSeeta)
 find_package(SeetaFace)
 message("== Plugs SeetaFace:${SeetaFace_FOUND}")

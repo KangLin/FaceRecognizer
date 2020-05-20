@@ -1,13 +1,14 @@
-PROJECT(PlugConverFormatOpenCV)
-
 if(ANDROID)
-	option(USE_OPENCV "Use opencv" OFF)
+    option(USE_OPENCV "Use opencv" OFF)
 else()
-	option(USE_OPENCV "Use opencv" ON)
+    option(USE_OPENCV "Use opencv" ON)
 endif()
 if(NOT USE_OPENCV)
     return()
 endif()
+
+PROJECT(PlugConverFormatOpenCV)
+
 find_package(OpenCV)
 message("== Plug OpenCV:${OpenCV_FOUND}")
 if(NOT OpenCV_FOUND)

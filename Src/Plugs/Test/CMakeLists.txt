@@ -1,3 +1,9 @@
+option(USE_TEST "Use test" ON)
+message(STATUS "== Use test: ${USE_TEST}")
+if(NOT USE_TEST)
+    return()
+endif()
+
 project(PlugTest)
 
 set(SOURCES_FILES

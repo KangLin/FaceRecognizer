@@ -1,3 +1,9 @@
+option(USE_LIBFACEDETECTION "Use LibFacedetection" ON)
+message(STATUS "== Use LibFacedetection: ${USE_LIBFACEDETECTION}")
+if(NOT USE_LIBFACEDETECTION)
+    return()
+endif()
+
 project(PlugFaceLibFacedetection)
 
 find_package(facedetection)

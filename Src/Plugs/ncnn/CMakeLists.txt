@@ -1,3 +1,9 @@
+option(USE_NCNN "Use ncnn" OFF)
+message(STATUS "== Use ncnn: ${USE_NCNN}")
+if(NOT USE_NCNN)
+    return()
+endif()
+
 project(PlugFaceNcnn)
 find_package(ncnn)
 message("== Plugs ncnn:${ncnn_FOUND}")
