@@ -1,4 +1,4 @@
-option(USE_TEST "Use test" ON)
+option(USE_TEST "Use test" OFF)
 message(STATUS "== Use test: ${USE_TEST}")
 if(NOT USE_TEST)
     return()

@@ -12,14 +12,14 @@ if [ -n "$1" -a -z "$QT_ROOT" ]; then
 fi
 
 if [ -z "$QT_ROOT" ]; then
-    help 1
+    help "QT_ROOT don't exist: $QT_ROOT"
 fi
 
 if [ -n "$2" ]; then
     export ThirdLibs_DIR=$2
 fi
 if [ ! -d "$ThirdLibs_DIR" ]; then
-    help 2
+    help "Directory don't exist: $ThirdLibs_DIR"
 fi
 if [ -n "${ThirdLibs_DIR}" ]; then
     export ThirdLibs_DIR=${ThirdLibs_DIR}
@@ -35,7 +35,7 @@ if [ -z "$RabbitCommon_DIR" ]; then
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
-    help 3
+    help "Directory don't exist: $RabbitCommon_DIR"
 fi
 
 if [ -n "$4" ]; then

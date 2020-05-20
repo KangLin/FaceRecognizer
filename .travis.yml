@@ -60,10 +60,10 @@ env:
     #     FALSE: install from https://launchpad.net/~beineri
     - BUILD_TARGERT="unix" DOWNLOAD_QT=APT GENERATORS="Unix Makefiles"
     
-    - BUILD_TARGERT="unix" QT_VERSION_DIR=512 QT_VERSION=5.12.3 DOWNLOAD_QT=FALSE GENERATORS="Unix Makefiles"
-    - BUILD_TARGERT="unix" QT_VERSION_DIR=511 QT_VERSION=5.11.3 DOWNLOAD_QT=FALSE STATIC=ON GENERATORS="Unix Makefiles"
+    - BUILD_TARGERT="unix" QT_VERSION_DIR=512 QT_VERSION=5.12.3 DOWNLOAD_QT=FALSE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/unix_x86_64_v0.2.9.tar.gz
+    - BUILD_TARGERT="unix" QT_VERSION_DIR=511 QT_VERSION=5.11.3 DOWNLOAD_QT=FALSE STATIC=ON GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/unix_x86_64_v0.2.9.tar.gz
 
-    - BUILD_TARGERT="unix" BUILD_ARCH="unix" QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles"
+    - BUILD_TARGERT="unix" BUILD_ARCH="unix" QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/unix_x86_64_v0.2.9.tar.gz
 
 before_install:
   #- sudo apt-get update -y -qq
@@ -79,7 +79,7 @@ install:
   #- /bin/bash ci/backgroud_echo.sh &
   - git clone https://github.com/KangLin/RabbitCommon.git
   - export RabbitCommon_DIR="`pwd`/RabbitCommon"
-  - bash ci/build-install-tools.sh > /dev/null
+  - bash ci/build-install-tools.sh #> /dev/null
 #  - |
 #    if [ "$BUILD_TARGERT"="unix" -a -z "$RABBIT_ARCH" ]; then
 #        source /opt/qt511/bin/qt511-env.sh
