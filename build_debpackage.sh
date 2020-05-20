@@ -3,6 +3,7 @@
 function help()
 {
     echo "Useg: $0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
+    echo "Error message: $1"
     exit -1
 }
 
@@ -11,14 +12,14 @@ if [ -n "$1" -a -z "$QT_ROOT" ]; then
 fi
 
 if [ -z "$QT_ROOT" ]; then
-    help
+    help 1
 fi
 
 if [ -n "$2" ]; then
     export ThirdLibs_DIR=$2
 fi
 if [ ! -d "$ThirdLibs_DIR" ]; then
-    help
+    help 2
 fi
 if [ -n "${ThirdLibs_DIR}" ]; then
     export ThirdLibs_DIR=${ThirdLibs_DIR}
@@ -34,7 +35,7 @@ if [ -z "$RabbitCommon_DIR" ]; then
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
-    help
+    help 3
 fi
 
 if [ -n "$4" ]; then
