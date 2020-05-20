@@ -15,6 +15,29 @@ environment:
     secure: ejAYGgB+3sBispRxUSr0xw==
 
   matrix:
+  ##### android ########
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "armeabi-v7a"
+    ANDROID_ARM_NEON: ON
+    DOWNLOAD_QT: TRUE
+    QT_VERSION_DIR: 5.12
+    QT_VERSION: 5.12.6
+    ANDROID_API: android-24
+    TOOLCHAIN_VERSION: 4.9
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm_v0.2.9_in_windows.zip
+
+  - BUILD_TARGERT: android
+    GENERATORS: "MSYS Makefiles"
+    BUILD_ARCH: "arm64-v8a"
+    ANDROID_ARM_NEON: ON
+    DOWNLOAD_QT: TRUE
+    QT_VERSION_DIR: 5.12
+    QT_VERSION: 5.12.6
+    ANDROID_API: android-24
+    TOOLCHAIN_VERSION: 4.9
+    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm64_v0.2.9_in_windows.zip
+  
   ##### msvc 2013 ########
   #- BUILD_TARGERT: windows_msvc
   #  GENERATORS: "Visual Studio 12 2013"
@@ -73,29 +96,6 @@ environment:
     QT_ROOT: C:\Qt\5.10\mingw53_32
     BUILD_ARCH: x86
     DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/windows_mingw530_32_x86_v0.2.9.zip
-
-  ##### android ########
-  - BUILD_TARGERT: android
-    GENERATORS: "MSYS Makefiles"
-    BUILD_ARCH: "armeabi-v7a"
-    ANDROID_ARM_NEON: ON
-    DOWNLOAD_QT: TRUE
-    QT_VERSION_DIR: 5.12
-    QT_VERSION: 5.12.6
-    ANDROID_API: android-24
-    TOOLCHAIN_VERSION: 4.9
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm_v0.2.9_in_windows.zip
-
-  - BUILD_TARGERT: android
-    GENERATORS: "MSYS Makefiles"
-    BUILD_ARCH: "arm64-v8a"
-    ANDROID_ARM_NEON: ON
-    DOWNLOAD_QT: TRUE
-    QT_VERSION_DIR: 5.12
-    QT_VERSION: 5.12.6
-    ANDROID_API: android-24
-    TOOLCHAIN_VERSION: 4.9
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm64_v0.2.9_in_windows.zip
 
 matrix:
   fast_finish: false

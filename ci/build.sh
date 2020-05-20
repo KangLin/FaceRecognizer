@@ -29,13 +29,13 @@ cd ${SOURCE_DIR}
 if [ "$BUILD_TARGERT" = "android" ]; then
     export ANDROID_SDK_ROOT=${TOOLS_DIR}/android-sdk
     export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-ndk
-    if [ -n "$APPVEYOR" ]; then
+    #if [ -n "$APPVEYOR" ]; then
         #export JAVA_HOME="/C/Program Files (x86)/Java/jdk1.8.0"
-        if [ -z "${NDK_VERSION} " ]; then
-            NDK_VERSION=20.0.5594570
-        fi
-        export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-sdk/ndk-bundle
-    fi
+    #    if [ -z "${NDK_VERSION} " ]; then
+    #        NDK_VERSION=20.0.5594570
+    #    fi
+    #    export ANDROID_NDK_ROOT=${TOOLS_DIR}/android-sdk/ndk-bundle
+    #fi
     #if [ "$TRAVIS" = "true" ]; then
         #export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
     #fi
@@ -183,7 +183,8 @@ if [ "${BUILD_TARGERT}" = "unix" ]; then
         cat ${SOURCE_DIR}/debian/postinst
         cat ${SOURCE_DIR}/debian/preinst
     fi
-    bash build_debpackage.sh ${QT_ROOT} ${ThirdLibs_DIR}
+    
+    bash build_debpackage.sh ${QT_ROOT} ${ThirdLibs_DIR} ${RabbitCommon_DIR} ON
 
     sudo dpkg -i ../facerecognizer_*_amd64.deb
     echo "test ......"

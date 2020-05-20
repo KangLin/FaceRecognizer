@@ -136,6 +136,7 @@ function install_android_sdk_and_ndk()
     if [ ! -f ${NDK_PACKAGE} ]; then
         wget -c -nv https://dl.google.com/android/repository/${NDK_PACKAGE}
     fi
+    echo "unzip -q ${NDK_PACKAGE} -d ${TOOLS_DIR}"
     unzip -q ${NDK_PACKAGE} -d ${TOOLS_DIR}
     cd ${TOOLS_DIR}
     mv android-ndk-r21 android-ndk

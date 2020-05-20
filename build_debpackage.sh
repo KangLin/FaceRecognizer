@@ -2,7 +2,7 @@
 
 function help()
 {
-    echo "$0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
+    echo "Useg: $0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
     exit -1
 }
 

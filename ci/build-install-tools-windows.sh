@@ -84,7 +84,7 @@ function install_android()
         rm android-studio-ide-${ANDROID_STUDIO_VERSION}-windows.zip
         export JAVA_HOME=${TOOLS_DIR}/android-studio/jre
         export PATH=${JAVA_HOME}/bin:$PATH
-        
+
         SDK_VERSION=4333796
         cd ${PACKAGE_DIR}
         if [ ! -f sdk-tools-windows-${SDK_VERSION}.zip ]; then
@@ -96,7 +96,7 @@ function install_android()
         mv ${PACKAGE_DIR}/sdk-tools-windows-${SDK_VERSION}.zip .
         unzip -q sdk-tools-windows-${SDK_VERSION}.zip
         rm sdk-tools-windows-${SDK_VERSION}.zip
-    
+
         echo "Install sdk and ndk ......"
         if [ -n "${ANDROID_API}" ]; then
             PLATFORMS="platforms;${ANDROID_API}"
@@ -128,6 +128,7 @@ function install_android_sdk_and_ndk()
     if [ ! -f ${NDK_PACKAGE} ]; then
         wget -c -nv https://dl.google.com/android/repository/${NDK_PACKAGE}
     fi
+    echo "unzip -q ${NDK_PACKAGE} -d ${TOOLS_DIR}"
     unzip -q ${NDK_PACKAGE} -d ${TOOLS_DIR}
     cd ${TOOLS_DIR}
     mv android-ndk-r21 android-ndk
@@ -137,7 +138,7 @@ function function_android()
 {
     install_android_sdk_and_ndk
     function_common
-    
+
     cd ${TOOLS_DIR}
 }
 
