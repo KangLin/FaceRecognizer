@@ -13,4 +13,4 @@
     - android: 应用程序目录下
     - windows、linux: 应用程序安装目录/plugs/Face
   + 插件命名：project(PlugFaceXXXX)  
-    插件加载详见： [Src/FactoryFace.cpp 中的 CFactoryFace::FindPlugins 函数](Src/FactoryFace.cpp)
+    插件加载详见： [Src/FactoryFace.cpp 中的 CFactoryFace::FindPlugins 函数](../Src/FactoryFace.cpp)
