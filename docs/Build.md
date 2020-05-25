@@ -32,6 +32,7 @@
   - [必选] Qt5_DIR: qt 安装位置(指向Qt5Config.cmake的目录，默认为 安装目录/lib/cmake/Qt5)。
                    详见：https://doc.qt.io/qt-5/cmake-get-started.html
   - [必选] RabbitCommon_DIR: RabbitCommon 源码位置
+  - [可选] CMAKE_BUILD_TYPE: 编译类型
   - [可选] BUILD_PERFORMANCE: 比较测试框架，默认 OFF
   - [可选] ENABLE_DOWNLOAD: 自动下载模型，默认 OFF
   - [可选] BUILD_APP: 编译应用程序,默认 ON
@@ -104,11 +105,11 @@
         ./FaceRecognizerApp
 
 #### windows 平台编译说明
-  - 使用 cmake-gui.exe 工具编译。打开 cmake-gui.exe 配置
-  - 命令行编译
-    + 把 cmake 命令所在目录加入到环境变量 PATH 中
-    + 从开始菜单打开 “VS2015开发人员命令提示”，进入命令行
-      - 编译
+
+- 命令行编译
+  + 把 cmake 命令所在目录加入到环境变量 PATH 中
+  + 从开始菜单打开 “VS2015开发人员命令提示”，进入命令行
+    - 编译
 
             cd FaceRecognizer
             mkdir build
@@ -120,21 +121,29 @@
                  [其它可选 CMake 配置参数]
             cmake --build . --config Release
 
-      - 安装
-        + 安装库和程序
+    - 安装
+      + 安装库和程序
         
-              cmake --build . --config Release --target install
+            cmake --build . --config Release --target install
         
-        + 仅安装程序
+      + 仅安装程序
         
-              cmake --build . --config Release --target install-runtime
+            cmake --build . --config Release --target install-runtime
 
-      - 运行例子
-        + 执行安装目录 bin 目录下的程序
+    - 运行例子
+      + 执行安装目录 bin 目录下的程序
 
-              cd FaceRecognizer
-              cd build/install/bin
-              FaceRecognizerApp.exe
+            cd FaceRecognizer
+            cd build/install/bin
+            FaceRecognizerApp.exe
+
+- 使用 cmake-gui.exe 工具编译。
+
+打开 cmake-gui.exe 配置。参数选择与命令行编译相同。**注意**一定要加 CMAKE_BUILD_TYPE 参数，否则会出现下面错误：
+
+
+      RabbitCommonTools.obj : error LNK2019: 无法解析的外部符号 "int __cdecl qInitResources_translations_RabbitCommon(void)" (?qInitResources_translations_RabbitCommon@@YAHXZ)，该符号在函数 "void __cdecl g_RabbitCommon_InitResource(void)" (?g_RabbitCommon_InitResource@@YAXXZ) 中被引用
+      RabbitCommonTools.obj : error LNK2019: 无法解析的外部符号 "int __cdecl qCleanupResources_translations_RabbitCommon(void)" (?qCleanupResources_translations_RabbitCommon@@YAHXZ)，该符号在函数 "void __cdecl g_RabbitCommon_CleanResource(void)" (?g_RabbitCommon_CleanResource@@YAXXZ) 中被引用
 
 #### Android 平台编译说明
 + 安装 ndk 编译工具
