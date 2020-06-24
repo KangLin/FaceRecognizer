@@ -92,9 +92,9 @@ if(UNIX AND NOT ANDROID)
 endif()
 
 if(MINGW)
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "-mwindows")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-mwindows")
 elseif(MSVC)
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS
         "/SUBSYSTEM:WINDOWS\",5.01\" /ENTRY:mainCRTStartup")
 endif()
 
