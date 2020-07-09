@@ -106,7 +106,7 @@ if(BUILD_TYPE STREQUAL "debug")
     SET(RCC_FILES ${RCC_FILES} ../Resource/ResourceSql.qrc)
 endif()
 
-add_subdirectory(Plugs)
+add_subdirectory(Plugins)
 
 add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${RCC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES

@@ -25,7 +25,7 @@ elseif(WIN32)
             COMPONENT Runtime)
 endif()
 
-project(PlugConverFormatFFMpeg)
+project(PluginConverFormatFFMpeg)
 
 set(SOURCES_FILES
     ConverFormatFFmpeg.cpp

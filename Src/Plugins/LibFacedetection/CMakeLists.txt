@@ -4,10 +4,10 @@ if(NOT USE_LIBFACEDETECTION)
     return()
 endif()
 
-project(PlugFaceLibFacedetection)
+project(PluginFaceLibFacedetection)
 
 find_package(facedetection)
-message("== Plugs libfacedetection:${facedetection_FOUND}")
+message("== Plugins libfacedetection:${facedetection_FOUND}")
 if(NOT facedetection_FOUND)
     return()
 endif()

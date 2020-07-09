@@ -31,15 +31,15 @@ CImageTool::CImageTool(QObject *parent) : QObject(parent), m_pConverFormat(nullp
             break;
     }
 
-    QString szPath = RabbitCommon::CDir::Instance()->GetDirPlugs();
+    QString szPath = RabbitCommon::CDir::Instance()->GetDirPlugins();
 #if !defined (Q_OS_ANDROID)
     szPath = szPath + QDir::separator() + "ConverFormat";
 #endif
     QStringList filters;
 #if defined (Q_OS_WINDOWS)
-        filters << "*PlugConverFormat*.dll";
+        filters << "*PluginConverFormat*.dll";
 #else
-        filters << "*PlugConverFormat*.so";
+        filters << "*PluginConverFormat*.so";
 #endif
     FindPlugins(szPath, filters);
 }

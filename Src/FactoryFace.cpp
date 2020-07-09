@@ -21,15 +21,15 @@ CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
         }
     }
 
-    QString szPath = RabbitCommon::CDir::Instance()->GetDirPlugs();
+    QString szPath = RabbitCommon::CDir::Instance()->GetDirPlugins();
 #if !defined (Q_OS_ANDROID)
     szPath = szPath + QDir::separator() + "Face";
 #endif
     QStringList filters;
 #if defined (Q_OS_WINDOWS)
-        filters << "*PlugFace*.dll";
+        filters << "*PluginFace*.dll";
 #else
-        filters << "*PlugFace*.so";
+        filters << "*PluginFace*.so";
 #endif
     FindPlugins(szPath, filters);
     

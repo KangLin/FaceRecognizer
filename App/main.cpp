@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         f.close();
     }
 
-    app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugs());
+    app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugins());
 
     MainWindow w;
     

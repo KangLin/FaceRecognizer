@@ -4,7 +4,7 @@ if(NOT USE_TEST)
     return()
 endif()
 
-project(PlugTest)
+project(PluginTest)
 
 set(SOURCES_FILES
     Test.cpp

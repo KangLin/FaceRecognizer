@@ -3,7 +3,7 @@ if(NOT USE_OPENCV)
     return()
 endif()
 
-PROJECT(PlugConverFormatOpenCV)
+PROJECT(PluginConverFormatOpenCV)
 
 find_package(OpenCV)
 message("== Plug OpenCV:${OpenCV_FOUND}")
