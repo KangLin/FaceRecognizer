@@ -4,7 +4,7 @@
 [![Windows build status](https://ci.appveyor.com/api/projects/status/n50nxc7d8mm9bdpb/branch/master?svg=true)](https://ci.appveyor.com/project/KangLin/facerecognizer/branch/master)
 [![Linux build Status](https://travis-ci.org/KangLin/FaceRecognizer.svg?branch=master)](https://travis-ci.org/KangLin/FaceRecognizer)
 
-================================================================================
+--------------------------------------------------------------------------------
 
 - [简介](#简介)
   - [支持平台](#支持平台)
@@ -25,10 +25,6 @@
 
 本项目提供一些人脸常见应用。提供应用级 AI （人脸）框架，方便自定义快速开发 AI （人脸） 应用。
 以及性能测试比较框架，方便对第三方人脸库做性能测试比较。
-
-- 欢迎 AI 开源库的开发者或自愿者使用本项目做为你库的测试程序或演示程序。
-  并向本项提供 AI 开源库的插件（如有需要，请联系本人 < QQ:16614119 >, 可以为你提供必要的帮助）。
-- 如有定制开发，或移植可联系本人 (QQ:16614119) 。加好友前请你先[捐赠](#捐赠)支持本项目，验证信息为你的捐赠额:)
 
 本项目具体功能如下：
 
@@ -53,8 +49,9 @@
     - https://github.com/imistyrain/MTCNN
 
 *图例:*
-- [x] 表示已完成的功能
-- [ ] 表示未完成的功能
+
+- [x] 表示当前版本已完成的功能
+- [ ] 表示当前版本未完成，将来会实现的功能
 
 ### 支持平台
 
@@ -63,7 +60,7 @@
   + [x] android (android 21 及已后)
   + [ ] mac
   + [ ] ios
-  + [x] 其它嵌入式平台。你自己移植。也可联系本人（QQ:16614119），加好友前请你先[捐赠](#捐赠)支持本项目，验证信息为你的捐赠额:)
+  + [x] 其它嵌入式平台。
   
   mac 和 ios我没有设备，请有设备的同学自行编译测试。
 
@@ -99,11 +96,25 @@
     - [facerecognizer_0.0.4_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/facerecognizer_0.0.4_amd64.deb)  
   deb 安装包,可用于 Ubuntu
 
-**注意:**本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
+**注意**:本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
 ## 捐赠
-本软件如果对你有用，或者你喜欢它，请你捐赠，支持作者。谢谢！
+本软件如果对你有用，或者你喜欢它，欢迎任何形式的捐赠（包括参与到项目代码贡献、意见反馈、以及捐赠资金等），支持作者。谢谢！
 
+- 欢迎开发者参与本项目的开发，或意见反馈。
+  + Issues: https://github.com/KangLin/FaceRecognizer/issues
+  + 如有需要，请联系本人 (QQ:16614119), 可以为你提供必要的帮助。
+- 欢迎 AI 开源库的开发者或自愿者使用本项目做为你库的测试程序或演示程序。
+  向本项贡献代码、提供 AI 开源库的插件（如有需要，请联系本人 （QQ:16614119）, 可以为你提供必要的帮助）。
+- 如有咨询、定制开发或移植，请你先[捐赠资金](#捐赠资金)支持本项目，
+  再加联系本人(QQ:16614119)，验证信息为你的捐赠额。非诚勿扰。
+- 如有需要编译程序（￥200/小时）或需要搭建整个系统（￥2000/工作日）。
+  请先[付款](#捐赠资金)，再加联系本人(QQ:16614119)，验证信息为你的付款额。非诚勿扰。
+  请先[付款](#捐赠资金)，再加联系本人(QQ:16614119)。验证信息为你的付款额。非诚勿扰。
+
+**注意**: 交流时，请直奔主题，主题明确，简明扼要。
+
+### 捐赠资金
 [![捐赠](https://gitee.com/kl222/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠")](https://gitee.com/kl222/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠")
 
 - 捐赠后，请在 [Donate.md](Donate.md) 中留下你的姓名与捐赠金额
@@ -112,10 +123,10 @@
 ## 贡献
 
 - [问题](https://github.com/KangLin/FaceRecognizer/issues)
-- [感谢贡献者](https://github.com/KangLin/FaceRecognizer/graphs/contributors)
+- [感谢所有贡献者](https://github.com/KangLin/FaceRecognizer/graphs/contributors)
 
 ## 许可协议
-- [本项目许可协议](License.md "License.md")  
+- [本项目许可协议](License.md "License.md")
 - 第三方库许可协议：详见各第三库许可协议。当你使用本项目依赖的第三方库时，同时请遵守其许可协议。
 
 ## 文档
