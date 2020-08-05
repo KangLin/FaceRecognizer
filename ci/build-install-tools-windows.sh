@@ -98,8 +98,8 @@ function install_android()
         rm sdk-tools-windows-${SDK_VERSION}.zip
 
         echo "Install sdk and ndk ......"
-        if [ -n "${ANDROID_API}" ]; then
-            PLATFORMS="platforms;${ANDROID_API}"
+        if [ -n "${ANDROID_PLATFORM}" ]; then
+            PLATFORMS="platforms;${ANDROID_PLATFORM}"
         else
             PLATFORMS="platforms"
         fi

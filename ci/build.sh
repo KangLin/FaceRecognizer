@@ -274,7 +274,7 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         -DSeetaFaceRecognizer_DIR=${SeetaFace_DIR}/lib/cmake \
         -DSeetaFaceTracker_DIR=${SeetaFace_DIR}/lib/cmake \
         -DSeetaQualityAssessor_DIR=${SeetaFace_DIR}/lib/cmake \
-        -DANDROID_PLATFORM=${ANDROID_API} -DANDROID_ABI="${BUILD_ARCH}" \
+        -DANDROID_PLATFORM=${ANDROID_PLATFORM} -DANDROID_ABI="${BUILD_ARCH}" \
         -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake
         
     cmake --build . --config MinSizeRel -- ${RABBIT_MAKE_JOB_PARA}
@@ -305,7 +305,7 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
     ${QT_ROOT}/bin/androiddeployqt \
         --input `pwd`/App/android_deployment_settings.json \
         --output `pwd`/android-build \
-        --android-platform ${ANDROID_API} \
+        --android-platform ${ANDROID_PLATFORM} \
         --gradle \
         --sign ${RabbitCommon_DIR}/RabbitCommon.keystore rabbitcommon \
         --storepass ${STOREPASS}

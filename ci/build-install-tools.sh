@@ -109,8 +109,8 @@ function install_android()
         unzip -q ${PACKAGE_DIR}/${SDK_PACKAGE} -d `pwd`
         
         echo "Install sdk and ndk ......"
-        if [ -n "${ANDROID_API}" ]; then
-            PLATFORMS="platforms;${ANDROID_API}"
+        if [ -n "${ANDROID_PLATFORM}" ]; then
+            PLATFORMS="platforms;${ANDROID_PLATFORM}"
         else
             PLATFORMS="platforms"
         fi

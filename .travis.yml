@@ -49,10 +49,10 @@ env:
 
   matrix: 
     # BUILD_ARCH qt 大于等于 5.14.0 可选（arm64-v8a armeabi-v7a x86_64 x86）组合
-    #- BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a x86" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.14 QT_VERSION=5.14.0 ANDROID_API=android-24 DOWNLOAD_QT=TRUE  GENERATORS="Unix Makefiles"
-    - BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.13 QT_VERSION=5.13.2 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android_arm_v0.2.9_in_linux.tar.gz
-    - BUILD_TARGERT="android" BUILD_ARCH="arm64-v8a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android_arm64_v0.2.9_in_linux.tar.gz
-    - BUILD_TARGERT="android" BUILD_ARCH="x86" QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_API=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android_x86_v0.2.9_in_linux.tar.gz
+    #- BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a x86" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.14 QT_VERSION=5.14.0 ANDROID_PLATFORM=android-24 DOWNLOAD_QT=TRUE  GENERATORS="Unix Makefiles"
+    - BUILD_TARGERT="android" BUILD_ARCH="armeabi-v7a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.13 QT_VERSION=5.13.2 ANDROID_PLATFORM=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android_arm_v0.2.9_in_linux.tar.gz
+    - BUILD_TARGERT="android" BUILD_ARCH="arm64-v8a" ANDROID_ARM_NEON=ON QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_PLATFORM=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android_arm64_v0.2.9_in_linux.tar.gz
+    - BUILD_TARGERT="android" BUILD_ARCH="x86" QT_VERSION_DIR=5.12 QT_VERSION=5.12.6 ANDROID_PLATFORM=android-24 DOWNLOAD_QT=TRUE GENERATORS="Unix Makefiles" DOWNLOAD_THIRDLIBS_URL=https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android_x86_v0.2.9_in_linux.tar.gz
   
     # DOWNLOAD_QT:
     #     APT: Use apt to install from ubuntu source;

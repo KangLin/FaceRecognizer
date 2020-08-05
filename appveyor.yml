@@ -23,7 +23,7 @@ environment:
     DOWNLOAD_QT: TRUE
     QT_VERSION_DIR: 5.12
     QT_VERSION: 5.12.6
-    ANDROID_API: android-24
+    ANDROID_PLATFORM: android-24
     TOOLCHAIN_VERSION: 4.9
     DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm_v0.2.9_in_windows.zip
 
@@ -34,7 +34,7 @@ environment:
     DOWNLOAD_QT: TRUE
     QT_VERSION_DIR: 5.12
     QT_VERSION: 5.12.6
-    ANDROID_API: android-24
+    ANDROID_PLATFORM: android-24
     TOOLCHAIN_VERSION: 4.9
     DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm64_v0.2.9_in_windows.zip
   
