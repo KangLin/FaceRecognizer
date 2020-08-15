@@ -41,6 +41,8 @@ void CFrmDisplay::paintEvent(QPaintEvent *event)
     if(m_Image.isNull()) return;
     
     QPainter painter(this);
+    // 设置平滑模式
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
     QRectF dstRect = rect();
     if(m_bAspectRation)
     {
