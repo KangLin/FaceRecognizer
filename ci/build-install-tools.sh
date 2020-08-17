@@ -1,6 +1,7 @@
 #!/bin/bash 
 #下载工具  
 
+# DOWNLOAD_THIRDLIBS_URL: 第三方库的下载地址
 #
 # DOWNLOAD_QT:
 #     APT: Use apt-get install qt
