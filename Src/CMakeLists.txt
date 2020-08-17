@@ -13,7 +13,7 @@ project(FaceRecognizer)
 OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
 if(BUILD_PERFORMANCE)
     set(LIBS_DEFINES ${LIBS_DEFINES} BUILD_PERFORMANCE)
-    set(SOURCES_FILES ${SOURCES_FILES} Performance.cpp)
+    set(SOURCE_FILES ${SOURCE_FILES} Performance.cpp)
 endif()
 
 OPTION(USE_LOG4CPLUS "Use log4cplus" ON)
@@ -50,8 +50,8 @@ if(USE_YUV)
     endif()
 endif(USE_YUV)
 
-set(SOURCES_FILES
-    ${SOURCES_FILES}
+set(SOURCE_FILES
+    ${SOURCE_FILES}
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     ConverFormat.cpp
@@ -94,11 +94,15 @@ set(HEADER_FILES
     )
 
 #翻译
-SET(TRANSLATIONS_NAME ${PROJECT_NAME})
-include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
-
-SET(RCC_FILES
-    ${TRANSLATIONS_RESOURCE_FILES})
+GENERATED_QT_TRANSLATIONS(SOURCES ${SOURCE_FILES}
+    OUT_QRC TRANSLATIONS_QRC_FILES)
+string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+if(BUILD_TYPE STREQUAL "debug")
+    LIST(APPEND PRIVATE_DEFINITIONS DEBUG)
+    LIST(APPEND RCC_FILES
+        ${TRANSLATIONS_QRC_FILES}
+        )
+endif()
 
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 if(BUILD_TYPE STREQUAL "debug")
@@ -108,7 +112,7 @@ endif()
 
 add_subdirectory(Plugins)
 
-add_library(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${RCC_FILES})
+add_library(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES} ${RCC_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib

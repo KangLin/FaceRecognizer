@@ -10,7 +10,7 @@ endif()
 
 project(FaceRecognizerApp)
 
-set(SOURCES_FILES
+set(SOURCE_FILES
     FrmDisplay.cpp
     DlgLog.cpp
     main.cpp
@@ -61,8 +61,15 @@ set(SOURCE_UI_FILES
     )
 
 #翻译
-SET(TRANSLATIONS_NAME ${PROJECT_NAME})
-include(${CMAKE_SOURCE_DIR}/cmake/Translations.cmake)
+GENERATED_QT_TRANSLATIONS(SOURCES ${SOURCE_FILES}
+    OUT_QRC TRANSLATIONS_QRC_FILES)
+string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+if(BUILD_TYPE STREQUAL "debug")
+    LIST(APPEND PRIVATE_DEFINITIONS DEBUG)
+    LIST(APPEND RCC_FILES
+        ${TRANSLATIONS_QRC_FILES}
+        )
+endif()
 
 add_definitions(-DBUILD_VERSION="${BUILD_VERSION}")
 add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
@@ -70,14 +77,14 @@ add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
 SET(RCC_FILES
     Resource/Resource.qrc
-    ${TRANSLATIONS_RESOURCE_FILES})
+    ${TRANSLATIONS_QRC_FILES})
 if(WIN32)
     SET(RCC_FILES ${RCC_FILES} AppIcon.rc)
 endif()
 if(ANDROID)
-    add_library(${PROJECT_NAME} SHARED ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+    add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 else()
-    add_executable(${PROJECT_NAME} ${SOURCES_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
+    add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES})
 endif()
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} FaceRecognizer)
 set_target_properties(${PROJECT_NAME} PROPERTIES
