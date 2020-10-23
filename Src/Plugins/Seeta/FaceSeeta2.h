@@ -16,7 +16,7 @@ public:
     
     Q_INTERFACES(CFace)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    Q_PLUGIN_METADATA(IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.Seeta.CFaceSeeta2")
+    Q_PLUGIN_METADATA(IID FACE_IID)
 #endif
 
     virtual int Initialize() override;

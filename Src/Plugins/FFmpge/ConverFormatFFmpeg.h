@@ -18,7 +18,7 @@ public:
 
     Q_INTERFACES(CConverFormat)
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    Q_PLUGIN_METADATA(IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.ImageTool.ConverFormat.FFmpeg")
+    Q_PLUGIN_METADATA(IID CONVER_FORMAT_IID)
 #endif
 
 

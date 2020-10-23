@@ -63,6 +63,7 @@ private:
     CDatabase* m_pDatabase;
 };
 
-Q_DECLARE_INTERFACE(CFace, "KangLinStudio.Rabbit.FaceRecognizer.Plugs.Interface.CFace")
+#define FACE_IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.Interface.CFace"
+Q_DECLARE_INTERFACE(CFace, FACE_IID)
 
 #endif // CFACE_H

@@ -25,5 +25,6 @@ public:
     virtual QString getName();
 };
 
-Q_DECLARE_INTERFACE(CConverFormat, "KangLinStudio.Rabbit.FaceRecognizer.Plugs.ImageTool.ConverFormat")
+#define CONVER_FORMAT_IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.ImageTool.ConverFormat"
+Q_DECLARE_INTERFACE(CConverFormat, CONVER_FORMAT_IID)
 #endif // CCONVERFORMAT_H
