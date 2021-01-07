@@ -20,7 +20,7 @@
 
 ## 简介
 
-- [项目位置](https://github.com/KangLin/FaceRecognizer)
+- 项目位置: https://github.com/KangLin/FaceRecognizer
 - [项目主页](https://kanglin.github.io/FaceRecognizer/)
 
 本项目提供一些人脸常见应用。提供应用级 AI （人脸）框架，方便自定义快速开发 AI （人脸） 应用。
