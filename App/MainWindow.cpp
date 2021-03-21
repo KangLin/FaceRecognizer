@@ -526,6 +526,7 @@ void MainWindow::on_actionAbout_A_triggered()
     CDlgAbout about(this);
     about.m_AppIcon = QImage(":/image/FaceRecognizer");
     about.m_szHomePage = "https://github.com/KangLin/FaceRecognizer";
+	about.m_szCopyrightStartTime = "2019";
     if(about.isHidden())
 #if defined (Q_OS_ANDROID)
         about.showMaximized();
