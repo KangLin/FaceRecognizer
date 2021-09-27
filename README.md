@@ -37,7 +37,9 @@
 - [ ] 人脸识别开源库测试比较
   + [x] [opencv](https://github.com/opencv/opencv), [opencv_contrib](https://github.com/opencv/opencv_contrib)
   + [ ] [dlib](https://github.com/davisking/dlib)
-  + [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
+  + [x] SeetaFace
+    - [x] [SeetaFace2](https://github.com/seetafaceengine/SeetaFace2)
+    - [x] [SeetaFace6](https://github.com/SeetaFace6Open/index)
   + [ ] [OpenFace](https://github.com/TadasBaltrusaitis/OpenFace)
   + [ ] [ncnn](https://github.com/Tencent/ncnn)
     - https://github.com/MirrorYuChen/ncnn_example

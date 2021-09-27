@@ -21,7 +21,9 @@
 + 依赖库
   - [必选] 玉兔公共库: https://github.com/KangLin/RabbitCommon
   - [可选] log4cplus: https://github.com/log4cplus/log4cplus
-  - [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
+  - [可选] SeetaFace
+    + [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
+    + [可选] SeetaFace6: https://github.com/SeetaFace6Open/index
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
   - [可选] opencv: https://opencv.org/ opencv_contrib: https://opencv.org/opencv_contrib
