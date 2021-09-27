@@ -6,7 +6,7 @@ endif()
 
 project(PluginFaceSeeta)
 find_package(SeetaFace)
-message("== Plugins SeetaFace:${SeetaFace_FOUND}")
+message("== Plugins SeetaFace:${SeetaFace_FOUND};${SeetaFace_LIBRARIES}")
 if(NOT SeetaFace_FOUND)
     return()
 endif()
@@ -33,7 +33,7 @@ set(HEADER_FILES
 
 # Install model files
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-    if(ENABLE_DOWNLOAD)
+    if(ENABLE_DOWNLOAD_MODUEL)
         DOWNLOAD(FILENAME "fd_2_00.dat"
             HASH e88669e5f1301ca56162de8aef1fd5d5
             URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
@@ -54,12 +54,12 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
             URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
             DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
             STATUS retval RELATIVE_URL)
-    else(ENABLE_DOWNLOAD)
-        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+    else(ENABLE_DOWNLOAD_MODUEL)
+        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD_MODUEL to ON "
             " to automation download, or manual download Seeta model files from"
             " https://github.com/KangLin/SeetaFace2/releases/tag/model"
             " to ${CMAKE_SOURCE_DIR}/model/Seeta")
-    endif(ENABLE_DOWNLOAD)
+    endif(ENABLE_DOWNLOAD_MODUEL)
 endif()
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
@@ -76,10 +76,9 @@ set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})
 if(NOT ANDROID)
     set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}/Face)
 endif()
-ADD_PLUG_TARGET(NAME ${PROJECT_NAME}
-    SOURCES_FILES ${SOURCES_FILES}
-    HEADER_FILES ${HEADER_FILES}
-    LIBS ${SeetaFace_LIBRARIES}
+ADD_PLUGIN_TARGET(NAME ${PROJECT_NAME}
+    SOURCE_FILES ${SOURCES_FILES} ${HEADER_FILES}
+    PRIVATE_LIBS ${SeetaFace_LIBRARIES} FaceRecognizer
     OUTPUT_DIR ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}/Face
     INSTALL_DIR ${INSTALL_PATH}
     VERSION ${BUILD_VERSION})
