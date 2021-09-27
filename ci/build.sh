@@ -257,6 +257,7 @@ if [ "${BUILD_TARGERT}" = "android" ]; then
         -DCMAKE_VERBOSE_MAKEFILE=ON \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DCMAKE_PREFIX_PATH=${QT_ROOT} \
+        -DQT_DIR=${QT_ROOT}/lib/cmake/Qt5 \
         -DQt5_DIR=${QT_ROOT}/lib/cmake/Qt5 \
         -DQt5Core_DIR=${QT_ROOT}/lib/cmake/Qt5Core \
         -DQt5Gui_DIR=${QT_ROOT}/lib/cmake/Qt5Gui \
