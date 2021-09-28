@@ -22,7 +22,7 @@
   - [必选] 玉兔公共库: https://github.com/KangLin/RabbitCommon
   - [可选] log4cplus: https://github.com/log4cplus/log4cplus
   - [可选] SeetaFace
-    + [可选] SeetaFace2: https://github.com/seetafaceengine/SeetaFace2
+    + [可选] SeetaFace2: https://github.com/kanglin/SeetaFace2
     + [可选] SeetaFace6: https://github.com/SeetaFace6Open/index
   - [可选] libyuv: https://github.com/KangLin/libyuv
   - [可选] ffmpeg: https://ffmpeg.org/
@@ -43,7 +43,7 @@
   - [可选] OpenCV_DIR: OpenCV 库安装位置(指向安装的 OpenCVConfig.cmake 目录)
   - [可选] dlib_DIR: dlib 库安装位置
   - [可选] ncnn_DIR: ncnn 库安装位置
-  - [可选] SeetaFace_DIR: SeetaFace 库安装位置(指向安装的 SeetaFaceConfig.cmake 目录,默认为 安装目录/lib/cmake )  
+  - [可选] SeetaFace_DIR: SeetaFace 库安装位置(指向安装的 SeetaFaceConfig.cmake 目录,默认为 安装目录/lib/cmake/SeetaFace2 )  
   - [可选] facedetection_DIR: libfacedetection 库安装位置
   - [可选] USE_YUV: 使用 YUV
   - [可选] YUV_DIR: libyuv 库安装位置(指向安装的 YUVConfig.cmake 目录,默认为 安装目录/lib/cmake )
