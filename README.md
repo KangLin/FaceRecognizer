@@ -3,6 +3,12 @@
 
 [![Windows build status](https://ci.appveyor.com/api/projects/status/n50nxc7d8mm9bdpb/branch/master?svg=true)](https://ci.appveyor.com/project/KangLin/facerecognizer/branch/master)
 [![Linux build Status](https://travis-ci.org/KangLin/FaceRecognizer.svg?branch=master)](https://travis-ci.org/KangLin/FaceRecognizer)
+[![Gitter](https://badges.gitter.im/FaceRecognizer/community.svg)](https://gitter.im/FaceRecognizer/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![GitHub stars](https://img.shields.io/github/stars/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/stars)
+[![GitHub forks](https://img.shields.io/github/forks/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/forks)
+[![GitHub issues](https://img.shields.io/github/issues/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/issues)
+[![Current release](https://img.shields.io/github/release/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/releases)
+[![All releases downloads](https://img.shields.io/github/downloads/KangLin/FaceRecognizer/total)](https://github.com/KangLin/FaceRecognizer/releases)
 
 --------------------------------------------------------------------------------
 
@@ -15,6 +21,11 @@
 - [文档](#文档)
   - [编译文档](docs/Build.md)
   - [开发文档](docs/Develop.md)
+
+--------------------------------------------------------------------------------
+## 点赞时间线
+
+[![Stargazers over time](https://starchart.cc/KangLin/FaceRecognizer.svg)](https://starchart.cc/KangLin/FaceRecognizer)
 
 --------------------------------------------------------------------------------
 
@@ -68,35 +79,44 @@
 
 ### [下载安装包](https://github.com/KangLin/FaceRecognizer/releases/latest)
 
-- windows
-    - [FaceRecognizer-Setup-v0.0.4.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer-Setup-v0.0.4.exe)  
-  Windows安装包，支持 Windows xp 以上系统 
++ [最后版本](https://github.com/KangLin/FaceRecognizer/releases/latest)
++ 当前版本：
+  - windows
+    + [FaceRecognizer-Setup-v0.0.4.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer-Setup-v0.0.4.exe)  
+    Windows安装包，支持 Windows xp 以上系统 
 
-- android
+  - android
     + [FaceRecognizer_armeabi-v7a_v0.0.4.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_armeabi-v7a_v0.0.4.apk)
 
-- linux
-    - [FaceRecognizer_v0.0.4.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_v0.0.4.tar.gz)  
-      AppImage格式的执行程序，可直接运行在linux系统，详见：https://appimage.org/  
-      使用:    
+  - linux
+    + [FaceRecognizer_v0.0.4.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_v0.0.4.tar.gz)  
+    AppImage格式的执行程序，可直接运行在linux系统，详见：https://appimage.org/  
+    使用:    
       1. 解压。复制FaceRecognizer_v0.0.4.tar.gz到安装目录，然后解压：
 
-              mkdir FaceRecognizer
-              cd FaceRecognizer
-              cp $DOWNLOAD/FaceRecognizer_v0.0.4.tar.gz .
-              tar xvfz FaceRecognizer_v0.0.4.tar.gz
+                mkdir FaceRecognizer
+                cd FaceRecognizer
+                cp $DOWNLOAD/FaceRecognizer_v0.0.4.tar.gz .
+                tar xvfz FaceRecognizer_v0.0.4.tar.gz
 
       2. 安装
         
-              ./install1.sh install FaceRecognizer
+                ./install1.sh install FaceRecognizer
         
       3. 如果需要，卸载
         
-              ./install1.sh remove FaceRecognizer
+                ./install1.sh remove FaceRecognizer
 
-- ubuntu
-    - [facerecognizer_0.0.4_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/facerecognizer_0.0.4_amd64.deb)  
-  deb 安装包,可用于 Ubuntu
+  - ubuntu
+    + [facerecognizer_0.0.4_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/facerecognizer_0.0.4_amd64.deb)  
+    deb 安装包,可用于 Ubuntu.使用：
+      
+          sudo apt install facerecognizer_0.0.4_amd64.deb
+
+          # 如要你是在老的 linux 发行版本上，你需要用下列命令替换：
+          # sudo dpkg -i facerecognizer_0.0.4_amd64.deb
+          # sudo apt-get install -f # 安装依赖
+      
 
 **注意**: 本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
@@ -116,7 +136,7 @@
 **注意**: 交流时，请直奔主题，主题明确，简明扼要。
 
 ### 捐赠资金
-[![捐赠](https://gitee.com/kl222/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠")](https://gitee.com/kl222/RabbitCommon/raw/master/Src/Resource/image/Contribute.png "捐赠")
+[![捐赠](https://gitlab.com/kl222/RabbitCommon/-/raw/master/Src/Resource/image/Contribute.png "捐赠")](https://gitlab.com/kl222/RabbitCommon/-/raw/master/Src/Resource/image/Contribute.png "捐赠")
 
 - 捐赠后，请在 [Donate.md](Donate.md) 中留下你的姓名与捐赠金额
 - 感谢 [Donate.md](Donate.md) 中的捐赠者对本项目的支持

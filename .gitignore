@@ -1,3 +1,4 @@
+CMakeLists.txt.user.*
 model/
 *.swp
 Makefile.Debug
