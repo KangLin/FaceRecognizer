@@ -71,7 +71,7 @@ if(BUILD_TYPE STREQUAL "debug")
         )
 endif()
 
-add_definitions(-DBUILD_VERSION="${BUILD_VERSION}")
+add_definitions(-DBUILD_VERSION="${FaceRecognizer_VERSION}")
 add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
 add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
@@ -85,8 +85,8 @@ endif()
 ADD_TARGET(NAME ${PROJECT_NAME}
     ISEXE
     ISWINDOWS
-    VERSION ${BUILD_VERSION}
-    PRIVATE_DEFINITIONS BUILD_VERSION="${BUILD_VERSION}"
+    VERSION ${FaceRecognizer_VERSION}
+    PRIVATE_DEFINITIONS FaceRecognizer_VERSION="${FaceRecognizer_VERSION}"
     SOURCE_FILES ${SOURCE_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES}
     PRIVATE_LIBS ${QT_LIBRARIES} FaceRecognizer)
 

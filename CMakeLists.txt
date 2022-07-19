@@ -12,7 +12,7 @@ if(POLICY CMP0020)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-SET(BUILD_VERSION "v0.0.4")
+SET(FaceRecognizer_VERSION "v0.0.4")
 # Find Git Version Patch
 IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     if(NOT GIT)
@@ -34,11 +34,11 @@ IF(EXISTS "${CMAKE_SOURCE_DIR}/.git")
                 OUTPUT_VARIABLE GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE
             )
         endif()
-        SET(BUILD_VERSION ${GIT_VERSION})
+        SET(FaceRecognizer_VERSION ${GIT_VERSION})
     ENDIF()
 ENDIF()
-message("BUILD_VERSION:${BUILD_VERSION}")
-set(VERSION ${BUILD_VERSION})
+message("FaceRecognizer_VERSION:${FaceRecognizer_VERSION}")
+set(VERSION ${FaceRecognizer_VERSION})
 
 if(NOT DEFINED CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
