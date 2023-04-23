@@ -1,0 +1,130 @@
+name: build_mingw
+
+on:
+  workflow_call:
+    outputs:
+      name:
+        description: "The artifact name"
+        value: ${{ jobs.build_mingw.outputs.name }}
+
+jobs:
+  build_mingw:
+    name: build mingw
+
+    strategy:
+      matrix:
+        BUILD_TYPE: [Release, Debug]
+
+    defaults:
+      run:
+        shell: cmd
+        
+    runs-on: windows-latest
+
+    env:
+      BUILD_TYPE:  ${{ matrix.BUILD_TYPE }}
+      SOURCE_DIR:  ${{github.workspace}}\.cache\source
+      TOOSL_DIR:   ${{github.workspace}}\.cache\tools
+      INSTALL_DIR: ${{github.workspace}}\.cache\install_mingw
+      FaceRecognizer_VERSION: v0.0.4
+      artifact_name: build_mingw
+
+    # Map the job outputs to step outputs
+    outputs:
+      name: ${{ env.artifact_name }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+            
+      - name: pacman
+        env:
+          PATH: C:\msys64\usr\bin
+        run: | 
+          C:\msys64\usr\bin\pacman.exe -S --noconfirm ^
+            git base-devel ^
+            mingw-w64-x86_64-cmake ^
+            mingw-w64-x86_64-make ^
+            mingw-w64-x86_64-nsis ^
+            mingw-w64-x86_64-gcc ^
+            mingw-w64-x86_64-qt5 ^
+            mingw-w64-x86_64-qtwebkit ^
+            mingw-w64-x86_64-zlib ^
+            mingw-w64-x86_64-openssl ^
+            mingw-w64-x86_64-cyrus-sasl ^
+            mingw-w64-x86_64-pixman ^
+            mingw-w64-x86_64-libjpeg-turbo ^
+            mingw-w64-x86_64-libpng ^
+            mingw-w64-x86_64-yasm ^
+            mingw-w64-x86_64-openh264 ^
+            mingw-w64-x86_64-ffmpeg ^
+            mingw-w64-x86_64-opencv ^
+            mingw-w64-x86_64-dlib ^
+            mingw-w64-x86_64-libyuv ^
+            mingw-w64-x86_64-sqlite3
+
+      - name: make_directory
+        run: |
+          cmake -E make_directory ${{env.SOURCE_DIR}}
+          cmake -E make_directory ${{env.TOOSL_DIR}}
+          cmake -E make_directory ${{env.INSTALL_DIR}}
+          cmake -E make_directory ${{github.workspace}}\build
+    
+      - name: Cache installed
+        uses: actions/cache@v3
+        id: cache-installed
+        with:
+          path: |
+            ${{env.INSTALL_DIR}}
+          key: cache-installed-mingw
+
+      - name: build SeetaFace2
+        working-directory: ${{env.SOURCE_DIR}}
+        env:
+          MSYSTEM: MINGW64
+          PATH: C:\msys64\mingw64\bin;C:\msys64\usr\bin
+        run: |
+          IF NOT EXIST ${{env.INSTALL_DIR}}\lib\cmake\SeetaFace2 (
+            git clone https://github.com/KangLin/SeetaFace2.git
+            cd SeetaFace2
+            cmake -E make_directory build
+            cd build
+            cmake .. -G"MinGW Makefiles" ^
+                -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
+          )
+
+      - name: git clone RabbitCommon
+        working-directory: ${{env.SOURCE_DIR}}
+        run: git clone https://github.com/KangLin/RabbitCommon.git
+
+      - name: build FaceRecognizer
+        working-directory: ${{github.workspace}}\build
+        env:
+          RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
+          MSYSTEM: MINGW64
+          PATH: C:\msys64\mingw64\bin;C:\msys64\usr\bin
+        run: |
+          cmake ${{github.workspace}} ^
+            -G"MinGW Makefiles" ^
+            -DCMARK_SHARED=OFF ^
+            -DCMARK_TESTS=OFF ^
+            -DCMARK_STATIC=ON ^
+            -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
+            -DCMAKE_INSTALL_PREFIX=${{github.workspace}}\build\install ^
+            -DCMAKE_PREFIX_PATH=${{env.INSTALL_DIR}} ^
+            -DSeetaFace_DIR=${{env.INSTALL_DIR}}\lib\cmake\SeetaFace2
+          cmake --build . --config ${{ matrix.BUILD_TYPE }}
+          cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
+
+#      - name: update
+#        if: ${{ matrix.BUILD_TYPE == 'Release' }}
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: ${{ env.artifact_name }}
+#          path: |
+#            ${{github.workspace}}/build/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe

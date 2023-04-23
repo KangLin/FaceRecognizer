@@ -10,7 +10,7 @@
     #include "DlgAbout.h"
     #include "RabbitCommonDir.h"
     #include "RabbitCommonTools.h"
-    #include "Style.h"
+    #include "FrmStyle.h"
 #endif
 
 #include "FrmDisplay.h"

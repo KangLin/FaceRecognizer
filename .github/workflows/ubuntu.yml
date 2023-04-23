@@ -1,0 +1,119 @@
+name: ubuntu
+
+on:
+  workflow_call:
+    outputs:
+      name:
+        description: "The artifact name"
+        value: ${{ jobs.build_ubuntu.outputs.name }}
+
+env:
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+jobs:
+  build_ubuntu:
+    strategy:
+      matrix:
+        BUILD_TYPE: [Release, Debug]
+
+    runs-on: ubuntu-20.04
+
+    env:
+      BUILD_TYPE:  ${{matrix.BUILD_TYPE}}
+      SOURCE_DIR:  ${{github.workspace}}/.cache/source
+      TOOSL_DIR:   ${{github.workspace}}/.cache/tools
+      INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
+      FaceRecognizer_VERSION: 0.0.4
+      artifact_name: build_ubuntu
+
+    # Map the job outputs to step outputs
+    outputs:
+      name: ${{ env.artifact_name }}
+  
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Make directories
+        run: |
+          cmake -E make_directory ${{env.SOURCE_DIR}}
+          cmake -E make_directory ${{env.TOOSL_DIR}}
+          cmake -E make_directory ${{env.INSTALL_DIR}}
+          cmake -E make_directory ${{github.workspace}}/build
+
+      - name: git clone RabbitCommon
+        working-directory: ${{env.SOURCE_DIR}}
+        run: git clone https://github.com/KangLin/RabbitCommon.git
+
+      - name: Install apt packages
+        run: |
+          sudo apt-get update -y \
+            && sudo apt-get upgrade -y \
+            && sudo apt-get install -y xvfb xpra \
+                cmake build-essential \
+                debhelper fakeroot graphviz \
+                libglu1-mesa-dev libpulse-mainloop-glib0 \
+                qttools5-dev qttools5-dev-tools qtbase5-dev qtbase5-dev-tools \
+                qtmultimedia5-dev qtlocation5-dev libqt5svg5-dev \
+                qtwebengine5-dev libqtermwidget5-0-dev libqt5serialport5-dev\
+                libutf8proc-dev libpam0g-dev \
+                libxkbcommon-dev libxkbcommon-x11-dev xorg-dev libx11-xcb-dev \
+                libx11-dev libxfixes-dev \
+                libdlib-dev libopencv-dev \
+                libavcodec-dev libavformat-dev libavfilter-dev libavdevice-dev libavresample-dev libavutil-dev \
+                libsqlite3-dev
+
+      - name: Cache installed
+        uses: actions/cache@v3
+        id: cache-installed
+        with:
+          path: |
+            ${{env.INSTALL_DIR}}
+          key: cache-installed-ubuntu
+
+      - name: build SeetaFace2
+        working-directory: ${{env.SOURCE_DIR}}
+        run: |
+          if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/SeetaFaceDetectorConfig.cmake ]; then
+            git clone https://github.com/KangLin/SeetaFace2.git
+            cd SeetaFace2
+            cmake -E make_directory build
+            cd build
+            cmake .. \
+                -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
+          fi
+
+      - name: build_debpackage.sh
+        working-directory: ${{github.workspace}}
+        env:
+          RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
+          SeetaFace_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaNet_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceDetector_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceLandmarker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceRecognizer_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceTracker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+        run: |
+          if [ ${{matrix.BUILD_TYPE}} == 'Release' ]; then
+              export BUILD_VIEWER_TERMINAL=OFF
+          else
+              export tigervnc_DIR=${{env.INSTALL_DIR}}/lib/cmake/tigervnc
+          fi
+          ./build_debpackage.sh /usr/lib/`uname -m`-linux-gnu/qt5
+          cp ../*.deb FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
+          md5sum FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb > FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb.md5sum
+
+      - name: update
+        if: ${{ matrix.BUILD_TYPE == 'Release' }}
+        uses: actions/upload-artifact@v3
+        with:
+            name: ${{ env.artifact_name }}
+            path: |
+              ${{github.workspace}}/FaceRecognizer_*.deb
+              ${{github.workspace}}/update_linux.xml
