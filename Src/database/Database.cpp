@@ -11,6 +11,8 @@
 #include <QMetaClassInfo>
 #include <QVariant>
 
+#include <stdexcept>
+
 CDatabase::CDatabase(QObject *parent)
     : QObject(parent)
 {

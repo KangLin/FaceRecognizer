@@ -6,9 +6,11 @@
 #include "ui_MainWindow.h"
 
 #ifdef RABBITCOMMON
-    #include "FrmUpdater/FrmUpdater.h"
-    #include "DlgAbout/DlgAbout.h"
+    #include "FrmUpdater.h"
+    #include "DlgAbout.h"
     #include "RabbitCommonDir.h"
+    #include "RabbitCommonTools.h"
+    #include "Style.h"
 #endif
 
 #include "FrmDisplay.h"
@@ -39,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_pCamera(nullptr)
 {
-    LoadStyle();
     ui->setupUi(this);
     CLog::Instance()->SetSaveFile(QStandardPaths::writableLocation(
                                    QStandardPaths::TempLocation)
@@ -138,56 +139,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::LoadStyle()
-{
-    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                  QSettings::IniFormat);
-    QString szFile = set.value("Sink",
-                  RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
-                  + QDir::separator()
-                  + "data" + QDir::separator()
-                  + "style" + QDir::separator()
-                  + "black.qss").toString();
-    return  LoadStyle(szFile);
-}
-
-int MainWindow::LoadStyle(const QString &szFile)
-{
-    if(szFile.isEmpty())
-        qApp->setStyleSheet("");
-    else
-    {
-        QFile file(szFile);
-        if(file.open(QFile::ReadOnly))
-        {
-            QString stylesheet= file.readAll();
-            qApp->setStyleSheet(stylesheet);
-            file.close();
-        }
-        else
-        {
-            qDebug() << "file open file fail:" << szFile;                       
-        }
-    }
-    return 0;
-}
-
 void MainWindow::on_actionStyle_triggered()
 {
-    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                  QSettings::IniFormat);
-    QString szFile = set.value("Sink",
-                  RabbitCommon::CDir::Instance()->GetDirApplicationInstallRoot()
-                  + QDir::separator()
-                  + "data" + QDir::separator()
-                  + "style" + QDir::separator()
-                  + "black.qss").toString();
-    szFile = RabbitCommon::CDir::GetOpenFileName(this, tr("Open sink"),
-                 szFile,
-                 tr("Style files(*.qss)"));
-    if(szFile.isEmpty()) return;
-    LoadStyle(szFile);
-    set.setValue("Sink", szFile);
+    CFrmStyle* s = new CFrmStyle();
+    s->show();
 }
 
 void MainWindow::slotCameraChanged(int index)
@@ -555,14 +510,17 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionOpen_log_file_triggered()
 {
-    int nRet = CLog::Instance()->OpneFile();
-    if(0 == nRet) return;
-    
-    CDlgLog log(CLog::Instance()->GetSaveFile());
-#if defined(Q_OS_ANDROID)
-    log.showMaximized();
-#endif
-    log.exec();
+    RabbitCommon::CTools::OpenLogFile();
+}
+
+void MainWindow::on_actionOpen_log_configure_triggered()
+{
+    RabbitCommon::CTools::OpenLogConfigureFile();
+}
+
+void MainWindow::on_actionOpen_log_directory_triggered()
+{
+    RabbitCommon::CTools::OpenLogFolder();
 }
 
 void MainWindow::on_actionAiLibraries_triggered(QAction* a)

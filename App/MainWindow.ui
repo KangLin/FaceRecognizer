@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOperate">
@@ -75,13 +75,21 @@
        <normaloff>:/image/Tools</normaloff>:/image/Tools</iconset>
      </property>
     </widget>
+    <widget class="QMenu" name="menuLog">
+     <property name="title">
+      <string>Log</string>
+     </property>
+     <addaction name="actionOpen_log_file"/>
+     <addaction name="actionOpen_log_configure"/>
+     <addaction name="actionOpen_log_directory"/>
+    </widget>
     <addaction name="actionStart"/>
     <addaction name="separator"/>
     <addaction name="actionDisplay"/>
     <addaction name="menuRegister"/>
     <addaction name="menuRecognizer"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_log_file"/>
+    <addaction name="menuLog"/>
     <addaction name="separator"/>
     <addaction name="menuAI_libraries"/>
     <addaction name="separator"/>
@@ -435,15 +443,6 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionOpen_log_file">
-   <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Log</normaloff>:/image/Log</iconset>
-   </property>
-   <property name="text">
-    <string>Open log file</string>
-   </property>
-  </action>
   <action name="actionKeep_display_aspect_ratio">
    <property name="checkable">
     <bool>true</bool>
@@ -477,6 +476,21 @@
    </property>
    <property name="whatsThis">
     <string>Load Style</string>
+   </property>
+  </action>
+  <action name="actionOpen_log_file">
+   <property name="text">
+    <string>Open log file</string>
+   </property>
+  </action>
+  <action name="actionOpen_log_configure">
+   <property name="text">
+    <string>Open log configure</string>
+   </property>
+  </action>
+  <action name="actionOpen_log_directory">
+   <property name="text">
+    <string>Open log directory</string>
    </property>
   </action>
  </widget>

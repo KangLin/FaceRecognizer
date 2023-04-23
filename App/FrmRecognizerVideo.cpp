@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QMutexLocker>
+#include <stdexcept>
 
 CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
     QWidget(parent),

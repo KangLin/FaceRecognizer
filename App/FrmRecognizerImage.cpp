@@ -11,6 +11,7 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QPen>
+#include <stdexcept>
 
 CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     QWidget(parent),

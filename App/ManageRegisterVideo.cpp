@@ -3,6 +3,7 @@
   */
 
 #include "ManageRegisterVideo.h"
+#include <stdexcept>
 
 CManageRegisterVideo::CManageRegisterVideo(QWidget *parent) : QWidget(parent)
 {

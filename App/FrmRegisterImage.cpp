@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QPalette>
+#include <stdexcept>
 
 CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     QWidget(parent),
