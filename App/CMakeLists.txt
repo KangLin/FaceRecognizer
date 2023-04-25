@@ -12,7 +12,6 @@ project(FaceRecognizerApp)
 
 set(SOURCE_FILES
     FrmDisplay.cpp
-    DlgLog.cpp
     main.cpp
     MainWindow.cpp
     FrmRegisterImage.cpp
@@ -31,7 +30,6 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
     FrmDisplay.h
-    DlgLog.h
     MainWindow.h
     FrmRegisterImage.h
     FrmRecognizerImage.h
@@ -49,7 +47,6 @@ set(HEADER_FILES
 
 set(SOURCE_UI_FILES
     FrmDisplay.ui
-    DlgLog.ui
     MainWindow.ui
     FrmRegisterImage.ui
     FrmRecognizerImage.ui
@@ -60,16 +57,6 @@ set(SOURCE_UI_FILES
     FrmBroweFile.ui
     )
 
-#翻译
-GENERATED_QT_TRANSLATIONS(SOURCES ${SOURCE_FILES}
-    OUT_QRC TRANSLATIONS_QRC_FILES)
-string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
-if(BUILD_TYPE STREQUAL "debug")
-    LIST(APPEND PRIVATE_DEFINITIONS DEBUG)
-    LIST(APPEND RCC_FILES
-        ${TRANSLATIONS_QRC_FILES}
-        )
-endif()
 
 add_definitions(-DBUILD_VERSION="${FaceRecognizer_VERSION}")
 add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
@@ -87,6 +74,7 @@ ADD_TARGET(NAME ${PROJECT_NAME}
     ISWINDOWS
     VERSION ${FaceRecognizer_VERSION}
     PRIVATE_DEFINITIONS FaceRecognizer_VERSION="${FaceRecognizer_VERSION}"
+        FaceRecognizer_REVISION="${FaceRecognizer_REVISION}"
     SOURCE_FILES ${SOURCE_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES}
     PRIVATE_LIBS ${QT_LIBRARIES} FaceRecognizer)
 
@@ -109,3 +97,22 @@ if(UNIX AND NOT ANDROID)
             COMPONENT Runtime)
 endif()
 
+if(Log4Qt_FOUND)
+    if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_log4qt.conf)
+        configure_file(${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_log4qt.conf
+            ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_log4qt.conf
+            COPYONLY)
+    endif()
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_log4qt.conf
+        DESTINATION etc
+            COMPONENT Runtime)
+else()
+    if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
+        configure_file(${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
+            ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini
+            COPYONLY)
+    endif()
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
+        DESTINATION etc
+            COMPONENT Runtime)
+endif()

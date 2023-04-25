@@ -1,5 +1,5 @@
 #include "ImageTool.h"
-#include "Log.h"
+
 #include "Performance.h"
 
 #if HAVE_LIBYUV
@@ -21,6 +21,9 @@
 #include <QFile>
 #include <QPainter>
 #include <QPluginLoader>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(logImageTool, "ImageTool")
 
 CImageTool::CImageTool(QObject *parent) : QObject(parent), m_pConverFormat(nullptr)
 {
@@ -77,7 +80,7 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
 #endif
         if(QVideoFrame::Format_YUV420P != frame.pixelFormat())
         {
-            LOG_MODEL_WARNING("CImageTool", "Please use one of opencv, ffmpeg, libyuv");
+            qWarning(logImageTool) << "Please use one of opencv, ffmpeg, libyuv";
         }
         break;
     }
@@ -118,8 +121,8 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                              videoFrame.width(), videoFrame.height());
                 break;
             default:
-                LOG_MODEL_ERROR("CImageTool",  "Don't implement conver format: %d",
-                                videoFrame.pixelFormat());
+                qCritical(logImageTool) << "Don't implement conver format:"
+                                        << videoFrame.pixelFormat();
             }
         }
     }while(0);
@@ -223,8 +226,8 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
         }
             break;
         default:
-            LOG_MODEL_WARNING("CImageTool",  "LibyuvConverFormatToRGB888 Don't implement conver format: %d",
-                            videoFrame.pixelFormat());
+            qWarning(logImageTool) << "LibyuvConverFormatToRGB888 Don't implement conver format:"
+                            << videoFrame.pixelFormat();
         }
         
     }while(0);
@@ -308,7 +311,7 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
     foreach (fileName, files) {
-        //LOG_MODEL_INFO("CImageTool", "file name:%s", fileName.toStdString().c_str());
+        qInfo(logImageTool) << "file name:" << fileName;
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
@@ -316,11 +319,14 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
             m_pConverFormat = qobject_cast<CConverFormat*>(plugin);
             if(m_pConverFormat)
             {
+                qInfo(logImageTool) << "Load conver format plugin:"
+                                    << m_pConverFormat->getName();
                 return 0;
             }
-        }else{
-            LOG_MODEL_ERROR("CImageTool", "load plugin error:%s",
-                            loader.errorString().toStdString().c_str());
+        } else {
+            qCritical(logImageTool) << "Load plugin error:"
+                                    << loader.errorString()
+                                    << "file:" << szPlugins;
         }
     }
 

@@ -15,12 +15,10 @@
     #include "FrmUpdater/FrmUpdater.h"
 #endif
 
-#include "Log.h"
+Q_DECLARE_LOGGING_CATEGORY(log)
 
 int main(int argc, char *argv[])
 {
-    LOG_INITIALIZER;
-
 #if (QT_VERSION > QT_VERSION_CHECK(5,6,0))
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -31,22 +29,22 @@ int main(int argc, char *argv[])
     app.setApplicationName("FaceRecognizer");
 
 #ifdef RABBITCOMMON
-    LOG_MODEL_INFO("main", "GetDirApplication:%s",
-                    RabbitCommon::CDir::Instance()->GetDirApplication().toStdString().c_str());
-    
+    qInfo(log) << "GetDirApplication:"
+               << RabbitCommon::CDir::Instance()->GetDirApplication();
+
     RabbitCommon::CTools::Instance()->Init();
 
     QString szTranslator = RabbitCommon::CDir::Instance()->GetDirTranslations()
             + "/" + qApp->applicationName()
             + "App_" + QLocale::system().name() + ".qm";
-    qDebug() << "Translator:" << szTranslator;
+    qDebug(log) << "Translator:" << szTranslator;
     QTranslator translator;
     translator.load(szTranslator);
     app.installTranslator(&translator);
 #endif
-   
+
     app.setApplicationDisplayName(QObject::tr("Face recognizer"));
-    
+
 #ifdef RABBITCOMMON 
     CFrmUpdater *pUpdate = new CFrmUpdater();
     pUpdate->SetTitle(QImage(":/image/FaceRecognizer"));
@@ -58,7 +56,7 @@ int main(int argc, char *argv[])
     if(f.open(QFile::ReadOnly))
     {
         QString szStyle = f.readAll();
-        qDebug() << "Style:" << szStyle;
+        qDebug(log) << "Style:" << szStyle;
         qApp->setStyleSheet(szStyle);
         f.close();
     }
@@ -66,16 +64,14 @@ int main(int argc, char *argv[])
     app.addLibraryPath(RabbitCommon::CDir::Instance()->GetDirPlugins());
 
     MainWindow w;
-    
+
 #if defined (Q_OS_ANDROID)
     w.showMaximized();
 #else
     w.show();
 #endif
-    
+
     int nRet = app.exec();
-     
-    LOG_CLEAN;
- 
+
     return nRet;
 }

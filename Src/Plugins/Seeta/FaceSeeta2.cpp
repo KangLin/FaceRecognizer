@@ -1,6 +1,5 @@
 #include "FaceSeeta2.h"
 
-#include "Log.h"
 #include "DetectorSeeta.h"
 #include "TrackerSeeta.h"
 #include "LandmarkerSeeta.h"
@@ -8,6 +7,9 @@
 #include "FaceToolsSeeta.h"
 
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(log, "Seeta2")
 
 CFaceSeeta2::CFaceSeeta2(QObject *parent) : CFace(parent)
 {}

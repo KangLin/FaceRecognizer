@@ -4,7 +4,10 @@
 
 #include "RecognizerThread.h"
 #include "RecognizerVideo.h"
-#include "Log.h"
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(log)
 
 CRecognizerThread::CRecognizerThread(CManageRecognizerVideo *parent) : QThread()
 {
@@ -13,13 +16,12 @@ CRecognizerThread::CRecognizerThread(CManageRecognizerVideo *parent) : QThread()
 
 CRecognizerThread::~CRecognizerThread()
 {
-    LOG_MODEL_DEBUG("RecognizerThread", "CRecognizerThread::~CRecognizerThread");
+    qDebug(log) << "CRecognizerThread::~CRecognizerThread";
 }
 
 void CRecognizerThread::run()
 {
-    LOG_MODEL_DEBUG("RecognizerThread", "CRecognizerThread::run():%d",
-                    QThread::currentThreadId());
+    qDebug(log) << "CRecognizerThread::run():" << QThread::currentThreadId();
     CRecognizerVideo recognizer;
     bool check = connect(m_pManageRecognizerVideo, SIGNAL(sigRecognize(const QImage&, const QVector<CTracker::strFace> &)),
             &recognizer, SLOT(slotRecognize(const QImage &, const QVector<CTracker::strFace> &)));

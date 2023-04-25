@@ -4,7 +4,6 @@
 
 #include "DelegateParamter.h"
 #include "FrmBroweFile.h"
-#include "Log.h"
 
 #include <QDebug>
 #include <QEvent>

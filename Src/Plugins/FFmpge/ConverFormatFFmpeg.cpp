@@ -1,11 +1,13 @@
 #include "ConverFormatFFmpeg.h"
 #include "Performance.h"
-#include "Log.h"
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(logFFMPGE, "FFMPGE")
 
 //设置日志的回调函数
 void Log(void*, int, const char* fmt, va_list vl)
 {
-    LOG_MODEL_DEBUG("ffmpeg", fmt, vl);
+    qDebug(logFFMPGE, fmt, vl);
 }
 
 CConverFormatFFmpeg::CConverFormatFFmpeg(QObject *parent) : CConverFormat(parent)
@@ -39,7 +41,7 @@ AVPixelFormat CConverFormatFFmpeg::QVideoFrameFormatToFFMpegPixFormat(
         return AV_PIX_FMT_YUV420P;
     case QVideoFrame::Format_YV12:
     default:
-        LOG_MODEL_ERROR("CConverFormatFFmpeg",  "Don't conver format: %d", format);
+        qCritical(logFFMPGE, "Don't conver format: %d", format);
         return AV_PIX_FMT_NONE;
     }
 }
@@ -94,7 +96,7 @@ int CConverFormatFFmpeg::ConvertFormat(/*[in]*/ const AVPicture &inFrame,
                                     NULL, NULL, NULL);
     if(NULL == pSwsCtx)
     {
-        LOG_MODEL_ERROR("Tool", "sws_getContext false");
+        qCritical(logFFMPGE) << "sws_getContext false";
         return -3;
     }
 
@@ -105,7 +107,7 @@ int CConverFormatFFmpeg::ConvertFormat(/*[in]*/ const AVPicture &inFrame,
                      outFrame.data, outFrame.linesize);
     if(nRet < 0)
     {
-        LOG_MODEL_ERROR("Tool", "sws_scale fail:%x", nRet);
+        qCritical(logFFMPGE) << "sws_scale fail:" << nRet;
     }
     else
     {
@@ -137,7 +139,7 @@ QImage CConverFormatFFmpeg::onConverFormatToRGB888(const QVideoFrame &frame)
                               img.height());
         if(nRet < 0)
         {
-            LOG_MODEL_ERROR("CConverFormatFFmpeg", "avpicture_get_size fail:%d", nRet);
+            qCritical(logFFMPGE) << "avpicture_get_size fail:" << nRet;
             break;
         }
         nRet = avpicture_fill(&inPic, videoFrame.bits(),
@@ -146,7 +148,7 @@ QImage CConverFormatFFmpeg::onConverFormatToRGB888(const QVideoFrame &frame)
                               videoFrame.height());
         if(nRet < 0)
         {
-            LOG_MODEL_ERROR("CConverFormatFFmpeg", "avpicture_fill is fail");
+            qCritical(logFFMPGE) << "avpicture_fill is fail";
             break;
         }
 

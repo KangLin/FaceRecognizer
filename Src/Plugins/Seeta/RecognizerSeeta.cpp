@@ -1,10 +1,12 @@
 #include "RecognizerSeeta.h"
-#include "Log.h"
 #include "RabbitCommonDir.h"
 #include "Performance.h"
 #include "FaceSeeta2.h"
 
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(log)
 
 CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
     : CRecognizer(pFace, parent)
@@ -32,7 +34,7 @@ int CRecognizerSeeta::UpdateParameter()
     default:
         QString szErr = "Don't support device %d" +
                 QString::number(getDevice());
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         break;
     }
     
@@ -50,12 +52,12 @@ int CRecognizerSeeta::UpdateParameter()
         if(!m_Recognizer)
         {
             QString szErr =  "new seeta::FaceDatabase fail";
-            LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
+            qCritical(log) << szErr;
             return -2;
         }        
     } catch (...) {
         QString szErr = "Load model fail：" + szFile;
-        LOG_MODEL_ERROR("CRecognizerSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         return -3;
     }
 
@@ -72,7 +74,7 @@ qint64 CRecognizerSeeta::Register(const QImage &image, const QRect &face)
     QVector<QPointF> points;
     if(m_pFace->GetLandmarker()->Mark(image, face, points))
     {
-        LOG_MODEL_ERROR("RecognizerSeeta", "GetLandmarker()->Mark fail");
+        qCritical(log) << "GetLandmarker()->Mark fail";
         return -1;
     }
     
@@ -110,7 +112,7 @@ qint64 CRecognizerSeeta::Register(const QImage &image,
     index = m_Recognizer->Register(data, p.data());
     PERFORMANCE_ADD_TIME(SeetaRegister, "Register")
     if(!img.rgbSwapped().save(GetRegisterImage(index)))
-        LOG_MODEL_ERROR("CRecognizerSeeta", "Save register image fail");
+        qCritical(log) << "Save register image fail";
     
     return index;
 }
@@ -135,7 +137,7 @@ qint64 CRecognizerSeeta::Query(const QImage &image, const QRect &face)
     QVector<QPointF> points;
     if(m_pFace->GetLandmarker()->Mark(image, face, points))
     {
-        LOG_MODEL_ERROR("RecognizerSeeta", "GetLandmarker()->Mark fail");
+        qCritical(log) << "GetLandmarker()->Mark fail";
         return -1;
     }
     

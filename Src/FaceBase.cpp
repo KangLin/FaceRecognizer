@@ -1,13 +1,16 @@
 #include "FaceBase.h"
-#include "Log.h"
+
 #include "RabbitCommonDir.h"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logFace)
 
 CFaceBase::CFaceBase(QObject *parent) : QObject(parent),
     m_Device(CPU)
 {
     m_szModelPath = RabbitCommon::CDir::Instance()->GetDirData(false)
             + QDir::separator() + "model";
-    LOG_MODEL_DEBUG("CParameter", "szPath:%s", m_szModelPath.toStdString().c_str());
+    qDebug(logFace) << "szPath:" << m_szModelPath;
 #if defined(Q_OS_ANDROID)
     QDir d;
     if(!d.exists(m_szModelPath))

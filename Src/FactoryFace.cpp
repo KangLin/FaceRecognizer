@@ -1,5 +1,4 @@
 #include "FactoryFace.h"
-#include "Log.h"
 
 #ifdef RABBITCOMMON
     #include <RabbitCommonDir.h>
@@ -7,7 +6,9 @@
 
 #include <QDebug>
 #include <QPluginLoader>
+#include <QLoggingCategory>
 
+Q_DECLARE_LOGGING_CATEGORY(logFace)
 CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     m_CurrentLib(-1),
     m_bOnlyUserCurrent(true)
@@ -162,37 +163,37 @@ bool CFactoryFace::bIsValid(const QString &szName)
 {
     if(!GetFace(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetFace is null");
+        qCritical(logFace) << "CFactory::GetFace is null";
         return false;
     }
     if(!GetDector(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetDector is null");
+        qCritical(logFace) << "CFactory::GetDector is null";
         return false;
     }
     if(!GetTracker(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetTracker is null");
+        qCritical(logFace) << "CFactory::GetTracker is null";
         return false;
     }
     if(!GetLandmarker(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetLandmarker is null");
+        qCritical(logFace) << "CFactory::GetLandmarker is null";
         return false;
     }
     if(!GetRecognizer(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetRecognizer is null");
+        qCritical(logFace) << "CFactory::GetRecognizer is null";
         return false;
     }
     if(!GetFaceTools(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetFaceTools is null");
+        qCritical(logFace) << "CFactory::GetFaceTools is null";
         return false;
     }
     if(!GetDatabase(szName))
     {
-        LOG_MODEL_ERROR("CFactory", "CFactory::GetDatabase is null");
+        qCritical(logFace) << "CFactory::GetDatabase is null";
         return false;
     }
     return true;
@@ -401,7 +402,7 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
     foreach (fileName, files) {
-        //LOG_MODEL_INFO("CFactoryFace", "file name:%s", fileName.toStdString().c_str());
+        //qInfo(logFace) << "file name:" << fileName;
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
@@ -410,11 +411,12 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
             if(pPlugFace)
             {
                 RegisterFace(pPlugFace);
+                qInfo(logFace) << "Load plugin:" << pPlugFace->GetName()
+                               << "; Path:" << szPlugins;
                 continue;
             }
         }else{
-            LOG_MODEL_ERROR("CFactoryFace", "load plugin error:%s",
-                            loader.errorString().toStdString().c_str());
+            qCritical(logFace) << "Load plugin error:" << loader.errorString();
         }
     }
 

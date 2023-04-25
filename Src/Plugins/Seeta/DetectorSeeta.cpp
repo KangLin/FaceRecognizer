@@ -1,9 +1,10 @@
 #include "DetectorSeeta.h"
-#include "Log.h"
 #include "Performance.h"
 
 #include <QDir>
-#include <QDebug>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(log)
 
 CDetectorSeeta::CDetectorSeeta(CFace *pFace, QObject *parent) 
     : CDetector(pFace, parent)
@@ -73,7 +74,7 @@ int CDetectorSeeta::UpdateParameter()
         break;
     default:
         QString szErr =  "Don't support device " + QString::number(getDevice());
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         break;
     }
     
@@ -90,7 +91,7 @@ int CDetectorSeeta::UpdateParameter()
         m_Dector = QSharedPointer<seeta::FaceDetector>(new seeta::FaceDetector(model));
     } catch (...) {
         QString szErr = "Load model fail:" + szFile;
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         return -2;
     }
     m_Dector->set(seeta::FaceDetector::PROPERTY_MIN_FACE_SIZE, getMinFaceSize());

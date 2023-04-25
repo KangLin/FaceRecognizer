@@ -1,8 +1,10 @@
 #include "LandmarkerSeeta.h"
-#include "Log.h"
 #include "Performance.h"
 
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(log)
 
 CLandmarkerSeeta::CLandmarkerSeeta(CFace *pFace, QObject *parent)
     : CLandmarker(pFace, parent)
@@ -27,7 +29,7 @@ int CLandmarkerSeeta::UpdateParameter()
     default:
         QString szErr = "Don't support device" +
                 QString::number(getDevice());
-        LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr.toStdString().c_str();
         break;
     }
     
@@ -50,7 +52,7 @@ int CLandmarkerSeeta::UpdateParameter()
                               new seeta::FaceLandmarker(model));   
     } catch (...) {
         QString szErr = "Load model fail:" + szFile;
-        LOG_MODEL_ERROR("CLandmarkerSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         return -1;
     }
     m_bInit = true;

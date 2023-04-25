@@ -1,6 +1,5 @@
 #include "Recognizer.h"
 #include <QDir>
-#include "Log.h"
 #include "RabbitCommonDir.h"
 
 CRecognizer::CRecognizer(CFace *pFace, QObject *parent)

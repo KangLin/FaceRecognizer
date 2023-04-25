@@ -4,7 +4,6 @@
 
 #include "FrmPara.h"
 #include "ui_FrmPara.h"
-#include "Log.h"
 #include "FactoryFace.h"
 #include "DelegateParamter.h"
 #include <QDebug>

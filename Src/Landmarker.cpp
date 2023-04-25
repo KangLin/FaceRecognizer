@@ -1,5 +1,4 @@
 #include "Landmarker.h"
-#include "Log.h"
 
 CLandmarker::CLandmarker(CFace *pFace, QObject *parent)
     : CFaceBase(parent),

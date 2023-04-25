@@ -19,8 +19,6 @@
 #include "ManageRegisterVideo.h"
 #include "ManageRecognizerVideo.h"
 #include "FactoryFace.h"
-#include "Log.h"
-#include "DlgLog.h"
 
 #include <QIcon>
 #include <QCameraInfo>
@@ -35,6 +33,9 @@
 #include <QStandardPaths>
 #include <QDockWidget>
 #include <QScreen>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(log, "main")
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,10 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pCamera(nullptr)
 {
     ui->setupUi(this);
-    CLog::Instance()->SetSaveFile(QStandardPaths::writableLocation(
-                                   QStandardPaths::TempLocation)
-                               + QDir::separator()
-                               + qApp->applicationName() + ".log");
+
     //Init menu
     ui->actionStart->setIcon(QIcon(":/image/Start"));
     ui->actionStart->setText(tr("Start"));
@@ -78,8 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->toolBar->addWidget(cmbCameras);
             QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
             foreach (const QCameraInfo &cameraInfo, cameras) {
-                //                LOG_MODEL_DEBUG("MainWindows", "Camer name: %s",
-                //                                cameraInfo.deviceName().toStdString().c_str());
+                //qDebug(log) << "Camer name:" << cameraInfo.deviceName();
                 cmbCameras->addItem(cameraInfo.description());
             }
 
@@ -166,14 +163,14 @@ void MainWindow::slotCameraChanged(int index)
     
     m_pCamera->load();
     
-    qInfo() << "Camera support:";
-    qInfo() << "Resolutions:" << m_pCamera->supportedViewfinderResolutions(m_pCamera->viewfinderSettings());
+    qInfo(log) << "Camera support:";
+    qInfo(log) << "Resolutions:" << m_pCamera->supportedViewfinderResolutions(m_pCamera->viewfinderSettings());
     QList<QCamera::FrameRateRange> ranges =  m_pCamera->supportedViewfinderFrameRateRanges();
     for(auto &rang: ranges)
     {
-        qInfo() << "Frame rate range:" << rang.maximumFrameRate << rang.maximumFrameRate;
+        qInfo(log) << "Frame rate range:" << rang.maximumFrameRate << rang.maximumFrameRate;
     }
-    qInfo() << "Pixel formate:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
+    qInfo(log) << "Pixel formate:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
     
 //    viewfinderSettings.setResolution(640, 480);
 //    viewfinderSettings.setMinimumFrameRate(10.0);
@@ -181,11 +178,11 @@ void MainWindow::slotCameraChanged(int index)
 //    m_pCamera->setViewfinderSettings(viewfinderSettings);
     m_pCamera->unload();
     
-    qInfo() << "Current:";
-    qInfo() << "Resolutions:" << viewfinderSettings.resolution();
-    qInfo() << "Frame rate:" << viewfinderSettings.minimumFrameRate() << viewfinderSettings.maximumFrameRate();
-    qInfo() << "Pixel formate:" << viewfinderSettings.pixelFormat();
-    qInfo() << "" << viewfinderSettings.pixelAspectRatio();
+    qInfo(log) << "Current:";
+    qInfo(log) << "Resolutions:" << viewfinderSettings.resolution();
+    qInfo(log) << "Frame rate:" << viewfinderSettings.minimumFrameRate() << viewfinderSettings.maximumFrameRate();
+    qInfo(log) << "Pixel formate:" << viewfinderSettings.pixelFormat();
+    qInfo(log) << "" << viewfinderSettings.pixelAspectRatio();
     
     //*/
     
@@ -206,7 +203,7 @@ void MainWindow::slotCameraChanged(int index)
 //            focusMode = QCameraFocus::MacroFocus;
 //        else
 //            focusMode = QCameraFocus::ManualFocus;
-        LOG_MODEL_DEBUG("MainWindow", "focusMode:0x%x", focusMode);
+        qDebug(log) << "focusMode:" << focusMode;
         focus->setFocusMode(focusMode);
         
         focus->setFocusPointMode(QCameraFocus::FocusPointAuto);
@@ -369,13 +366,13 @@ int MainWindow::CamerOrientation(int index)
 
     int screenAngle = 0;
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
-    qDebug() << "orientation:" << screen->orientation()
+    qDebug(log) << "orientation:" << screen->orientation()
              << screen->nativeOrientation()
              << screen->orientationUpdateMask();
     screenAngle = screen->angleBetween(screen->nativeOrientation(),
                                                  screen->orientation());
 #endif
-    qDebug() << "screenAngle:" << screenAngle
+    qDebug(log) << "screenAngle:" << screenAngle
              << "camer orientation:" << cameraInfo.orientation();
     int rotation;
     if (cameraInfo.position() == QCamera::BackFace) {
@@ -385,8 +382,8 @@ int MainWindow::CamerOrientation(int index)
         rotation = (360 - cameraInfo.orientation() + screenAngle) % 360;
     }
     int a = cameraInfo.orientation();
-    LOG_MODEL_DEBUG("MainWindow", "Camer angle: %d; %d", a, rotation);
-    qDebug() << "orientation1:" << a << rotation;
+    qDebug(log) << "Camer angle:" << a << rotation;
+    qDebug(log) << "orientation1:" << a << rotation;
     return rotation;
 }
 
@@ -394,9 +391,9 @@ void MainWindow::slotScreenOrientationChanged(Qt::ScreenOrientation orientation)
 {
     QScreen *screen = QGuiApplication::primaryScreen();
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
-    qDebug() << "slotScreenOrientationChanged:" << orientation
-             <<screen->nativeOrientation()
-            << screen->orientation();
+    qDebug(log) << "slotScreenOrientationChanged:" << orientation
+                <<screen->nativeOrientation()
+               << screen->orientation();
 #endif
 }
 
@@ -482,6 +479,7 @@ void MainWindow::on_actionAbout_A_triggered()
     about.m_AppIcon = QImage(":/image/FaceRecognizer");
     about.m_szHomePage = "https://github.com/KangLin/FaceRecognizer";
 	about.m_szCopyrightStartTime = "2019";
+    about.m_szVersionRevision = FaceRecognizer_REVISION;
     if(about.isHidden())
 #if defined (Q_OS_ANDROID)
         about.showMaximized();
@@ -551,7 +549,7 @@ int MainWindow::createDockPerameters()
     m_Paramter = QSharedPointer<CFrmPara>(new CFrmPara(dock));
     if(!m_Paramter) 
     {
-        LOG_MODEL_ERROR("MainWindow", "new CFrmPara fail");
+        qCritical(log) << "new CFrmPara fail";
         return -1;
     }
     dock->setWidget(m_Paramter.data());

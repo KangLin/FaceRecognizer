@@ -1,5 +1,4 @@
 #include "FaceToolsSeeta.h"
-#include "Log.h"
 #include "Performance.h"
 #include "Face.h"
 

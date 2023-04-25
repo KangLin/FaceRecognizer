@@ -3,11 +3,12 @@
   */
 
 #include "RecognizerVideo.h"
-#include "Log.h"
 #include "Performance.h"
 
-#include <QtDebug>
 #include <QThread>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logVideo)
 
 static int gIdQMapIntQString = qRegisterMetaType<QMap<int,QString> >();
 CRecognizerVideo::CRecognizerVideo(QObject *parent) : QObject(parent)
@@ -29,14 +30,14 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
                              "Mark points:" + QString::number(points.size()))
         if(points.isEmpty())
         {
-            LOG_MODEL_ERROR("CRecognizerVideo", "points is empty");
+            qCritical(logVideo) << "points is empty";
             continue;
         }
         qint64 index = pFace->GetRecognizer()->Query(image, face.rect);
         PERFORMANCE_ADD_TIME(CRecognizerVideo, "Query")
         if(-1 == index)
         {
-            LOG_MODEL_ERROR("CRecognizerVideo", "pid[%d] don't query", face.pid);
+            qCritical(logVideo) << "pid[" << face.pid << "] don't query";
             continue;
         }
         CDataRegister data;

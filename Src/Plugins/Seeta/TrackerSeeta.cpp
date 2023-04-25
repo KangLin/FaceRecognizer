@@ -1,8 +1,10 @@
 #include "TrackerSeeta.h"
-#include "Log.h"
 #include "Performance.h"
 
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(log)
 
 CTrackerSeeta::CTrackerSeeta(CFace *pFace, QObject *parent)
     : CTracker(pFace, parent)
@@ -24,7 +26,7 @@ int CTrackerSeeta::UpdateParameter()
     default:
         QString szErr = "Don't support device %d" +
                 QString::number(getDevice());
-        LOG_MODEL_ERROR("CDetectorSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         break;
     }
     
@@ -42,7 +44,7 @@ int CTrackerSeeta::UpdateParameter()
         m_Tracker = QSharedPointer<seeta::FaceTracker>(new seeta::FaceTracker(model));
     }catch(...){
         QString szErr = "Load model fail:" + szFile;
-        LOG_MODEL_ERROR("CTrackerSeeta", szErr.toStdString().c_str());
+        qCritical(log) << szErr;
         return -2;
     }
     m_Tracker->set(seeta::FaceTracker::PROPERTY_VIDEO_STABLE, 1);

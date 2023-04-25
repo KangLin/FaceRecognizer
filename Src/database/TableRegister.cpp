@@ -1,6 +1,5 @@
 #include "TableRegister.h"
 #include "RabbitCommonDir.h"
-#include "Log.h"
 
 #include <QDebug>
 #include <QSqlError>
@@ -10,6 +9,10 @@
 #include <QMetaProperty>
 #include <QMetaClassInfo>
 #include <QVariant>
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logDB)
 
 CTableRegister::CTableRegister(QObject *parent) : QObject(parent)
 {
@@ -32,7 +35,7 @@ int CTableRegister::Register(qint64 index, CDataRegister *pData)
 
     if(!m_Database.isOpen())
     {
-        LOG_MODEL_ERROR("CTableRegister", "database isn't open");
+        qCritical(logDB) << "database isn't open";
         return -3;
     }
     
@@ -59,12 +62,11 @@ int CTableRegister::Register(qint64 index, CDataRegister *pData)
     }
 
     QString szSql = "INSERT INTO Register (" + szCol + ") VALUES (" + szValue + ");";
-    LOG_MODEL_DEBUG("CDatabase", "sql: %s\n", szSql.toStdString().c_str());
+    qCritical(logDB) << "sql:" << szSql;
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
-        LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
-                   m_Database.lastError().text().toStdString().c_str());
+        qCritical(logDB) << "Register fail:" << m_Database.lastError().text();
         return m_Database.lastError().nativeErrorCode().toInt();
     }
     return nRet;
@@ -76,7 +78,7 @@ int CTableRegister::Delete(qint64 index)
     
     if(!m_Database.isOpen())
     {
-        LOG_MODEL_ERROR("CTableRegister", "database isn't open");
+        qCritical(logDB) << "database isn't open";
         return -1;
     }
     
@@ -85,8 +87,7 @@ int CTableRegister::Delete(qint64 index)
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
-        LOG_MODEL_ERROR("CDatabase", "Register fail: %s",
-                   m_Database.lastError().text().toStdString().c_str());
+        qCritical(logDB) << "Register fail:" << m_Database.lastError().text();
         return m_Database.lastError().nativeErrorCode().toInt();
     }
     return nRet;
@@ -100,7 +101,7 @@ int CTableRegister::GetRegisterInfo(qint64 index, CDataRegister *pData)
 
     if(!m_Database.isOpen())
     {
-        LOG_MODEL_ERROR("CTableRegister", "database isn't open");
+        qCritical(logDB) << "database isn't open";
         return -2;
     }
     
@@ -109,9 +110,8 @@ int CTableRegister::GetRegisterInfo(qint64 index, CDataRegister *pData)
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
-        LOG_MODEL_ERROR("CDatabase", "Register fail: %s; sql: %s",
-                   m_Database.lastError().text().toStdString().c_str(),
-                        szSql.toStdString().c_str());
+        qCritical(logDB) << "Register fail:" << m_Database.lastError().text()
+                          << "sql:" << szSql;
         return m_Database.lastError().nativeErrorCode().toInt();
     }
     while (query.next()) {
@@ -141,9 +141,8 @@ bool CTableRegister::IsExistNo(qint64 no)
     QSqlQuery query(m_Database);
     if(!query.exec(szSql))
     {
-        LOG_MODEL_ERROR("CDatabase", "Register fail: %s; sql: %s",
-                   m_Database.lastError().text().toStdString().c_str(),
-                        szSql.toStdString().c_str());
+        qCritical(logDB) << "Register fail:"
+                          << m_Database.lastError().text() << "sql:" << szSql;
         return false;
     }
     if(query.next())

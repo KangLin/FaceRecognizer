@@ -4,7 +4,6 @@
 
 #include "FrmRegisterImage.h"
 #include "ui_FrmRegisterImage.h"
-#include "Log.h"
 #include "RabbitCommonDir.h"
 
 #include <QMessageBox>

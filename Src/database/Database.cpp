@@ -1,6 +1,5 @@
 #include "Database.h"
 #include "RabbitCommonDir.h"
-#include "Log.h"
 
 #include <QDebug>
 #include <QSqlError>
@@ -12,6 +11,10 @@
 #include <QVariant>
 
 #include <stdexcept>
+
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(logDB, "DB")
 
 CDatabase::CDatabase(QObject *parent)
     : QObject(parent)
@@ -37,9 +40,9 @@ int CDatabase::InitDatabase()
     {
         if(!m_Database.open())
         {
-            LOG_MODEL_ERROR("CDatabase", "Open database fail: %s; %s",
-                            m_Database.lastError().text().toStdString().c_str(),
-                            m_szFile.toStdString().c_str());
+            qCritical(logDB) << "Open database fail:"
+                             << m_Database.lastError().text()
+                             << m_szFile;
             return m_Database.lastError().nativeErrorCode().toInt();
         }
 #if defined (_DEBUG) || defined(DEBUG)
@@ -55,11 +58,11 @@ int CDatabase::InitDatabase()
             QStringList sql = szSql.split(";");
             for(int i = 0; i < sql.size(); i++)
             {
-                LOG_MODEL_DEBUG("CDatabase", "sql: %s", sql[i].toStdString().c_str());
+                qCritical(logDB) << "sql:" << sql[i];
                 if(!query.exec(sql[i]) && m_Database.lastError().type() != QSqlError::NoError)
                 {
-                    LOG_MODEL_ERROR("CDatabase", "Create database fail: %s",
-                                    m_Database.lastError().text().toStdString().c_str());
+                    qCritical(logDB) << "Create database fail:"
+                                     << m_Database.lastError().text();
                     file.close();
                     m_Database.close();
                     QDir d;
@@ -74,8 +77,8 @@ int CDatabase::InitDatabase()
 
     if(!m_Database.open())
     {
-        LOG_MODEL_ERROR("CDatabase", "Open database fail: %s",
-                   m_Database.lastError().text().toStdString().c_str());
+        qCritical(logDB) << "Open database fail:"
+                   << m_Database.lastError().text();
         return -2;
     }
 
