@@ -2,37 +2,37 @@
   @author: Kang Lin<kl222@126.com>
   */
 
-#include "FrmBroweFile.h"
-#include "ui_FrmBroweFile.h"
+#include "FrmBrowseFile.h"
+#include "ui_FrmBrowseFile.h"
 #include "RabbitCommonDir.h"
 
 #include <QPainter>
 
-CFrmBroweFile::CFrmBroweFile(QWidget *parent) :
+CFrmBrowseFile::CFrmBrowseFile(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CFrmBroweFile),
+    ui(new Ui::CFrmBrowseFile),
     m_bIsDirectory(false)
 {
     ui->setupUi(this);
 }
 
-CFrmBroweFile::~CFrmBroweFile()
+CFrmBrowseFile::~CFrmBrowseFile()
 {
     delete ui;
 }
 
-int CFrmBroweFile::setFile(const QString &szFile)
+int CFrmBrowseFile::setFile(const QString &szFile)
 {
     ui->leFile->setText(szFile);
     return 0;
 }
 
-QString CFrmBroweFile::getFile()
+QString CFrmBrowseFile::getFile()
 {
     return ui->leFile->text();
 }
 
-void CFrmBroweFile::on_pbBrowse_clicked()
+void CFrmBrowseFile::on_pbBrowse_clicked()
 {
     QString szFile;
     if(m_bIsDirectory)
@@ -47,7 +47,7 @@ void CFrmBroweFile::on_pbBrowse_clicked()
     setFile(szFile);
 }
 
-int CFrmBroweFile::setStyleOption(const QStyleOptionViewItem *option)
+int CFrmBrowseFile::setStyleOption(const QStyleOptionViewItem *option)
 {
     m_StyleOptioins = *option;
     ui->leFile->setPalette(option->palette);
@@ -56,7 +56,7 @@ int CFrmBroweFile::setStyleOption(const QStyleOptionViewItem *option)
     return 0;
 }
 
-void CFrmBroweFile::paintEvent(QPaintEvent *event)
+void CFrmBrowseFile::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QPen pen;
@@ -68,12 +68,12 @@ void CFrmBroweFile::paintEvent(QPaintEvent *event)
     return;   
 }
 
-bool CFrmBroweFile::getIsDirectory()
+bool CFrmBrowseFile::getIsDirectory()
 {
     return m_bIsDirectory;
 }
 
-int CFrmBroweFile::setIsDirectory(bool d)
+int CFrmBrowseFile::setIsDirectory(bool d)
 {
     m_bIsDirectory = d;
     return 0;

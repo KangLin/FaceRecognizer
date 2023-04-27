@@ -48,6 +48,8 @@ private slots:
     void slotParaDock_triggered(bool checked);
     void slotScreenOrientationChanged(Qt::ScreenOrientation orientation);
 
+    void slotPlayError(QMediaPlayer::Error error);
+
 private:
     int CamerOrientation(int index);
     int InitCamerOrientation();

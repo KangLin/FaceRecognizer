@@ -64,6 +64,11 @@ MainWindow::MainWindow(QWidget *parent) :
     pSourceGroup->addAction(ui->actionFile);
     pSourceGroup->addAction(ui->actionCamera);
     
+    // File
+    bool check = connect(&m_Player, SIGNAL(error(QMediaPlayer::Error)),
+                         this, SLOT(slotPlayError(QMediaPlayer::Error)));
+    Q_ASSERT(check);
+
     // Camera
     if(!QCameraInfo::availableCameras().isEmpty())
     {
@@ -298,12 +303,19 @@ void MainWindow::on_actionFile_triggered()
         return;
 
     set.setValue("SourceFile", szFile);
-    
-
-    QUrl url = QUrl::fromLocalFile(szFile);
-    m_Player.setMedia(url);
-    m_Player.setVideoOutput(&m_CaptureFrame);
 #endif
+}
+
+void MainWindow::slotPlayError(QMediaPlayer::Error error)
+{
+    qCritical(log) << "Play error:" << error
+                   << "Url:" << m_Player.media().canonicalUrl().toString();
+
+    m_Player.stop();
+    ui->actionStart->setIcon(QIcon(":/image/Start"));
+    ui->actionStart->setText(tr("Start"));
+    ui->actionStart->setToolTip(tr("Start"));
+    ui->actionStart->setStatusTip(tr("Start"));
 }
 
 void MainWindow::on_actionStart_triggered()
@@ -324,8 +336,13 @@ void MainWindow::on_actionStart_triggered()
             szFile = set.value("SourceFile").toString();
         
             QUrl url = QUrl::fromLocalFile(szFile);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             m_Player.setMedia(url);
             m_Player.setVideoOutput(&m_CaptureFrame);
+#else
+            m_Player.setSource(url);
+            
+#endif
             
             m_Player.play();
         }

@@ -11,7 +11,6 @@
 #include <QDir>
 #include <QGuiApplication>
 #include <QScreen>
-#include <QDesktopWidget>
 #include <QApplication>
 #include <QFileDialog>
 #include <sstream>

@@ -9,7 +9,11 @@
 #include <QPainter>
 
 CFrmDisplay::CFrmDisplay(QWidget *parent) :
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QWidget(parent),
+    #else
+    QVideoWidget(parent),
+    #endif
     ui(new Ui::CFrmDisplay),
     m_bAspectRation(true)
 {

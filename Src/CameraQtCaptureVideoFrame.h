@@ -39,10 +39,13 @@
 
 #ifndef CAPTUREVIDEOFRAME_H
 #define CAPTUREVIDEOFRAME_H
+#include <QtGlobal>
 
-#include <QAbstractVideoSurface>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    #include <QAbstractVideoSurface>
+#endif
 #ifdef ANDROID
-#include <QVideoProbe>
+    #include <QVideoProbe>
 #endif
 #include <QCamera>
 #include <QImage>
@@ -54,7 +57,8 @@
  * @brief The CCameraQtCaptureVideoFrame class
  * @ingroup RABBITIM_IMPLEMENT_CAMERA_QT
  */
-class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame : public QAbstractVideoSurface
+class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame
+        : public QAbstractVideoSurface
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
@@ -69,14 +73,12 @@ public:
     //bool isFormatSupported(const QVideoSurfaceFormat &format) const;
 
     int SetCameraAngle(int angle);
-    
+    virtual bool present(const QVideoFrame &frame);
+
 signals:
     //从摄像头捕获的原始帧  
     void sigCaptureFrame(const QVideoFrame &frame);
     void sigCaptureFrame(const QImage &frame);
-
-private slots:
-    virtual bool present(const QVideoFrame &frame);
 
 private:
 #ifdef ANDROID

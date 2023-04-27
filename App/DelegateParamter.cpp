@@ -3,7 +3,7 @@
   */
 
 #include "DelegateParamter.h"
-#include "FrmBroweFile.h"
+#include "FrmBrowseFile.h"
 
 #include <QDebug>
 #include <QEvent>
@@ -25,7 +25,7 @@ QSize CDelegateParamter::sizeHint(const QStyleOptionViewItem &option,
     case TYPE_DIRECTORY:
     case TYPE_FILE:
     {
-        CFrmBroweFile f;
+        CFrmBrowseFile f;
         f.setStyleOption(&option);
         f.setFile(index.data(Qt::EditRole).toString());
         s.setWidth(qMax(f.sizeHint().width(), s.width()));
@@ -63,7 +63,7 @@ QWidget *CDelegateParamter::createEditor(QWidget *parent,
     {
     case TYPE_DIRECTORY:
     {
-        CFrmBroweFile *pW = new CFrmBroweFile(parent);
+        CFrmBrowseFile *pW = new CFrmBrowseFile(parent);
         pW->setStyleOption(&option);
         pW->setFile(index.data(Qt::EditRole).toString());
         pW->setIsDirectory(true);
@@ -74,7 +74,7 @@ QWidget *CDelegateParamter::createEditor(QWidget *parent,
     }
     case TYPE_FILE:
     {
-        CFrmBroweFile *pW = new CFrmBroweFile(parent);
+        CFrmBrowseFile *pW = new CFrmBrowseFile(parent);
         pW->setStyleOption(&option);
         pW->setFile(index.data(Qt::EditRole).toString());
         pW->resize(option.rect.size());
@@ -118,7 +118,7 @@ void CDelegateParamter::setEditorData(QWidget *editor,
     case TYPE_DIRECTORY:
     case TYPE_FILE:
     {
-        CFrmBroweFile *pW = dynamic_cast<CFrmBroweFile*>(editor);
+        CFrmBrowseFile *pW = dynamic_cast<CFrmBrowseFile*>(editor);
         pW->setFile(index.data(Qt::EditRole).toString());
         return;
     }
@@ -150,7 +150,7 @@ void CDelegateParamter::setModelData(QWidget *editor,
     case TYPE_DIRECTORY:
     case TYPE_FILE:
     {
-        CFrmBroweFile *pW = dynamic_cast<CFrmBroweFile*>(editor);
+        CFrmBrowseFile *pW = dynamic_cast<CFrmBrowseFile*>(editor);
         model->setData(index, pW->getFile());
         return;
     }

@@ -9,14 +9,14 @@
 #include <QStyleOptionViewItem>
 
 namespace Ui {
-class CFrmBroweFile;
+class CFrmBrowseFile;
 }
 
 /**
- * @brief The CFrmBroweFile class
+ * @brief The CFrmBrowseFile class
  *        提供打开文件或目录。用于 CFrmPara
  */
-class CFrmBroweFile : public QWidget
+class CFrmBrowseFile : public QWidget
 {
     Q_OBJECT
   
@@ -24,8 +24,8 @@ class CFrmBroweFile : public QWidget
     Q_PROPERTY(bool isDirectory READ getIsDirectory WRITE setIsDirectory)
     
 public:
-    explicit CFrmBroweFile(QWidget *parent = nullptr);
-    virtual ~CFrmBroweFile() override;
+    explicit CFrmBrowseFile(QWidget *parent = nullptr);
+    virtual ~CFrmBrowseFile() override;
     
     QString getFile();
     int setFile(const QString &szFile);
@@ -38,7 +38,7 @@ private slots:
     void on_pbBrowse_clicked();
     
 private:
-    Ui::CFrmBroweFile *ui;
+    Ui::CFrmBrowseFile *ui;
 
     QStyleOptionViewItem m_StyleOptioins;
     bool m_bIsDirectory;

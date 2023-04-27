@@ -25,7 +25,7 @@ set(SOURCE_FILES
     RecognizerVideo.cpp
     FrmPara.cpp
     DelegateParamter.cpp
-    FrmBroweFile.cpp
+    FrmBrowseFile.cpp
     )
 
 set(HEADER_FILES
@@ -42,7 +42,7 @@ set(HEADER_FILES
     RecognizerVideo.h
     FrmPara.h
     DelegateParamter.h
-    FrmBroweFile.h
+    FrmBrowseFile.h
     )
 
 set(SOURCE_UI_FILES
@@ -54,7 +54,7 @@ set(SOURCE_UI_FILES
     FrmRecognizerVideo.ui
     ManageRecognizerVideo.ui
     FrmPara.ui
-    FrmBroweFile.ui
+    FrmBrowseFile.ui
     )
 
 

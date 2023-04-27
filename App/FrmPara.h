@@ -17,7 +17,7 @@ class CFrmPara;
 /**
  * @brief The CFrmPara class
  * @see CDelegateParamter
- *      CFrmBroweFile
+ *      CFrmBrowseFile
  */
 class CFrmPara : public QWidget
 {
@@ -26,7 +26,7 @@ class CFrmPara : public QWidget
 
 public:
     explicit CFrmPara(QWidget *parent = nullptr);
-    ~CFrmPara();
+    virtual ~CFrmPara();
     
 public Q_SLOTS:
     int slotUpdateParamter(QAction *pAction = nullptr);
