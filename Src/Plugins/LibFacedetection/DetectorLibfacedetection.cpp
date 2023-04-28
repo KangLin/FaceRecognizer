@@ -14,7 +14,7 @@ int CDetectorLibfacedetection::UpdateParameter()
 int CDetectorLibfacedetection::Detect(const QImage &image, QVector<QRect> &faces)
 {
     if(image.isNull()) return -1;
-    
+
     PERFORMANCE(Libfacedetection)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)

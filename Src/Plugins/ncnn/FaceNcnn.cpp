@@ -30,7 +30,7 @@ int CFaceNcnn::setDectorAlgorithm(DectorAlgorithm algorithm)
         return 0;
     m_DectorAlgorithm = algorithm;
     if(m_pDetector) delete m_pDetector;
-    
+
     switch (m_DectorAlgorithm) {
     case RETINA:
         m_pDetector = new CDetectorNcnnRetina(this);

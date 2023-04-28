@@ -20,7 +20,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
 {
     if(image.isNull()) return -1;
     if(!m_bInit) return -2;
-    
+
     PERFORMANCE(SeetaDectect)
     QImage img = image;
     if(img.format() != QImage::Format_RGB888)
@@ -40,7 +40,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
     data.height = img.height();
     data.channels = 3;
     data.data = img.bits();
-    
+
     faces.clear();
     PERFORMANCE_START(SeetaDectect)
     SeetaFaceInfoArray f = m_Dector->detect(data);

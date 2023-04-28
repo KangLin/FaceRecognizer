@@ -1,8 +1,11 @@
 #include "DetectorNcnnRetina.h"
-#include "Log.h"
 #include "Performance.h"
+#include <cmath>
 #include <QDir>
 #include <QtGlobal>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(logNCNN, "NCNN")
 
 CDetectorNcnnRetina::CDetectorNcnnRetina(CFace *pFace, QObject *parent)
     : CDetector(pFace, parent),
@@ -90,7 +93,7 @@ int CDetectorNcnnRetina::UpdateParameter()
         m_pNet->clear();
         if (m_pNet->load_param(szFileParam.toStdString().c_str()) == -1 ||
             m_pNet->load_model(szFileBin.toStdString().c_str()) == -1) {
-            LOG_MODEL_ERROR("CDetectorNcnnRetina", "load face detect model failed.");
+            qCritical(logNCNN) << "Load face detect model failed.";
             return -1;
         }
         
@@ -105,7 +108,7 @@ int CDetectorNcnnRetina::UpdateParameter()
 
     } catch (...) {
         QString szErr = "Load model fail:" + szFileParam;
-        LOG_MODEL_ERROR("CDetectorNcnnRetina", szErr.toStdString().c_str());
+        qCritical(logNCNN) << szErr;
         return -2;
     }
     m_bInit = true;
