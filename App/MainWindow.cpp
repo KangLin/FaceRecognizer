@@ -311,11 +311,7 @@ void MainWindow::slotPlayError(QMediaPlayer::Error error)
     qCritical(log) << "Play error:" << error
                    << "Url:" << m_Player.media().canonicalUrl().toString();
 
-    m_Player.stop();
-    ui->actionStart->setIcon(QIcon(":/image/Start"));
-    ui->actionStart->setText(tr("Start"));
-    ui->actionStart->setToolTip(tr("Start"));
-    ui->actionStart->setStatusTip(tr("Start"));
+    ui->actionStart->trigger();
 }
 
 void MainWindow::on_actionStart_triggered()
