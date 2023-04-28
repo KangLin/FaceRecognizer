@@ -64,6 +64,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pSourceGroup->addAction(ui->actionFile);
     pSourceGroup->addAction(ui->actionCamera);
     
+    ui->menuTools->addMenu(RabbitCommon::CTools::GetLogMenu(this));
+
     // File
     bool check = connect(&m_Player, SIGNAL(error(QMediaPlayer::Error)),
                          this, SLOT(slotPlayError(QMediaPlayer::Error)));
@@ -517,21 +519,6 @@ void MainWindow::on_actionUpdate_U_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     qApp->quit();
-}
-
-void MainWindow::on_actionOpen_log_file_triggered()
-{
-    RabbitCommon::CTools::OpenLogFile();
-}
-
-void MainWindow::on_actionOpen_log_configure_triggered()
-{
-    RabbitCommon::CTools::OpenLogConfigureFile();
-}
-
-void MainWindow::on_actionOpen_log_directory_triggered()
-{
-    RabbitCommon::CTools::OpenLogFolder();
 }
 
 void MainWindow::on_actionAiLibraries_triggered(QAction* a)

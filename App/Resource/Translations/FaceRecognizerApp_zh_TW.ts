@@ -468,88 +468,85 @@
         <translation>人臉識別</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="159"/>
-        <location filename="../../MainWindow.ui" line="162"/>
+        <location filename="../../MainWindow.ui" line="149"/>
+        <location filename="../../MainWindow.ui" line="152"/>
         <location filename="../../MainWindow.cpp" line="49"/>
         <location filename="../../MainWindow.cpp" line="50"/>
         <location filename="../../MainWindow.cpp" line="51"/>
-        <location filename="../../MainWindow.cpp" line="316"/>
-        <location filename="../../MainWindow.cpp" line="317"/>
-        <location filename="../../MainWindow.cpp" line="318"/>
+        <location filename="../../MainWindow.cpp" line="359"/>
+        <location filename="../../MainWindow.cpp" line="360"/>
         <location filename="../../MainWindow.cpp" line="361"/>
-        <location filename="../../MainWindow.cpp" line="362"/>
-        <location filename="../../MainWindow.cpp" line="363"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="288"/>
-        <location filename="../../MainWindow.ui" line="354"/>
+        <location filename="../../MainWindow.ui" line="278"/>
+        <location filename="../../MainWindow.ui" line="344"/>
         <source>Image</source>
         <translation>圖像</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="291"/>
-        <location filename="../../MainWindow.ui" line="294"/>
-        <location filename="../../MainWindow.ui" line="297"/>
+        <location filename="../../MainWindow.ui" line="281"/>
+        <location filename="../../MainWindow.ui" line="284"/>
+        <location filename="../../MainWindow.ui" line="287"/>
         <source>Register from image</source>
         <translation>從圖像註冊</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="312"/>
+        <location filename="../../MainWindow.ui" line="302"/>
         <source>Image directory</source>
         <translation>圖像目錄</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="315"/>
-        <location filename="../../MainWindow.ui" line="318"/>
-        <location filename="../../MainWindow.ui" line="321"/>
+        <location filename="../../MainWindow.ui" line="305"/>
+        <location filename="../../MainWindow.ui" line="308"/>
+        <location filename="../../MainWindow.ui" line="311"/>
         <source>Register from image directory</source>
         <translation>從圖像目錄註冊</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="333"/>
-        <location filename="../../MainWindow.ui" line="375"/>
+        <location filename="../../MainWindow.ui" line="323"/>
+        <location filename="../../MainWindow.ui" line="365"/>
         <source>Video</source>
         <translation>視頻</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="336"/>
-        <location filename="../../MainWindow.ui" line="339"/>
-        <location filename="../../MainWindow.ui" line="342"/>
+        <location filename="../../MainWindow.ui" line="326"/>
+        <location filename="../../MainWindow.ui" line="329"/>
+        <location filename="../../MainWindow.ui" line="332"/>
         <source>Register from video</source>
         <translation>從視頻註冊</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="357"/>
-        <location filename="../../MainWindow.ui" line="360"/>
-        <location filename="../../MainWindow.ui" line="363"/>
+        <location filename="../../MainWindow.ui" line="347"/>
+        <location filename="../../MainWindow.ui" line="350"/>
+        <location filename="../../MainWindow.ui" line="353"/>
         <source>Recognizer from image</source>
         <translation>從圖像識別</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="378"/>
-        <location filename="../../MainWindow.ui" line="381"/>
-        <location filename="../../MainWindow.ui" line="384"/>
+        <location filename="../../MainWindow.ui" line="368"/>
+        <location filename="../../MainWindow.ui" line="371"/>
+        <location filename="../../MainWindow.ui" line="374"/>
         <source>Recongnizer from video</source>
         <translation>從視頻識別</translation>
     </message>
     <message>
+        <location filename="../../MainWindow.cpp" line="348"/>
+        <location filename="../../MainWindow.cpp" line="349"/>
         <location filename="../../MainWindow.cpp" line="350"/>
-        <location filename="../../MainWindow.cpp" line="351"/>
-        <location filename="../../MainWindow.cpp" line="352"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="170"/>
-        <location filename="../../MainWindow.ui" line="173"/>
+        <location filename="../../MainWindow.ui" line="160"/>
+        <location filename="../../MainWindow.ui" line="163"/>
         <source>Detector</source>
         <translation>探測</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="181"/>
-        <location filename="../../MainWindow.ui" line="184"/>
+        <location filename="../../MainWindow.ui" line="171"/>
+        <location filename="../../MainWindow.ui" line="174"/>
         <source>Landmarker</source>
         <translation>標定</translation>
     </message>
@@ -559,8 +556,8 @@
         <translation>識別</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="193"/>
-        <location filename="../../MainWindow.ui" line="196"/>
+        <location filename="../../MainWindow.ui" line="183"/>
+        <location filename="../../MainWindow.ui" line="186"/>
         <source>Set model path</source>
         <translation>設置模型文件路徑</translation>
     </message>
@@ -580,147 +577,131 @@
         <translation>AI 庫</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="80"/>
-        <source>Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../MainWindow.ui" line="101"/>
+        <location filename="../../MainWindow.ui" line="91"/>
         <source>Tools(&amp;T)</source>
         <translation>工具(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="105"/>
+        <location filename="../../MainWindow.ui" line="95"/>
         <source>Camer Orientation</source>
         <translation>攝像頭旋轉角度</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="120"/>
+        <location filename="../../MainWindow.ui" line="110"/>
         <source>Help(&amp;H)</source>
         <translation>幫助(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="127"/>
+        <location filename="../../MainWindow.ui" line="117"/>
         <source>Source(&amp;S)</source>
         <translation>源(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="140"/>
+        <location filename="../../MainWindow.ui" line="130"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="205"/>
+        <location filename="../../MainWindow.ui" line="195"/>
         <source>About(&amp;A)</source>
         <translation>關於(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="208"/>
-        <location filename="../../MainWindow.ui" line="211"/>
-        <location filename="../../MainWindow.ui" line="214"/>
+        <location filename="../../MainWindow.ui" line="198"/>
+        <location filename="../../MainWindow.ui" line="201"/>
+        <location filename="../../MainWindow.ui" line="204"/>
         <source>About</source>
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="219"/>
+        <location filename="../../MainWindow.ui" line="209"/>
         <source>Update(&amp;U)</source>
         <translation>更新(&amp;U)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="222"/>
-        <location filename="../../MainWindow.ui" line="225"/>
-        <location filename="../../MainWindow.ui" line="228"/>
+        <location filename="../../MainWindow.ui" line="212"/>
+        <location filename="../../MainWindow.ui" line="215"/>
+        <location filename="../../MainWindow.ui" line="218"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="243"/>
-        <location filename="../../MainWindow.ui" line="246"/>
-        <location filename="../../MainWindow.ui" line="249"/>
-        <location filename="../../MainWindow.ui" line="252"/>
+        <location filename="../../MainWindow.ui" line="233"/>
+        <location filename="../../MainWindow.ui" line="236"/>
+        <location filename="../../MainWindow.ui" line="239"/>
+        <location filename="../../MainWindow.ui" line="242"/>
         <source>Display</source>
         <translation>顯示</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="276"/>
+        <location filename="../../MainWindow.ui" line="266"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="396"/>
+        <location filename="../../MainWindow.ui" line="386"/>
         <source>Options(&amp;O)</source>
         <translation>選項(&amp;O)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="404"/>
+        <location filename="../../MainWindow.ui" line="394"/>
         <source>90°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="412"/>
+        <location filename="../../MainWindow.ui" line="402"/>
         <source>180°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="420"/>
+        <location filename="../../MainWindow.ui" line="410"/>
         <source>270°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="428"/>
+        <location filename="../../MainWindow.ui" line="418"/>
         <source>0°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="437"/>
-        <location filename="../../MainWindow.ui" line="440"/>
-        <location filename="../../MainWindow.ui" line="443"/>
+        <location filename="../../MainWindow.ui" line="427"/>
+        <location filename="../../MainWindow.ui" line="430"/>
+        <location filename="../../MainWindow.ui" line="433"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="483"/>
         <source>Open log file</source>
-        <translation>打開日誌文件</translation>
+        <translation type="vanished">打開日誌文件</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="488"/>
-        <source>Open log configure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../MainWindow.ui" line="493"/>
-        <source>Open log directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../MainWindow.ui" line="451"/>
-        <location filename="../../MainWindow.ui" line="454"/>
-        <location filename="../../MainWindow.ui" line="457"/>
+        <location filename="../../MainWindow.ui" line="441"/>
+        <location filename="../../MainWindow.ui" line="444"/>
+        <location filename="../../MainWindow.ui" line="447"/>
         <source>Keep display aspect ratio</source>
         <translation>保持顯示縱橫比</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="466"/>
+        <location filename="../../MainWindow.ui" line="456"/>
         <source>Style</source>
         <translation>樣式</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="469"/>
-        <location filename="../../MainWindow.ui" line="472"/>
-        <location filename="../../MainWindow.ui" line="475"/>
-        <location filename="../../MainWindow.ui" line="478"/>
+        <location filename="../../MainWindow.ui" line="459"/>
+        <location filename="../../MainWindow.ui" line="462"/>
+        <location filename="../../MainWindow.ui" line="465"/>
+        <location filename="../../MainWindow.ui" line="468"/>
         <source>Load Style</source>
         <translation>樣式</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="79"/>
-        <location filename="../../MainWindow.cpp" line="80"/>
+        <location filename="../../MainWindow.cpp" line="81"/>
+        <location filename="../../MainWindow.cpp" line="82"/>
         <source>Select camera</source>
         <translation>選擇攝像頭</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.ui" line="264"/>
+        <location filename="../../MainWindow.ui" line="254"/>
         <source>Camera</source>
         <translation>攝像頭</translation>
     </message>
@@ -733,27 +714,27 @@
         <translation type="vanished">樣式文件(*.qss)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="154"/>
+        <location filename="../../MainWindow.cpp" line="156"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="154"/>
+        <location filename="../../MainWindow.cpp" line="156"/>
         <source>The devices is not camera</source>
         <translation>此設備無攝像頭</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="300"/>
+        <location filename="../../MainWindow.cpp" line="302"/>
         <source>Open file</source>
         <translation>打開文件</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="421"/>
+        <location filename="../../MainWindow.cpp" line="419"/>
         <source>Open model file path</source>
         <translation>打開模型文件路徑</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="564"/>
+        <location filename="../../MainWindow.cpp" line="547"/>
         <source>Set parameters</source>
         <translation>設置參數</translation>
     </message>

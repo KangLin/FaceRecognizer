@@ -39,9 +39,6 @@ private slots:
     void on_actionDisplay_triggered();
     void on_actionFile_triggered();
     void on_actionExit_triggered();
-    void on_actionOpen_log_file_triggered();
-    void on_actionOpen_log_configure_triggered();
-    void on_actionOpen_log_directory_triggered();
     void on_actionAiLibraries_triggered(QAction *action);
     void on_actionStyle_triggered();
 

@@ -75,21 +75,11 @@
        <normaloff>:/image/Tools</normaloff>:/image/Tools</iconset>
      </property>
     </widget>
-    <widget class="QMenu" name="menuLog">
-     <property name="title">
-      <string>Log</string>
-     </property>
-     <addaction name="actionOpen_log_file"/>
-     <addaction name="actionOpen_log_configure"/>
-     <addaction name="actionOpen_log_directory"/>
-    </widget>
     <addaction name="actionStart"/>
     <addaction name="separator"/>
     <addaction name="actionDisplay"/>
     <addaction name="menuRegister"/>
     <addaction name="menuRecognizer"/>
-    <addaction name="separator"/>
-    <addaction name="menuLog"/>
     <addaction name="separator"/>
     <addaction name="menuAI_libraries"/>
     <addaction name="separator"/>
@@ -476,21 +466,6 @@
    </property>
    <property name="whatsThis">
     <string>Load Style</string>
-   </property>
-  </action>
-  <action name="actionOpen_log_file">
-   <property name="text">
-    <string>Open log file</string>
-   </property>
-  </action>
-  <action name="actionOpen_log_configure">
-   <property name="text">
-    <string>Open log configure</string>
-   </property>
-  </action>
-  <action name="actionOpen_log_directory">
-   <property name="text">
-    <string>Open log directory</string>
    </property>
   </action>
  </widget>
