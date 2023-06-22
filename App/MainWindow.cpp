@@ -491,7 +491,13 @@ void MainWindow::on_actionAbout_A_triggered()
 {
 #ifdef RABBITCOMMON
     CDlgAbout about(this);
-    about.m_AppIcon = QImage(":/image/FaceRecognizer");
+    //about.m_AppIcon = QImage(":/image/FaceRecognizer");
+    QIcon icon = windowIcon();
+    if(icon.isNull()) return;
+    auto sizeList = icon.availableSizes();
+    if(sizeList.isEmpty()) return;
+    QPixmap p = icon.pixmap(*sizeList.begin());
+    about.m_AppIcon = p.toImage();
     about.m_szHomePage = "https://github.com/KangLin/FaceRecognizer";
 	about.m_szCopyrightStartTime = "2019";
     about.m_szVersionRevision = FaceRecognizer_REVISION;

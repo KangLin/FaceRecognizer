@@ -25,7 +25,8 @@ int main(int argc, char *argv[])
 #if defined(Q_OS_ANDROID) && QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     QtAndroid::hideSplashScreen();
 #endif
-    QApplication app(argc, argv);   
+    QApplication app(argc, argv);
+    app.setApplicationVersion(FaceRecognizer_VERSION);
     app.setApplicationName("FaceRecognizer");
 
 #ifdef RABBITCOMMON
