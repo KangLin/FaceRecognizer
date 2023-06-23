@@ -36,6 +36,7 @@ jobs:
       qt_modules: ${{matrix.qt_modules}}
       FaceRecognizer_VERSION: v0.0.4
       artifact_name: build_macos
+      VCPKGGITCOMMITID: 1286cac8751e13bb289061b7e3b89eb4c3f613a2
 
     # Map the job outputs to step outputs
     outputs:
@@ -62,6 +63,17 @@ jobs:
             ${{env.INSTALL_DIR}}
           key: Cache-macos-installed-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}
 
+      - name: run-vcpkg
+        uses: lukka/run-vcpkg@v7.4
+        with:
+          vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
+          vcpkgDirectory: ${{runner.workspace}}/vcpkg/
+          # Since the cache must be invalidated when content of the vcpkg.json file changes, let's
+          # compute its hash and append this to the computed cache's key.
+          appendedCacheKey: cache-vcpkg-msvc-${{matrix.os}}-vc${{matrix.VCPKG_PLATFORM_TOOLSET}}-${{matrix.triplet}}-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
+          vcpkgTriplet: '${{matrix.triplet}}'
+          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv dlib' # ncnn'
+      
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1  # not v2!
@@ -90,13 +102,20 @@ jobs:
             cd build
             cmake .. \
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
-                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" \
+                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake"
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
 
-      - name: Compile
+      - name: git clone RabbitCommon
+        working-directory: ${{env.SOURCE_DIR}}
+        run: git clone https://github.com/KangLin/RabbitCommon.git
+
+      - name: Compile FaceRecognizer
         working-directory: ${{github.workspace}}/build
+        env:
+          RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
         run: |
           cmake ${{github.workspace}} \
               -DCMARK_SHARED=OFF \
@@ -105,10 +124,11 @@ jobs:
               -Dcmark-gfm_DIR=${{env.INSTALL_DIR}}/lib/cmake \
               -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
               -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/install \
+              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
               -DCMAKE_PREFIX_PATH=${{env.INSTALL_DIR}}/lib/cmake
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target package
-          7z a RabbitCommon_${{env.FaceRecognizer_VERSION}}_macos.zip ./install/*
+          7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos.zip ./install/*
 
       - name: Update artifact
         if: ${{ matrix.BUILD_TYPE == 'Release' }} 
@@ -116,5 +136,4 @@ jobs:
         with:
           name: ${{ env.artifact_name }}
           path: |
-            ${{github.workspace}}/build/RabbitCommon-*.tar.gz
-            ${{github.workspace}}/build/RabbitCommon_${{env.FaceRecognizer_VERSION}}_macos.zip
+            ${{github.workspace}}/build/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos.zip

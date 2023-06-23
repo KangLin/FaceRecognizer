@@ -44,7 +44,7 @@ jobs:
       VCPKG_PLATFORM_TOOLSET: ${{matrix.VCPKG_PLATFORM_TOOLSET}}
       CMAKE_GENERATOR_PLATFORM: ${{matrix.CMAKE_GENERATOR_PLATFORM}}
       FaceRecognizer_VERSION: v0.0.4
-      VCPKGGITCOMMITID: b3e0a1e625a0cc00073efb763e39088e5b75939e
+      VCPKGGITCOMMITID: 1286cac8751e13bb289061b7e3b89eb4c3f613a2
       qt_modules: qtwebengine ${{matrix.qt_modules}}
       artifact_name: build_msvc
 
