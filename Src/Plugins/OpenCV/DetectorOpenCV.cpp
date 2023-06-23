@@ -1,8 +1,9 @@
 #include "DetectorOpenCV.h"
-#include "Log.h"
 #include "Performance.h"
-
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logOpenCV)
 
 CDetectorOpenCV::CDetectorOpenCV(CFace *pFace, QObject *parent)
     : CDetector(pFace, parent),
@@ -19,21 +20,20 @@ int CDetectorOpenCV::UpdateParameter()
     QDir d;
     if(!d.exists(szPath)) szPath = getModelPath();
     szPath = szPath + QDir::separator() + "haarcascades";
-    LOG_MODEL_DEBUG("CDetectorOpenCV", "The model files path: %s",
-                    szPath.toStdString().c_str());
+    qDebug(logOpenCV) << "The model files path:"<< szPath;
     QString szFile = szPath + QDir::separator() + "haarcascade_frontalface_alt2.xml";
     try{
         m_haar_cascade = cv::Ptr<cv::CascadeClassifier>(new cv::CascadeClassifier());
         bool bRet = m_haar_cascade->load(szFile.toStdString());
         if(!bRet || m_haar_cascade->empty())
         {
-            LOG_MODEL_ERROR("CDetectorOpenCV", "Load model file fail");
+            qCritical(logOpenCV) << "Load model file fail";
             return -2;
         }
     } catch (cv::Exception e) {
         QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
-        LOG_MODEL_ERROR("CDetectorOpenCV", szErr.toStdString().c_str());
+        qCritical(logOpenCV) << szErr;
         return -2;
     }
 

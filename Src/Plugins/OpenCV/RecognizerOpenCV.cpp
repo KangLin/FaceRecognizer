@@ -1,8 +1,10 @@
 #include "RecognizerOpenCV.h"
-#include "Log.h"
+
 #include "Performance.h"
 #include <QDir>
+#include <QLoggingCategory>
 
+Q_DECLARE_LOGGING_CATEGORY(logOpenCV)
 CRecognizerOpenCV::CRecognizerOpenCV(CFace *pFace, QObject *parent)
     : CRecognizer(pFace, parent)
 {
@@ -19,20 +21,19 @@ int CRecognizerOpenCV::UpdateParameter()
     QDir d;
     if(!d.exists(szPath)) szPath = getModelPath();
     szPath = szPath + QDir::separator() + "haarcascades";
-    LOG_MODEL_DEBUG("CDetectorOpenCV", "The model files path: %s",
-                    szPath.toStdString().c_str());
+    qDebug(logOpenCV) << "The model files path:" << szPath;
     QString szFile = szPath + QDir::separator() + "haarcascade_frontalface_alt2.xml";
     try{
         m_Recognizer = cv::face::LBPHFaceRecognizer::create();
         if(!m_Recognizer)
         {
-            LOG_MODEL_ERROR("CDetectorOpenCV", "Load model file fail");
+            qCritical(logOpenCV) << "Load model file fail";
             return -2;
         }
     } catch (cv::Exception e) {
         QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
-        LOG_MODEL_ERROR("CDetectorOpenCV", szErr.toStdString().c_str());
+        qCritical(logOpenCV) << szErr;
         return -2;
     }
 

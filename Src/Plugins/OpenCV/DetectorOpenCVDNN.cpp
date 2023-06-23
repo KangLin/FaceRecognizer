@@ -1,8 +1,11 @@
 #include "DetectorOpenCVDNN.h"
-#include "Log.h"
+
 #include "Performance.h"
 
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logOpenCV)
 
 // OpenCV4.0实现人脸识别: https://cloud.tencent.com/developer/article/1419671
 //利用OpenCV和深度学习实现人脸检测:https://blog.csdn.net/amusi1994/article/details/79645403
@@ -58,7 +61,7 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
     // so they are not used here, and set to -1
     cv::Mat detection = m_Net.forward("detection_out");
     
-    //LOG_MODEL_DEBUG("CDetectorOpenCVDNN", m_Net.dump().c_str());
+    //qDebug(logOpenCV) << m_Net.dump().c_str();
     
     //101*7矩阵
     cv::Mat detectionMat(detection.size[2], detection.size[3],
@@ -96,8 +99,7 @@ int CDetectorOpenCVDNN::UpdateParameter()
     QString szPath = getModelPath() + QDir::separator() + "Opencv";
     QDir d;
     if(!d.exists(szPath)) szPath = getModelPath();
-    LOG_MODEL_DEBUG("CDetectorOpenCVDNN", "The model files path: %s",
-                    szPath.toStdString().c_str());
+    qDebug(logOpenCV) << "The model files path:" << szPath;
     QString modelCaffDesc = szPath + QDir::separator() + "deploy.prototxt";
     QString modelCaffBinary = szPath + QDir::separator() + "res10_300x300_ssd_iter_140000_fp16.caffemodel";
 
@@ -125,13 +127,13 @@ int CDetectorOpenCVDNN::UpdateParameter()
             szErr = szErr + "<OPENCV_SRC_DIR>/samples/dnn/face_detector";
             szErr = szErr + "or here:";
             szErr = szErr + "https://github.com/opencv/opencv/tree/master/samples/dnn/face_detector";
-            LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
+            qCritical(logOpenCV) << szErr;
             return -1;
         }
     } catch (cv::Exception e) {
         QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
-        LOG_MODEL_ERROR("CDetectorOpenCVDNN", szErr.toStdString().c_str());
+        qCritical(logOpenCV) << szErr;
         return -2;
     }
 

@@ -91,7 +91,6 @@ jobs:
       - name: build_debpackage.sh
         working-directory: ${{github.workspace}}
         env:
-          ENABLE_DOWNLOAD_MODUEL: ON
           RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
           SeetaFace_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           SeetaNet_DIR: ${{env.INSTALL_DIR}}/lib/cmake

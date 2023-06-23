@@ -1,8 +1,11 @@
 #include "LandmarkerOpenCV.h"
-#include "Log.h"
+
 #include "Performance.h"
 
 #include <QDir>
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(logOpenCV)
 
 CLandmarkerOpenCV::CLandmarkerOpenCV(CFace *pFace, QObject *parent)
     : CLandmarker(pFace, parent),
@@ -17,8 +20,7 @@ int CLandmarkerOpenCV::UpdateParameter()
     QString szPath = getModelPath() + QDir::separator() + "Opencv";
     QDir d;
     if(!d.exists(szPath)) szPath = getModelPath();
-    LOG_MODEL_DEBUG("CLandmarkerOpenCV", "The model files path: %s",
-                    szPath.toStdString().c_str());
+    qDebug(logOpenCV) << "The model files path:" << szPath;
     QString szFile = szPath + QDir::separator() + "lbfmodel.yaml";
 
     try{
@@ -27,7 +29,7 @@ int CLandmarkerOpenCV::UpdateParameter()
     } catch (cv::Exception e) {
         QString szErr = "Load model fail:";
         szErr += e.msg.c_str();
-        LOG_MODEL_ERROR("CLandmarkerOpenCV", szErr.toStdString().c_str());
+        qCritical(logOpenCV) << szErr;
         return -2;
     }
 
@@ -68,7 +70,7 @@ int CLandmarkerOpenCV::Mark(const QImage &image, const QRect &face, QVector<QPoi
     PERFORMANCE_ADD_TIME(OpenCVMark, "m_Facemark->fit")
     if(!success)
     {
-        LOG_MODEL_ERROR("CLandmarkerOpenCV", "CLandmarkerOpenCV::Mark fail");
+        qCritical(logOpenCV) << "CLandmarkerOpenCV::Mark fail";
         return -3;
     }
 
@@ -118,7 +120,7 @@ int CLandmarkerOpenCV::Mark(const QImage &image,
     bool success = m_Facemark->fit(frame, fs, landmarks);
     if(!success)
     {
-        LOG_MODEL_ERROR("CLandmarkerOpenCV", "CLandmarkerOpenCV::Mark fail");
+        qCritical(logOpenCV) << "CLandmarkerOpenCV::Mark fail";
         return -3;
     }
 
