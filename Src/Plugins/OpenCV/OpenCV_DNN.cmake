@@ -31,7 +31,7 @@ endif()
 
 # Install model files
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
-    if(ENABLE_DOWNLOAD)
+    if(ENABLE_DOWNLOAD_MODUEL)
         DOWNLOAD(FILENAME "deploy.prototxt"
             HASH 6e1471d86330a9e7f9f5738318ede387
             URL "https://github.com/opencv/opencv/raw/master/samples/dnn/face_detector/"
@@ -53,7 +53,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
             DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
             STATUS RETVAL RELATIVE_URL)
     else()
-        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD_MODUEL to ON "
             " to automation download, or manual download Opencv from"
             " https://github.com/opencv/opencv , then download model files from"
             " [opencv source directory]/samples/dnn/face_detector "

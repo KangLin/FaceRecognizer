@@ -19,7 +19,7 @@ if("Debug" STREQUAL CMAKE_BUILD_TYPE)
     add_definitions(-D_DEBUG)
 endif()
 
-OPTION(ENABLE_DOWNLOAD_MODUEL "Enable automation download" OFF)
+OPTION(ENABLE_DOWNLOAD_MODUEL "Enable automation download moduel files" OFF)
 
 #需要的QT组件
 if(CMAKE_VERSION VERSION_LESS "3.7.0")

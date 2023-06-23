@@ -41,18 +41,18 @@ if(EXISTS ${MODEL_FILES})
 endif()
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
-    if(ENABLE_DOWNLOAD)
+    if(ENABLE_DOWNLOAD_MODUEL)
         DOWNLOAD(FILENAME "lbfmodel.yaml"
             HASH 96034b93743e1f7f9748797fb8222dd9
             URL "https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/"
             DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
             STATUS RETVAL RELATIVE_URL)
-    else(ENABLE_DOWNLOAD)
-        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+    else(ENABLE_DOWNLOAD_MODUEL)
+        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD_MODUEL to ON "
             " to automation download, or manual download Opencv from"
             " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
             " to ${CMAKE_SOURCE_DIR}/model/Opencv")
-    endif(ENABLE_DOWNLOAD)
+    endif(ENABLE_DOWNLOAD_MODUEL)
 endif()
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
@@ -61,7 +61,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
 endif()
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/face_landmark_model.dat")
-    if(ENABLE_DOWNLOAD)
+    if(ENABLE_DOWNLOAD_MODUEL)
         set(__commit_hash "8afa57abc8229d611c4937165d20e2a2d9fc5a12")
         set(__file_hash "7505c44ca4eb54b4ab1e4777cb96ac05")
         DOWNLOAD(
@@ -71,12 +71,12 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/face_landmark_model.dat")
             DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Opencv"
             STATUS RETVAL RELATIVE_URL
             )
-    else(ENABLE_DOWNLOAD)
-        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD to ON "
+    else(ENABLE_DOWNLOAD_MODUEL)
+        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD_MODUEL to ON "
             " to automation download, or manual download Opencv from"
             " https://raw.githubusercontent.com/kurnianggoro/GSOC2017/master/data/lbfmodel.yaml "
             " to ${CMAKE_SOURCE_DIR}/model/Opencv")
-    endif(ENABLE_DOWNLOAD)
+    endif(ENABLE_DOWNLOAD_MODUEL)
 endif()
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
