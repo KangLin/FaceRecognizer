@@ -67,4 +67,4 @@ override_dh_auto_build:
 #	cmake --build . --config Release --target install/strip
 
 override_dh_shlibdeps:
-	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:$(LIB_PARAS)
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib:`pwd`/debian/facerecognizer/opt/FaceRecognizer/lib/`uname -m`-linux-gnu:$(LIB_PARAS)

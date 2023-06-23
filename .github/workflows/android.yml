@@ -12,10 +12,10 @@ jobs:
         ANDROID_ABI: [armeabi-v7a, x86]
         ANDROID_PLATFORM: [android-28]
         os: [Ubuntu-20.04]
-        qt_version: [6.2.4]
+        qt_version: [lOpenCV]
         include:
           - VCPKG_TARGET_TRIPLET: arm-android
-            qt_version: 6.2.4
+            qt_version: lOpenCV
             qt_arch: android_armv7
             ANDROID_ABI: armeabi-v7a
             qt_modules: 'qtscxml qtmultimedia qtwebview qtimageformats'

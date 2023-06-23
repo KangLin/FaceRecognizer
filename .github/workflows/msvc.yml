@@ -15,12 +15,12 @@ jobs:
         BUILD_TYPE: [Release, Debug]
         qt_version: [5.15.2, 5.12.12]
         include:
-#          - qt_version: 6.4.2
+#          - qt_version: 6.5.1
 #            triplet: x64-windows
 #            VCPKG_PLATFORM_TOOLSET: v142
 #            qt_arch: win64_msvc2019_64
 #            CMAKE_GENERATOR_PLATFORM: x64
-#            qt_modules: qtscxml qtpositioning
+#            qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview
 
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
@@ -86,7 +86,7 @@ jobs:
           # compute its hash and append this to the computed cache's key.
           appendedCacheKey: cache-vcpkg-msvc-${{matrix.os}}-vc${{matrix.VCPKG_PLATFORM_TOOLSET}}-${{matrix.triplet}}-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
           vcpkgTriplet: '${{matrix.triplet}}'
-          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv dlib ncnn'
+          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv dlib' # ncnn'
 
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
