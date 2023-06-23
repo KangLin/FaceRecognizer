@@ -6,6 +6,7 @@
 extern "C" {
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
+#include "libavutil/imgutils.h"
 #undef PixelFormat
 }
 
@@ -20,7 +21,6 @@ public:
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     Q_PLUGIN_METADATA(IID CONVER_FORMAT_IID)
 #endif
-
 
     //设置ffmpeg日志输出
     static int SetFFmpegLog();
@@ -50,14 +50,24 @@ private:
      * @param outPixelFormat：转换后帧的格式
      * @return
      */
-    static int ConvertFormat(/*[in]*/  const AVPicture &inFrame,           /** 要转换的帧 */
-                             /*[in]*/  int nInWidth,                 /** 要转换的帧的宽度 */
-                             /*[in]*/  int nInHeight,                /** 要转换的帧的高度 */
-                             /*[in]*/  AVPixelFormat inPixelFormat,  /** 要转换的帧的格式 */
-                             /*[out]*/ AVPicture &outFrame,                /** 转换后的帧 */
-                             /*[in]*/  int nOutWidth,                /** 转换后的帧的宽度 */
-                             /*[in]*/  int nOutHeight,               /** 转换后的帧的高度 */
-                             /*[in]*/  AVPixelFormat outPixelFormat);/** 转换后的帧的格式 */
+    static int ConvertFormat(
+#if LIBAVUTIL_VERSION_MAJOR >= 55
+        /*[in]*/  AVFrame* inFrame,             /** 要转换的帧 */
+#else
+        /*[in]*/  const AVPicture* inFrame,          /** 要转换的帧 */
+#endif
+        /*[in]*/  int nInWidth,                 /** 要转换的帧的宽度 */
+        /*[in]*/  int nInHeight,                /** 要转换的帧的高度 */
+        /*[in]*/  AVPixelFormat inPixelFormat,  /** 要转换的帧的格式 */
+#if LIBAVUTIL_VERSION_MAJOR >= 55
+        /*[out]*/ AVFrame* outFrame,               /** 转换后的帧 */
+#else
+        /*[out]*/ AVPicture* outFrame,               /** 转换后的帧 */
+#endif
+        /*[in]*/  int nOutWidth,                /** 转换后的帧的宽度 */
+        /*[in]*/  int nOutHeight,               /** 转换后的帧的高度 */
+        /*[in]*/  AVPixelFormat outPixelFormat);/** 转换后的帧的格式 */
+
 };
 
 #endif // CCONVERFORMATFFMPEG_H
