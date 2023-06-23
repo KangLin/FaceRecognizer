@@ -7,6 +7,7 @@
   + Add ncnn face
   + FIX: divide by 0 crash. Affects all previous releases.
     See RabbitCommon: 7ed300a206d8a36c30003b6c19ad181682d0ff5f
+  + FFmpeg: update API avpicture_* to av_image_*
   
 - v0.0.4
   + Add opencv face
