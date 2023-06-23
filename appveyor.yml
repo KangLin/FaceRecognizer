@@ -114,6 +114,10 @@ init:
 install:
   - C:\msys64\autorebase.bat
   - C:\msys64\usr\bin\pacman.exe -S --noconfirm unzip
+  - ps: Start-FileDownload https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-windows-i386.zip
+  #- curl -fsSL -o cmake-3.26.4-windows-i386.zip https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-windows-i386.zip
+  - 7z x cmake-3.26.4-windows-i386.zip
+  - set PATH=%CD%\cmake-3.26.4-windows-i386\bin;%PATH%
   #- if "%BUILD_TARGERT%"=="windows_mingw" set PATH=C:\Qt\Tools\mingw%TOOLCHAIN_VERSION%_32\bin;%PATH%
   - if "%BUILD_TARGERT%" == "windows_mingw" set MSYSTEM=MINGW32  #设置编译系统为MINGW32
 
