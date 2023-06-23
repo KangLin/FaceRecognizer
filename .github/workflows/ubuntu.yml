@@ -91,6 +91,7 @@ jobs:
       - name: build_debpackage.sh
         working-directory: ${{github.workspace}}
         env:
+          ENABLE_DOWNLOAD_MODUEL: ON
           RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
           SeetaFace_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           SeetaNet_DIR: ${{env.INSTALL_DIR}}/lib/cmake
@@ -100,11 +101,6 @@ jobs:
           SeetaFaceTracker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
         run: |
-          if [ ${{matrix.BUILD_TYPE}} == 'Release' ]; then
-              export BUILD_VIEWER_TERMINAL=OFF
-          else
-              export tigervnc_DIR=${{env.INSTALL_DIR}}/lib/cmake/tigervnc
-          fi
           ./build_debpackage.sh /usr/lib/`uname -m`-linux-gnu/qt5
           cp ../*.deb FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
           md5sum FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb > FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb.md5sum

@@ -2,7 +2,7 @@
 
 function help()
 {
-    echo "Useg: $0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
+    echo "Useg: $0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD_MODUEL"
     echo "Error message: $1"
     exit -1
 }
@@ -18,9 +18,7 @@ fi
 if [ -n "$2" ]; then
     export ThirdLibs_DIR=$2
 fi
-if [ ! -d "$ThirdLibs_DIR" ]; then
-    help "Directory don't exist: $ThirdLibs_DIR"
-fi
+
 if [ -n "${ThirdLibs_DIR}" ]; then
     export ThirdLibs_DIR=${ThirdLibs_DIR}
     export PKG_CONFIG_PATH=${ThirdLibs_DIR}/lib/pkgconfig
@@ -35,14 +33,14 @@ if [ -z "$RabbitCommon_DIR" ]; then
 fi
 
 if [ ! -d "$RabbitCommon_DIR" ]; then
-    help "Directory don't exist: $RabbitCommon_DIR"
+    help "RabbitCommon_DIR don't exist: $RabbitCommon_DIR"
 fi
 
 if [ -n "$4" ]; then
-    export ENABLE_DOWNLOAD=$4
+    export ENABLE_DOWNLOAD_MODUEL=$4
 fi
-if [ -z "$ENABLE_DOWNLOAD" ]; then
-    export ENABLE_DOWNLOAD=OFF
+if [ -z "$ENABLE_DOWNLOAD_MODUEL" ]; then
+    export ENABLE_DOWNLOAD_MODUEL=OFF
 fi
 
 export RabbitCommon_DIR=$RabbitCommon_DIR
