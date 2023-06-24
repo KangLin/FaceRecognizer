@@ -20,7 +20,6 @@
   + [CMake](http://www.cmake.org/)
 + 依赖库
   - [必选] 玉兔公共库: https://github.com/KangLin/RabbitCommon
-  - [可选] log4cplus: https://github.com/log4cplus/log4cplus
   - [可选] SeetaFace
     + [可选] SeetaFace2: https://github.com/kanglin/SeetaFace2
     + [可选] SeetaFace6: https://github.com/SeetaFace6Open/index
@@ -28,7 +27,7 @@
   - [可选] ffmpeg: https://ffmpeg.org/
   - [可选] opencv: https://opencv.org/ opencv_contrib: https://opencv.org/opencv_contrib
   - [可选] dlib: https://github.com/davisking/dlib
-  - [可选] ncnn:https://github.com/Tencent/ncnn
+  - [可选] ncnn: https://github.com/Tencent/ncnn
   - [可选] libfacedetection: https://github.com/ShiqiYu/libfacedetection
 ### CMake 配置参数
   - [必选] Qt5_DIR: qt 安装位置(指向Qt5Config.cmake的目录，默认为 安装目录/lib/cmake/Qt5)。
@@ -36,7 +35,7 @@
   - [必选] RabbitCommon_DIR: RabbitCommon 源码位置
   - [可选] CMAKE_BUILD_TYPE: 编译类型
   - [可选] BUILD_PERFORMANCE: 比较测试框架，默认 OFF
-  - [可选] ENABLE_DOWNLOAD: 自动下载模型，默认 OFF
+  - [可选] ENABLE_DOWNLOAD_MODUEL: 自动下载模型，默认 OFF
   - [可选] BUILD_APP: 编译应用程序,默认 ON
   - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
   - [可选] USE_OPENCV: 使用 OpenCV

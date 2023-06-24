@@ -72,7 +72,7 @@ jobs:
           # compute its hash and append this to the computed cache's key.
           appendedCacheKey: cache-vcpkg-msvc-${{matrix.os}}-vc${{matrix.VCPKG_PLATFORM_TOOLSET}}-${{matrix.triplet}}-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
           vcpkgTriplet: '${{matrix.triplet}}'
-          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv dlib' # ncnn'
+          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv' # dlib ncnn'
       
       - name: Cache Qt
         id: cache-qt
@@ -108,6 +108,21 @@ jobs:
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
 
+      - name: build libfacedetection
+        working-directory: ${{env.SOURCE_DIR}}
+        run: |
+          if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/facedetection/facedetectionConfig.cmake ]; then
+            git clone https://github.com/ShiqiYu/libfacedetection.git
+            cd libfacedetection
+            cmake -E make_directory build
+            cd build
+            cmake .. \
+                -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
+          fi
+
       - name: git clone RabbitCommon
         working-directory: ${{env.SOURCE_DIR}}
         run: git clone https://github.com/KangLin/RabbitCommon.git
@@ -116,6 +131,14 @@ jobs:
         working-directory: ${{github.workspace}}/build
         env:
           RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
+          SeetaFace_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaNet_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceDetector_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceLandmarker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceRecognizer_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaFaceTracker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          facedetection_DIR: ${{env.INSTALL_DIR}}/lib/cmake/facedetection
         run: |
           cmake ${{github.workspace}} \
               -DCMARK_SHARED=OFF \

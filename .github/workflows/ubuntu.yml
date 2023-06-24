@@ -88,6 +88,21 @@ jobs:
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
 
+      - name: build libfacedetection
+        working-directory: ${{env.SOURCE_DIR}}
+        run: |
+          if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/facedetection/facedetectionConfig.cmake ]; then
+            git clone https://github.com/ShiqiYu/libfacedetection.git
+            cd libfacedetection
+            cmake -E make_directory build
+            cd build
+            cmake .. \
+                -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
+          fi
+
       - name: build_debpackage.sh
         working-directory: ${{github.workspace}}
         env:
@@ -99,6 +114,7 @@ jobs:
           SeetaFaceRecognizer_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           SeetaFaceTracker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
+          facedetection_DIR: ${{env.INSTALL_DIR}}/lib/cmake/facedetection
         run: |
           ./build_debpackage.sh /usr/lib/`uname -m`-linux-gnu/qt5
           cp ../*.deb FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb

@@ -106,6 +106,24 @@ jobs:
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           )
 
+      - name: build libfacedetection
+        working-directory: ${{env.SOURCE_DIR}}
+        run: |
+          IF NOT EXIST ${{env.INSTALL_DIR}}\lib\cmake\facedetection\facedetectionConfig.cmake (
+            git clone https://github.com/ShiqiYu/libfacedetection.git
+            cd libfacedetection
+            cmake -E make_directory build
+            cd build
+            cmake .. ^
+                -A ${{matrix.CMAKE_GENERATOR_PLATFORM}} ^
+                -T ${{matrix.VCPKG_PLATFORM_TOOLSET}} ^
+                -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" ^
+                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake"
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
+          )
+
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1  # not v2!
@@ -148,7 +166,8 @@ jobs:
             -DSeetaFaceLandmarker_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaFaceRecognizer_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaFaceTracker_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
-            -DSeetaQualityAssessor_DIR=${{env.INSTALL_DIR}}/lib/cmake
+            -DSeetaQualityAssessor_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
+            -Dfacedetection_DIR=${{env.INSTALL_DIR}}/lib/cmake/facedetection
           cmake --build . --config ${{matrix.BUILD_TYPE}}
           cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
 
