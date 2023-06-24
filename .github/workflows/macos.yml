@@ -157,7 +157,7 @@ jobs:
               -DCMAKE_PREFIX_PATH=${{env.INSTALL_DIR}}/lib/cmake
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target package
-          7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos.zip ./install/*
+          7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip ./install/*
 
       - name: Update artifact
         if: ${{ matrix.BUILD_TYPE == 'Release' }} 
@@ -165,4 +165,4 @@ jobs:
         with:
           name: ${{ env.artifact_name }}
           path: |
-            ${{github.workspace}}/build/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos.zip
+            ${{github.workspace}}/build/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip

@@ -173,7 +173,7 @@ jobs:
           cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
 
       - name: Package
-        # if: ${{ matrix.BUILD_TYPE == 'Release' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' }}
         working-directory: ${{github.workspace}}\build
         run: |
           move /Y install\plugins\*crypto*.dll install\bin
@@ -191,7 +191,7 @@ jobs:
                 -m "${{env.FaceRecognizer_VERSION}}"
 
       - name: Update artifact
-        #if: ${{ matrix.BUILD_TYPE == 'Release' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '5.12.12' }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
