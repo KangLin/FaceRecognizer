@@ -60,7 +60,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          submodules: true
+          submodules: recursive
 
       - name: Make directories
         run: |
@@ -150,6 +150,7 @@ jobs:
             -DSeetaFaceTracker_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaQualityAssessor_DIR=${{env.INSTALL_DIR}}/lib/cmake
           cmake --build . --config ${{matrix.BUILD_TYPE}}
+          cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
 
       - name: Package
         # if: ${{ matrix.BUILD_TYPE == 'Release' }}
@@ -161,23 +162,21 @@ jobs:
           copy /Y ${{env.INSTALL_DIR}}\lib\*.dll install\bin
           copy /Y ${{env.RUNVCPKG_VCPKG_ROOT}}\installed\${{env.RUNVCPKG_VCPKG_TRIPLET_OUT}}\bin\*.dll install\bin
           7z a FaceRecognizer_windows_${{env.FaceRecognizer_VERSION}}.zip .\install\*
-          md5sum FaceRecognizer_windows_${{env.FaceRecognizer_VERSION}}.zip > FaceRecognizer_windows_${{env.FaceRecognizer_VERSION}}.zip.md5sum
           makensis Install.nsi
-          md5sum FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe > FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe.md5sum
           ${{github.workspace}}\build\install\bin\RabbitRemoteControlApp.exe ^
                 -f "update_windows.xml" ^
                 -u https://github.com/KangLin/RabbitRemoteControl/releases/download/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe;https://sourceforge.net/projects/rabbitremotecontrol/files/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
                 --pf FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
                 -m "${{env.FaceRecognizer_VERSION}}"
 
-      - name: update 
+      - name: Update artifact
+        #if: ${{ matrix.BUILD_TYPE == 'Release' }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
           path: |
             ${{github.workspace}}\build\FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe
             ${{github.workspace}}\build\update_windows.xml
-        #if: ${{ matrix.BUILD_TYPE == 'Release' }}
 
 #    - name: Upload To Github Release
 #      if: ${{ matrix.BUILD_TYPE == 'Release' && '5.12.12' == matrix.qt_version && startsWith(github.ref, 'refs/tags/') }}

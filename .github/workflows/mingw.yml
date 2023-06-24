@@ -37,7 +37,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          submodules: true
+          submodules: recursive
             
       - name: pacman
         env:
@@ -121,10 +121,21 @@ jobs:
           cmake --build . --config ${{ matrix.BUILD_TYPE }}
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
 
-#      - name: update
-#        if: ${{ matrix.BUILD_TYPE == 'Release' }}
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: ${{ env.artifact_name }}
-#          path: |
-#            ${{github.workspace}}/build/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe
+      - name: Package
+        # if: ${{ matrix.BUILD_TYPE == 'Release' }}
+        working-directory: ${{github.workspace}}\build
+        run: |
+          move /Y install\plugins\*crypto*.dll install\bin
+          move /Y install\plugins\*ssl*.dll install\bin
+          copy /Y ${{env.INSTALL_DIR}}\bin\*.dll install\bin
+          copy /Y ${{env.INSTALL_DIR}}\lib\*.dll install\bin
+          copy /Y C:\msys64\mingw64\bin\*.dll install\bin
+          makensis Install.nsi
+
+      - name: Update artifact
+        #if: ${{ matrix.BUILD_TYPE == 'Release' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.artifact_name }}
+          path: |
+            ${{github.workspace}}\build\FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe
