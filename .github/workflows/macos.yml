@@ -63,6 +63,10 @@ jobs:
             ${{env.INSTALL_DIR}}
           key: Cache-macos-installed-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}
 
+      - name: Install application
+        run: |
+          brew install nasm
+
       - name: run-vcpkg
         uses: lukka/run-vcpkg@v7.4
         with:
@@ -103,7 +107,7 @@ jobs:
             cmake .. \
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
                 -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" \
-                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake"
+                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
@@ -118,7 +122,9 @@ jobs:
             cd build
             cmake .. \
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
-                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" \
+                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" \
+                -DBUILD_SHARED_LIBS=ON
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi

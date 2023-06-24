@@ -142,8 +142,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Start</normaloff>:/image/Start</iconset>
+    <iconset theme="media-playback-start"/>
    </property>
    <property name="text">
     <string>Start</string>
@@ -247,8 +246,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Video</normaloff>:/image/Video</iconset>
+    <iconset theme="camera-video"/>
    </property>
    <property name="text">
     <string>Camera</string>
@@ -379,8 +377,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Option</normaloff>:/image/Option</iconset>
+    <iconset theme="applications-system"/>
    </property>
    <property name="text">
     <string>Options(&amp;O)</string>
@@ -449,8 +446,8 @@
   </action>
   <action name="actionStyle">
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Sink</normaloff>:/image/Sink</iconset>
+    <iconset theme="style">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Style</string>

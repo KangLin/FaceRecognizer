@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //Init menu
-    ui->actionStart->setIcon(QIcon(":/image/Start"));
+    ui->actionStart->setIcon(QIcon::fromTheme("media-playback-start"));
     ui->actionStart->setText(tr("Start"));
     ui->actionStart->setToolTip(tr("Start"));
     ui->actionStart->setStatusTip(tr("Start"));
@@ -348,14 +348,14 @@ void MainWindow::on_actionStart_triggered()
         ui->actionStart->setText(tr("Stop"));
         ui->actionStart->setToolTip(tr("Stop"));
         ui->actionStart->setStatusTip(tr("Stop"));
-        ui->actionStart->setIcon(QIcon(":/image/Stop"));
+        ui->actionStart->setIcon(QIcon::fromTheme("media-playback-stop"));
     } else {
         if(m_pCamera && ui->actionCamera->isChecked())
             m_pCamera->stop();
         else
             m_Player.stop();
         
-        ui->actionStart->setIcon(QIcon(":/image/Start"));
+        ui->actionStart->setIcon(QIcon::fromTheme("media-playback-start"));
         ui->actionStart->setText(tr("Start"));
         ui->actionStart->setToolTip(tr("Start"));
         ui->actionStart->setStatusTip(tr("Start"));

@@ -119,7 +119,8 @@ jobs:
                 -T ${{matrix.VCPKG_PLATFORM_TOOLSET}} ^
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
                 -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" ^
-                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake"
+                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" ^
+                -DBUILD_SHARED_LIBS=ON
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           )
@@ -182,9 +183,9 @@ jobs:
           copy /Y ${{env.RUNVCPKG_VCPKG_ROOT}}\installed\${{env.RUNVCPKG_VCPKG_TRIPLET_OUT}}\bin\*.dll install\bin
           7z a FaceRecognizer_windows_${{env.FaceRecognizer_VERSION}}.zip .\install\*
           makensis Install.nsi
-          ${{github.workspace}}\build\install\bin\RabbitRemoteControlApp.exe ^
+          ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^
                 -f "update_windows.xml" ^
-                -u https://github.com/KangLin/RabbitRemoteControl/releases/download/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe;https://sourceforge.net/projects/rabbitremotecontrol/files/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
+                -u https://github.com/KangLin/FaceRecognizer/releases/download/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe;https://sourceforge.net/projects/FaceRecognizer/files/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
                 --pf FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
                 -m "${{env.FaceRecognizer_VERSION}}"
 

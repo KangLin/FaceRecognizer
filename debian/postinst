@@ -29,8 +29,8 @@ case "$1" in
             fi
             ln -s /opt/FaceRecognizer/share/pixmaps/FaceRecognizer.png /usr/share/pixmaps/FaceRecognizer.png
         fi
-        echo "/opt/FaceRecognizer/lib" > /etc/ld.so.conf.d/FaceRecognizer.conf
-        echo "/opt/FaceRecognizer/bin" >> /etc/ld.so.conf.d/FaceRecognizer.conf
+        #echo "/opt/FaceRecognizer/lib" > /etc/ld.so.conf.d/FaceRecognizer.conf
+        #echo "/opt/FaceRecognizer/bin" >> /etc/ld.so.conf.d/FaceRecognizer.conf
         export QT_VERSION_DIR=
         if [ -n "${QT_VERSION_DIR}" ]; then
             echo "/opt/qt${QT_VERSION_DIR}/lib" >> /etc/ld.so.conf.d/FaceRecognizer.conf

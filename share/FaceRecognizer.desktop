@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Application
+Icon=FaceRecognizer
+
+Exec=/opt/FaceRecognizer/bin/FaceRecognizer.sh
+Path=/opt/FaceRecognizer
+Terminal=false
+StartupNotify=true
+Categories=Application;Development;Tools;Qt
+
+Name=FaceRecognizer
+GenericName=FaceRecognizer
+Comment=FaceRecognizer
+
+Name[zh_CN]=人脸识别
+GenericName[zh_CN]=人脸识别
+Comment[zh_CN]=人脸识别
+
+Name[zh_TW]=人臉識別
+GenericName[zh_TW]=人臉識別
+Comment[zh_TW]=人臉識別

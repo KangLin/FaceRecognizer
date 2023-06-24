@@ -1,0 +1,25 @@
+
+[Icon Theme]
+Name=black
+Comment=black
+Inherits=breeze
+Directories=svg, png, ico
+
+[svg]
+Size=200
+MinSize＝16
+ManSize=256
+Type＝Scalable
+
+[png]
+Size=200
+MinSize＝16
+ManSize=256
+Type＝Scalable
+
+[ico]
+Size=200
+MinSize＝16
+ManSize=256
+Type＝Scalable
+

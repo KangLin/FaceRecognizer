@@ -98,6 +98,7 @@ jobs:
             cd build
             cmake .. \
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
+                -DBUILD_SHARED_LIBS=ON \
                 -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
@@ -117,14 +118,27 @@ jobs:
           facedetection_DIR: ${{env.INSTALL_DIR}}/lib/cmake/facedetection
         run: |
           ./build_debpackage.sh /usr/lib/`uname -m`-linux-gnu/qt5
-          cp ../*.deb FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
-          md5sum FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb > FaceRecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb.md5sum
+          cp ../facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
 
-      - name: update
+      - name: Update xml file
+        working-directory: ${{github.workspace}}
+        run: |
+          sudo Xvfb :99 -ac &
+          export DISPLAY=:99.0
+          sudo apt install ./facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
+          MD5=`md5sum facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb|awk '{print $1}'`
+          echo "MD5:${MD5}"
+          /bin/bash /opt/FaceRecognizer/bin/FaceRecognizer.sh \
+              -f "${{github.workspace}}/update_linux.xml" \
+              --md5 ${MD5} \
+              -m "${{env.FaceRecognizer_VERSION}}" \
+              -u "https://github.com/KangLin/FaceRecognizer/releases/download/v${{env.FaceRecognizer_VERSION}}/facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb;https://sourceforge.net/projects/FaceRecognizer/files/v${{env.FaceRecognizer_VERSION}}/facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb"
+
+      - name: Update artifact
         if: ${{ matrix.BUILD_TYPE == 'Release' }}
         uses: actions/upload-artifact@v3
         with:
             name: ${{ env.artifact_name }}
             path: |
-              ${{github.workspace}}/FaceRecognizer_*.deb
+              ${{github.workspace}}/facerecognizer_*.deb
               ${{github.workspace}}/update_linux.xml

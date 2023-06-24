@@ -78,10 +78,6 @@ ADD_TARGET(NAME ${PROJECT_NAME}
     SOURCE_FILES ${SOURCE_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES}
     PRIVATE_LIBS ${QT_LIBRARIES} FaceRecognizer)
 
-# Install syle files
-INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Resource/Style/
-        DESTINATION ${INSTALL_DATA_PREFIX}/style
-            COMPONENT Runtime)
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.ico
         DESTINATION .
@@ -89,8 +85,11 @@ IF(WIN32)
 ENDIF()
 
 if(UNIX AND NOT ANDROID)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/debian/FaceRecognizer.desktop
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.desktop
         DESTINATION "share/applications"
+            COMPONENT Runtime)
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.sh
+        DESTINATION "${CMAKE_INSTALL_BINDIR}"
             COMPONENT Runtime)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.png
         DESTINATION "share/pixmaps"
