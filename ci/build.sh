@@ -347,8 +347,9 @@ if [ "${BUILD_TARGERT}" = "windows_msvc" ]; then
     
     if [ -z "${STATIC}" ]; then
         "/C/Program Files (x86)/NSIS/makensis.exe" "Install.nsi"
-        MD5=`md5sum FaceRecognizer-Setup-*.exe|awk '{print $1}'`
+        MD5=`md5sum FaceRecognizer_${VERSION}_Setup.exe|awk '{print $1}'`
         echo "MD5:${MD5}"
-        install/bin/FaceRecognizerApp.exe -f "`pwd`/update_windows.xml" --md5 ${MD5}
+        install/bin/FaceRecognizerApp.exe -f "`pwd`/update_windows.xml" --md5 ${MD5} \
+            -u https://github.com/KangLin/FaceRecognizer/releases/download/${VERSION}/FaceRecognizer_${VERSION}_Setup.exe;https://sourceforge.net/projects/FaceRecognizer/files/${VERSION}/FaceRecognizer_${VERSION}_Setup.exe
     fi
 fi

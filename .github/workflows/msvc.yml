@@ -183,10 +183,11 @@ jobs:
           copy /Y ${{env.RUNVCPKG_VCPKG_ROOT}}\installed\${{env.RUNVCPKG_VCPKG_TRIPLET_OUT}}\bin\*.dll install\bin
           7z a FaceRecognizer_windows_${{env.FaceRecognizer_VERSION}}.zip .\install\*
           makensis Install.nsi
+          copy /Y FaceRecognizer_${{env.FaceRecognizer_VERSION}}_Setup.exe FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
           ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^
                 -f "update_windows.xml" ^
-                -u https://github.com/KangLin/FaceRecognizer/releases/download/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe;https://sourceforge.net/projects/FaceRecognizer/files/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
-                --pf FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe ^
+                -u https://github.com/KangLin/FaceRecognizer/releases/download/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe;https://sourceforge.net/projects/FaceRecognizer/files/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe ^
+                --pf FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe ^
                 -m "${{env.FaceRecognizer_VERSION}}"
 
       - name: Update artifact
@@ -195,7 +196,7 @@ jobs:
         with:
           name: ${{ env.artifact_name }}
           path: |
-            ${{github.workspace}}\build\FaceRecognizer_Setup_${{env.FaceRecognizer_VERSION}}.exe
+            ${{github.workspace}}\build\FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
             ${{github.workspace}}\build\update_windows.xml
 
 #    - name: Upload To Github Release

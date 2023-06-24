@@ -86,7 +86,7 @@
 + [最后版本](https://github.com/KangLin/FaceRecognizer/releases/latest)
 + 当前版本：
   - windows
-    + [FaceRecognizer-Setup-v0.0.4.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer-Setup-v0.0.4.exe)  
+    + [FaceRecognizer_v0.0.4_Setup.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_v0.0.4_Setup.exe)  
     Windows安装包，支持 Windows xp 以上系统 
 
   - android
