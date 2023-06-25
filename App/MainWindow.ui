@@ -20,8 +20,8 @@
    <string>Face recognizer</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Resource/Resource.qrc">
-    <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
+   <iconset theme="face-recognizer">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOperate">
@@ -45,8 +45,8 @@
       <string>Register</string>
      </property>
      <property name="icon">
-      <iconset resource="Resource/Resource.qrc">
-       <normaloff>:/image/Register</normaloff>:/image/Register</iconset>
+      <iconset theme="register">
+       <normaloff>.</normaloff>.</iconset>
      </property>
      <addaction name="actionRegisterImage"/>
      <addaction name="actionRegisterImage_directory"/>
@@ -60,8 +60,8 @@
       <string>Recognizer</string>
      </property>
      <property name="icon">
-      <iconset resource="Resource/Resource.qrc">
-       <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
+      <iconset theme="face-recognizer">
+       <normaloff>.</normaloff>.</iconset>
      </property>
      <addaction name="actionRecognizerImage"/>
      <addaction name="actionRecognizerVideo"/>
@@ -71,8 +71,8 @@
       <string>AI libraries</string>
      </property>
      <property name="icon">
-      <iconset resource="Resource/Resource.qrc">
-       <normaloff>:/image/Tools</normaloff>:/image/Tools</iconset>
+      <iconset theme="tools">
+       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
     <addaction name="actionStart"/>
@@ -142,7 +142,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="media-playback-start"/>
+    <iconset theme="media-playback-start">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Start</string>
@@ -175,8 +176,8 @@
   </action>
   <action name="actionSet_model_path">
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
+    <iconset theme="folder">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Set model path</string>
@@ -187,8 +188,8 @@
   </action>
   <action name="actionAbout_A">
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/FaceRecognizer</normaloff>:/image/FaceRecognizer</iconset>
+    <iconset theme="face-recognizer">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>About(&amp;A)</string>
@@ -225,8 +226,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+    <iconset theme="video-display">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Display</string>
@@ -246,7 +247,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="camera-video"/>
+    <iconset theme="camera-video">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Camera</string>
@@ -257,8 +259,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+    <iconset theme="video-file">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>File</string>
@@ -269,8 +271,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
+    <iconset theme="image">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Image</string>
@@ -293,8 +295,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Folder</normaloff>:/image/Folder</iconset>
+    <iconset theme="folder">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Image directory</string>
@@ -314,8 +316,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+    <iconset theme="video-display">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Video</string>
@@ -335,8 +337,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Image</normaloff>:/image/Image</iconset>
+    <iconset theme="image">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Image</string>
@@ -356,8 +358,8 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/VideoFile</normaloff>:/image/VideoFile</iconset>
+    <iconset theme="video-display">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Video</string>
@@ -377,7 +379,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="applications-system"/>
+    <iconset theme="applications-system">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Options(&amp;O)</string>
@@ -417,8 +420,8 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="Resource/Resource.qrc">
-     <normaloff>:/image/Exit</normaloff>:/image/Exit</iconset>
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -466,8 +469,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="Resource/Resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

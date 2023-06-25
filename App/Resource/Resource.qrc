@@ -1,20 +1,5 @@
 <RCC>
     <qresource prefix="/image">
         <file alias="FaceRecognizer">image/FaceRecognizer.png</file>
-        <file alias="Start">image/Start.png</file>
-        <file alias="Stop">image/Stop.png</file>
-        <file alias="Register">image/Register.png</file>
-        <file alias="VideoFile">image/VideoFile.png</file>
-        <file alias="Video">image/Video.png</file>
-        <file alias="Camera">image/Camera.png</file>
-        <file alias="VideoFolder">image/Videofolder.png</file>
-        <file alias="Folder">image/Folder.png</file>
-        <file alias="Image">image/Image.png</file>
-        <file alias="Exit">image/exit.png</file>
-        <file alias="Log">image/log.png</file>
-        <file alias="Delete">image/delete.png</file>
-        <file alias="Option">image/option.png</file>
-        <file alias="Tools">image/Tools.png</file>
-        <file alias="Wait">image/wait.png</file>
     </qresource>
 </RCC>

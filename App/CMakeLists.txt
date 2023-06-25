@@ -115,3 +115,5 @@ else()
         DESTINATION etc
             COMPONENT Runtime)
 endif()
+
+INSTALL_ICON_THEME(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/icons)
