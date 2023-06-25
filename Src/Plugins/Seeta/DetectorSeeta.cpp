@@ -28,7 +28,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
         PERFORMANCE_START(SeetaDectect)
         img = img.convertToFormat(QImage::Format_RGB888);     
         PERFORMANCE_ADD_TIME(SeetaDectect,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))
@@ -56,7 +56,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
                    f.data[i].pos.height);
         faces.push_back(rect);
     }
-    PERFORMANCE_ADD_TIME(SeetaDectect, "copy reture value")
+    PERFORMANCE_ADD_TIME(SeetaDectect, "copy return value")
     return 0;
 }
 

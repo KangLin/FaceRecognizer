@@ -51,7 +51,7 @@ qint64 CRecognizerOpenCV::Register(const QImage &image, const QRect &face)
         PERFORMANCE_START(RecognizerOpenCV)
         img = img.convertToFormat(QImage::Format_Grayscale8);
         PERFORMANCE_ADD_TIME(RecognizerOpenCV,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))

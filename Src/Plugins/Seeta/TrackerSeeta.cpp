@@ -64,7 +64,7 @@ int CTrackerSeeta::Track(const QImage &image, QVector<strFace> &faces)
         PERFORMANCE_START(CTrackerSeeta)
         img = img.convertToFormat(QImage::Format_RGB888);     
         PERFORMANCE_ADD_TIME(CTrackerSeeta,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))

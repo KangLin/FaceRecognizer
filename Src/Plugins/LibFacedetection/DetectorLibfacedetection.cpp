@@ -53,7 +53,7 @@ int CDetectorLibfacedetection::Detect(const QImage &image, QVector<QRect> &faces
         faces.push_back(r);        
     }
     
-    PERFORMANCE_ADD_TIME(Libfacedetection, "copy reture value")
+    PERFORMANCE_ADD_TIME(Libfacedetection, "copy return value")
     if(pBuffer) free(pBuffer);
     return 0;
 }

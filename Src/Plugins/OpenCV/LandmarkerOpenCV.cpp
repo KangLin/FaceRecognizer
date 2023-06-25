@@ -51,7 +51,7 @@ int CLandmarkerOpenCV::Mark(const QImage &image, const QRect &face, QVector<QPoi
         PERFORMANCE_START(OpenCVMark)
         img = img.convertToFormat(QImage::Format_RGB888);     
         PERFORMANCE_ADD_TIME(OpenCVMark,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))
@@ -100,7 +100,7 @@ int CLandmarkerOpenCV::Mark(const QImage &image,
         PERFORMANCE_START(OpenCVMark)
         img = img.convertToFormat(QImage::Format_RGB888);     
         PERFORMANCE_ADD_TIME(OpenCVMark,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))

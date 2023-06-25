@@ -36,6 +36,6 @@ if(LIBYUV_FOUND)
     set(LIBYUV_INCLUDE_DIRS ${LIBYUV_INCLUDE_DIR})
     set(LIBYUV_LIBRARIES ${LIBYUV_LIBRARY})
 else()
-    message("Don't fonud libyuv. please set -DLIBYUV_DIR=")
+    message("Don't found libyuv. please set -DLIBYUV_DIR=")
 endif()
  

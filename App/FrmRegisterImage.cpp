@@ -22,7 +22,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     ShowReplaceUI(false);
     m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
-        throw std::runtime_error("CFrmRegisterImage consturct allocte memory fail");
+        throw std::runtime_error("CFrmRegisterImage construct allocate memory fail");
     
     ui->lbID->setText("");
     SetStatusInformation(tr("Please select image"));
@@ -176,7 +176,7 @@ void CFrmRegisterImage::on_pbRegister_clicked()
             szMsg = "Write database fail.";
             SetStatusInformation(szMsg, -1, ERROR);
         } else {
-            szMsg = tr("Regist success. index:");
+            szMsg = tr("Register success. index:");
             szMsg += QString::number(data.getIdx()) + "; ";
             szMsg += tr("no:") + QString::number(data.getNo()) + "; ";
             szMsg += tr("name:") + data.getName();
@@ -247,7 +247,7 @@ void CFrmRegisterImage::on_pbReplace_clicked()
             szMsg = tr("Write database fail. The no is exists?");
             SetStatusInformation(szMsg, -1, ERROR); 
         } else {
-            szMsg = tr("Regist success. index:");
+            szMsg = tr("Register success. index:");
             szMsg += QString::number(data.getIdx()) + "; ";
             szMsg += tr("NO:") + QString::number(data.getNo()) + "; ";
             szMsg += tr("name:") + data.getName();

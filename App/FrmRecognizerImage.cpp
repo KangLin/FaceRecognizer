@@ -20,7 +20,7 @@ CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     ui->setupUi(this);
     QStandardItemModel *model = new QStandardItemModel(this);
     if(!model)
-        throw std::runtime_error("CFrmRecognizerImage consturct allocte memory fail"); 
+        throw std::runtime_error("CFrmRecognizerImage construct allocate memory fail"); 
     ui->tvInformation->setModel(model);
     ui->tvInformation->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tvInformation->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -39,7 +39,7 @@ CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     
     m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
-        throw std::runtime_error("CFrmRecognizerImage consturct allocte memory fail");
+        throw std::runtime_error("CFrmRecognizerImage construct allocate memory fail");
     
     ShowUI(false);
     SetStatusInformation(tr("Please select image"));

@@ -48,7 +48,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Brower</string>
+        <string>Browser</string>
        </property>
       </widget>
      </item>

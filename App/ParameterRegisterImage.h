@@ -18,7 +18,7 @@ class CParameterRegisterImage : public QObject
     
 public:
     explicit CParameterRegisterImage(QObject *parent = nullptr);
-    CParameterRegisterImage(const CParameterRegisterImage &othe);
+    CParameterRegisterImage(const CParameterRegisterImage &other);
     
     int SetNo(qint64 no);
     qint64 GetNo();

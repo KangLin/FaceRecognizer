@@ -361,7 +361,7 @@ int yuv_to_rgb24(YUV_TYPE type, unsigned char* yuvbuffer,unsigned char* rgbbuffe
         yuv422sp_to_rgb24(yuvbuffer, rgbbuffer, width, height);
         break;
     default:
-        printf("unsupport yuv type!\n");
+        printf("unsupported yuv type!\n");
         ret = -1;
         break;
     }

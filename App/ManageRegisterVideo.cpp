@@ -12,7 +12,7 @@ CManageRegisterVideo::CManageRegisterVideo(QWidget *parent) : QWidget(parent)
     m_RegisterVideo = QSharedPointer<CFrmRegisterVideo>(new CFrmRegisterVideo(this));
     m_RegisterImage = QSharedPointer<CFrmRegisterImage>(new CFrmRegisterImage(this));
     if(!(m_RegisterImage && m_RegisterVideo))
-        throw std::runtime_error("alloce memery fail");
+        throw std::runtime_error("alloce memory fail");
     
     m_RegisterVideo->move(0, 0);
     m_RegisterImage->move(0, 0);

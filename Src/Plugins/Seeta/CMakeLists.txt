@@ -33,7 +33,7 @@ set(HEADER_FILES
 
 # Install model files
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-    if(ENABLE_DOWNLOAD_MODUEL)
+    if(ENABLE_DOWNLOAD_MODULE)
         DOWNLOAD(FILENAME "fd_2_00.dat"
             HASH e88669e5f1301ca56162de8aef1fd5d5
             URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
@@ -54,12 +54,12 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
             URL "https://github.com/KangLin/SeetaFace2/releases/download/model/"
             DESTINATION_DIR "${CMAKE_SOURCE_DIR}/model/Seeta"
             STATUS retval RELATIVE_URL)
-    else(ENABLE_DOWNLOAD_MODUEL)
-        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD_MODUEL to ON "
+    else(ENABLE_DOWNLOAD_MODULE)
+        message(AUTHOR_WARNING "Please set ENABLE_DOWNLOAD_MODULE to ON "
             " to automation download, or manual download Seeta model files from"
             " https://github.com/KangLin/SeetaFace2/releases/tag/model"
             " to ${CMAKE_SOURCE_DIR}/model/Seeta")
-    endif(ENABLE_DOWNLOAD_MODUEL)
+    endif(ENABLE_DOWNLOAD_MODULE)
 endif()
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")

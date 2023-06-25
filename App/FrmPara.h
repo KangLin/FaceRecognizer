@@ -1,5 +1,5 @@
 /**
-  @brief: The form is use set paramter
+  @brief: The form is use set parameter
   @author: Kang Lin<kl222@126.com>
   */
 

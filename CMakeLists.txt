@@ -19,7 +19,7 @@ if("Debug" STREQUAL CMAKE_BUILD_TYPE)
     add_definitions(-D_DEBUG)
 endif()
 
-OPTION(ENABLE_DOWNLOAD_MODUEL "Enable automation download moduel files" OFF)
+OPTION(ENABLE_DOWNLOAD_MODULE "Enable automation download module files" OFF)
 
 #需要的QT组件
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
@@ -212,5 +212,5 @@ endif()
 
 message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "== Build arch: ${BUILD_ARCH}")
-message(STATUS "== Build applcation: ${BUILD_APP}")
-message(STATUS "== Build automation download: ${ENABLE_DOWNLOAD_MODUEL}")
+message(STATUS "== Build application: ${BUILD_APP}")
+message(STATUS "== Build automation download: ${ENABLE_DOWNLOAD_MODULE}")

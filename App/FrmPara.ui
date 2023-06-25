@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Set paramters</string>
+   <string>Set parameters</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Resource/Resource.qrc">
+   <iconset>
     <normaloff>:/image/Option</normaloff>:/image/Option</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -23,8 +23,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="Resource/Resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

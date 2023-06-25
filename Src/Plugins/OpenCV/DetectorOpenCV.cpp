@@ -56,7 +56,7 @@ int CDetectorOpenCV::Detect(const QImage &image, QVector<QRect> &faces)
         PERFORMANCE_START(OpencvDectect)
         img = img.convertToFormat(QImage::Format_Grayscale8);     
         PERFORMANCE_ADD_TIME(OpencvDectect,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))

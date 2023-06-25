@@ -76,7 +76,7 @@ jobs:
           # compute its hash and append this to the computed cache's key.
           appendedCacheKey: vcpkg-macos-${{env.VCPKGGITCOMMITID}}
           vcpkgTriplet: '${{matrix.triplet}}'
-          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv dlib ncnn'
+          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv' # dlib ncnn
       
       - name: Cache Qt
         id: cache-qt

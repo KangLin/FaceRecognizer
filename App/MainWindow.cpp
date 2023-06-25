@@ -177,7 +177,7 @@ void MainWindow::slotCameraChanged(int index)
     {
         qInfo(log) << "Frame rate range:" << rang.maximumFrameRate << rang.maximumFrameRate;
     }
-    qInfo(log) << "Pixel formate:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
+    qInfo(log) << "Pixel format:" << m_pCamera->supportedViewfinderPixelFormats(m_pCamera->viewfinderSettings());
     
 //    viewfinderSettings.setResolution(640, 480);
 //    viewfinderSettings.setMinimumFrameRate(10.0);
@@ -188,7 +188,7 @@ void MainWindow::slotCameraChanged(int index)
     qInfo(log) << "Current:";
     qInfo(log) << "Resolutions:" << viewfinderSettings.resolution();
     qInfo(log) << "Frame rate:" << viewfinderSettings.minimumFrameRate() << viewfinderSettings.maximumFrameRate();
-    qInfo(log) << "Pixel formate:" << viewfinderSettings.pixelFormat();
+    qInfo(log) << "Pixel format:" << viewfinderSettings.pixelFormat();
     qInfo(log) << "" << viewfinderSettings.pixelAspectRatio();
     
     //*/

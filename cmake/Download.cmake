@@ -36,7 +36,7 @@ set(DOWNLOAD_LOG "${CMAKE_BINARY_DIR}/CMakeDownloadLog.txt")
 set(DOWNLOAD_WITH_CURL "${CMAKE_BINARY_DIR}/download_with_curl.sh")
 set(DOWNLOAD_WITH_WGET "${CMAKE_BINARY_DIR}/download_with_wget.sh")
 set(DOWNLOAD_TRIES_LIST 1 CACHE STRING "List of download tries") # a list
-set(DOWNLOAD_PARAMS INACTIVITY_TIMEOUT 60 TIMEOUT 600 CACHE STRING "Download parameters to be passed to file(DOWNLAOD ...)")
+set(DOWNLOAD_PARAMS INACTIVITY_TIMEOUT 60 TIMEOUT 600 CACHE STRING "Download parameters to be passed to file(DOWNLOAD ...)")
 mark_as_advanced(DOWNLOAD_TRIES_LIST DOWNLOAD_PARAMS)
 
 # Init download cache directory and log file and helper scripts

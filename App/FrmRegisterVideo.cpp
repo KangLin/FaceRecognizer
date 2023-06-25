@@ -21,7 +21,7 @@ CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
     m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
     {
-        throw std::runtime_error("CFrmRegisterVideo consturct allocte memory fail");
+        throw std::runtime_error("CFrmRegisterVideo construct allocate memory fail");
     }
 }
 
@@ -139,7 +139,7 @@ void CFrmRegisterVideo::slotDisplay(const QImage &image)
     PERFORMANCE(CFrmRegisterVideo)
     m_Faces.clear();
     m_pFace->GetDector()->Detect(image, m_Faces);
-    PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "Dectect")
+    PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "Detect")
     MarkFace(painter, m_Faces);
     PERFORMANCE_ADD_TIME(CFrmRegisterVideo, "MarkFace")
     if(m_Faces.size() > 1)

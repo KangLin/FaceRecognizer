@@ -120,7 +120,7 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
                              videoFrame.width(), videoFrame.height());
                 break;
             default:
-                qCritical(logImageTool) << "Don't implement conver format:"
+                qCritical(logImageTool) << "Don't implement convert format:"
                                         << videoFrame.pixelFormat();
             }
         }
@@ -225,7 +225,7 @@ QImage CImageTool::LibyuvConverFormatToRGB888(const QVideoFrame &frame)
         }
             break;
         default:
-            qWarning(logImageTool) << "LibyuvConverFormatToRGB888 Don't implement conver format:"
+            qWarning(logImageTool) << "LibyuvConverFormatToRGB888 Don't implement convert format:"
                             << videoFrame.pixelFormat();
         }
         
@@ -318,7 +318,7 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
             m_pConverFormat = qobject_cast<CConverFormat*>(plugin);
             if(m_pConverFormat)
             {
-                qInfo(logImageTool) << "Load conver format plugin:"
+                qInfo(logImageTool) << "Load convert format plugin:"
                                     << m_pConverFormat->getName();
                 return 0;
             }

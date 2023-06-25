@@ -2,7 +2,7 @@
 
 function help()
 {
-    echo "Useg: $0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD_MODUEL"
+    echo "Usage: $0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD_MODULE"
     echo "Error message: $1"
     exit -1
 }
@@ -37,10 +37,10 @@ if [ ! -d "$RabbitCommon_DIR" ]; then
 fi
 
 if [ -n "$4" ]; then
-    export ENABLE_DOWNLOAD_MODUEL=$4
+    export ENABLE_DOWNLOAD_MODULE=$4
 fi
-if [ -z "$ENABLE_DOWNLOAD_MODUEL" ]; then
-    export ENABLE_DOWNLOAD_MODUEL=OFF
+if [ -z "$ENABLE_DOWNLOAD_MODULE" ]; then
+    export ENABLE_DOWNLOAD_MODULE=OFF
 fi
 
 export RabbitCommon_DIR=$RabbitCommon_DIR

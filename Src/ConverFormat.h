@@ -6,7 +6,7 @@
 #include "facerecognizer_export.h"
 
 /**
- * @brief The CConverFormat class. It is conver format of image,
+ * @brief The CConverFormat class. It is convert format of image,
  *        implemented by plugin
  */
 class FACERECOGNIZER_EXPORT CConverFormat : public QObject

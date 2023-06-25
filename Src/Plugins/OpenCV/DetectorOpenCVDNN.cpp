@@ -35,7 +35,7 @@ int CDetectorOpenCVDNN::Detect(const QImage &image, QVector<QRect> &faces)
         PERFORMANCE_START(OpencvDnnDectect)
         img = img.convertToFormat(QImage::Format_RGB888);     
         PERFORMANCE_ADD_TIME(OpencvDnnDectect,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))

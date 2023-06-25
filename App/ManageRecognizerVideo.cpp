@@ -16,7 +16,7 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
 
     m_pFrmRecognizerVideo = new CFrmRecognizerVideo(this); //delete it when delete this
     if(!m_pFrmRecognizerVideo)
-        throw std::runtime_error("alloc memery fail");
+        throw std::runtime_error("alloc memory fail");
     bool check = connect(this, SIGNAL(sigCaptureFrame(const QImage&)),
                     m_pFrmRecognizerVideo, SLOT(slotDisplay(const QImage&)));
     Q_ASSERT(check);

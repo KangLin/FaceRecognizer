@@ -17,7 +17,7 @@ class CFace;
 class FACERECOGNIZER_EXPORT CDetector : public CFaceBase
 {
     Q_OBJECT
-    Q_CLASSINFO("Description", "Dectector interface")
+    Q_CLASSINFO("Description", "Detector interface")
 
 public:
     CDetector(CFace* pFace = nullptr, QObject *parent = nullptr);

@@ -47,7 +47,7 @@ AVPixelFormat CConverFormatFFmpeg::QVideoFrameFormatToFFMpegPixFormat(
         return AV_PIX_FMT_YUV420P;
     case QVideoFrame::Format_YV12:
     default:
-        qCritical(logFFMPGE, "Don't conver format: %d", format);
+        qCritical(logFFMPGE, "Don't convert format: %d", format);
         return AV_PIX_FMT_NONE;
     }
 }

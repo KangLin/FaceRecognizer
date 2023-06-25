@@ -47,13 +47,13 @@ case $BUILD_ARCH in
                     SELECTEDPACKAGES=android_x86_64
                     ;;
                 *)
-                    echo "Aach[$BUILD_ARCH] don't suppoert"
+                    echo "Aach[$BUILD_ARCH] don't support"
                     ;;
             esac
         fi
         ;;
     *)
-        echo "Aach[$BUILD_ARCH] don't suppoert"
+        echo "Aach[$BUILD_ARCH] don't support"
         ;;
 esac
 

@@ -35,7 +35,7 @@
   - [必选] RabbitCommon_DIR: RabbitCommon 源码位置
   - [可选] CMAKE_BUILD_TYPE: 编译类型
   - [可选] BUILD_PERFORMANCE: 比较测试框架，默认 OFF
-  - [可选] ENABLE_DOWNLOAD_MODUEL: 自动下载模型，默认 OFF
+  - [可选] ENABLE_DOWNLOAD_MODULE: 自动下载模型，默认 OFF
   - [可选] BUILD_APP: 编译应用程序,默认 ON
   - [可选] CMAKE_INSTALL_PREFIX: 安装前缀
   - [可选] USE_OPENCV: 使用 OpenCV
@@ -86,7 +86,7 @@
 - 安装
   + 安装库和程序
 
-        cmake --build . --config Release --target install    # --target install/strip stip 目标
+        cmake --build . --config Release --target install    # --target install/strip strip 目标
     
   + 仅安装程序
 

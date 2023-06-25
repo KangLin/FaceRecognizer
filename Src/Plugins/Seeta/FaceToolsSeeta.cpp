@@ -36,7 +36,7 @@ float CFaceToolsSeeta::EvaluateQuality(const QImage &image, const QRect &face)
         PERFORMANCE_START(CFaceToolsSeeta)
         img = img.convertToFormat(QImage::Format_RGB888);     
         PERFORMANCE_ADD_TIME(CFaceToolsSeeta,
-                             "conver format, image width:"
+                             "convert format, image width:"
                              + QString::number(image.width())
                              + ";Height:"
                              + QString::number(image.height()))

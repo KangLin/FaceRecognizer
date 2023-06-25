@@ -2,7 +2,7 @@
 
 function help()
 {
-    echo "Please set enviroment value ANDROID_NDK"
+    echo "Please set environment value ANDROID_NDK"
     echo "$0 QT_ROOT ThirdLibs_DIR RabbitCommon_DIR ENABLE_DOWNLOAD"
     exit -1
 }

@@ -25,7 +25,7 @@ CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
     m_pFace = CFactoryFace::Instance();
     if(!m_pFace)
     {
-        throw std::runtime_error("CFrmRegisterVideo consturct allocte memory fail");
+        throw std::runtime_error("CFrmRegisterVideo construct allocate memory fail");
     }
 }
 
@@ -114,7 +114,7 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
         SetStatusInformation(tr("Please only a person before the camera"));
         return;
     } else if(faces.size() == 0) {
-        SetStatusInformation(tr("Please face befor camera"));
+        SetStatusInformation(tr("Please face before camera"));
         return;
     }
 

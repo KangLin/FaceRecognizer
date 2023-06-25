@@ -9,7 +9,7 @@ if [ -n "$1" ]; then
         VERSION=` git rev-parse HEAD`
     fi
     
-    echo "Current verion: $VERSION, The version to will be set: $1"
+    echo "Current version: $VERSION, The version to will be set: $1"
     echo "Please check the follow list:"
     echo "    - Test is ok ?"
     echo "    - Translation is ok ?"
