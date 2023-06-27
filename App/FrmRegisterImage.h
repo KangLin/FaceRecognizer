@@ -29,7 +29,7 @@ public slots:
     void slotParameter(const CParameterRegisterImage &para);
 
 private slots:
-    void on_pbBrower_clicked();
+    void on_pbBrowser_clicked();
     void on_pbRegister_clicked();
     void on_pbCancel_clicked();
     void on_pbReplace_clicked();

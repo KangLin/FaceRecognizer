@@ -27,6 +27,7 @@ CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
 
 CFrmRegisterVideo::~CFrmRegisterVideo()
 {
+    qDebug() << "CFrmRegisterVideo::~CFrmRegisterVideo()";
     delete ui;
 }
 

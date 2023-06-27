@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pbBrower">
+      <widget class="QPushButton" name="pbBrowser">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>

@@ -16,13 +16,14 @@ jobs:
       matrix:
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
         BUILD_TYPE: [Release, Debug]
-        qt_version: [5.15.2, 5.12.12]
+        qt_version: [6.5.1, 5.15.2, 5.12.12]
         include:
-#          - qt_version: 6.4.2
-#            qt_modules: qtscxml qtpositioning qt5compat
+          - qt_version: 6.5.1
+            qt_modules: qtscxml qtpositioning qt5compat qtwebchannel qtwebsockets
 
           - qt_version: 5.15.2
             qt_modules: ""
+
           - qt_version: 5.12.12
             qt_modules: ""
 
@@ -150,13 +151,10 @@ jobs:
               -DCMARK_SHARED=OFF \
               -DCMARK_TESTS=OFF \
               -DCMARK_STATIC=ON \
-              -Dcmark-gfm_DIR=${{env.INSTALL_DIR}}/lib/cmake \
               -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
               -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/install \
-              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
-              -DCMAKE_PREFIX_PATH=${{env.INSTALL_DIR}}/lib/cmake
+              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake"
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
-          cmake --build . --config ${{ matrix.BUILD_TYPE }} --target package
           7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip ./install/*
 
       - name: Update artifact

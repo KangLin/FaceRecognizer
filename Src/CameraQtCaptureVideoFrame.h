@@ -1,5 +1,5 @@
 /*
- * 作者：康林(msn、email: kl222@126.com)
+ * 作者：康林 (Email: kl222@126.com)
  *
  * 从摄像头（QCarmera）或者（Player）中捕获视频帧。
  * 注意：android后景摄像头捕获的视频翻转-90度，前景摄像头翻转90度。
@@ -41,7 +41,9 @@
 #define CAPTUREVIDEOFRAME_H
 #include <QtGlobal>
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    #include <QVideoSink>
+#else
     #include <QAbstractVideoSurface>
 #endif
 #ifdef ANDROID
@@ -58,7 +60,11 @@
  * @ingroup RABBITIM_IMPLEMENT_CAMERA_QT
  */
 class FACERECOGNIZER_EXPORT CCameraQtCaptureVideoFrame
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+        : public QVideoSink
+#else
         : public QAbstractVideoSurface
+#endif
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")
@@ -67,16 +73,21 @@ public:
     explicit CCameraQtCaptureVideoFrame(QObject *parent = nullptr);
     virtual ~CCameraQtCaptureVideoFrame();
 
-    //设置支持的捕获格式  
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    //设置支持的捕获格式
     virtual QList<QVideoFrame::PixelFormat> supportedPixelFormats(
             QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const;
-    //bool isFormatSupported(const QVideoSurfaceFormat &format) const;
+
+    virtual bool present(const QVideoFrame &frame);
+#else
+public Q_SLOTS:
+    void present(const QVideoFrame &frame);
+#endif
 
     int SetCameraAngle(int angle);
-    virtual bool present(const QVideoFrame &frame);
 
 signals:
-    //从摄像头捕获的原始帧  
+    //从摄像头捕获的原始帧
     void sigCaptureFrame(const QVideoFrame &frame);
     void sigCaptureFrame(const QImage &frame);
 

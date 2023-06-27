@@ -10,20 +10,13 @@
 #include <QImage>
 #include <QVideoFrame>
 #include <QMetaClassInfo>
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    #include <QVideoWidget>
-#endif
 
 namespace Ui {
 class CFrmDisplay;
 }
 
 class CFrmDisplay
-        #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         : public QWidget
-        #else
-        : public QVideoWidget
-        #endif
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

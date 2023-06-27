@@ -30,6 +30,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
 
 CFrmRegisterImage::~CFrmRegisterImage()
 {
+    qDebug() << "CFrmRegisterImage::~CFrmRegisterImage()";
     if(m_bRegister && m_pFace && m_pFace->GetRecognizer())
         m_pFace->GetRecognizer()->Save();
     delete ui;
@@ -44,7 +45,7 @@ void CFrmRegisterImage::slotParameter(const CParameterRegisterImage &para)
     
     ui->lbImage->setVisible(false);
     ui->leFile->setVisible(false);
-    ui->pbBrower->setVisible(false);
+    ui->pbBrowser->setVisible(false);
 }
 
 int CFrmRegisterImage::ProcessImage(const QImage &image)
@@ -61,7 +62,7 @@ int CFrmRegisterImage::ProcessImage(const QImage &image)
     return 0;
 }
 
-void CFrmRegisterImage::on_pbBrower_clicked()
+void CFrmRegisterImage::on_pbBrowser_clicked()
 {
     QString szFile = RabbitCommon::CDir::GetOpenFileName(this,
                                                          tr("Select image"),

@@ -13,6 +13,8 @@
 #include <QStandardItem>
 #include <QHeaderView>
 
+#include <QRegExp>
+
 CFrmPara::CFrmPara(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFrmPara)

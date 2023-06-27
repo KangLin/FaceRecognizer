@@ -5,20 +5,30 @@
 #include <QThread>
 #include <QTime>
 #include <QVideoFrame>
-#include <QVideoSurfaceFormat>
 #include <QImage>
 #include <QDebug>
 
 CCameraQtCaptureVideoFrame::CCameraQtCaptureVideoFrame(QObject *parent) :
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    QVideoSink(parent)
+#else
     QAbstractVideoSurface(parent)
+#endif
 {
     m_Angle = 0;
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    bool check = connect(this, SIGNAL(videoFrameChanged(const QVideoFrame&)),
+                         this, SLOT(present(const QVideoFrame&)));
+    Q_ASSERT(check);
+#endif
 }
 
 CCameraQtCaptureVideoFrame::~CCameraQtCaptureVideoFrame()
 {
+    qDebug() << "CCameraQtCaptureVideoFrame::~CCameraQtCaptureVideoFrame()";
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 //选择需要捕获视频帧的格式  
 QList<QVideoFrame::PixelFormat> 
 CCameraQtCaptureVideoFrame::supportedPixelFormats(
@@ -60,18 +70,13 @@ CCameraQtCaptureVideoFrame::supportedPixelFormats(
         return QList<QVideoFrame::PixelFormat>();
     }
 }
-/*
-bool CCameraQtCaptureVideoFrame::isFormatSupported(const QVideoSurfaceFormat &format) const
-{
-    const QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());
-    const QSize size = format.frameSize();
-    qDebug() <<  "format:" << format.pixelFormat();
-    return imageFormat != QImage::Format_Invalid
-            && !size.isEmpty()
-            && format.handleType() == QAbstractVideoBuffer::NoHandle;
-}//*/
+#endif //#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+void CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
+#else
 bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
+#endif
 {
     emit sigCaptureFrame(frame);
     PERFORMANCE(present)
@@ -81,7 +86,9 @@ bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
     if(m_Angle)
         img = img.transformed(QTransform().rotate(-1 * m_Angle));
     emit sigCaptureFrame(img);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     return true;
+#endif
 }
 
 int CCameraQtCaptureVideoFrame::SetCameraAngle(int angle)

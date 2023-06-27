@@ -47,6 +47,7 @@ CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
 
 CFrmRecognizerImage::~CFrmRecognizerImage()
 {
+    qDebug() << "CFrmRecognizerImage::~CFrmRecognizerImage()";
     delete ui;
 }
 

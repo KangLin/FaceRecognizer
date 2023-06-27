@@ -21,7 +21,11 @@
 #include "FactoryFace.h"
 
 #include <QIcon>
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+#include <QMediaDevices>
+#else
 #include <QCameraInfo>
+#endif
 #include <QGuiApplication>
 #include <QScreen>
 #include <QFileDialog>
@@ -42,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_pCamera(nullptr)
 {
+    bool check = false;
     ui->setupUi(this);
 
     //Init menu
@@ -67,12 +72,34 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->menuTools->addMenu(RabbitCommon::CTools::GetLogMenu(this));
 
     // File
-    bool check = connect(&m_Player, SIGNAL(error(QMediaPlayer::Error)),
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    m_CaptureSession.setVideoSink(&m_CaptureFrame);
+    m_Player.setVideoSink(&m_CaptureFrame);
+    check = connect(&m_Player, SIGNAL(errorOccurred(QMediaPlayer::Error, const QString&)),
+                         this, SLOT(slotPlayError(QMediaPlayer::Error, const QString&)));
+    Q_ASSERT(check);
+    check = connect(&m_Player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
+            this, SLOT(slotMediaStatusChanged(QMediaPlayer::MediaStatus)));
+    Q_ASSERT(check);
+    check = connect(&m_Player, SIGNAL(playbackStateChanged(QMediaPlayer::PlaybackState)),
+                    this, SLOT(slotPlaybackStateChanged(QMediaPlayer::PlaybackState)));
+    Q_ASSERT(check);
+    check = connect(&m_Player, SIGNAL(positionChanged(qint64)),
+                    this, SLOT(slotPositionChanged(qint64)));
+    Q_ASSERT(check);
+#else
+    m_Player.setVideoOutput(&m_CaptureFrame);
+    check = connect(&m_Player, SIGNAL(error(QMediaPlayer::Error)),
                          this, SLOT(slotPlayError(QMediaPlayer::Error)));
     Q_ASSERT(check);
+#endif
 
     // Camera
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    if(!QMediaDevices::videoInputs().isEmpty())
+#else
     if(!QCameraInfo::availableCameras().isEmpty())
+#endif
     {
         QComboBox *cmbCameras = new QComboBox(ui->toolBar);
         if(cmbCameras)
@@ -81,8 +108,13 @@ MainWindow::MainWindow(QWidget *parent) :
             cmbCameras->setToolTip(tr("Select camera"));
             cmbCameras->setStatusTip(tr("Select camera"));
             ui->toolBar->addWidget(cmbCameras);
-            QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-            foreach (const QCameraInfo &cameraInfo, cameras) {
+            auto cameras =
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+                QMediaDevices::videoInputs();
+#else
+                QCameraInfo::availableCameras();
+#endif
+            foreach (auto cameraInfo, cameras) {
                 //qDebug(log) << "Camer name:" << cameraInfo.deviceName();
                 cmbCameras->addItem(cameraInfo.description());
             }
@@ -151,7 +183,14 @@ void MainWindow::on_actionStyle_triggered()
 
 void MainWindow::slotCameraChanged(int index)
 {
-    if(!(QCameraInfo::availableCameras().size() > 0 && index >= 0))
+    auto camers = 
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+        QMediaDevices::videoInputs();
+#else
+        QCameraInfo::availableCameras();
+#endif
+    
+    if(!(camers.size() > 0 && index >= 0))
     {
         QMessageBox::warning(nullptr, tr("Warning"), tr("The devices is not camera"));
         return;
@@ -159,11 +198,13 @@ void MainWindow::slotCameraChanged(int index)
     
     if(m_pCamera)
     {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         m_pCamera->unload();
+#endif
         delete m_pCamera;
     }
     
-    m_pCamera = new QCamera(QCameraInfo::availableCameras().at(index));
+    m_pCamera = new QCamera(camers.at(index));
     if(nullptr == m_pCamera) return;
     /*        
     QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
@@ -194,8 +235,11 @@ void MainWindow::slotCameraChanged(int index)
     //*/
     
     m_CaptureFrame.SetCameraAngle(CamerOrientation(index));
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    m_CaptureSession.setCamera(m_pCamera);
+#else
     m_pCamera->setViewfinder(&m_CaptureFrame);
-    
+
     QCameraFocus* focus = m_pCamera->focus();
     if(focus)
     {
@@ -225,7 +269,8 @@ void MainWindow::slotCameraChanged(int index)
 //        }
         
     }
-    
+#endif
+
 #ifdef RABBITCOMMON
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
@@ -308,13 +353,39 @@ void MainWindow::on_actionFile_triggered()
 #endif
 }
 
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+void MainWindow::slotPlayError(QMediaPlayer::Error error, const QString &errorString)
+#else
 void MainWindow::slotPlayError(QMediaPlayer::Error error)
+#endif
 {
     qCritical(log) << "Play error:" << error
-                   << "Url:" << m_Player.media().canonicalUrl().toString();
+                   << "Url:" <<
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+        m_Player.source().toString();
+#else
+        m_Player.media().canonicalUrl().toString();
+#endif
 
     ui->actionStart->trigger();
 }
+
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+void MainWindow::slotMediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+    qDebug() << "Media status changed:" << status;
+}
+
+void MainWindow::slotPlaybackStateChanged(QMediaPlayer::PlaybackState state)
+{
+    qDebug() << "Play status changed:" << state;
+}
+
+void MainWindow::slotPositionChanged(qint64 position)
+{
+    //qDebug() << "Play position changed:" << position;
+}
+#endif
 
 void MainWindow::on_actionStart_triggered()
 {
@@ -327,24 +398,22 @@ void MainWindow::on_actionStart_triggered()
             m_pCamera->start();
         } else {
             m_Player.stop();
-            
+
             QString szFile;
             QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                           QSettings::IniFormat);
             szFile = set.value("SourceFile").toString();
-        
+            qDebug(log) << "Open file:" << szFile;
             QUrl url = QUrl::fromLocalFile(szFile);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            m_Player.setMedia(url);
-            m_Player.setVideoOutput(&m_CaptureFrame);
-#else
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
             m_Player.setSource(url);
-            
+#else
+            m_Player.setMedia(url);
 #endif
-            
+
             m_Player.play();
         }
-            
+
         ui->actionStart->setText(tr("Stop"));
         ui->actionStart->setToolTip(tr("Stop"));
         ui->actionStart->setStatusTip(tr("Stop"));
@@ -354,7 +423,7 @@ void MainWindow::on_actionStart_triggered()
             m_pCamera->stop();
         else
             m_Player.stop();
-        
+
         ui->actionStart->setIcon(QIcon::fromTheme("media-playback-start"));
         ui->actionStart->setText(tr("Start"));
         ui->actionStart->setToolTip(tr("Start"));
@@ -364,11 +433,18 @@ void MainWindow::on_actionStart_triggered()
 
 int MainWindow::CamerOrientation(int index)
 {
-    if(index < 0 || index >= QCameraInfo::availableCameras().length())
+    int rotation = 0;
+    auto camers =
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+        QMediaDevices::videoInputs();
+#else
+        QCameraInfo::availableCameras();
+#endif
+    if(index < 0 || index >= camers.length())
         return -1;
     
-    QCameraInfo cameraInfo = QCameraInfo::availableCameras().at(index);
-    
+    auto cameraInfo = camers.at(index);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     // Get the current display orientation
     QScreen *screen = QGuiApplication::primaryScreen();
     screen->setOrientationUpdateMask(Qt::LandscapeOrientation
@@ -389,7 +465,7 @@ int MainWindow::CamerOrientation(int index)
 #endif
     qDebug(log) << "screenAngle:" << screenAngle
              << "camer orientation:" << cameraInfo.orientation();
-    int rotation;
+    
     if (cameraInfo.position() == QCamera::BackFace) {
         rotation = (cameraInfo.orientation() - screenAngle) % 360;
     } else {
@@ -399,6 +475,7 @@ int MainWindow::CamerOrientation(int index)
     int a = cameraInfo.orientation();
     qDebug(log) << "Camer angle:" << a << rotation;
     qDebug(log) << "orientation1:" << a << rotation;
+#endif
     return rotation;
 }
 
@@ -415,12 +492,12 @@ void MainWindow::slotScreenOrientationChanged(Qt::ScreenOrientation orientation)
 void MainWindow::on_actionSet_model_path_triggered()
 {
 #ifdef RABBITCOMMON
-   QString szPath = RabbitCommon::CDir::GetOpenDirectory(this,
-                        tr("Open model file path"));
-   QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
-                 QSettings::IniFormat);
-   set.setValue("ModuleDir", szPath);
-   setModelPath(szPath);
+    QString szPath = RabbitCommon::CDir::GetOpenDirectory(this,
+                                                          tr("Open model file path"));
+    QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
+                  QSettings::IniFormat);
+    set.setValue("ModuleDir", szPath);
+    setModelPath(szPath);
 #endif
 }
 
@@ -434,7 +511,6 @@ int MainWindow::setModelPath(const QString &szPath)
 
 void MainWindow::on_actionRegisterImage_triggered()
 {
-    m_CaptureFrame.disconnect();
     CFrmRegisterImage* pImage = new CFrmRegisterImage(this);
     setCentralWidget(pImage);
 }
@@ -445,9 +521,8 @@ void MainWindow::on_actionRegisterImage_directory_triggered()
 void MainWindow::on_actionRegisterVideo_triggered()
 {
     CManageRegisterVideo *pManage = new CManageRegisterVideo(this);
-    m_CaptureFrame.disconnect();
-    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
-                          pManage, SIGNAL(sigCaptureFrame(const QImage &)));
+    bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage&)),
+                         pManage, SIGNAL(sigCaptureFrame(const QImage&)));
     Q_ASSERT(check);
     setCentralWidget(pManage);
 }
@@ -455,14 +530,12 @@ void MainWindow::on_actionRegisterVideo_triggered()
 void MainWindow::on_actionRecognizerImage_triggered()
 {
     CFrmRecognizerImage* pImage = new CFrmRecognizerImage(this);
-    m_CaptureFrame.disconnect();
     setCentralWidget(pImage);
 }
 
 void MainWindow::on_actionRecognizerVideo_triggered()
 {
     CManageRecognizerVideo *pManage = new CManageRecognizerVideo();
-    m_CaptureFrame.disconnect();
     bool check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage&)),
                          pManage, SIGNAL(sigCaptureFrame(const QImage&)));
     Q_ASSERT(check);
@@ -478,8 +551,7 @@ void MainWindow::on_actionDisplay_triggered()
     bool check = connect(ui->actionKeep_display_aspect_ratio, SIGNAL(triggered(bool)),
                     pDisplay, SLOT(slotSetAspectRatio(bool)));
     Q_ASSERT(check);
-    
-    m_CaptureFrame.disconnect();
+
     check = connect(&m_CaptureFrame, SIGNAL(sigCaptureFrame(const QImage &)),
                           pDisplay, SLOT(slotDisplay(const QImage &)));
     Q_ASSERT(check);

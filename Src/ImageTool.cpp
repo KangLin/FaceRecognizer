@@ -58,7 +58,15 @@ CImageTool* CImageTool::Instance()
 //    https://blog.csdn.net/byhook/article/details/84037338
 //    https://blog.csdn.net/cgwang_1580/article/details/79595958
 QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
-{    
+{
+#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
+    QImage img = frame.toImage();
+    if(QImage::Format_RGB888 != img.format())
+    {
+        img = img.convertToFormat(QImage::Format_RGB888);
+    }
+    return img;
+#else
     switch(frame.pixelFormat())
     {
     case QVideoFrame::Format_YUV420P:
@@ -127,6 +135,7 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
     }while(0);
     videoFrame.unmap();
     return img;
+#endif
 }
 
 #if HAVE_LIBYUV

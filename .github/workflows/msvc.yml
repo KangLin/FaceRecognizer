@@ -13,14 +13,14 @@ jobs:
     strategy:
       matrix:
         BUILD_TYPE: [Release, Debug]
-        qt_version: [5.15.2, 5.12.12]
+        qt_version: [6.5.1, 5.15.2, 5.12.12]
         include:
-#          - qt_version: 6.5.1
-#            triplet: x64-windows
-#            VCPKG_PLATFORM_TOOLSET: v142
-#            qt_arch: win64_msvc2019_64
-#            CMAKE_GENERATOR_PLATFORM: x64
-#            qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview
+          - qt_version: 6.5.1
+            triplet: x64-windows
+            VCPKG_PLATFORM_TOOLSET: v142
+            qt_arch: win64_msvc2019_64
+            CMAKE_GENERATOR_PLATFORM: x64
+            qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview
 
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
@@ -159,7 +159,6 @@ jobs:
             -DCMARK_STATIC=ON ^
             -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
             -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install ^
-            -DBUILD_QUIWidget=OFF ^
             -DCMAKE_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake ^
             -DSeetaFace_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaNet_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
