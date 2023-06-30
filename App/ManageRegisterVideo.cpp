@@ -4,6 +4,7 @@
 
 #include "ManageRegisterVideo.h"
 #include <stdexcept>
+#include <QDebug>
 
 CManageRegisterVideo::CManageRegisterVideo(QWidget *parent) : QWidget(parent)
 {

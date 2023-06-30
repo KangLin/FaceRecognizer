@@ -20,6 +20,9 @@ jobs:
 
   macos:
     uses: ./.github/workflows/macos.yml
+    
+  android:
+    uses: ./.github/workflows/android.yml
 
   deploy:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -70,4 +73,4 @@ jobs:
         run: |
           gh release create ${{ github.ref_name }} --title ${{ github.ref_name }} --notes-file ${{github.workspace}}/Release.md
           gh release upload ${{ github.ref_name }} ${{github.workspace}}/${{ env.artifact_path }}/*
-          
+          gh release upload ${{ github.ref_name }} ${{github.workspace}}/Release.md

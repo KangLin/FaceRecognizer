@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <FactoryFace.h>
 #include <stdexcept>
+#include <QDebug>
 
 CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
     QWidget(parent),

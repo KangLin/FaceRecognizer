@@ -138,14 +138,6 @@ jobs:
         working-directory: ${{github.workspace}}/build
         env:
           RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
-          SeetaFace_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          SeetaNet_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          SeetaFaceDetector_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          SeetaFaceLandmarker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          SeetaFaceRecognizer_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          SeetaFaceTracker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
-          facedetection_DIR: ${{env.INSTALL_DIR}}/lib/cmake/facedetection
         run: |
           cmake ${{github.workspace}} \
               -DCMARK_SHARED=OFF \
@@ -153,7 +145,15 @@ jobs:
               -DCMARK_STATIC=ON \
               -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
               -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/install \
-              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake"
+              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
+              -DSeetaFace_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -DSeetaNet_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -DSeetaFaceDetector_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -DSeetaFaceLandmarker_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -DSeetaFaceRecognizer_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -DSeetaFaceTracker_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -DSeetaQualityAssessor_DIR=${{env.INSTALL_DIR}}/lib/cmake \
+              -Dfacedetection_DIR=${{env.INSTALL_DIR}}/lib/cmake/facedetection
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
           7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip ./install/*
 

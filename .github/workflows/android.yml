@@ -104,7 +104,6 @@ jobs:
           cached: '${{ steps.cache-qt.outputs.cache-hit }}' # optional, default is false
 
       - name: run-vcpkg
-        if: false
         uses: lukka/run-vcpkg@v7.4
         with:
           # Indicates whether to only setup vcpkg (i.e. installing it and setting the environment variables VCPKG_ROOT, RUNVCPK_VCPKG_ROOT), without installing any port.
@@ -117,7 +116,7 @@ jobs:
           appendedCacheKey: android_${{matrix.os}}-qt${{matrix.qt_version}}-${{matrix.VCPKG_TARGET_TRIPLET}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
           additionalCachedPaths: $VCPKG_ROOT/installed
           vcpkgTriplet: '${{ matrix.VCPKG_TARGET_TRIPLET }}'
-          vcpkgArguments: 'openssl '
+          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv'
 
       - name: git clone RabbitCommon
         working-directory: ${{env.SOURCE_DIR}}

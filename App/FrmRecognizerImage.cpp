@@ -12,6 +12,7 @@
 #include <QStandardItem>
 #include <QPen>
 #include <stdexcept>
+#include <QDebug>
 
 CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     QWidget(parent),
