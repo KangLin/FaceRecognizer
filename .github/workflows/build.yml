@@ -1,3 +1,5 @@
+# Author: Kang Lin<kl222@126.com>
+
 name: build
 
 env:
@@ -7,6 +9,7 @@ env:
   
 on:
   push:
+  pull_request:
   
 jobs:
   ubuntu:
@@ -52,25 +55,24 @@ jobs:
           name: ${{ needs.macos.outputs.name }}
           path: ${{ env.artifact_path }}
 
-      - name: Make note file
+      - name: Make Note.md file
         run: |
           echo "[:cn: 修改日志](ChangeLog_zh_CN.md) [:us: Change log](ChangeLog.md)" > NoteFile
           cd ${{ env.artifact_path }}
-          echo "[:cn: 修改日志](https://github.com/KangLin/FaceRecognizer/blob/${{env.FaceRecognizer_VERSION}}/ChangeLog_zh_CN.md)" > ${{github.workspace}}/Release.md
-          echo "[:en: Change log](https://github.com/KangLin/FaceRecognizer/blob/${{env.FaceRecognizer_VERSION}}/ChangeLog.md)" >> ${{github.workspace}}/Release.md
-          echo "" >> ${{github.workspace}}/Release.md
-          echo "文件签名:" >> ${{github.workspace}}/Release.md
+          echo "[:cn: 修改日志](https://github.com/KangLin/FaceRecognizer/blob/${{env.FaceRecognizer_VERSION}}/ChangeLog_zh_CN.md)" > ${{github.workspace}}/Note.md
+          echo "[:us: Change log](https://github.com/KangLin/FaceRecognizer/blob/${{env.FaceRecognizer_VERSION}}/ChangeLog.md)" >> ${{github.workspace}}/Note.md
+          echo "" >> ${{github.workspace}}/Note.md
+          echo "文件签名:" >> ${{github.workspace}}/Note.md
           for file in *
           do
               echo $file
-              if [ -f $file ]; then
+              if [ -f $file ] && [ "${file##*.}" != "xml" ]; then
                   md5sum $file > $file.md5sum
-                  cat $file.md5sum >> ${{github.workspace}}/Release.md
+                  cat $file.md5sum >> ${{github.workspace}}/Note.md
               fi
           done
 
       - name: Upload To Github Release
         run: |
-          gh release create ${{ github.ref_name }} --title ${{ github.ref_name }} --notes-file ${{github.workspace}}/Release.md
-          gh release upload ${{ github.ref_name }} ${{github.workspace}}/${{ env.artifact_path }}/*
-          gh release upload ${{ github.ref_name }} ${{github.workspace}}/Release.md
+          gh release create ${{ github.ref_name }} --title ${{ github.ref_name }} --notes-file ${{github.workspace}}/Note.md
+          gh release upload ${{ github.ref_name }} ${{github.workspace}}/${{ env.artifact_path }}/* ${{github.workspace}}/Note.md
