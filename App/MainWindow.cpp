@@ -338,18 +338,16 @@ void MainWindow::slotCameraOrientation(QAction *pAction)
 void MainWindow::on_actionFile_triggered()
 {
 #ifdef RABBITCOMMON
-    QString szFile;
+    QUrl szUrl;
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
-    szFile = set.value("SourceFile").toString();
+    szUrl = set.value("SourceFileUrl").toUrl();
 
-    szFile = RabbitCommon::CDir::GetOpenFileName(this,
-                                   tr("Open file"),
-                                   szFile);
-    if(szFile.isEmpty())
+    szUrl = QFileDialog::getOpenFileUrl(this, tr("Open file"), szUrl);
+    if(szUrl.isEmpty())
         return;
 
-    set.setValue("SourceFile", szFile);
+    set.setValue("SourceFileUrl", szUrl);
 #endif
 }
 
@@ -399,12 +397,12 @@ void MainWindow::on_actionStart_triggered()
         } else {
             m_Player.stop();
 
-            QString szFile;
+            QUrl url;
             QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                           QSettings::IniFormat);
-            szFile = set.value("SourceFile").toString();
-            qDebug(log) << "Open file:" << szFile;
-            QUrl url = QUrl::fromLocalFile(szFile);
+            url = set.value("SourceFileUrl").toUrl();
+            qDebug(log) << "Open file:" << url;
+
 #if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
             m_Player.setSource(url);
 #else
@@ -492,8 +490,8 @@ void MainWindow::slotScreenOrientationChanged(Qt::ScreenOrientation orientation)
 void MainWindow::on_actionSet_model_path_triggered()
 {
 #ifdef RABBITCOMMON
-    QString szPath = RabbitCommon::CDir::GetOpenDirectory(this,
-                                                          tr("Open model file path"));
+    QString szPath = QFileDialog::getExistingDirectory(this,
+                                                    tr("Open model file path"));
     QSettings set(RabbitCommon::CDir::Instance()->GetFileUserConfigure(),
                   QSettings::IniFormat);
     set.setValue("ModuleDir", szPath);

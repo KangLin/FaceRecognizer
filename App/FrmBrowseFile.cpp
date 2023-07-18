@@ -36,13 +36,11 @@ void CFrmBrowseFile::on_pbBrowse_clicked()
 {
     QString szFile;
     if(m_bIsDirectory)
-        szFile = RabbitCommon::CDir::GetOpenDirectory(this,
-                                                      tr("Open folder"),
-                                                      getFile());
+        szFile = QFileDialog::getExistingDirectory(this,
+                                                   tr("Open folder"),
+                                                   getFile());
     else
-        szFile = RabbitCommon::CDir::GetOpenFileName(this,
-                                                     tr("Open file"),
-                                                     getFile());
+        szFile = QFileDialog::getOpenFileName(this, tr("Open file"), getFile());
     if(szFile.isEmpty()) return;
     setFile(szFile);
 }

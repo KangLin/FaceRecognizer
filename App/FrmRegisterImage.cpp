@@ -64,7 +64,7 @@ int CFrmRegisterImage::ProcessImage(const QImage &image)
 
 void CFrmRegisterImage::on_pbBrowser_clicked()
 {
-    QString szFile = RabbitCommon::CDir::GetOpenFileName(this,
+    QString szFile = QFileDialog::getOpenFileName(this,
                                                          tr("Select image"),
                                                          ui->leFile->text(),
            tr("Image files(*.png *.gif *.jpeg *.jpg *.bmp);; All files(*.*)"));

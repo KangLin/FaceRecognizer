@@ -9,6 +9,7 @@
     详见：RabbitCommon: 7ed300a206d8a36c30003b6c19ad181682d0ff5f
   + FFmpeg: 兼容 API avpicture_* to av_image_*
   + 支持 Qt6
+  + 用 QFileDialog::getExistingDirectory 替换 RabbitCommon::CDir::GetOpenDirectory
 
 - v0.0.4
   + 增加 opencv 实现人脸接口
