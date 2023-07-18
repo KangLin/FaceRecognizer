@@ -13,8 +13,15 @@ jobs:
     strategy:
       matrix:
         BUILD_TYPE: [Release, Debug]
-        qt_version: [6.5.1, 5.15.2, 5.12.12]
+        qt_version: [6.6.0, 6.5.1, 5.15.2, 5.12.12]
         include:
+          - qt_version: 6.6.0
+            triplet: x64-windows
+            VCPKG_PLATFORM_TOOLSET: v142
+            qt_arch: win64_msvc2019_64
+            CMAKE_GENERATOR_PLATFORM: x64
+            qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview
+
           - qt_version: 6.5.1
             triplet: x64-windows
             VCPKG_PLATFORM_TOOLSET: v142
@@ -138,7 +145,7 @@ jobs:
           dir: '${{env.TOOSL_DIR}}/qt' # optional
           version: '${{matrix.qt_version}}' # optional, default is 5.15.2
           arch: '${{matrix.qt_arch}}' # optional
-          modules: '${{env.qt_modules}}' # optional
+          modules: '${{env.qt_modules}}' # optional. See: https://ddalcino.github.io/aqt-list-server/
           cached: '${{steps.cache-qt.outputs.cache-hit}}' # optional, default is false
 
       - name: git clone RabbitCommon

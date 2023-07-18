@@ -95,7 +95,7 @@ jobs:
           dir: ${{env.TOOSL_DIR}}/qt # optional
           # Version of Qt to install
           version: ${{matrix.qt_version}} # optional, default is 5.15.2
-          modules: ${{env.qt_modules}} # optional
+          modules: ${{env.qt_modules}} # optional. See: https://ddalcino.github.io/aqt-list-server/
 
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
