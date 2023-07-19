@@ -268,11 +268,11 @@
     + ANDROID_PLATFORM: 如需平台名称和对应 Android 系统映像的完整列表，请参阅 [Android NDK 原生 API](https://developer.android.google.cn/ndk/guides/stable_apis.html)
     + ANDROID_ARM_MODE
     + ANDROID_ARM_NEON
-    + ANDROID_STL: 指定 CMake 应使用的 STL。默认情况下，CMake 使用 c++_static。 
+    + ANDROID_STL: 指定 CMake 应使用的 STL。默认情况下，CMake 使用 c++_static。
       - c++_shared: 使用 libc++ 动态库
       - c++_static: 使用 libc++ 静态库
       - none: 没有 C++ 库支持
       - system: 用系统的 STL
   - 安装 apk 到设备
 
-       adb install android-build-debug.apk 
+       adb install android-build-debug.apk

@@ -9,7 +9,8 @@
 [![GitHub forks](https://img.shields.io/github/forks/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/forks)
 [![GitHub issues](https://img.shields.io/github/issues/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/issues)
 [![Current release](https://img.shields.io/github/release/KangLin/FaceRecognizer)](https://github.com/KangLin/FaceRecognizer/releases)
-[![All releases downloads](https://img.shields.io/github/downloads/KangLin/FaceRecognizer/total)](https://github.com/KangLin/FaceRecognizer/releases)
+[![All releases downloads](https://img.shields.io/github/downloads/KangLin/FaceRecognizer/total?label=Github%20下载量)](https://github.com/KangLin/FaceRecognizer/releases)
+[![Downloads](https://img.shields.io/sourceforge/dt/FaceRecognizer.svg?label=Sourceforge%20下载量)](https://sourceforge.net/projects/FaceRecognizer/files/latest/download)
 
 --------------------------------------------------------------------------------
 
@@ -73,14 +74,16 @@
 
 ### 支持平台
 
-  + [x] windows (windows xp 及已后)
-  + [x] linux
-  + [x] android (android 21 及已后)
-  + [ ] mac
-  + [ ] ios
-  + [x] 其它嵌入式平台。
++ [x] windows (windows xp 及已后)
++ [x] linux
++ [x] android (android 21 及已后)
++ [ ] mac
++ [ ] ios
++ [x] 其它嵌入式平台。
   
-  mac 和 ios我没有设备，请有设备的同学自行编译测试。
+mac 和 ios我没有设备，请有设备的同学自行编译测试。
+
+详见：[Qt5 支持平台](https://doc.qt.io/qt-5/supported-platforms.html)、[Qt6 支持平台](https://doc.qt.io/qt-6/supported-platforms.html)。
 
 ### [下载安装包](https://github.com/KangLin/FaceRecognizer/releases/latest)
 
@@ -88,13 +91,16 @@
 + 当前版本：
   - windows
     + [FaceRecognizer_v0.0.4_Setup.exe](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_v0.0.4_Setup.exe)  
-    Windows安装包，支持 Windows xp 以上系统 
+    Windows安装包，支持 Windows xp 以上系统。
+
+    如果不能播放视频，原因是系统没有安装 Directshow 解码器。 可以安装 [LAVFilters](https://github.com/Nevcairiel/LAVFilters)。
 
   - android
     + [FaceRecognizer_armeabi-v7a_v0.0.4.apk](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_armeabi-v7a_v0.0.4.apk)
 
   - linux
-    + [FaceRecognizer_v0.0.4.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_v0.0.4.tar.gz)  
+    + [FaceRecognizer_v0.0.4.tar.gz](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/FaceRecognizer_v0.0.4.tar.gz)
+
     AppImage格式的执行程序，可直接运行在linux系统，详见：https://appimage.org/  
     使用:    
       1. 解压。复制FaceRecognizer_v0.0.4.tar.gz到安装目录，然后解压：
@@ -113,7 +119,8 @@
                 ./install1.sh remove FaceRecognizer
 
   - ubuntu
-    + [facerecognizer_0.0.4_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/facerecognizer_0.0.4_amd64.deb)  
+    + [facerecognizer_0.0.4_amd64.deb](https://github.com/KangLin/FaceRecognizer/releases/download/v0.0.4/facerecognizer_0.0.4_amd64.deb)
+    
     deb 安装包,可用于 Ubuntu.使用：
       
           sudo apt install facerecognizer_0.0.4_amd64.deb
@@ -130,7 +137,8 @@
 
 - 欢迎开发者参与本项目的开发，或意见反馈。
   + Issues: https://github.com/KangLin/FaceRecognizer/issues
-  + 如有需要，请提交 Issues ，可以为你提供必要的帮助。
+    如有需要，请提交 Issues ，可以为你提供必要的帮助。
+  + WiKi: https://github.com/KangLin/FaceRecognizer/wiki
 - 欢迎 AI 开源库的开发者或自愿者使用本项目做为你库的测试程序或演示程序。
   向本项目贡献代码、提供 AI 开源库的插件。
 - 如有咨询、定制开发或移植，请发邮件或提交Issues。
