@@ -37,7 +37,7 @@ jobs:
       qt_modules: ${{matrix.qt_modules}}
       FaceRecognizer_VERSION: v0.0.4
       artifact_name: build_macos
-      VCPKGGITCOMMITID: 1286cac8751e13bb289061b7e3b89eb4c3f613a2
+      VCPKGGITCOMMITID: d765306b074717dea8dc1c4723e1b025acb61c2d
 
     # Map the job outputs to step outputs
     outputs:
@@ -146,6 +146,8 @@ jobs:
               -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
               -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/install \
               -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
+              -DVCPKG_VERBOSE=ON \
+              -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
               -DSeetaFace_DIR=${{env.INSTALL_DIR}}/lib/cmake \
               -DSeetaNet_DIR=${{env.INSTALL_DIR}}/lib/cmake \
               -DSeetaFaceDetector_DIR=${{env.INSTALL_DIR}}/lib/cmake \

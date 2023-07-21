@@ -36,7 +36,7 @@ jobs:
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
       FaceRecognizer_VERSION: v0.0.4
-      VCPKGGITCOMMITID: 1286cac8751e13bb289061b7e3b89eb4c3f613a2
+      VCPKGGITCOMMITID: d765306b074717dea8dc1c4723e1b025acb61c2d
       ANDROID_PLATFORM: android-23
       ANDROID_NATIVE_API_LEVEL: 23
       qt_modules: 'qtimageformats qtmultimedia qtscxml'
@@ -138,6 +138,8 @@ jobs:
               -DANDROID_PLATFORM=${{env.ANDROID_PLATFORM}} \
               -DANDROID_NATIVE_API_LEVEL=${{env.ANDROID_NATIVE_API_LEVEL}} \
               -DQt6LinguistTools_DIR=${Qt6_DIR}/../gcc_64/lib/cmake/Qt6LinguistTools \
+              -DVCPKG_VERBOSE=ON \
+              -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
               -DCMAKE_INSTALL_PREFIX=`pwd`/install
           cmake --build . --config ${{matrix.BUILD_TYPE}}  --target all
           cmake --build . --config ${{matrix.BUILD_TYPE}}  --target install

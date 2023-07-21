@@ -61,7 +61,7 @@ jobs:
                 libutf8proc-dev libpam0g-dev \
                 libxkbcommon-dev libxkbcommon-x11-dev xorg-dev libx11-xcb-dev \
                 libx11-dev libxfixes-dev \
-                libdlib-dev libopencv-dev \
+                libdlib-dev libopencv-dev libopencv-contrib-dev \
                 libavcodec-dev libavformat-dev libavfilter-dev libavdevice-dev libavresample-dev libavutil-dev \
                 libsqlite3-dev
 
