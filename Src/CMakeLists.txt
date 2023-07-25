@@ -112,6 +112,6 @@ INSTALL(FILES ../Resource/db/database.sql
     DESTINATION ${INSTALL_DATA_PREFIX}/db
         COMPONENT Runtime)
 
-message("== LIBYUV:${YUV_FOUND}")
-message("== log4cplus:${log4cplus_FOUND}")
-message("== Build PERFORMANCE:${BUILD_PERFORMANCE}")
+message(STATUS "LIBYUV:${YUV_FOUND}")
+message(STATUS "log4cplus:${log4cplus_FOUND}")
+message(STATUS "Build PERFORMANCE:${BUILD_PERFORMANCE}")

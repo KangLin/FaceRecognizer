@@ -51,7 +51,7 @@ jobs:
       VCPKG_PLATFORM_TOOLSET: ${{matrix.VCPKG_PLATFORM_TOOLSET}}
       CMAKE_GENERATOR_PLATFORM: ${{matrix.CMAKE_GENERATOR_PLATFORM}}
       FaceRecognizer_VERSION: v0.0.4
-      VCPKGGITCOMMITID: d765306b074717dea8dc1c4723e1b025acb61c2d
+      VCPKGGITCOMMITID: b7dba7f9aad09a56900f21cd78cfda1258e54e38
       qt_modules: qtwebengine ${{matrix.qt_modules}}
       artifact_name: build_msvc
 
@@ -93,7 +93,7 @@ jobs:
           # compute its hash and append this to the computed cache's key.
           appendedCacheKey: cache-vcpkg-msvc-${{matrix.os}}-vc${{matrix.VCPKG_PLATFORM_TOOLSET}}-${{matrix.triplet}}-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
           vcpkgTriplet: '${{matrix.triplet}}'
-          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv opencv[contrib,default-features] dlib' # ncnn'
+          vcpkgArguments: 'openssl libyuv ffmpeg opencv opencv[contrib] dlib ncnn'
 
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
@@ -189,7 +189,6 @@ jobs:
           copy /Y ${{env.INSTALL_DIR}}\bin\*.dll install\bin
           copy /Y ${{env.INSTALL_DIR}}\lib\*.dll install\bin
           copy /Y ${{env.RUNVCPKG_VCPKG_ROOT}}\installed\${{env.RUNVCPKG_VCPKG_TRIPLET_OUT}}\bin\*.dll install\bin
-          7z a FaceRecognizer_windows_${{env.FaceRecognizer_VERSION}}.zip .\install\*
           makensis Install.nsi
           copy /Y FaceRecognizer_${{env.FaceRecognizer_VERSION}}_Setup.exe FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
           ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^

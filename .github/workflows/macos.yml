@@ -37,7 +37,7 @@ jobs:
       qt_modules: ${{matrix.qt_modules}}
       FaceRecognizer_VERSION: v0.0.4
       artifact_name: build_macos
-      VCPKGGITCOMMITID: d765306b074717dea8dc1c4723e1b025acb61c2d
+      VCPKGGITCOMMITID: b7dba7f9aad09a56900f21cd78cfda1258e54e38
 
     # Map the job outputs to step outputs
     outputs:
@@ -77,7 +77,7 @@ jobs:
           # compute its hash and append this to the computed cache's key.
           appendedCacheKey: vcpkg-macos-${{env.VCPKGGITCOMMITID}}
           vcpkgTriplet: '${{matrix.triplet}}'
-          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv' # dlib ncnn
+          vcpkgArguments: 'openssl libyuv ffmpeg opencv opencv[contrib] dlib ncnn'
       
       - name: Cache Qt
         id: cache-qt

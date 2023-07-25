@@ -1,5 +1,5 @@
 option(USE_SEETA "Use SeetaFace" ON)
-message(STATUS "== Use seetaface: ${USE_SEETA}")
+message(STATUS "Use seetaface: ${USE_SEETA}")
 if(NOT USE_SEETA)
     return()
 endif()

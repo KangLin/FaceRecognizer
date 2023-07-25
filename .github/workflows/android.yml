@@ -36,7 +36,7 @@ jobs:
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
       FaceRecognizer_VERSION: v0.0.4
-      VCPKGGITCOMMITID: d765306b074717dea8dc1c4723e1b025acb61c2d
+      VCPKGGITCOMMITID: b7dba7f9aad09a56900f21cd78cfda1258e54e38
       ANDROID_PLATFORM: android-23
       ANDROID_NATIVE_API_LEVEL: 23
       qt_modules: 'qtimageformats qtmultimedia qtscxml'
@@ -103,20 +103,31 @@ jobs:
           modules: '${{env.qt_modules}}' # optional. See: https://ddalcino.github.io/aqt-list-server/
           cached: '${{ steps.cache-qt.outputs.cache-hit }}' # optional, default is false
 
-      - name: run-vcpkg
-        uses: lukka/run-vcpkg@v7.4
-        with:
-          # Indicates whether to only setup vcpkg (i.e. installing it and setting the environment variables VCPKG_ROOT, RUNVCPK_VCPKG_ROOT), without installing any port.
-          #setupOnly: # optional
-          #vcpkgGitURL: https://github.com/KangLin/vcpkg.git
-          vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
-          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
-          # Since the cache must be invalidated when content of the vcpkg.json file changes, let's
-          # compute its hash and append this to the computed cache's key.
-          appendedCacheKey: android_${{matrix.os}}-qt${{matrix.qt_version}}-${{matrix.VCPKG_TARGET_TRIPLET}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
-          additionalCachedPaths: $VCPKG_ROOT/installed
-          vcpkgTriplet: '${{ matrix.VCPKG_TARGET_TRIPLET }}'
-          vcpkgArguments: 'openssl libpng pixman libjpeg-turbo libyuv ffmpeg opencv'
+#      - name: run-vcpkg
+#        uses: lukka/run-vcpkg@v7.4
+#        with:
+#          # Indicates whether to only setup vcpkg (i.e. installing it and setting the environment variables VCPKG_ROOT, RUNVCPK_VCPKG_ROOT), without installing any port.
+#          #setupOnly: # optional
+#          #vcpkgGitURL: https://github.com/KangLin/vcpkg.git
+#          vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
+#          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
+#          # Since the cache must be invalidated when content of the vcpkg.json file changes, let's
+#          # compute its hash and append this to the computed cache's key.
+#          appendedCacheKey: android_${{matrix.os}}-qt${{matrix.qt_version}}-${{matrix.VCPKG_TARGET_TRIPLET}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
+#          additionalCachedPaths: $VCPKG_ROOT/installed
+#          vcpkgTriplet: '${{ matrix.VCPKG_TARGET_TRIPLET }}'
+#          vcpkgArguments: 'openssl ffmpeg opencv opencv[contrib] dlib ncnn'
+
+      - name: run vcpkg
+        working-directory: ${{env.SOURCE_DIR}}
+        run: |
+          if [ ! -d vcpkg ]; then
+            git clone https://github.com/microsoft/vcpkg.git
+            cd vcpkg
+            git checkout -b ${{env.VCPKGGITCOMMITID}} ${{env.VCPKGGITCOMMITID}}
+            ./bootstrap-vcpkg.sh
+            ./vcpkg install --triplet=${{matrix.VCPKG_TARGET_TRIPLET}} openssl libyuv ffmpeg opencv[contrib]
+          fi
 
       - name: git clone RabbitCommon
         working-directory: ${{env.SOURCE_DIR}}
@@ -127,6 +138,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         env:
           RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
+          VCPKG_ROOT: ${{env.SOURCE_DIR}}/vcpkg
         run: |
           sudo chmod 777 ${Qt6_DIR}/bin/qt-cmake
           ${Qt6_DIR}/bin/qt-cmake .. \
@@ -140,6 +152,7 @@ jobs:
               -DQt6LinguistTools_DIR=${Qt6_DIR}/../gcc_64/lib/cmake/Qt6LinguistTools \
               -DVCPKG_VERBOSE=ON \
               -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
+              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
               -DCMAKE_INSTALL_PREFIX=`pwd`/install
           cmake --build . --config ${{matrix.BUILD_TYPE}}  --target all
           cmake --build . --config ${{matrix.BUILD_TYPE}}  --target install

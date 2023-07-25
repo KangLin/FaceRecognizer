@@ -66,8 +66,11 @@
     git clone https://github.com/KangLin/RabbitCommon.git
 
 - 从源码编译或者安装预编好的可选库
+  + 使用 [vcpkg](https://github.com/microsoft/vcpkg) 编译可选的依赖库
+  
+        vcpkg install openssl libyuv ffmpeg opencv opencv[contrib] dlib ncnn
+     
   + 从源码下载并编译可选的依赖库
-  + [预编译好的可选库](https://github.com/KangLin/RabbitThirdLibrary/releases)，下载最后版本的。
 
 #### linux 平台编译说明
 - 编译
@@ -78,6 +81,7 @@
         cmake .. -G"Unix Makefiles" \
             -DCMAKE_INSTALL_PREFIX=`pwd`/install \
             -DCMAKE_BUILD_TYPE=Release \
+            -DQT_DIR= \
             -DQt5_DIR= \
             -DRabbitCommon_DIR= \
             [其它可选 CMake 配置参数]
@@ -87,10 +91,8 @@
   + 安装库和程序
 
         cmake --build . --config Release --target install    # --target install/strip strip 目标
-    
-  + 仅安装程序
 
-        cmake --build . --config Release --target install-runtime
+  详见：[ubuntu.yml](../.github/workflows/ubuntu.yml)
 
 - 运行例子
   + 把生成库的目录加入到变量 LD_LIBRARY_PATH 中
@@ -103,7 +105,7 @@
 
         cd FaceRecognizer
         cd build/install/bin
-        ./FaceRecognizerApp
+        ./FaceRecognizerApp.sh
 
 #### windows 平台编译说明
 
@@ -117,6 +119,7 @@
             cd build
             cmake .. -DCMAKE_INSTALL_PREFIX=install ^
                  -DCMAKE_BUILD_TYPE=Release ^
+                 -DQT_DIR= ^
                  -DQt5_DIR= ^
                  -DRabbitCommon_DIR= ^
                  [其它可选 CMake 配置参数]
@@ -126,10 +129,6 @@
       + 安装库和程序
         
             cmake --build . --config Release --target install
-        
-      + 仅安装程序
-        
-            cmake --build . --config Release --target install-runtime
 
     - 运行例子
       + 执行安装目录 bin 目录下的程序
@@ -172,7 +171,8 @@
                    -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
                    -DANDROID_ABI="armeabi-v7a with NEON" \
                    -DANDROID_PLATFORM=android-24 \
-                   -DQt5_DIR= \
+                   -DQT_DIR= \
+                   -DQt6_DIR= \
                    -DRabbitCommon_DIR= \
                    -DYUV_DIR= \
                    [其它可选 CMake 配置参数]
@@ -181,15 +181,11 @@
     + 安装
       - 安装库和程序
 
-          cmake --build . --config Release --target install/strip
-
-      - 仅安装程序
-
-          cmake --build . --config Release --target install-runtime
+            cmake --build . --config Release --target install
 
     + 生成 APK
 
-	      cmake --build . --config Release --target APK
+          cmake --build . --config Release --target all
 
   - 主机是 windows
     + windows 控制台
@@ -205,7 +201,8 @@
                      -DANDROID_ABI=arm64-v8a ^
                      -DANDROID_ARM_NEON=ON ^
                      -DANDROID_PLATFORM=android-24 ^
-                     -DQt5_DIR= ^
+                     -DQT_DIR= ^
+                     -DQt6_DIR= ^
                      -DRabbitCommon_DIR= ^
                      -DYUV_DIR= ^
                      [其它可选 CMake 配置参数]
@@ -214,15 +211,11 @@
       - 安装
         + 安装库和程序
 
-              cmake --build . --config Release --target install/strip
-
-        + 仅安装程序
-
-              cmake --build . --config Release --target install-runtime
+              cmake --build . --config Release --target install
 
         + 生成 APK
 
-              cmake --build . --config Release --target APK
+              cmake --build . --config Release --target all
 
     + msys2 或 cygwin
 
@@ -236,7 +229,8 @@
                    -DANDROID_ABI=arm64-v8a \
                    -DANDROID_ARM_NEON=ON \
                    -DANDROID_PLATFORM=android-24 \
-                   -DQt5_DIR= \
+                   -DQT_DIR= \
+                   -DQt6_DIR= \
                    -DRabbitCommon_DIR= \
                    -DYUV_DIR= \
                    [其它可选 CMake 配置参数]
@@ -244,15 +238,11 @@
       - 安装
         + 安装库和程序
 
-              cmake --build . --config Release --target install/strip
-
-        + 仅安装程序
-
-              cmake --build . --config Release --target install-runtime
+              cmake --build . --config Release --target install
 
         + 生成 APK
 
-              cmake --build . --config Release --target APK
+              cmake --build . --config Release --target all
 
   - CMake for android 参数说明：https://developer.android.google.cn/ndk/guides/cmake
     + ANDROID_ABI: 可取下列值：

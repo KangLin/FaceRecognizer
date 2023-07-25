@@ -13,7 +13,7 @@ if(POLICY CMP0020)
 endif()
 
 if(NOT DEFINED CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE "Release")
+    set(CMAKE_BUILD_TYPE "Release")
 endif(NOT DEFINED CMAKE_BUILD_TYPE)
 if("Debug" STREQUAL CMAKE_BUILD_TYPE)
     add_definitions(-D_DEBUG)
@@ -171,28 +171,6 @@ if(BUILD_APP)
     add_subdirectory(App)
 endif(BUILD_APP)
 
-# Create install runtime target
-add_custom_target(install-runtime
-  COMMAND
-     "${CMAKE_COMMAND}" -DCMAKE_INSTALL_COMPONENT=Runtime 
-     -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_install.cmake"
-)
-# Create uninstall runtime target
-add_custom_target(uninstall-runtime
-  COMMAND
-     "${CMAKE_COMMAND}" -DCMAKE_INSTALL_COMPONENT=Runtime 
-     -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-)
-# Create will be delete files
-CONFIGURE_FILE(
-    "${RabbitCommon_DIR}/cmake/cmake_uninstall.cmake.in"
-    "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY)
-# Create unistall target
-ADD_CUSTOM_TARGET(uninstall
-    "${CMAKE_COMMAND}" -P "${CMAKE_BINARY_DIR}/cmake_uninstall.cmake"
-    DEPENDS uninstall-runtime)
-
 iF(WIN32)
     INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}"
         COMPONENT Runtime)
@@ -210,7 +188,7 @@ else()
     INSTALL(FILES ${OTHER_FILES} DESTINATION "." COMPONENT Runtime)
 endif()
 
-message(STATUS "== Build shared library: ${BUILD_SHARED_LIBS}")
-message(STATUS "== Build arch: ${BUILD_ARCH}")
-message(STATUS "== Build application: ${BUILD_APP}")
-message(STATUS "== Build automation download: ${ENABLE_DOWNLOAD_MODULE}")
+message(STATUS "Build shared library: ${BUILD_SHARED_LIBS}")
+message(STATUS "Build arch: ${BUILD_ARCH}")
+message(STATUS "Build application: ${BUILD_APP}")
+message(STATUS "Build automation download: ${ENABLE_DOWNLOAD_MODULE}")

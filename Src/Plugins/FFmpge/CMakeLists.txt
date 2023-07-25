@@ -3,7 +3,7 @@ if(ANDROID)
 else()
     option(USE_FFMPEG "Use ffmpeg" ON)
 endif()
-message(STATUS "== Use ffmpeg: ${USE_FFMPEG}")
+message(STATUS "Use ffmpeg: ${USE_FFMPEG}")
 if(NOT USE_FFMPEG)
     return()
 endif()
@@ -13,7 +13,7 @@ if(NOT FFMPEG_FOUND)
     return()
 endif()
 
-message("== FFMPGE:${FFMPEG_FOUND}")
+message(STATUS "FFMPGE:${FFMPEG_FOUND}")
 
 if(ANDROID)
     INSTALL(FILES ${FFMPEG_LIBRARIES}
