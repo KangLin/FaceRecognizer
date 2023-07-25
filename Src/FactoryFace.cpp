@@ -400,9 +400,23 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
 #endif
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
-    qDebug(logFace) << "Files:" << files;
+    if(!files.isEmpty())
+    {
+        //This method is invalid
+        //QCoreApplication::addLibraryPath(QDir::cleanPath(dir.absolutePath()));
+
+        QDir::setCurrent(QDir::cleanPath(QDir::cleanPath(dir.absolutePath())));
+
+        // This method is valid
+        //#if defined(Q_OS_WINDOWS)
+        //        QString szPath = QString::fromLocal8Bit(qgetenv("PATH"));
+        //        szPath += ";";
+        //        szPath += QDir::cleanPath(QDir::cleanPath(dir.absolutePath()));
+        //        qputenv("PATH", szPath.toLatin1());
+        //#endif
+    }
     foreach (fileName, files) {
-        qDebug(logFace) << "file name:" << fileName;
+        //qDebug(logFace) << "file name:" << fileName;
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
