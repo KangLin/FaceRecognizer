@@ -390,19 +390,19 @@ int CFactoryFace::setModelPath(const QString &szPath)
 
 int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
 {
-    QString szPath = dir.path();
     QString fileName;
     if(filters.isEmpty())
     {
 #if defined (Q_OS_WINDOWS)
-        filters << "*.dll";
+        filters << "*PluginFace*.dll";
 #else
-        filters << "*.so";
+        filters << "*PluginFace*.so";
 #endif
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
+    qDebug(logFace) << "Files:" << files;
     foreach (fileName, files) {
-        //qInfo(logFace) << "file name:" << fileName;
+        qDebug(logFace) << "file name:" << fileName;
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
@@ -415,6 +415,7 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
                                << "; Path:" << szPlugins;
                 continue;
             }
+            qDebug(logFace) << "Load plugin: it is not face plugin." << szPlugins;
         }else{
             qCritical(logFace) << "Load plugin error:" << loader.errorString();
         }

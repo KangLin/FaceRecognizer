@@ -6,7 +6,7 @@ endif()
 PROJECT(PluginConverFormatOpenCV)
 
 find_package(OpenCV)
-message("== Plug OpenCV:${OpenCV_FOUND};${OpenCV_LIBS}")
+message(STATUS "Plug OpenCV:${OpenCV_FOUND};${OpenCV_LIBS}")
 if(NOT OpenCV_FOUND)
     return()
 endif()

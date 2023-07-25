@@ -44,7 +44,7 @@
         <translation type="unfinished">打開文件夾</translation>
     </message>
     <message>
-        <location filename="../../FrmBrowseFile.cpp" line="44"/>
+        <location filename="../../FrmBrowseFile.cpp" line="43"/>
         <source>Open file</source>
         <translation type="unfinished">打開文件</translation>
     </message>
@@ -60,19 +60,23 @@
 <context>
     <name>CFrmPara</name>
     <message>
-        <location filename="../../FrmPara.ui" line="14"/>
         <source>Set paramters</source>
-        <translation>設置參數</translation>
+        <translation type="vanished">設置參數</translation>
     </message>
     <message>
-        <location filename="../../FrmPara.cpp" line="48"/>
+        <location filename="../../FrmPara.cpp" line="50"/>
         <source>Property</source>
         <translation>屬性</translation>
     </message>
     <message>
-        <location filename="../../FrmPara.cpp" line="48"/>
+        <location filename="../../FrmPara.cpp" line="50"/>
         <source>Value</source>
         <translation>值</translation>
+    </message>
+    <message>
+        <location filename="../../FrmPara.ui" line="14"/>
+        <source>Set parameters</source>
+        <translation type="unfinished">設置參數</translation>
     </message>
 </context>
 <context>
@@ -89,12 +93,16 @@
     </message>
     <message>
         <location filename="../../FrmRecognizerImage.ui" line="51"/>
-        <source>Brower</source>
-        <translation>瀏覽</translation>
+        <source>Browser</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="45"/>
-        <location filename="../../FrmRecognizerImage.cpp" line="175"/>
+        <source>Brower</source>
+        <translation type="vanished">瀏覽</translation>
+    </message>
+    <message>
+        <location filename="../../FrmRecognizerImage.cpp" line="46"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="177"/>
         <source>Please select image</source>
         <translation>請選擇圖像</translation>
     </message>
@@ -104,47 +112,47 @@
         <translation>狀態</translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="31"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="32"/>
         <source>index</source>
         <translation>索引號</translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="32"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="33"/>
         <source>no</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="33"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="34"/>
         <source>name</source>
         <translation>姓名</translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="56"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="58"/>
         <source>Select image</source>
         <translation>選擇圖像</translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="58"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="60"/>
         <source>Image files(*.png *.gif *.jpeg *.jpg *.bmp);; All files(*.*)</source>
         <translation>圖像文件(*.png *.gif *.jpeg *.jpg *.bmp);; 所有文件(*.*)</translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="75"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="77"/>
         <source>ERROR: </source>
         <translation>錯誤： </translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="79"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="81"/>
         <source>FAIL: </source>
         <translation>失敗： </translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="83"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="85"/>
         <source>SUCCESS: </source>
         <translation>成功： </translation>
     </message>
     <message>
-        <location filename="../../FrmRecognizerImage.cpp" line="172"/>
+        <location filename="../../FrmRecognizerImage.cpp" line="174"/>
         <source>Recognizer %1 faces</source>
         <translation>識別 %1 張人臉</translation>
     </message>
@@ -188,8 +196,12 @@
     </message>
     <message>
         <location filename="../../FrmRecognizerVideo.cpp" line="117"/>
+        <source>Please face before camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Please face befor camera</source>
-        <translation>請把臉放到攝像頭前</translation>
+        <translation type="vanished">請把臉放到攝像頭前</translation>
     </message>
 </context>
 <context>
@@ -205,15 +217,19 @@
         <translation>圖像</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.ui" line="45"/>
         <source>Brower</source>
-        <translation>瀏覽</translation>
+        <translation type="vanished">瀏覽</translation>
     </message>
     <message>
         <location filename="../../FrmRegisterImage.cpp" line="28"/>
-        <location filename="../../FrmRegisterImage.cpp" line="193"/>
+        <location filename="../../FrmRegisterImage.cpp" line="194"/>
         <source>Please select image</source>
         <translation>請選擇圖像</translation>
+    </message>
+    <message>
+        <location filename="../../FrmRegisterImage.ui" line="45"/>
+        <source>Browser</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../FrmRegisterImage.ui" line="52"/>
@@ -223,7 +239,7 @@
     <message>
         <location filename="../../FrmRegisterImage.ui" line="87"/>
         <location filename="../../FrmRegisterImage.ui" line="139"/>
-        <location filename="../../FrmRegisterImage.cpp" line="252"/>
+        <location filename="../../FrmRegisterImage.cpp" line="253"/>
         <source>NO:</source>
         <translation></translation>
     </message>
@@ -261,99 +277,103 @@
         <translation>狀態</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="67"/>
+        <location filename="../../FrmRegisterImage.cpp" line="68"/>
         <source>Select image</source>
         <translation>選擇圖像</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="69"/>
+        <location filename="../../FrmRegisterImage.cpp" line="70"/>
         <source>Image files(*.png *.gif *.jpeg *.jpg *.bmp);; All files(*.*)</source>
         <translation>圖像文件(*.png *.gif *.jpeg *.jpg *.bmp);; 所有文件(*.*)</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="59"/>
+        <location filename="../../FrmRegisterImage.cpp" line="60"/>
         <source>Have selected images</source>
         <translation>已經選擇了圖像</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="131"/>
+        <location filename="../../FrmRegisterImage.cpp" line="132"/>
         <source> The image quality is lower</source>
         <translation>圖像質量低</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="151"/>
+        <location filename="../../FrmRegisterImage.cpp" line="152"/>
         <source>This person already exists. index:</source>
         <translation>此人已註冊。索引號：</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="153"/>
-        <location filename="../../FrmRegisterImage.cpp" line="181"/>
+        <location filename="../../FrmRegisterImage.cpp" line="154"/>
+        <location filename="../../FrmRegisterImage.cpp" line="182"/>
         <source>no:</source>
         <translation>NO:</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="154"/>
-        <location filename="../../FrmRegisterImage.cpp" line="182"/>
-        <location filename="../../FrmRegisterImage.cpp" line="253"/>
+        <location filename="../../FrmRegisterImage.cpp" line="155"/>
+        <location filename="../../FrmRegisterImage.cpp" line="183"/>
+        <location filename="../../FrmRegisterImage.cpp" line="254"/>
         <source>name:</source>
         <translation>姓名：</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="247"/>
+        <location filename="../../FrmRegisterImage.cpp" line="180"/>
+        <location filename="../../FrmRegisterImage.cpp" line="251"/>
+        <source>Register success. index:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../FrmRegisterImage.cpp" line="248"/>
         <source>Write database fail. The no is exists?</source>
         <translation>寫入數據庫失敗，是否是NO已存在？</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="295"/>
+        <location filename="../../FrmRegisterImage.cpp" line="296"/>
         <source>Please input no</source>
         <translation>請輸入NO</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="300"/>
+        <location filename="../../FrmRegisterImage.cpp" line="301"/>
         <source>Please input name</source>
         <translation>請輸入姓名</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="305"/>
+        <location filename="../../FrmRegisterImage.cpp" line="306"/>
         <source>The no is exists</source>
         <translation>NO 已存在</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="317"/>
+        <location filename="../../FrmRegisterImage.cpp" line="318"/>
         <source>ERROR: </source>
         <translation>錯誤： </translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="321"/>
+        <location filename="../../FrmRegisterImage.cpp" line="322"/>
         <source>FAIL: </source>
         <translation>失敗： </translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="325"/>
+        <location filename="../../FrmRegisterImage.cpp" line="326"/>
         <source>SUCCESS: </source>
         <translation>成功： </translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="119"/>
-        <location filename="../../FrmRegisterImage.cpp" line="209"/>
+        <location filename="../../FrmRegisterImage.cpp" line="120"/>
+        <location filename="../../FrmRegisterImage.cpp" line="210"/>
         <source>Face register</source>
         <translation>人臉註冊</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="163"/>
-        <location filename="../../FrmRegisterImage.cpp" line="234"/>
+        <location filename="../../FrmRegisterImage.cpp" line="164"/>
+        <location filename="../../FrmRegisterImage.cpp" line="235"/>
         <source>Face register fail</source>
         <translation>人臉註冊失敗</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="179"/>
-        <location filename="../../FrmRegisterImage.cpp" line="250"/>
         <source>Regist success. index:</source>
-        <translation>註冊成功。 索引：</translation>
+        <translation type="vanished">註冊成功。 索引：</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterImage.cpp" line="117"/>
-        <location filename="../../FrmRegisterImage.cpp" line="207"/>
+        <location filename="../../FrmRegisterImage.cpp" line="118"/>
+        <location filename="../../FrmRegisterImage.cpp" line="208"/>
         <source>Please select a photo with only one person</source>
         <translation>請選擇只有一個人的圖像</translation>
     </message>
@@ -366,9 +386,13 @@
 <context>
     <name>CFrmRegisterVideo</name>
     <message>
-        <location filename="../../FrmRegisterVideo.ui" line="14"/>
         <source>Registe from Video</source>
-        <translation>從視頻註冊</translation>
+        <translation type="vanished">從視頻註冊</translation>
+    </message>
+    <message>
+        <location filename="../../FrmRegisterVideo.ui" line="14"/>
+        <source>Register from Video</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../FrmRegisterVideo.ui" line="22"/>
@@ -391,55 +415,55 @@
         <translation>狀態</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="20"/>
-        <location filename="../../FrmRegisterVideo.cpp" line="148"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="21"/>
         <location filename="../../FrmRegisterVideo.cpp" line="150"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="152"/>
         <source>Please face into box</source>
         <translation>請把人臉放入框中</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="39"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="41"/>
         <source>ERROR: </source>
         <translation>錯誤： </translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="43"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="45"/>
         <source>FAIL: </source>
         <translation>失敗： </translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="47"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="49"/>
         <source>SUCCESS: </source>
         <translation>成功： </translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="64"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="66"/>
         <source>Please input no</source>
         <translation>請輸入NO</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="69"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="71"/>
         <source>Please input name</source>
         <translation>請輸入姓名</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="81"/>
-        <location filename="../../FrmRegisterVideo.cpp" line="146"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="83"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="148"/>
         <source>Please only a person before the camera</source>
         <translation>只能有一個人在攝像頭前</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="152"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="154"/>
         <source>Please push register button</source>
         <translation>請按註冊按鈕</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="162"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="164"/>
         <source>Please stay away from the camera</source>
         <translation>請遠離攝像頭</translation>
     </message>
     <message>
-        <location filename="../../FrmRegisterVideo.cpp" line="167"/>
+        <location filename="../../FrmRegisterVideo.cpp" line="169"/>
         <source>Please be close to the camera</source>
         <translation>請靠近攝像頭</translation>
     </message>
@@ -455,7 +479,7 @@
 <context>
     <name>CManageRegisterVideo</name>
     <message>
-        <location filename="../../ManageRegisterVideo.cpp" line="10"/>
+        <location filename="../../ManageRegisterVideo.cpp" line="11"/>
         <source>Register from video</source>
         <translation>從視頻註冊</translation>
     </message>
@@ -470,12 +494,12 @@
     <message>
         <location filename="../../MainWindow.ui" line="149"/>
         <location filename="../../MainWindow.ui" line="152"/>
-        <location filename="../../MainWindow.cpp" line="49"/>
-        <location filename="../../MainWindow.cpp" line="50"/>
-        <location filename="../../MainWindow.cpp" line="51"/>
-        <location filename="../../MainWindow.cpp" line="359"/>
-        <location filename="../../MainWindow.cpp" line="360"/>
-        <location filename="../../MainWindow.cpp" line="361"/>
+        <location filename="../../MainWindow.cpp" line="54"/>
+        <location filename="../../MainWindow.cpp" line="55"/>
+        <location filename="../../MainWindow.cpp" line="56"/>
+        <location filename="../../MainWindow.cpp" line="426"/>
+        <location filename="../../MainWindow.cpp" line="427"/>
+        <location filename="../../MainWindow.cpp" line="428"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
@@ -532,9 +556,9 @@
         <translation>從視頻識別</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="348"/>
-        <location filename="../../MainWindow.cpp" line="349"/>
-        <location filename="../../MainWindow.cpp" line="350"/>
+        <location filename="../../MainWindow.cpp" line="415"/>
+        <location filename="../../MainWindow.cpp" line="416"/>
+        <location filename="../../MainWindow.cpp" line="417"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
@@ -695,8 +719,8 @@
         <translation>樣式</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="81"/>
-        <location filename="../../MainWindow.cpp" line="82"/>
+        <location filename="../../MainWindow.cpp" line="108"/>
+        <location filename="../../MainWindow.cpp" line="109"/>
         <source>Select camera</source>
         <translation>選擇攝像頭</translation>
     </message>
@@ -714,27 +738,27 @@
         <translation type="vanished">樣式文件(*.qss)</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="156"/>
+        <location filename="../../MainWindow.cpp" line="195"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="156"/>
+        <location filename="../../MainWindow.cpp" line="195"/>
         <source>The devices is not camera</source>
         <translation>此設備無攝像頭</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="302"/>
+        <location filename="../../MainWindow.cpp" line="346"/>
         <source>Open file</source>
         <translation>打開文件</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="419"/>
+        <location filename="../../MainWindow.cpp" line="494"/>
         <source>Open model file path</source>
         <translation>打開模型文件路徑</translation>
     </message>
     <message>
-        <location filename="../../MainWindow.cpp" line="547"/>
+        <location filename="../../MainWindow.cpp" line="623"/>
         <source>Set parameters</source>
         <translation>設置參數</translation>
     </message>
@@ -742,7 +766,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../main.cpp" line="46"/>
+        <location filename="../../main.cpp" line="47"/>
         <source>Face recognizer</source>
         <translation>人臉識別</translation>
     </message>

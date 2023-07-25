@@ -6,7 +6,7 @@ endif()
 
 project(PluginFaceSeeta)
 find_package(SeetaFace)
-message("== Plugins SeetaFace:${SeetaFace_FOUND};${SeetaFace_LIBRARIES}")
+message(STATUS "Plugins SeetaFace:${SeetaFace_FOUND};${SeetaFace_LIBRARIES}")
 if(NOT SeetaFace_FOUND)
     return()
 endif()

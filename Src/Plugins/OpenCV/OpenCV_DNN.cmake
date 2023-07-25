@@ -1,4 +1,4 @@
-#PROJECT(PlugFaceOpencvDNN)
+#PROJECT(PluginFaceOpencvDNN)
 
 set(SOURCES_FILES
     DetectorOpenCVDNN.cpp
@@ -21,7 +21,7 @@ set(HEADER_FILES
 #    PRIVATE_DEFINITIONS OpenCV_VERSION_MAJOR=${OpenCV_VERSION_MAJOR}
 #    OUTPUT_DIR ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}/Face
 #    INSTALL_DIR ${INSTALL_PATH}
-#    VERSION ${BUILD_VERSION})
+#    VERSION ${FaceRecognizer_VERSION})
 
 # Install protobuf
 find_package(protobuf)

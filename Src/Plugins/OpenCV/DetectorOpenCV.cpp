@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(logOpenCV)
+Q_LOGGING_CATEGORY(logOpenCV, "OpenCV.Face")
 
 CDetectorOpenCV::CDetectorOpenCV(CFace *pFace, QObject *parent)
     : CDetector(pFace, parent),
