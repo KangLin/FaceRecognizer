@@ -25,6 +25,10 @@ elseif(WIN32)
             COMPONENT Runtime)
 endif()
 
+if(QT_VERSION_MAJOR GREATER_EQUAL 6)
+    return()
+endif()
+
 project(PluginConverFormatFFMpeg)
 
 set(SOURCES_FILES

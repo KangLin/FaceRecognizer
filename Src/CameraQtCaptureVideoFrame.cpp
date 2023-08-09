@@ -78,6 +78,7 @@ void CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
 bool CCameraQtCaptureVideoFrame::present(const QVideoFrame &frame)
 #endif
 {
+    //qDebug() << "Frame pixel format:" << frame.pixelFormat();
     emit sigCaptureFrame(frame);
     PERFORMANCE(present)
     QImage img = CImageTool::Instance()->ConverFormatToRGB888(frame);
