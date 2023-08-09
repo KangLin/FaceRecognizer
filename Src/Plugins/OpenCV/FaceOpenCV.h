@@ -3,7 +3,7 @@
 
 #include "Face.h"
 
-class CFaceOpenCV : public CFace
+class CFaceOpenCV final : public CFace
 {
     Q_OBJECT
     Q_PROPERTY(Algorithm algorithm READ getAlgorithm WRITE setAlgorithm)

@@ -5,7 +5,7 @@
 
 #include "Face.h"
 
-class CFaceSeeta2 : public CFace
+class CFaceSeeta2 final: public CFace
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

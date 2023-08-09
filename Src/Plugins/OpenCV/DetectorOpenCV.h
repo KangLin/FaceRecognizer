@@ -6,7 +6,7 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/objdetect.hpp"
 
-class CDetectorOpenCV : public CDetector
+class CDetectorOpenCV final : public CDetector
 {
     Q_OBJECT
 public:

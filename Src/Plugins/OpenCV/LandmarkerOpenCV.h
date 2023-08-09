@@ -20,7 +20,7 @@
 
 #include "Landmarker.h"
 
-class CLandmarkerOpenCV : public CLandmarker
+class CLandmarkerOpenCV final : public CLandmarker
 {
     Q_OBJECT
 public:

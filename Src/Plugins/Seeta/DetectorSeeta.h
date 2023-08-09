@@ -8,7 +8,7 @@
 #include <QSharedPointer>
 #include <QMetaClassInfo>
 
-class CDetectorSeeta : public CDetector
+class CDetectorSeeta final: public CDetector
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

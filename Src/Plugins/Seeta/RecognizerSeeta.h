@@ -6,7 +6,7 @@
 
 #include <QSharedPointer>
 
-class CRecognizerSeeta : public CRecognizer
+class CRecognizerSeeta final : public CRecognizer
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

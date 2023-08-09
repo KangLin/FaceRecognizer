@@ -10,7 +10,7 @@ extern "C" {
 #undef PixelFormat
 }
 
-class CConverFormatFFmpeg : public CConverFormat
+class CConverFormatFFmpeg final: public CConverFormat
 {
     Q_OBJECT
 public:

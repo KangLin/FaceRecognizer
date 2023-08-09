@@ -5,7 +5,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/face.hpp"
 
-class CRecognizerOpenCV : public CRecognizer
+class CRecognizerOpenCV final: public CRecognizer
 {
     Q_OBJECT
 public:

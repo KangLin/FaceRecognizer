@@ -7,7 +7,7 @@
 #include "Tracker.h"
 #include "seeta/FaceTracker.h"
 
-class CTrackerSeeta : public CTracker
+class CTrackerSeeta final : public CTracker
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

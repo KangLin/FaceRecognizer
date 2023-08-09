@@ -7,7 +7,7 @@
 #include <QImage>
 #include <QSharedPointer>
 
-class CFaceToolsSeeta : public CFaceTools
+class CFaceToolsSeeta final: public CFaceTools
 {
     Q_OBJECT
     Q_CLASSINFO("Author", "Kang Lin <kl222@126.com>")

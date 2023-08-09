@@ -3,7 +3,7 @@
 
 #include "ConverFormat.h"
 
-class CConverFormatOpenCV : public CConverFormat
+class CConverFormatOpenCV final: public CConverFormat
 {
     Q_OBJECT
 public:
