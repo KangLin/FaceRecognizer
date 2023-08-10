@@ -12,7 +12,7 @@ void Log(void*, int, const char* fmt, va_list vl)
 
 CConverFormatFFmpeg::CConverFormatFFmpeg(QObject *parent) : CConverFormat(parent)
 {
-    qDebug(logFFMPGE) << "FFmpeg version:" << av_version_info()
+    qInfo(logFFMPGE) << "FFmpeg version:" << av_version_info()
                       << "libavutil version:"
                       << av_version_info()
                       << "libswscale Version:"

@@ -87,6 +87,8 @@ mac 和 ios我没有设备，请有设备的同学自行编译测试。
 
 ### [下载安装包](https://github.com/KangLin/FaceRecognizer/releases/latest)
 
+**注意**: 本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
+
 + [最后版本](https://github.com/KangLin/FaceRecognizer/releases/latest)
 + 当前版本：
   - windows
@@ -128,9 +130,6 @@ mac 和 ios我没有设备，请有设备的同学自行编译测试。
           # 如要你是在老的 linux 发行版本上，你需要用下列命令替换：
           # sudo dpkg -i facerecognizer_0.0.4_amd64.deb
           # sudo apt-get install -f # 安装依赖
-      
-
-**注意**: 本项目安装包中暂时未打包模型文件，请到相关依赖项目中下载模型文件到一个目录中，然后在程序 菜单->选项->设置模型路径 中指定此目录。
 
 ## 捐赠
 本软件如果对你有用，或者你喜欢它。欢迎以任何形式的捐赠（包括参与到项目代码贡献、意见反馈、以及[捐赠资金](#捐赠资金)等）支持作者。谢谢！

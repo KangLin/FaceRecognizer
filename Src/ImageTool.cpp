@@ -81,12 +81,15 @@ QImage CImageTool::ConverFormatToRGB888(const QVideoFrame &frame)
         {
             QImage image = m_pConverFormat->onConverFormatToRGB888(frame);
             if(!image.isNull()) return image;
+            qCritical(logImageTool) << m_pConverFormat->getName()
+                              << "m_pConverFormat->onConverFormatToRGB888 fail";
         }
 
 #ifdef HAVE_LIBYUV
         return  LibyuvConverFormatToRGB888(frame);
 #endif
-        if(QVideoFrame::Format_YUV420P != frame.pixelFormat())
+        if(!(QVideoFrame::Format_YUV420P == frame.pixelFormat()
+              || QVideoFrame::Format_Jpeg == frame.pixelFormat()))
         {
             qWarning(logImageTool) << "Please use one of opencv, ffmpeg, libyuv";
         }
@@ -319,7 +322,7 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
     foreach (fileName, files) {
-        qInfo(logImageTool) << "file name:" << fileName;
+        qDebug(logImageTool) << "file name:" << fileName;
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
