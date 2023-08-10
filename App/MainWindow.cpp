@@ -205,7 +205,11 @@ void MainWindow::slotCameraChanged(int index)
     }
     
     m_pCamera = new QCamera(camers.at(index));
-    if(nullptr == m_pCamera) return;
+    if(nullptr == m_pCamera)
+    {
+        qCritical(log) << "new QCamera fail. index:" << index;
+        return;
+    }
     /*        
     QCameraViewfinderSettings viewfinderSettings = m_pCamera->viewfinderSettings();
     

@@ -198,7 +198,7 @@ jobs:
                 -m "${{env.FaceRecognizer_VERSION}}"
 
       - name: Update artifact
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '5.12.12' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.6.0' }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
