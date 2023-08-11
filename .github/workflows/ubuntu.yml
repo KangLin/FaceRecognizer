@@ -16,7 +16,7 @@ jobs:
       matrix:
         BUILD_TYPE: [Release, Debug]
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     env:
       BUILD_TYPE:  ${{matrix.BUILD_TYPE}}
@@ -55,14 +55,17 @@ jobs:
                 cmake build-essential \
                 debhelper fakeroot graphviz \
                 libglu1-mesa-dev libpulse-mainloop-glib0 \
-                qttools5-dev qttools5-dev-tools qtbase5-dev qtbase5-dev-tools \
-                qtmultimedia5-dev qtlocation5-dev libqt5svg5-dev \
-                qtwebengine5-dev libqtermwidget5-0-dev libqt5serialport5-dev\
+                qt6-tools-dev qt6-tools-dev-tools \
+                qt6-base-dev qt6-base-dev-tools qt6-qpa-plugins \
+                libqt6svg6-dev qt6-l10n-tools qt6-translations-l10n \
+                qt6-scxml-dev qt6-multimedia-dev libqt6serialport6-dev \
+                qt6-webengine-dev qt6-webengine-dev-tools \
                 libutf8proc-dev libpam0g-dev \
                 libxkbcommon-dev libxkbcommon-x11-dev xorg-dev libx11-xcb-dev \
                 libx11-dev libxfixes-dev \
                 libdlib-dev libopencv-dev libopencv-contrib-dev \
-                libavcodec-dev libavformat-dev libavfilter-dev libavdevice-dev libavresample-dev libavutil-dev \
+                libavcodec-dev libavformat-dev libavfilter-dev libavdevice-dev \
+                libswresample-dev libavutil-dev \
                 libsqlite3-dev
 
       - name: Cache installed
@@ -117,7 +120,8 @@ jobs:
           SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           facedetection_DIR: ${{env.INSTALL_DIR}}/lib/cmake/facedetection
         run: |
-          ./build_debpackage.sh /usr/lib/`uname -m`-linux-gnu/qt5
+          export Qt6_DIR=/usr/lib/`uname -a`-linux-gnu/cmake/Qt6      
+          ./build_debpackage.sh
           cp ../facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
 
       - name: Update xml file
