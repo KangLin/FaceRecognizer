@@ -27,6 +27,7 @@ int CConverFormatFFmpeg::SetFFmpegLog()
     return 0;
 }
 
+// See: https://blog.csdn.net/u014260892/article/details/51883723
 AVPixelFormat CConverFormatFFmpeg::QVideoFrameFormatToFFMpegPixFormat(
         const QVideoFrame::PixelFormat format)
 {
@@ -77,7 +78,8 @@ QImage CConverFormatFFmpeg::onConverFormatToRGB888(const QVideoFrame &frame)
                      QImage::Format_RGB888);
 #if LIBAVUTIL_VERSION_MAJOR >= 55
         nRet = av_image_fill_arrays(outPic->data, outPic->linesize,
-                                    img.bits(), AV_PIX_FMT_RGB24, img.width(), img.height(), 1);
+                                    img.bits(), AV_PIX_FMT_RGB24,
+                                    img.width(), img.height(), 1);
 #else
         nRet = avpicture_fill((AVPicture *)outPic, videoFrame.bits(),
                               QVideoFrameFormatToFFMpegPixFormat(videoFrame.pixelFormat()),

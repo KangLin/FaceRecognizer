@@ -10,7 +10,7 @@
     #define RETURN(value)    
 #else
     #define PERFORMANCE(name) \
-        CPerformance object##name (#name);
+        CPerformance object##name(#name);
     #define PERFORMANCE_START(name) object##name.StartTime();
     #define PERFORMANCE_ADD_TIME(name, message) \
         object##name.AddTime(__FILE__, __LINE__, __FUNCTION__, message);

@@ -49,6 +49,7 @@ set(SOURCE_FILES
     database/Database.cpp
     database/DataRegister.cpp
     database/TableRegister.cpp
+    Performance.cpp
     )
 
 set(INSTALLHEADER_FILES
@@ -97,7 +98,7 @@ ADD_TARGET(NAME ${PROJECT_NAME}
     PRIVATE_DEFINITIONS
         FaceRecognizer_VERSION="${FaceRecognizer_VERSION}"
         FaceRecognizer_REVISION="${FaceRecognizer_REVISION}"
-    DEFINITIONS RABBITCOMMON ${LIBS_DEFINES}
+    DEFINITIONS RABBITCOMMON ${LIBS_DEFINES} BUILD_PERFORMANCE
     SOURCE_FILES ${SOURCE_FILES} ${HEADER_FILES} ${RCC_FILES}
     INSTALL_HEADER_FILES "${INSTALLHEADER_FILES}"
     OPTIONS ${FACERECOGNIZER_OPTIONS}
