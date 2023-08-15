@@ -4,7 +4,6 @@ project(FaceRecognizer)
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -43,6 +42,9 @@ if(ANDROID AND (Qt${QT_VERSION_MAJOR}_VERSION VERSION_LESS 6.0.0))
 endif()
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
     LIST(APPEND QT_COMPONENTS MultimediaWidgets Core5Compat)
+    set(CMAKE_CXX_STANDARD 17)
+else()
+    set(CMAKE_CXX_STANDARD 11)
 endif()
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${QT_COMPONENTS})
 message("QT_VERSION:${Qt${QT_VERSION_MAJOR}_VERSION}")
@@ -67,13 +69,10 @@ IF(MSVC)
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 ENDIF(MSVC)
-IF(MINGW)
-    add_compile_options("-std=c++0x")
-ENDIF()
 IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
-    add_compile_options(-std=c++0x -Wno-sign-compare -Wno-unused-parameter)
+    add_compile_options(-Wno-sign-compare -Wno-unused-parameter)
     
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         add_compile_options(-g -ggdb)
@@ -139,21 +138,21 @@ if(NOT RabbitCommon_DIR)
     endif()
 endif()
 if(RabbitCommon_DIR AND EXISTS ${RabbitCommon_DIR}/Src)
-    message("Use RabbitCommon source code")
+    message(STATUS "Use RabbitCommon source code")
     add_subdirectory(${RabbitCommon_DIR}/Src ${CMAKE_BINARY_DIR}/RabbitCommon)
 else()
     find_package(RabbitCommon)
     if(NOT RabbitCommon_FOUND)
-        message("RabbitCommon_DIR is not found. Please use one of the following ways to set it:")
-        message("1. Set RabbitCommon_DIR to the install prefix of RabbitCommon.")
-        message("2. Set RabbitCommon_DIR to source code root of RabbitCommon.")
-        message("2.1 Please download the source code of RabbitCommon from https://github.com/KangLin/RabbitCommon")
-        message("   ag:")
-        message("       git clone https://github.com/KangLin/RabbitCommon.git")
-        message("2.2 Then set cmake variable or environment variable RabbitCommon_DIR to download root directory.")
-        message("   ag:")
-        message("       cmake -DRabbitCommon_DIR= ")
-        message(FATAL_ERROR "RabbitCommon_DIR isn't set.")
+        message(FATAL_ERROR
+                "RabbitCommon_DIR is not found. Please use one of the following ways to set it:\n"
+                "1. Set RabbitCommon_DIR to the install prefix of RabbitCommon.\n"
+                "2. Set RabbitCommon_DIR to source code root of RabbitCommon.\n"
+                "2.1 Please download the source code of RabbitCommon from https://github.com/KangLin/RabbitCommon\n"
+                "   ag:\n"
+                "       git clone https://github.com/KangLin/RabbitCommon.git\n"
+                "2.2 Then set cmake variable or environment variable RabbitCommon_DIR to download root directory.\n"
+                "   ag:\n"
+                "       cmake -DRabbitCommon_DIR=")
     endif()
 endif()
 

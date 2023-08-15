@@ -93,9 +93,9 @@ signals:
 
 private:
 #ifdef ANDROID
-     QVideoProbe m_Probe;//android下,目前只能用probe捕获视频  
+     QVideoProbe m_Probe;//android下,目前只能用probe捕获视频
 #endif
-     
+
      int m_Angle;
 };
 

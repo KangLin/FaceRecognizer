@@ -60,6 +60,7 @@ jobs:
                 libqt6svg6-dev qt6-l10n-tools qt6-translations-l10n \
                 qt6-scxml-dev qt6-multimedia-dev libqt6serialport6-dev \
                 qt6-webengine-dev qt6-webengine-dev-tools \
+                libqt6core5compat6-dev \
                 libutf8proc-dev libpam0g-dev \
                 libxkbcommon-dev libxkbcommon-x11-dev xorg-dev libx11-xcb-dev \
                 libx11-dev libxfixes-dev \

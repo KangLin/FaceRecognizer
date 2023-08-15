@@ -10,31 +10,7 @@ endif()
 
 project(FaceRecognizer)
 
-OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
-if(BUILD_PERFORMANCE)
-    set(LIBS_DEFINES ${LIBS_DEFINES} BUILD_PERFORMANCE)
-    set(SOURCE_FILES ${SOURCE_FILES} Performance.cpp)
-endif()
-
-option(USE_YUV "Use libyuv" ON)
-if(USE_YUV)
-    #Use: https://github.com/KangLin/libyuv
-    find_package(YUV)
-    if(YUV_FOUND)
-        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBYUV)
-        set(LIBS ${LIBS} YUV)
-#        if(ANDROID)
-#            INSTALL(FILES $<TARGET_FILE:YUV>
-#                    DESTINATION "libs/${ANDROID_ABI}")
-#        else()
-#            INSTALL(FILES $<TARGET_FILE:YUV>
-#                    DESTINATION "${CMAKE_INSTALL_BINDIR}")
-#        endif()
-    endif()
-endif(USE_YUV)
-
 set(SOURCE_FILES
-    ${SOURCE_FILES}
     CameraQtCaptureVideoFrame.cpp
     ImageTool.cpp
     ConverFormat.cpp
@@ -49,7 +25,6 @@ set(SOURCE_FILES
     database/Database.cpp
     database/DataRegister.cpp
     database/TableRegister.cpp
-    Performance.cpp
     )
 
 set(INSTALLHEADER_FILES
@@ -75,6 +50,29 @@ set(HEADER_FILES
     database/TableRegister.h
     )
 
+OPTION(BUILD_PERFORMANCE "Set to ON to build performance)." OFF)
+if(BUILD_PERFORMANCE)
+    set(LIBS_DEFINES ${LIBS_DEFINES} BUILD_PERFORMANCE)
+    list(APPEND SOURCE_FILES Performance.cpp)
+endif()
+
+option(USE_YUV "Use libyuv" ON)
+if(USE_YUV)
+    #Use: https://github.com/KangLin/libyuv
+    find_package(YUV)
+    if(YUV_FOUND)
+        set(LIBS_DEFINES ${LIBS_DEFINES} HAVE_LIBYUV)
+        set(LIBS ${LIBS} YUV)
+#        if(ANDROID)
+#            INSTALL(FILES $<TARGET_FILE:YUV>
+#                    DESTINATION "libs/${ANDROID_ABI}")
+#        else()
+#            INSTALL(FILES $<TARGET_FILE:YUV>
+#                    DESTINATION "${CMAKE_INSTALL_BINDIR}")
+#        endif()
+    endif()
+endif(USE_YUV)
+
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 if(BUILD_TYPE STREQUAL "debug")
     set(LIBS_DEFINES ${LIBS_DEFINES} DEBUG)
@@ -98,7 +96,7 @@ ADD_TARGET(NAME ${PROJECT_NAME}
     PRIVATE_DEFINITIONS
         FaceRecognizer_VERSION="${FaceRecognizer_VERSION}"
         FaceRecognizer_REVISION="${FaceRecognizer_REVISION}"
-    DEFINITIONS RABBITCOMMON ${LIBS_DEFINES} BUILD_PERFORMANCE
+    DEFINITIONS RABBITCOMMON ${LIBS_DEFINES}
     SOURCE_FILES ${SOURCE_FILES} ${HEADER_FILES} ${RCC_FILES}
     INSTALL_HEADER_FILES "${INSTALLHEADER_FILES}"
     OPTIONS ${FACERECOGNIZER_OPTIONS}
