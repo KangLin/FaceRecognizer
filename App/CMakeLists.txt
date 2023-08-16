@@ -88,7 +88,7 @@ if(UNIX AND NOT ANDROID)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.desktop
         DESTINATION "share/applications"
             COMPONENT Runtime)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.sh
+    INSTALL(PROGRAMS ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.sh
         DESTINATION "${CMAKE_INSTALL_BINDIR}"
             COMPONENT Runtime)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.png

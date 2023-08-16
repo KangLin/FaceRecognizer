@@ -31,11 +31,11 @@ case "$1" in
         fi
         #echo "/opt/FaceRecognizer/lib" > /etc/ld.so.conf.d/FaceRecognizer.conf
         #echo "/opt/FaceRecognizer/bin" >> /etc/ld.so.conf.d/FaceRecognizer.conf
-        export QT_VERSION_DIR=
-        if [ -n "${QT_VERSION_DIR}" ]; then
-            echo "/opt/qt${QT_VERSION_DIR}/lib" >> /etc/ld.so.conf.d/FaceRecognizer.conf
-        fi
-        ldconfig
+        #export QT_VERSION_DIR=
+        #if [ -n "${QT_VERSION_DIR}" ]; then
+        #    echo "/opt/qt${QT_VERSION_DIR}/lib" >> /etc/ld.so.conf.d/FaceRecognizer.conf
+        #fi
+        #ldconfig
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
