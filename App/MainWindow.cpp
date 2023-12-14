@@ -10,7 +10,6 @@
     #include "DlgAbout.h"
     #include "RabbitCommonDir.h"
     #include "RabbitCommonTools.h"
-    #include "FrmStyle.h"
 #endif
 
 #include "FrmDisplay.h"
@@ -173,12 +172,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_actionStyle_triggered()
-{
-    CFrmStyle* s = new CFrmStyle();
-    s->show();
 }
 
 void MainWindow::slotCameraChanged(int index)
