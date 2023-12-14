@@ -26,6 +26,7 @@ jobs:
     
   android:
     uses: ./.github/workflows/android.yml
+    secrets: inherit
 
   deploy:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
