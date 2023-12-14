@@ -36,7 +36,7 @@ jobs:
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
       FaceRecognizer_VERSION: v0.0.4
-      VCPKGGITCOMMITID: b7dba7f9aad09a56900f21cd78cfda1258e54e38
+      VCPKGGITCOMMITID: 980ec0f49d81f794778386f7bd518b2cc9c092f0
       ANDROID_PLATFORM: android-23
       ANDROID_NATIVE_API_LEVEL: 23
       qt_modules: 'qtimageformats qtmultimedia qtscxml'
