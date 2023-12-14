@@ -13,9 +13,9 @@ jobs:
     strategy:
       matrix:
         BUILD_TYPE: [Release, Debug]
-        qt_version: [6.6.0, 6.5.2, 5.15.2, 5.12.12]
+        qt_version: [6.6.1, 6.5.2, 5.15.2, 5.12.12]
         include:
-          - qt_version: 6.6.0
+          - qt_version: 6.6.1
             triplet: x64-windows
             VCPKG_PLATFORM_TOOLSET: v142
             qt_arch: win64_msvc2019_64
@@ -193,7 +193,7 @@ jobs:
           copy /Y FaceRecognizer_${{env.FaceRecognizer_VERSION}}_Setup.exe FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
 
       - name: Update xml
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.6.0' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.6.1' }}
         working-directory: ${{github.workspace}}\build
         run: |
           ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^
