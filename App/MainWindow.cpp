@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QActionGroup *pSourceGroup = new QActionGroup(this);
     pSourceGroup->addAction(ui->actionFile);
     pSourceGroup->addAction(ui->actionCamera);
-    
+    RabbitCommon::CTools::AddStyleMenu(ui->menuTools);
     ui->menuTools->addMenu(RabbitCommon::CTools::GetLogMenu(this));
 
     // File
