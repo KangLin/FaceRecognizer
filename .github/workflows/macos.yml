@@ -37,7 +37,7 @@ jobs:
       qt_modules: ${{matrix.qt_modules}}
       FaceRecognizer_VERSION: v0.0.4
       artifact_name: build_macos
-      VCPKGGITCOMMITID: 980ec0f49d81f794778386f7bd518b2cc9c092f0
+      VCPKGGITCOMMITID: eb33d2f7583405fca184bcdf7fdd5828ec88ac05
 
     # Map the job outputs to step outputs
     outputs:
