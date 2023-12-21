@@ -39,6 +39,7 @@
   - https://gitlab.com/kl222/FaceRecognizer
   - https://sourceforge.net/projects/facerecognizer/
   - https://launchpad.net/facerecognizer
+  - https://invent.kde.org/kanglin/FaceRecognizer
 
 本项目提供一些人脸常见应用。提供应用级 AI （人脸）框架，方便自定义快速开发 AI （人脸） 应用。
 以及性能测试比较框架，方便对第三方人脸库做性能测试比较。
