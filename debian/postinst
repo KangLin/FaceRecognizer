@@ -17,20 +17,27 @@ set -e
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-
+INSTALL_ROOT=/opt/FaceRecognizer
 case "$1" in
     configure)
+	chmod -R a+rw $INSTALL_ROOT/etc
+	mkdir -p $INSTALL_ROOT/log
+        chmod -R a+rw $INSTALL_ROOT/log
+        if [ ! -d $INSTALL_ROOT/bin/log ]; then
+            ln -s $INSTALL_ROOT/log $INSTALL_ROOT/bin/log
+        fi
+
         if [ ! -f /usr/share/applications/FaceRecognizer.desktop ]; then
-            ln -s /opt/FaceRecognizer/share/applications/FaceRecognizer.desktop /usr/share/applications/FaceRecognizer.desktop
+            ln -s $INSTALL_ROOT/share/applications/FaceRecognizer.desktop /usr/share/applications/FaceRecognizer.desktop
         fi
         if [ ! -f /usr/share/pixmaps/FaceRecognizer.png ]; then
             if [ ! -d /usr/share/pixmaps ]; then
                 mkdir -p /usr/share/pixmaps
             fi
-            ln -s /opt/FaceRecognizer/share/pixmaps/FaceRecognizer.png /usr/share/pixmaps/FaceRecognizer.png
+            ln -s $INSTALL_ROOT/share/pixmaps/FaceRecognizer.png /usr/share/pixmaps/FaceRecognizer.png
         fi
-        #echo "/opt/FaceRecognizer/lib" > /etc/ld.so.conf.d/FaceRecognizer.conf
-        #echo "/opt/FaceRecognizer/bin" >> /etc/ld.so.conf.d/FaceRecognizer.conf
+        #echo "/$INSTALL_ROOT/lib" > /etc/ld.so.conf.d/FaceRecognizer.conf
+        #echo "$INSTALL_ROOT/bin" >> /etc/ld.so.conf.d/FaceRecognizer.conf
         #export QT_VERSION_DIR=
         #if [ -n "${QT_VERSION_DIR}" ]; then
         #    echo "/opt/qt${QT_VERSION_DIR}/lib" >> /etc/ld.so.conf.d/FaceRecognizer.conf
