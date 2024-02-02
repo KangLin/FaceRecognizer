@@ -3,6 +3,7 @@
   */
 
 #include <QApplication>
+#include <QLoggingCategory>
 #if defined(Q_OS_ANDROID)
     #include <QtAndroidExtras/QtAndroid>
 #endif
@@ -15,7 +16,7 @@
     #include "FrmUpdater/FrmUpdater.h"
 #endif
 
-Q_DECLARE_LOGGING_CATEGORY(log)
+static Q_LOGGING_CATEGORY(log, "main")
 
 int main(int argc, char *argv[])
 {
@@ -49,8 +50,11 @@ int main(int argc, char *argv[])
 #ifdef RABBITCOMMON 
     CFrmUpdater *pUpdate = new CFrmUpdater();
     pUpdate->SetTitle(QImage(":/image/FaceRecognizer"));
-    if(!pUpdate->GenerateUpdateXml()) 
-        return 0; 
+    if(app.arguments().length() > 1) {
+        pUpdate->GenerateUpdateJson();
+        pUpdate->GenerateUpdateXml();
+        return 0;
+    }
 #endif
 
     QFile f(":/qss/black.qss");

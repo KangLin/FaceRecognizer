@@ -197,7 +197,9 @@ jobs:
         working-directory: ${{github.workspace}}\build
         run: |
           ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^
-              -f "update_windows.xml" ^
+              -f "update_windows.json" ^
+              --foc 1 ^
+              -n "FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe" ^
               -u https://github.com/KangLin/FaceRecognizer/releases/download/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe;https://sourceforge.net/projects/FaceRecognizer/files/${{env.FaceRecognizer_VERSION}}/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe ^
               --pf FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe ^
               -m "${{env.FaceRecognizer_VERSION}}"

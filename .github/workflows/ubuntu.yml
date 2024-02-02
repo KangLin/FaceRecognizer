@@ -134,9 +134,11 @@ jobs:
           MD5=`md5sum facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb|awk '{print $1}'`
           echo "MD5:${MD5}"
           /bin/bash /opt/FaceRecognizer/bin/FaceRecognizer.sh \
-              -f "${{github.workspace}}/update_linux.xml" \
+              -f "${{github.workspace}}/update_linux.json" \
+              --foc 1 \
               --md5 ${MD5} \
               -m "${{env.FaceRecognizer_VERSION}}" \
+              -n "facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb" \
               -u "https://github.com/KangLin/FaceRecognizer/releases/download/v${{env.FaceRecognizer_VERSION}}/facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb;https://sourceforge.net/projects/FaceRecognizer/files/v${{env.FaceRecognizer_VERSION}}/facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb"
 
       - name: Update artifact
