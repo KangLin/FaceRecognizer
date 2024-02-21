@@ -1,6 +1,10 @@
+# Author: Kang Lin <kl222@126.com>
+
 cmake_minimum_required(VERSION 2.8)
 
-project(FaceRecognizer)
+project(FaceRecognizer
+    HOMEPAGE_URL "https://github.com/KangLin/FaceRecognizer"
+    )
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
@@ -33,18 +37,16 @@ SET(CMAKE_AUTORCC ON)
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
-if(NOT DEFINED QT_VERSION_MAJOR)
-    find_package(QT NAMES Qt6 Qt5 COMPONENTS Core)
-endif()
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core)
 SET(QT_COMPONENTS Core Gui Widgets Xml Network Multimedia Sql)
-if(ANDROID AND (Qt${QT_VERSION_MAJOR}_VERSION VERSION_LESS 6.0.0))
-    LIST(APPEND QT_COMPONENTS AndroidExtras)
-endif()
 if(QT_VERSION_MAJOR GREATER_EQUAL 6)
-    LIST(APPEND QT_COMPONENTS MultimediaWidgets Core5Compat)
     set(CMAKE_CXX_STANDARD 17)
+    LIST(APPEND QT_COMPONENTS MultimediaWidgets Core5Compat)
 else()
     set(CMAKE_CXX_STANDARD 11)
+    if(ANDROID)
+        LIST(APPEND QT_COMPONENTS AndroidExtras)
+    endif()
 endif()
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${QT_COMPONENTS})
 message("QT_VERSION:${Qt${QT_VERSION_MAJOR}_VERSION}")

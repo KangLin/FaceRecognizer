@@ -93,7 +93,8 @@ jobs:
             cd build
             cmake .. -G"MinGW Makefiles" ^
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
-                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" ^
+                -DBUILD_EXAMPLE=OFF
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           )

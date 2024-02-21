@@ -1,5 +1,5 @@
 ## [<img src="App/Resource/image/FaceRecognizer.ico" title="人脸识别" width="32" height="32"/>人脸识别](https://github.com/KangLin/FaceRecognizer)
-作者：康林（kl222@126.com)
+作者：康林 <kl222@126.com>
 
 [![Windows build status](https://ci.appveyor.com/api/projects/status/n50nxc7d8mm9bdpb/branch/master?svg=true)](https://ci.appveyor.com/project/KangLin/facerecognizer/branch/master)
 [![build](https://github.com/KangLin/FaceRecognizer/actions/workflows/build.yml/badge.svg)](https://github.com/KangLin/FaceRecognizer/actions/workflows/build.yml)

@@ -16,16 +16,19 @@ jobs:
       matrix:
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
         BUILD_TYPE: [Release, Debug]
-        qt_version: [6.5.1, 5.15.2, 5.12.12]
+        qt_version: [6.6.2, 5.15.2, 5.12.12]
+        qt_arch: [clang_64]
+        VCPKG_TARGET_TRIPLET: [x64-osx]
         include:
-          - qt_version: 6.5.1
-            qt_modules: qtscxml qtpositioning qt5compat qtwebchannel qtwebsockets
+          - qt_version: 6.6.2
+            qt_modules: qtscxml qtpositioning qt5compat qtwebchannel qtwebsockets qtmultimedia
+            ENABLE_DOWNLOAD_MODULE: ON
 
           - qt_version: 5.15.2
-            qt_modules: ""
+            ENABLE_DOWNLOAD_MODULE: OFF
 
           - qt_version: 5.12.12
-            qt_modules: ""
+            ENABLE_DOWNLOAD_MODULE: OFF
 
     runs-on: macos-latest
 
@@ -33,11 +36,13 @@ jobs:
       BUILD_TYPE:  ${{ matrix.BUILD_TYPE }}
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
-      INSTALL_DIR: ${{github.workspace}}/.cache/install_macos
-      qt_modules: ${{matrix.qt_modules}}
-      FaceRecognizer_VERSION: v0.0.4
+      INSTALL_DIR: ${{github.workspace}}/.cache/install
+      qt_modules: qtwebengine ${{matrix.qt_modules}}
+      VCPKGGITCOMMITID: a1a1cbc975abf909a6c8985a6a2b8fe20bbd9bd6
+      VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       artifact_name: build_macos
-      VCPKGGITCOMMITID: eb33d2f7583405fca184bcdf7fdd5828ec88ac05
+      FaceRecognizer_VERSION: v0.0.4
+      ENABLE_DOWNLOAD_MODULE: ${{matrix.ENABLE_DOWNLOAD_MODULE}}
 
     # Map the job outputs to step outputs
     outputs:
@@ -62,23 +67,22 @@ jobs:
         with:
           path: |
             ${{env.INSTALL_DIR}}
-          key: Cache-macos-installed-qt${{matrix.qt_version}}-${{matrix.BUILD_TYPE}}
+          key: install_macos_qt${{matrix.qt_version}}_${{matrix.qt_arch}}_${{matrix.BUILD_TYPE}}
 
       - name: Install application
         run: |
           brew install nasm
 
       - name: run-vcpkg
-        uses: lukka/run-vcpkg@v7.4
+        uses: lukka/run-vcpkg@v11
         with:
           vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
           vcpkgDirectory: ${{runner.workspace}}/vcpkg/
-          # Since the cache must be invalidated when content of the vcpkg.json file changes, let's
-          # compute its hash and append this to the computed cache's key.
-          appendedCacheKey: vcpkg-macos-${{env.VCPKGGITCOMMITID}}
-          vcpkgTriplet: '${{matrix.triplet}}'
-          vcpkgArguments: 'openssl libyuv ffmpeg opencv opencv[contrib] dlib ncnn'
-      
+
+      - name: run vcpkg
+        run: |
+          brew install nasm
+
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1  # not v2!
@@ -87,15 +91,14 @@ jobs:
           key: qt${{matrix.qt_version}}-${{matrix.qt_arch}}
         
       - name: Install Qt
-        # You may pin to the exact commit or the version.
-        # uses: jurplel/install-qt-action@a962fb91949c8e846a3e4a944d50e7ef5cc3a28a
         uses: jurplel/install-qt-action@v3
         with:
-          # Directory to install Qt
-          dir: ${{env.TOOSL_DIR}}/qt # optional
-          # Version of Qt to install
-          version: ${{matrix.qt_version}} # optional, default is 5.15.2
-          modules: ${{env.qt_modules}} # optional. See: https://ddalcino.github.io/aqt-list-server/
+          dir: '${{env.TOOSL_DIR}}/qt' # optional
+          version: '${{matrix.qt_version}}' # optional, default is 5.15.2
+          arch: '${{matrix.qt_arch}}' # optional
+          modules: '${{env.qt_modules}}' # optional
+          cache: true
+          cache-key-prefix: cached_qt
 
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
@@ -108,7 +111,8 @@ jobs:
             cmake .. \
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
                 -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" \
-                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
+                -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" \
+                -DBUILD_EXAMPLE=OFF
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
@@ -148,6 +152,8 @@ jobs:
               -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
               -DVCPKG_VERBOSE=ON \
               -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
+              -DVCPKG_APPLOCAL_DEPS=ON \
+              -DINSTALL_QT=ON \
               -DSeetaFace_DIR=${{env.INSTALL_DIR}}/lib/cmake \
               -DSeetaNet_DIR=${{env.INSTALL_DIR}}/lib/cmake \
               -DSeetaFaceDetector_DIR=${{env.INSTALL_DIR}}/lib/cmake \

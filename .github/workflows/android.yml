@@ -14,19 +14,22 @@ jobs:
       matrix:
         BUILD_TYPE: [Release]
         qt_arch: [android_arm64_v8a, android_armv7, android_x86_64]
-        qt_version: [6.6.1]
+        qt_version: [6.6.2]
         include:
           - BUILD_TYPE: Release
             qt_arch: android_arm64_v8a
             VCPKG_TARGET_TRIPLET: arm-android
+            ENABLE_DOWNLOAD: ON
 
           - BUILD_TYPE: Release
             qt_arch: android_armv7
             VCPKG_TARGET_TRIPLET: arm-android
+            ENABLE_DOWNLOAD_MODULE: OFF
 
           - BUILD_TYPE: Release
-            qt_arch: android_x86_64 
+            qt_arch: android_x86_64
             VCPKG_TARGET_TRIPLET: x64-android
+            ENABLE_DOWNLOAD: ON
 
     runs-on: ubuntu-latest
 
@@ -35,11 +38,15 @@ jobs:
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
-      FaceRecognizer_VERSION: v0.0.4
       VCPKGGITCOMMITID: eb33d2f7583405fca184bcdf7fdd5828ec88ac05
+      VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
+      VCPKG_HOST_TRIPLET: x64-linux
       ANDROID_PLATFORM: android-23
       ANDROID_NATIVE_API_LEVEL: 23
-      qt_modules: 'qtimageformats qtmultimedia qtscxml'
+      STOREPASS: ${{secrets.STOREPASS}}
+      qt_modules: 'qtwebchannel qtwebsockets qtwebview qtimageformats qtmultimedia qtscxml qt5compat'
+      FaceRecognizer_VERSION: v0.0.4
+      ENABLE_DOWNLOAD_MODULE: ${{matrix.ENABLE_DOWNLOAD_MODULE}}
 
     # Map the job outputs to step outputs
     outputs:
@@ -59,21 +66,21 @@ jobs:
           cmake -E make_directory ${{github.workspace}}/build
 
       - name: Cache installed
-        #if: false
         uses: actions/cache@v2
         id: cache-installed
         with:
           path: |
             ${{env.INSTALL_DIR}}
-          key: cache-installed-android-qt${{matrix.qt_version}}-${{matrix.VCPKG_TARGET_TRIPLET}}-${{matrix.BUILD_TYPE}}
+          key: install_android_qt${{matrix.qt_version}}_${{matrix.qt_arch}}_${{matrix.BUILD_TYPE}}
 
-      - name: Cache Qt
-        #if: false
-        id: cache-qt
-        uses: actions/cache@v1  # not v2!
+      - name: run-vcpkg
+        uses: lukka/run-vcpkg@v11
         with:
-          path: ${{env.TOOSL_DIR}}/qt
-          key: qt${{matrix.qt_version}}_${{matrix.qt_arch}}
+          # Indicates whether to only setup vcpkg (i.e. installing it and setting the environment variables VCPKG_ROOT, RUNVCPK_VCPKG_ROOT), without installing any port.
+          #setupOnly: # optional
+          #vcpkgGitURL: https://github.com/KangLin/vcpkg.git
+          vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
+          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
 
       - name: Install Qt of gcc_64
         uses: jurplel/install-qt-action@v3
@@ -84,7 +91,8 @@ jobs:
           target: 'desktop'
           arch: 'gcc_64'
           set-env: false
-          cached: '${{ steps.cache-qt.outputs.cache-hit }}' # optional, default is false
+          cache: true
+          cache-key-prefix: cached_qt
 
       - name: Install Qt of android
         uses: jurplel/install-qt-action@v3
@@ -101,32 +109,51 @@ jobs:
           arch: '${{matrix.qt_arch}}' # optional
           # Additional Qt modules to install
           modules: '${{env.qt_modules}}' # optional. See: https://ddalcino.github.io/aqt-list-server/
-          cached: '${{ steps.cache-qt.outputs.cache-hit }}' # optional, default is false
+          cache: true
+          cache-key-prefix: cached_qt
 
-#      - name: run-vcpkg
-#        uses: lukka/run-vcpkg@v7.4
-#        with:
-#          # Indicates whether to only setup vcpkg (i.e. installing it and setting the environment variables VCPKG_ROOT, RUNVCPK_VCPKG_ROOT), without installing any port.
-#          #setupOnly: # optional
-#          #vcpkgGitURL: https://github.com/KangLin/vcpkg.git
-#          vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
-#          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
-#          # Since the cache must be invalidated when content of the vcpkg.json file changes, let's
-#          # compute its hash and append this to the computed cache's key.
-#          appendedCacheKey: android_${{matrix.os}}-qt${{matrix.qt_version}}-${{matrix.VCPKG_TARGET_TRIPLET}}-${{matrix.BUILD_TYPE}}-${{env.VCPKGGITCOMMITID}}
-#          additionalCachedPaths: $VCPKG_ROOT/installed
-#          vcpkgTriplet: '${{ matrix.VCPKG_TARGET_TRIPLET }}'
-#          vcpkgArguments: 'openssl ffmpeg opencv opencv[contrib] dlib ncnn'
+      - name: modify qt-cmake
+        run: |
+          sudo chmod 777 ${Qt6_DIR}/bin/qt-cmake
 
-      - name: run vcpkg
+      - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
         run: |
-          if [ ! -d vcpkg ]; then
-            git clone https://github.com/microsoft/vcpkg.git
-            cd vcpkg
-            git checkout -b ${{env.VCPKGGITCOMMITID}} ${{env.VCPKGGITCOMMITID}}
-            ./bootstrap-vcpkg.sh
-            ./vcpkg install --triplet=${{matrix.VCPKG_TARGET_TRIPLET}} openssl libyuv ffmpeg opencv[contrib]
+          if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/SeetaFaceDetectorConfig.cmake ]; then
+            git clone https://github.com/KangLin/SeetaFace2.git
+            cd SeetaFace2
+            cmake -E make_directory build
+            cd build
+            ${Qt6_DIR}/bin/qt-cmake .. \
+                -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
+                -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
+                -DCMAKE_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
+                -DVCPKG_CHAINLbuildOAD_TOOLCHAIN_FILE=${Qt6_DIR}/lib/cmake/Qt6/qt.toolchain.cmake \
+                -DANDROID_ABI=${{matrix.ANDROID_ABI}} \
+                -DANDROID_PLATFORM=${{matrix.ANDROID_PLATFORM}} \
+                -DBUILD_EXAMPLE=OFF
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
+          fi
+
+      - name: build libfacedetection
+        working-directory: ${{env.SOURCE_DIR}}
+        run: |
+          if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/facedetection/facedetectionConfig.cmake ]; then
+            git clone https://github.com/ShiqiYu/libfacedetection.git
+            cd libfacedetection
+            cmake -E make_directory build
+            cd build
+            ${Qt6_DIR}/bin/qt-cmake .. \
+                -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
+                -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
+                -DCMAKE_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
+                -DVCPKG_CHAINLbuildOAD_TOOLCHAIN_FILE=${Qt6_DIR}/lib/cmake/Qt6/qt.toolchain.cmake \
+                -DANDROID_ABI=${{matrix.ANDROID_ABI}} \
+                -DANDROID_PLATFORM=${{matrix.ANDROID_PLATFORM}} \
+                -DBUILD_SHARED_LIBS=ON
+            cmake --build . --config ${{matrix.BUILD_TYPE}}
+            cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
 
       - name: git clone RabbitCommon
@@ -138,7 +165,6 @@ jobs:
         working-directory: ${{github.workspace}}/build
         env:
           RabbitCommon_DIR: ${{env.SOURCE_DIR}}/RabbitCommon
-          VCPKG_ROOT: ${{env.SOURCE_DIR}}/vcpkg
           QT_ANDROID_KEYSTORE_PATH: ${{env.SOURCE_DIR}}/RabbitCommon/RabbitCommon.keystore
           QT_ANDROID_KEYSTORE_ALIAS: rabbitcommon
           QT_ANDROID_KEYSTORE_STORE_PASS: ${{secrets.STOREPASS}}
@@ -154,13 +180,18 @@ jobs:
               -DANDROID_NATIVE_API_LEVEL=${{env.ANDROID_NATIVE_API_LEVEL}} \
               -DQT_ANDROID_SIGN_APK=ON \
               -DQT_ENABLE_VERBOSE_DEPLOYMENT=OFF \
+              -DQT_DIR=${Qt6_DIR} \
               -DQt6LinguistTools_DIR=${Qt6_DIR}/../gcc_64/lib/cmake/Qt6LinguistTools \
               -DVCPKG_VERBOSE=ON \
               -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
-              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" \
-              -DCMAKE_INSTALL_PREFIX=`pwd`/install
-          cmake --build . --config ${{matrix.BUILD_TYPE}}  --target all
-          cmake --build . --config ${{matrix.BUILD_TYPE}}  --target install
+              -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" \
+              -DVCPKG_CHAINLbuildOAD_TOOLCHAIN_FILE=${Qt6_DIR}/lib/cmake/Qt6/qt.toolchain.cmake \
+              -DCMAKE_INSTALL_PREFIX=`pwd`/install \
+              -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
+              -DVCPKG_APPLOCAL_DEPS=ON \
+              -DINSTALL_QT=ON
+          cmake --build . --config ${{matrix.BUILD_TYPE}} --target all
+          cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           APK_FILE=`find . -name "android-*.apk"`
           cp $APK_FILE FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_${{matrix.BUILD_TYPE}}.apk
           7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_${{matrix.BUILD_TYPE}}.zip install/*

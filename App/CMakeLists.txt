@@ -8,7 +8,10 @@ if(POLICY CMP0020)
     cmake_policy(SET CMP0020 NEW)
 endif()
 
-project(FaceRecognizerApp)
+project(FaceRecognizerApp
+    DESCRIPTION "Face recognizer"
+    HOMEPAGE_URL "https://github.com/KangLin/FaceRecognizer"
+)
 
 set(SOURCE_FILES
     FrmDisplay.cpp

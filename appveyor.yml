@@ -1,101 +1,35 @@
-#TODO: Change version
-
-version: 'v0.0.4.{build}'
+version: "v0.0.26.{build}"
 
 cache:
-  - model
-  - Package
-  
+  - ..\other_source
+# Clean cached
+# https://www.appveyor.com/docs/build-cache/#cleaning-up-cache
+
 environment:
+  FaceRecognizerVersion: v0.0.4
   STOREPASS:
     secure: l9BZEU39F1a4vSkhwl0CHR+yh6CD1c7byGzMv+1NUa4=
   QT_USER:
     secure: EoBPaPuJ6u9UDYpQWjKhUg==
   QT_PASSWORD:
     secure: ejAYGgB+3sBispRxUSr0xw==
+  APPVEYOR_RDP_PASSWORD:
+    secure: PUmp7039ro52579dlxAk59tjpeeyiFbdWvHfLCkjF5c=
 
   matrix:
-  ##### android ########
-  - BUILD_TARGERT: android
-    GENERATORS: "MSYS Makefiles"
-    BUILD_ARCH: "armeabi-v7a"
-    ANDROID_ARM_NEON: ON
-    DOWNLOAD_QT: TRUE
-    QT_VERSION_DIR: 5.12
-    QT_VERSION: 5.12.6
-    ANDROID_PLATFORM: android-24
-    TOOLCHAIN_VERSION: 4.9
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm_v0.2.9_in_windows.zip
-
-  - BUILD_TARGERT: android
-    GENERATORS: "MSYS Makefiles"
-    BUILD_ARCH: "arm64-v8a"
-    ANDROID_ARM_NEON: ON
-    DOWNLOAD_QT: TRUE
-    QT_VERSION_DIR: 5.12
-    QT_VERSION: 5.12.6
-    ANDROID_PLATFORM: android-24
-    TOOLCHAIN_VERSION: 4.9
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/android4.9_arm64_v0.2.9_in_windows.zip
-  
-  ##### msvc 2013 ########
-  #- BUILD_TARGERT: windows_msvc
-  #  GENERATORS: "Visual Studio 12 2013"
-  #  TOOLCHAIN_VERSION: 12
-  #  QT_ROOT: C:\Qt\5.6\msvc2013
-  #  BUILD_ARCH: x86
-    
-  #- BUILD_TARGERT: windows_msvc
-  #  GENERATORS: "Visual Studio 12 2013 Win64"
-  #  TOOLCHAIN_VERSION: 12
-  #  QT_ROOT: C:\Qt\5.6\msvc2013_64
-  #  BUILD_ARCH: x64
-
-  ##### msvc 2017 ########
+  ##### msvc 2015 ######## 
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    GENERATORS: "Visual Studio 15 2017"
-    BUILD_TARGERT: windows_msvc
-    TOOLCHAIN_VERSION: 15
-    QT_ROOT: C:\Qt\5.12\msvc2017
-    BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/windows_msvc15_x86_v0.2.9.zip
-
-  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    GENERATORS: "Visual Studio 15 2017 Win64"
-    BUILD_TARGERT: windows_msvc
-    TOOLCHAIN_VERSION: 15
-    QT_ROOT: C:\Qt\5.12\msvc2017_64
-    BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/windows_msvc15_x64_v0.2.9.zip
-
-  ##### msvc 2015 ########
-  - BUILD_TARGERT: windows_msvc
     GENERATORS: "Visual Studio 14 2015"
     TOOLCHAIN_VERSION: 14
+    VCPKG_PLATFORM_TOOLSET: v140
     QT_ROOT: C:\Qt\5.6\msvc2015
     BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/windows_msvc14_x86_v0.2.9.zip
 
-  - BUILD_TARGERT: windows_msvc
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     GENERATORS: "Visual Studio 14 2015 Win64"
     TOOLCHAIN_VERSION: 14
-    QT_ROOT: C:\Qt\5.10\msvc2015_64
+    QT_ROOT: C:\Qt\5.6\msvc2015_64
     BUILD_ARCH: x64
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/windows_msvc14_x64_v0.2.9.zip
-
-  ##### mingw ########
-  - BUILD_TARGERT: windows_mingw
-    GENERATORS: "MSYS Makefiles"
-    TOOLCHAIN_VERSION: 492_32
-    QT_ROOT: C:\Qt\5.6\mingw49_32
-    BUILD_ARCH: x86
-
-  - BUILD_TARGERT: windows_mingw
-    GENERATORS: "MSYS Makefiles"
-    TOOLCHAIN_VERSION: 530_32
-    QT_ROOT: C:\Qt\5.10\mingw53_32
-    BUILD_ARCH: x86
-    DOWNLOAD_THIRDLIBS_URL: https://github.com/KangLin/RabbitThirdLibrary/releases/download/v0.2.9/windows_mingw530_32_x86_v0.2.9.zip
 
 matrix:
   fast_finish: false
@@ -109,36 +43,108 @@ init:
   - if NOT "%QT_ROOT%" == "NO" for /f "delims=" %%i in ('%QT_ROOT%/bin/qmake -query QT_VERSION') do (set QT_VERSION=%%i) 
   - echo QT_ROOT=%QT_ROOT%
   - echo QT_VERSION=%QT_VERSION%
-  - del C:\msys64\usr\bin\link.exe
 
 install:
-  - C:\msys64\autorebase.bat
-  - C:\msys64\usr\bin\pacman.exe -S --noconfirm unzip
-  - ps: Start-FileDownload https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-windows-i386.zip
-  #- curl -fsSL -o cmake-3.26.4-windows-i386.zip https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-windows-i386.zip
-  - 7z x cmake-3.26.4-windows-i386.zip
-  - set PATH=%CD%\cmake-3.26.4-windows-i386\bin;%PATH%
-  #- if "%BUILD_TARGERT%"=="windows_mingw" set PATH=C:\Qt\Tools\mingw%TOOLCHAIN_VERSION%_32\bin;%PATH%
-  - if "%BUILD_TARGERT%" == "windows_mingw" set MSYSTEM=MINGW32  #设置编译系统为MINGW32
-
-before_build:
-  - cd %APPVEYOR_BUILD_FOLDER%
   - git submodule update --init --recursive
+  - cd %APPVEYOR_BUILD_FOLDER%
   - git clone https://github.com/KangLin/RabbitCommon.git
   - set RabbitCommon_DIR=%APPVEYOR_BUILD_FOLDER%/RabbitCommon
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - C:\msys64\usr\bin\bash.exe %APPVEYOR_BUILD_FOLDER%\ci\build-install-tools-windows.sh
+
+  - set OTHER_SOURCE=%APPVEYOR_BUILD_FOLDER%\..\other_source
+  - set INSTALL_DIR=%OTHER_SOURCE%\install_dir
+  - if not exist "%OTHER_SOURCE%" ( mkdir "%OTHER_SOURCE%" )
+  - if not exist "%INSTALL_DIR%" ( mkdir "%INSTALL_DIR%" )
+
+  - cd %OTHER_SOURCE%
+  - set CMAKE_VERSION=3.28.3
+  - if not exist cmake-%CMAKE_VERSION%-windows-i386 (curl -fsSL -o cmake-%CMAKE_VERSION%-windows-i386.zip https://github.com/Kitware/CMake/releases/download/v%CMAKE_VERSION%/cmake-%CMAKE_VERSION%-windows-i386.zip && 7z x cmake-%CMAKE_VERSION%-windows-i386.zip)
+  - cd cmake-%CMAKE_VERSION%-windows-i386
+  - set PATH="%CD%/bin";%PATH%
+
+  - cd %OTHER_SOURCE%
+  - set VCPKG_DIR=%OTHER_SOURCE%\vcpkg
+  - ps: |
+      if( -not (Test-Path -Path ${env:VCPKG_DIR}) )
+      {
+          git clone -q "https://github.com/microsoft/vcpkg.git"
+          cd ${env:VCPKG_DIR}
+          git checkout -q -b a1a1cbc975abf909a6c8985a6a2b8fe20bbd9bd6 a1a1cbc975abf909a6c8985a6a2b8fe20bbd9bd6
+          bootstrap-vcpkg.bat
+      }
+
+before_build:
+  - cd %OTHER_SOURCE%
+  - ps: |
+      if ( -not (Test-Path -Path ${env:INSTALL_DIR}\lib\cmake\SeetaFaceDetectorConfig.cmake) )
+      {
+          git clone -q https://github.com/KangLin/SeetaFace2.git
+          cd SeetaFace2
+          cmake -E make_directory build
+          cd build
+          cmake .. `
+             -G"${env:GENERATORS}" `
+             -DCMAKE_BUILD_TYPE=Release `
+             -DCMAKE_INSTALL_PREFIX="${env:INSTALL_DIR}" `
+             -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake" `
+             -DBUILD_EXAMPLE=OFF
+          cmake --build . --config Release
+          cmake --build . --config Release --target install
+      }
+      
+  - cd %OTHER_SOURCE%
+  - ps: |
+      if ( -not (Test-Path -Path ${env:INSTALL_DIR}\lib\cmake\facedetection\facedetectionConfig.cmake) )
+      {
+          git clone -q https://github.com/ShiqiYu/libfacedetection.git
+          cd libfacedetection
+          cmake -E make_directory build
+          cd build
+          cmake .. `
+             -G"${env:GENERATORS}" `
+             -DCMAKE_BUILD_TYPE=Release `
+             -DCMAKE_INSTALL_PREFIX="${env:INSTALL_DIR}" `
+             -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake" `
+             -DBUILD_SHARED_LIBS=ON
+          cmake --build . --config Release
+          cmake --build . --config Release --target install
+       }
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - C:\msys64\usr\bin\bash.exe %APPVEYOR_BUILD_FOLDER%\ci\build.sh
+  - cmake -E make_directory build
+  - cd build
+  - cmake %APPVEYOR_BUILD_FOLDER% ^
+          -G"%GENERATORS%" ^
+          -DCMARK_SHARED=OFF ^
+          -DCMARK_TESTS=OFF ^
+          -DCMARK_STATIC=ON ^
+          -DQT_DIR=%QT_ROOT%/lib/cmake/Qt5 ^
+          -DQt5_DIR=%QT_ROOT%/lib/cmake/Qt5 ^
+          -DINSTALL_QT=ON ^
+          -DCMAKE_BUILD_TYPE=Release ^
+          -DCMAKE_INSTALL_PREFIX="%cd%/install" ^
+          -DCMAKE_PREFIX_PATH="%INSTALL_DIR%" ^
+          -DCMAKE_TOOLCHAIN_FILE="%VCPKG_DIR%/scripts/buildsystems/vcpkg.cmake" ^
+          -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
+          -DVCPKG_APPLOCAL_DEPS=ON ^
+          -DSeetaFace_DIR=%INSTALL_DIR%/lib/cmake ^
+          -DSeetaNet_DIR=%INSTALL_DIR%/lib/cmake ^
+          -DSeetaFaceDetector_DIR=%INSTALL_DIR%/lib/cmake ^
+          -DSeetaFaceLandmarker_DIR=%INSTALL_DIR%/lib/cmake ^
+          -DSeetaFaceRecognizer_DIR=%INSTALL_DIR%/lib/cmake ^
+          -DSeetaFaceTracker_DIR=%INSTALL_DIR%/lib/cmake ^
+          -DSeetaQualityAssessor_DIR=%INSTALL_DIR%/lib/cmake ^
+          -Dfacedetection_DIR=%INSTALL_DIR%/lib/cmake/facedetection ^
+          -DENABLE_DOWNLOAD_MODULE=ON
+  - cmake --build . --config Release
+  - cmake --build . --config Release --target install
+  - if "%BUILD_ARCH%" == "x86" (copy /Y c:\OpenSSL-Win32\bin\ssleay32.dll install\bin && copy /Y c:\OpenSSL-Win32\bin\libeay32.dll install\bin)
+  - if "%BUILD_ARCH%" == "x64" (copy /Y c:\OpenSSL-Win64\bin\ssleay32.dll install\bin && copy /Y c:\OpenSSL-Win64\bin\libeay32.dll install\bin)
+  - makensis Install.nsi
+  - rename FaceRecognizer_%FaceRecognizerVersion%_Setup.exe FaceRecognizer_%FaceRecognizerVersion%_windows_xp_%BUILD_ARCH%_Setup.exe
 
 artifacts:
-  - path: build_$(BUILD_TARGERT)\FaceRecognizer_*_Setup.exe
-    name: FaceRecognizer_$(BUILD_TARGERT)$(TOOLCHAIN_VERSION)_$(BUILD_ARCH)_$(QT_VERSION)_$(appveyor_build_version)
-    type: zip
-  #- path: build_$(BUILD_TARGERT)\update_windows.xml
-  - path: FaceRecognizer_*.apk
+  - path: build\FaceRecognizer_%FaceRecognizerVersion%_windows_xp_%BUILD_ARCH%_Setup.exe
 
 test: off
 

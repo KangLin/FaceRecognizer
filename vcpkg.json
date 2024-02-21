@@ -1,0 +1,46 @@
+{
+  "name": "facerecognizer",
+  "version-string":"0.0.4",
+  
+  "dependencies": [
+    "openssl"
+  ],
+  
+  "features": {
+      "seetaface": {
+          "description": "seetaface",
+          "dependencies": [
+              {
+                  "name": "opencv",
+                  "features": [
+                      "ffmpeg"
+                  ]
+              }
+          ]
+      },
+      "opencv": {
+          "description": "opencv",
+          "dependencies": [
+              {
+                  "name": "opencv",
+                  "default-features": true,
+                  "features": [
+                      "contrib",
+                      "ffmpeg"
+                  ]
+              }
+          ]
+      },
+      "dlib": {
+          "description": "dlib",
+          "dependencies": [
+              "dlib"
+          ]
+      }
+  },
+
+  "builtin-baseline":"9259a0719d94c402aae2ab7975bc096afdec15df",
+  "overrides": [
+      { "name": "openssl", "version-string": "1.1.1n" }
+  ]
+}

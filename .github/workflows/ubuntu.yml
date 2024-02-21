@@ -16,13 +16,13 @@ jobs:
       matrix:
         BUILD_TYPE: [Release, Debug]
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     env:
       BUILD_TYPE:  ${{matrix.BUILD_TYPE}}
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
-      INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
+      INSTALL_DIR: ${{github.workspace}}/.cache/install
       FaceRecognizer_VERSION: 0.0.4
       artifact_name: build_ubuntu
 
@@ -49,9 +49,9 @@ jobs:
 
       - name: Install apt packages
         run: |
-          sudo apt-get update -y \
-            && sudo apt-get upgrade -y \
-            && sudo apt-get install -y xvfb xpra \
+          sudo apt-get update -y -q
+          sudo apt-get upgrade -y -q
+          sudo apt-get install -y -q xvfb xpra \
                 cmake build-essential \
                 debhelper fakeroot graphviz \
                 libglu1-mesa-dev libpulse-mainloop-glib0 \
@@ -75,7 +75,7 @@ jobs:
         with:
           path: |
             ${{env.INSTALL_DIR}}
-          key: cache-installed-ubuntu
+          key: install_ubuntu_${{matrix.BUILD_TYPE}}
 
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
@@ -87,7 +87,8 @@ jobs:
             cd build
             cmake .. \
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
-                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}"
+                -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" \
+                -DBUILD_EXAMPLE=OFF
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi
@@ -120,12 +121,13 @@ jobs:
           SeetaFaceTracker_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           SeetaQualityAssessor_DIR: ${{env.INSTALL_DIR}}/lib/cmake
           facedetection_DIR: ${{env.INSTALL_DIR}}/lib/cmake/facedetection
+          ENABLE_DOWNLOAD_MODULE: ON
         run: |
           export Qt6_DIR=/usr/lib/`uname -a`-linux-gnu/cmake/Qt6      
           ./build_debpackage.sh
           cp ../facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb
 
-      - name: Update xml file
+      - name: Update configure file
         working-directory: ${{github.workspace}}
         run: |
           sudo Xvfb :99 -ac &
@@ -134,12 +136,23 @@ jobs:
           MD5=`md5sum facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb|awk '{print $1}'`
           echo "MD5:${MD5}"
           /bin/bash /opt/FaceRecognizer/bin/FaceRecognizer.sh \
-              -f "${{github.workspace}}/update_linux.json" \
+              -f "${{github.workspace}}/update_ubuntu.json" \
               --foc 1 \
               --md5 ${MD5} \
               -m "${{env.FaceRecognizer_VERSION}}" \
               -n "facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb" \
               -u "https://github.com/KangLin/FaceRecognizer/releases/download/v${{env.FaceRecognizer_VERSION}}/facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb;https://sourceforge.net/projects/FaceRecognizer/files/v${{env.FaceRecognizer_VERSION}}/facerecognizer_${{env.FaceRecognizer_VERSION}}_amd64.deb"
+
+      - name: Update version configure file
+        if: ${{ matrix.BUILD_TYPE == 'Release'}}
+        working-directory: ${{github.workspace}}
+        run: |
+          sudo Xvfb :99 -ac &
+          export DISPLAY=:99.0
+          /bin/bash /opt/FaceRecognizer/bin/FaceRecognizer.sh \
+               -f "${{github.workspace}}/version.json" \
+               --foc 0 \
+               --pv ${{env.FaceRecognizer_VERSION}}
 
       - name: Update artifact
         if: ${{ matrix.BUILD_TYPE == 'Release' }}

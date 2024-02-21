@@ -400,12 +400,14 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
 #endif
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
-    if(!files.isEmpty())
+    if(files.isEmpty())
+        qDebug(logFace) << "Plugin folder is empty:" << dir.absolutePath() << filters;
+    else
     {
         //This method is invalid
         //QCoreApplication::addLibraryPath(QDir::cleanPath(dir.absolutePath()));
 
-        QDir::setCurrent(QDir::cleanPath(QDir::cleanPath(dir.absolutePath())));
+        QDir::setCurrent(QDir::cleanPath(dir.absolutePath()));
 
         // This method is valid
         //#if defined(Q_OS_WINDOWS)

@@ -32,7 +32,7 @@ sed -i "s/^\!define PRODUCT_VERSION.*/\!define PRODUCT_VERSION \"${VERSION}\"/g"
 sed -i "s/^\SET(BUILD_VERSION.*/\SET(BUILD_VERSION \"${VERSION}\")/g" ${SOURCE_DIR}/CMakeLists.txt
 sed -i "s/<VERSION>.*</<VERSION>${VERSION}</g" ${SOURCE_DIR}/Update/update.xml
 sed -i "s/^version: '.*{build}'/version: '${VERSION}.{build}'/g" ${SOURCE_DIR}/appveyor.yml
-sed -i "s/BUILD_VERSION:.*/BUILD_VERSION: \"${VERSION}\"/g" ${SOURCE_DIR}/appveyor.yml
+sed -i "s/FaceRecognizerVersion:.*/FaceRecognizerVersion: \"${VERSION}\"/g" ${SOURCE_DIR}/appveyor.yml
 sed -i "s/export VERSION=.*/export VERSION=\"${VERSION}\"/g" ${SOURCE_DIR}/.travis.yml
 sed -i "s/export VERSION=.*/export VERSION=\"${VERSION}\"/g" ${SOURCE_DIR}/ci/build.sh
 sed -i "s/FaceRecognizer_VERSION:.*/FaceRecognizer_VERSION:\"${VERSION}\"/g" ${SOURCE_DIR}/.github/workflows/android.yml
@@ -48,6 +48,9 @@ sed -i "s/facerecognizer (.*)/facerecognizer (${DEBIAN_VERSION})/g" ${SOURCE_DIR
 sed -i "s/Version=.*/Version=${DEBIAN_VERSION}/g" ${SOURCE_DIR}/debian/FaceRecognizer.desktop
 sed -i "s/[0-9]\+\.[0-9]\+\.[0-9]\+/${DEBIAN_VERSION}/g" ${SOURCE_DIR}/README*.md
 sed -i "s/[0-9]\+\.[0-9]\+\.[0-9]\+/${DEBIAN_VERSION}/g" ${SOURCE_DIR}/App/android/AndroidManifest.xml
+if [ -f ${SOURCE_DIR}/vcpkg.json ]; then
+    sed -i "s/\"version-string\":[0-9]\+\.[0-9]\+\.[0-9]\+\".*\"/\"version-string\":\"${DEBIAN_VERSION}\"/g" ${SOURCE_DIR}/vcpkg.json
+fi
 
 MAJOR_VERSION=`echo ${DEBIAN_VERSION}|cut -d "." -f 1`
 sed -i "s/android:versionCode=.*android/android:versionCode=\"${MAJOR_VERSION}\" android/g"  ${SOURCE_DIR}/App/android/AndroidManifest.xml
