@@ -38,7 +38,7 @@ CImageTool::CImageTool(QObject *parent) : QObject(parent), m_pConverFormat(nullp
     szPath = szPath + QDir::separator() + "ConverFormat";
 #endif
     QStringList filters;
-#if defined (Q_OS_WINDOWS)
+#if defined (Q_OS_WINDOWS) || defined(Q_OS_WIN)
         filters << "*PluginConverFormat*.dll";
 #else
         filters << "*PluginConverFormat*.so";
@@ -314,7 +314,7 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
     QString fileName;
     if(filters.isEmpty())
     {
-#if defined (Q_OS_WINDOWS)
+#if defined (Q_OS_WINDOWS) || defined(Q_OS_WIN)
         filters << "*.dll";
 #else
         filters << "*.so";
