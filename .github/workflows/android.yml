@@ -16,20 +16,17 @@ jobs:
         qt_arch: [android_arm64_v8a, android_armv7, android_x86_64]
         qt_version: [6.6.2]
         include:
-          - BUILD_TYPE: Release
-            qt_arch: android_arm64_v8a
-            VCPKG_TARGET_TRIPLET: arm-android
+          - qt_arch: android_arm64_v8a
+            VCPKG_TARGET_TRIPLET: arm64-android
             ANDROID_ABI: arm64-v8a
             ENABLE_DOWNLOAD: ON
 
-          - BUILD_TYPE: Release
-            qt_arch: android_armv7
+          - qt_arch: android_armv7
             VCPKG_TARGET_TRIPLET: arm-android
             ANDROID_ABI: armeabi-v7a
             ENABLE_DOWNLOAD_MODULE: OFF
 
-          - BUILD_TYPE: Release
-            qt_arch: android_x86_64
+          - qt_arch: android_x86_64
             VCPKG_TARGET_TRIPLET: x64-android
             ANDROID_ABI: x86_64
             ENABLE_DOWNLOAD: ON
@@ -41,8 +38,9 @@ jobs:
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
-      VCPKGGITCOMMITID: eb33d2f7583405fca184bcdf7fdd5828ec88ac05
+      VCPKGGITCOMMITID: 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
+      VCPKG_DEFAULT_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       VCPKG_DEFAULT_HOST_TRIPLET: x64-linux
       ANDROID_PLATFORM: android-23
       ANDROID_NATIVE_API_LEVEL: 23
@@ -88,7 +86,7 @@ jobs:
           #setupOnly: # optional
           #vcpkgGitURL: https://github.com/KangLin/vcpkg.git
           vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
-          vcpkgDirectory: ${{ runner.workspace }}/vcpkg/
+          vcpkgDirectory: '${{env.SOURCE_DIR}}/vcpkg'
 
       - name: Install Qt of gcc_64
         uses: jurplel/install-qt-action@v3
@@ -125,7 +123,6 @@ jobs:
           sudo chmod 777 ${Qt6_DIR}/bin/qt-cmake
 
       - name: build SeetaFace2
-        if: false
         working-directory: ${{env.SOURCE_DIR}}
         run: |
           if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/SeetaFaceDetectorConfig.cmake ]; then
@@ -137,18 +134,19 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
                 -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
                 -DCMAKE_VERBOSE_MAKEFILE=ON \
-                -DCMAKE_AUTOGEN_VERBOSE=ON \
                 -DQT_HOST_PATH=${Qt6_DIR}/../gcc_64 \
                 -DQT_CHAINLOAD_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
                 -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake \
                 -DVCPKG_TARGET_TRIPLET=${{env.VCPKG_TARGET_TRIPLET}} \
+                -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
+                -DVCPKG_TRACE_FIND_PACKAGE=ON \
+                -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/SeetaFace2/vcpkg_installed \
                 -DBUILD_EXAMPLE=OFF
             cmake --build . --verbose --config ${{matrix.BUILD_TYPE}}
             cmake --build . --verbose --config ${{matrix.BUILD_TYPE}} --target install
           fi
 
       - name: build libfacedetection
-        if: false
         working-directory: ${{env.SOURCE_DIR}}
         run: |
           if [ ! -f ${{env.INSTALL_DIR}}/lib/cmake/facedetection/facedetectionConfig.cmake ]; then
@@ -160,11 +158,13 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
                 -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
                 -DCMAKE_VERBOSE_MAKEFILE=ON \
-                -DCMAKE_AUTOGEN_VERBOSE=ON \
                 -DQT_HOST_PATH=${Qt6_DIR}/../gcc_64 \
                 -DQT_CHAINLOAD_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
                 -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake \
-                -DVCPKG_TARGET_TRIPLET=${{env.VCPKG_TARGET_TRIPLET}}
+                -DVCPKG_TARGET_TRIPLET=${{env.VCPKG_TARGET_TRIPLET}} \
+                -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
+                -DVCPKG_TRACE_FIND_PACKAGE=ON \
+                -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/libfacedetection/vcpkg_installed                
             cmake --build . --verbose --config ${{matrix.BUILD_TYPE}}
             cmake --build . --verbose --config ${{matrix.BUILD_TYPE}} --target install
           fi
@@ -188,6 +188,7 @@ jobs:
               -DCMARK_TESTS=OFF \
               -DCMARK_STATIC=ON \
               -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} \
+              -DCMAKE_AUTOGEN_VERBOSE=ON \
               -DQT_CHAINLOAD_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
               -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake \
               -DVCPKG_TARGET_TRIPLET=${{env.VCPKG_TARGET_TRIPLET}} \

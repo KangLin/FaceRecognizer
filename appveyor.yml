@@ -68,7 +68,7 @@ install:
       {
           git clone -q "https://github.com/microsoft/vcpkg.git"
           cd ${env:VCPKG_DIR}
-          git checkout -q -b a1a1cbc975abf909a6c8985a6a2b8fe20bbd9bd6 a1a1cbc975abf909a6c8985a6a2b8fe20bbd9bd6
+          git checkout -q -b 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
           bootstrap-vcpkg.bat
       }
 

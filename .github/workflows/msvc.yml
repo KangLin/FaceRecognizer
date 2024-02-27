@@ -45,7 +45,7 @@ jobs:
       INSTALL_DIR: ${{github.workspace}}\.cache\install_msvc_${{matrix.CMAKE_GENERATOR_PLATFORM}}_${{matrix.BUILD_TYPE}}
       CMAKE_GENERATOR: "Visual Studio 17 2022"
       CMAKE_GENERATOR_PLATFORM: ${{matrix.CMAKE_GENERATOR_PLATFORM}}
-      VCPKGGITCOMMITID: eb33d2f7583405fca184bcdf7fdd5828ec88ac05
+      VCPKGGITCOMMITID: 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
       VCPKG_PLATFORM_TOOLSET: ${{matrix.VCPKG_PLATFORM_TOOLSET}}
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       qt_modules: qtwebengine ${{matrix.qt_modules}}
@@ -88,12 +88,6 @@ jobs:
           vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
           vcpkgDirectory: ${{runner.workspace}}/vcpkg/
 
-      - name: run vcpkg
-        if: false
-        run: |
-          vcpkg install --VCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} ^
-              --x-feature=SeetaFace
-
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
         run: |
@@ -108,6 +102,11 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
                 -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" ^
                 -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" ^
+                -DVCPKG_VERBOSE=ON ^
+                -DVCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} ^
+                -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
+                -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/SeetaFace2/vcpkg_installed ^
+                -DVCPKG_TRACE_FIND_PACKAGE=ON ^
                 -DBUILD_EXAMPLE=OFF
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
@@ -127,6 +126,11 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
                 -DCMAKE_INSTALL_PREFIX="${{ env.INSTALL_DIR }}" ^
                 -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}\scripts\buildsystems\vcpkg.cmake" ^
+                -DVCPKG_VERBOSE=ON ^
+                -DVCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} ^
+                -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
+                -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/libfacedetection/vcpkg_installed ^
+                -DVCPKG_TRACE_FIND_PACKAGE=ON ^
                 -DBUILD_SHARED_LIBS=ON
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
@@ -170,6 +174,8 @@ jobs:
             -DVCPKG_VERBOSE=ON ^
             -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
             -DVCPKG_APPLOCAL_DEPS=ON ^
+            -DVCPKG_TRACE_FIND_PACKAGE=ON ^
+            -DVCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} ^
             -DINSTALL_QT=ON ^
             -DSeetaFace_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaNet_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
@@ -190,7 +196,7 @@ jobs:
           move /Y install\plugins\*ssl*.dll install\bin
           copy /Y ${{env.INSTALL_DIR}}\bin\*.dll install\bin
           copy /Y ${{env.INSTALL_DIR}}\lib\*.dll install\bin
-          copy /Y ${{env.RUNVCPKG_VCPKG_ROOT}}\installed\${{env.RUNVCPKG_VCPKG_TRIPLET_OUT}}\bin\*.dll install\bin
+          copy /Y vcpkg_installed\${{matrix.VCPKG_TARGET_TRIPLET}}\bin\*.dll install\bin
           makensis Install.nsi
           copy /Y FaceRecognizer_${{env.FaceRecognizer_VERSION}}_Setup.exe FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
 
