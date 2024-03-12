@@ -1,8 +1,15 @@
+# https://www.debian.org/doc/manuals/maint-guide/dreq.zh-cn.html#control
+# https://www.debian.org/doc/debian-policy/ch-controlfields.html
+
 Source: facerecognizer
 Section: main
 Priority: optional
 Maintainer: Kang Lin <kl222@126.com>
-Build-Depends: debhelper (>= 6)
+Build-Depends: debhelper (>=13~), debhelper-compat (=13), fakeroot, cmake,
+ libssl-dev, rabbitcommon-dev (>=2),
+ qt6-tools-dev, qt6-tools-dev-tools, qt6-base-dev, qt6-base-dev-tools,
+ qt6-l10n-tools, qt6-translations-l10n, qt6-scxml-dev,
+ qt6-webengine-dev, qt6-webengine-dev-tools
 Standards-Version:"v0.0.4"
 Homepage: https://github.com/KangLin/FaceRecognizer
 Vcs-Git: https://github.com/KangLin/FaceRecognizer.git
@@ -12,4 +19,5 @@ Package: facerecognizer
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: rabbitcommon (>=2)
 Description: Face recognizer
