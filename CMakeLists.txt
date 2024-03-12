@@ -96,16 +96,6 @@ else(BUILD_SHARED_LIBS)
     add_definitions(-DQT_STATICPLUGIN)
 endif(BUILD_SHARED_LIBS)
 
-# Set install data prefix
-if(ANDROID)
-    set(INSTALL_DATA_PREFIX assets/data)
-    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${CMAKE_ANDROID_ARCH_ABI}")
-else()
-    set(INSTALL_DATA_PREFIX data)
-    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugins)
-endif()
-set(FACE_RECOGNIZER_PLUGS_BINARY_DIR ${CMAKE_BINARY_DIR}/plugins)
-
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 include(GenerateExportHeader)
@@ -113,6 +103,15 @@ include(CheckIncludeFile)
 include(CheckIncludeFileCXX)
 include(CheckFunctionExists)
 include(${CMAKE_SOURCE_DIR}/cmake/Download.cmake)
+
+set(INSTALL_DATA_PREFIX ${CMAKE_INSTALL_DATADIR})
+# Set install data prefix
+if(ANDROID) 
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${CMAKE_ANDROID_ARCH_ABI}")
+else()
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugins)
+endif()
+set(FACE_RECOGNIZER_PLUGS_BINARY_DIR ${CMAKE_BINARY_DIR}/plugins)
 
 #CHECK_INCLUDE_FILE_CXX("string" HAVE_STRING_H)
 #check_include_file("math.h" HAVE_MATH_H)
@@ -171,23 +170,6 @@ option(BUILD_APP "Build applaction" ON)
 if(BUILD_APP)
     add_subdirectory(App)
 endif(BUILD_APP)
-
-iF(WIN32)
-    INSTALL(FILES Install/Install.nsi DESTINATION "${CMAKE_BINARY_DIR}"
-        COMPONENT Runtime)
-endif()
-# Install other files
-set(OTHER_FILES
-    License.md
-    Authors.md
-    ChangeLog.md
-    Authors_zh_CN.md
-    ChangeLog_zh_CN.md)
-if(ANDROID)
-    INSTALL(FILES ${OTHER_FILES} DESTINATION "assets" COMPONENT Runtime)
-else()
-    INSTALL(FILES ${OTHER_FILES} DESTINATION "." COMPONENT Runtime)
-endif()
 
 message(STATUS "Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "Build arch: ${BUILD_ARCH}")

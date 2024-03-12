@@ -81,9 +81,23 @@ ADD_TARGET(NAME ${PROJECT_NAME}
     SOURCE_FILES ${SOURCE_FILES} ${HEADER_FILES} ${SOURCE_UI_FILES} ${RCC_FILES}
     PRIVATE_LIBS ${QT_LIBRARIES} FaceRecognizer)
 
+# Install other files
+set(OTHER_FILES
+    ${CMAKE_SOURCE_DIR}/License.md
+    ${CMAKE_SOURCE_DIR}/Authors.md
+    ${CMAKE_SOURCE_DIR}/ChangeLog.md
+    ${CMAKE_SOURCE_DIR}/Authors_zh_CN.md
+    ${CMAKE_SOURCE_DIR}/ChangeLog_zh_CN.md)
+INSTALL_FILE(SOURCES ${OTHER_FILES}
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+        COMPONENT Runtime)
+
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.ico
         DESTINATION .
+            COMPONENT Runtime)
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/Install/Install.nsi
+        DESTINATION "${CMAKE_BINARY_DIR}"
             COMPONENT Runtime)
 ENDIF()
 
