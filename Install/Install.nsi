@@ -33,7 +33,7 @@ SetCompressor lzma
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "$INSTDIR\share\doc\FaceRecognizer\LICENSE.md"
+!insertmacro MUI_PAGE_LICENSE "share\doc\FaceRecognizer\License.md"
 ; Components page
 !insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
