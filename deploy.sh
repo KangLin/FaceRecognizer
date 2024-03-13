@@ -29,7 +29,7 @@ if [ -z "$VERSION" ]; then
 fi
 
 sed -i "s/^\!define PRODUCT_VERSION.*/\!define PRODUCT_VERSION \"${VERSION}\"/g" ${SOURCE_DIR}/Install/Install.nsi
-sed -i "s/^\SET(BUILD_VERSION.*/\SET(BUILD_VERSION \"${VERSION}\")/g" ${SOURCE_DIR}/CMakeLists.txt
+sed -i "s/^    SET(FaceRecognizer_VERSION.*\"v[0-9]\+\.[0-9]\+\.[0-9]\+\")/    SET(FaceRecognizer_VERSION \"${VERSION}\")/g" ${SOURCE_DIR}/CMakeLists.txt
 sed -i "s/<VERSION>.*</<VERSION>${VERSION}</g" ${SOURCE_DIR}/Update/update.xml
 sed -i "s/^version: '.*{build}'/version: '${VERSION}.{build}'/g" ${SOURCE_DIR}/appveyor.yml
 sed -i "s/FaceRecognizerVersion:.*/FaceRecognizerVersion: \"${VERSION}\"/g" ${SOURCE_DIR}/appveyor.yml
