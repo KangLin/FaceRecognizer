@@ -57,6 +57,8 @@ public:
     virtual CRecognizer* GetRecognizer();
     virtual CFaceTools* GetFaceTools();
     virtual CDatabase* GetDatabase();
+    
+    virtual const QString Detail() const;
 
 protected:
     CDetector* m_pDetector;

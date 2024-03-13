@@ -17,3 +17,8 @@ QString CConverFormat::getName()
 {
     return this->metaObject()->className();
 }
+
+QString CConverFormat::Detail()
+{
+    return QString();
+}

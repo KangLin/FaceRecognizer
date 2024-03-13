@@ -38,6 +38,7 @@ public:
     virtual int Clean();
 
     virtual QString getName();
+    virtual QString Detail();
 };
 
 #define CONVER_FORMAT_IID "KangLinStudio.Rabbit.FaceRecognizer.Plugs.ImageTool.ConverFormat"

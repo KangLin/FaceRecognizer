@@ -18,6 +18,7 @@
 #include "ManageRegisterVideo.h"
 #include "ManageRecognizerVideo.h"
 #include "FactoryFace.h"
+#include "ImageTool.h"
 
 #include <QIcon>
 #if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
@@ -568,6 +569,12 @@ void MainWindow::on_actionAbout_A_triggered()
     about.m_szHomePage = "https://github.com/KangLin/FaceRecognizer";
 	about.m_szCopyrightStartTime = "2019";
     about.m_szVersionRevision = FaceRecognizer_REVISION;
+    
+    about.m_szDetails = tr("### Face plugin:") + "\n"
+                        + CFactoryFace::Instance()->Detail()
+                        + tr("### Image tool:") + "\n"
+                        + CImageTool::Instance()->Detail();
+
     if(about.isHidden())
 #if defined (Q_OS_ANDROID)
         about.showMaximized();

@@ -41,6 +41,8 @@ public:
 public:
     static void YUV420_2_RGB(unsigned char* pYUV, unsigned char* pRGB, int width, int height);
     QImage ConverFormatToRGB888(const QVideoFrame &frame);
+    
+    QString Detail();
 
 private:
     CConverFormat* m_pConverFormat;

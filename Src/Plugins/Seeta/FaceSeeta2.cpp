@@ -36,3 +36,20 @@ int CFaceSeeta2::GetLevel()
 {
     return 10;
 }
+
+const QString CFaceSeeta2::Detail() const
+{
+    QString szDetail;
+    szDetail = tr("### Seeta2") + "\n";
+    if(m_pDetector)
+        szDetail += tr("- Detector");
+    if(m_pRecognizer)
+        szDetail += tr("- Recognizer");
+    if(m_pLandmarker)
+        szDetail += tr("- Landmarker");
+    if(m_pTracker)
+        szDetail += tr("- Tracker");
+    if(m_pFaceTools)
+        szDetail += tr("- Face tools");
+    return szDetail;
+}

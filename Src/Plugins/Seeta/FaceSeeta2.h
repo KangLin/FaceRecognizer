@@ -22,6 +22,8 @@ public:
     virtual int Initialize() override;
     QString GetName() override;
     int GetLevel() override;
+    
+    const QString Detail() const override;
 };
 
 #endif // CFACESEETA_H_KL_2019_10_21

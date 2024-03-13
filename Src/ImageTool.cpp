@@ -350,3 +350,11 @@ int CImageTool::FindPlugins(QDir dir, QStringList filters)
 
     return 0;
 }
+
+QString CImageTool::Detail()
+{
+    QString szDetail;
+    if(m_pConverFormat)
+        szDetail = m_pConverFormat->Detail();
+    return szDetail;
+}

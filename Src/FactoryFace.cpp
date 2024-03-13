@@ -446,3 +446,13 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
 
     return 0;
 }
+
+const QString CFactoryFace::Detail() const
+{
+    QString szDetail;
+    foreach(auto f, m_Faces)
+    {
+        szDetail += f->Detail() + "\n";
+    }
+    return szDetail;
+}

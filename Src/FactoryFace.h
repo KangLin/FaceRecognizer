@@ -103,6 +103,8 @@ public:
     
     int setModelPath(const QString &szPath);
     
+    virtual const QString Detail() const;
+
 private:
     int m_CurrentLib;
     bool m_bOnlyUserCurrent;

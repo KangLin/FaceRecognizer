@@ -144,3 +144,8 @@ CDatabase* CFace::GetDatabase()
 {
     return m_pDatabase;
 }
+
+const QString CFace::Detail() const
+{
+    return QString();
+}
