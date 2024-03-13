@@ -6,7 +6,9 @@
 #include "ui_ManageRecognizerVideo.h"
 #include "RecognizerThread.h"
 
-#include <QDebug>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "App.Manage.Recognizer.Video")
 
 CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
     QWidget(parent),
@@ -35,7 +37,7 @@ CManageRecognizerVideo::CManageRecognizerVideo(QWidget *parent) :
 
 CManageRecognizerVideo::~CManageRecognizerVideo()
 {
-    qDebug() << "CManageRecognizerVideo::~CManageRecognizerVideo()";
+    qDebug(log) << "CManageRecognizerVideo::~CManageRecognizerVideo()";
     m_pThread->exit();
     delete ui;
 }

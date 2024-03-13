@@ -16,7 +16,7 @@
     #include "FrmUpdater/FrmUpdater.h"
 #endif
 
-static Q_LOGGING_CATEGORY(log, "main")
+static Q_LOGGING_CATEGORY(log, "App.main")
 
 int main(int argc, char *argv[])
 {

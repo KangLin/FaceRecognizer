@@ -4,7 +4,7 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(log)
+static Q_LOGGING_CATEGORY(log, "Plugin.Seeta.Tracker")
 
 CTrackerSeeta::CTrackerSeeta(CFace *pFace, QObject *parent)
     : CTracker(pFace, parent)

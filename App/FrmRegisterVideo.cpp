@@ -9,7 +9,9 @@
 #include <QPainter>
 #include <FactoryFace.h>
 #include <stdexcept>
-#include <QDebug>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "App.Register.Image")
 
 CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
     QWidget(parent),
@@ -28,7 +30,7 @@ CFrmRegisterVideo::CFrmRegisterVideo(QWidget *parent) :
 
 CFrmRegisterVideo::~CFrmRegisterVideo()
 {
-    qDebug() << "CFrmRegisterVideo::~CFrmRegisterVideo()";
+    qDebug(log) << "CFrmRegisterVideo::~CFrmRegisterVideo()";
     delete ui;
 }
 

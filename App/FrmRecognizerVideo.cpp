@@ -14,7 +14,7 @@
 #include <stdexcept>
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(logVideo, "Video")
+static Q_LOGGING_CATEGORY(log, "App.Recognizer.Video")
 
 CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
     QWidget(parent),
@@ -31,7 +31,7 @@ CFrmRecognizerVideo::CFrmRecognizerVideo(QWidget *parent) :
 
 CFrmRecognizerVideo::~CFrmRecognizerVideo()
 {
-    qDebug(logVideo) << "CFrmRecognizerVideo::~CFrmRecognizerVideo()";
+    qDebug(log) << "CFrmRecognizerVideo::~CFrmRecognizerVideo()";
     delete ui;
 }
 
@@ -66,7 +66,7 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
 {
     if(isHidden() || !m_pFace->bIsValid())
     {
-        qCritical(logVideo) << "CFrmRecognizerVideo:" << "isHidden() || !m_pFace";
+        qCritical(log) << "CFrmRecognizerVideo:" << "isHidden() || !m_pFace";
         return;
     }
 
@@ -103,11 +103,11 @@ void CFrmRecognizerVideo::slotDisplay(const QImage &image)
     ui->wgDisplay->slotDisplay(img);
     if(bRecognize)
     {
-        //qDebug(logVideo) << "emit sigRecognize(image, faces); start";
+        //qDebug(log) << "emit sigRecognize(image, faces); start";
         QMutexLocker locker(&m_Mutex);
         emit sigRecognize(image, faces);
         PERFORMANCE_ADD_TIME(CFrmRecognizerVideo, "sigRecognize")
-        //qDebug(logVideo) << "emit sigRecognize(image, faces); end";
+        //qDebug(log) << "emit sigRecognize(image, faces); end";
     }
     if(faces.size() > 1)
     {

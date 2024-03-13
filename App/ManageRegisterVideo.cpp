@@ -4,7 +4,9 @@
 
 #include "ManageRegisterVideo.h"
 #include <stdexcept>
-#include <QDebug>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "App.Manage.Register.Video")
 
 CManageRegisterVideo::CManageRegisterVideo(QWidget *parent) : QWidget(parent)
 {

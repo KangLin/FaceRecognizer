@@ -12,7 +12,9 @@
 
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(logDB)
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(logDB, "DB.Table")
 
 CTableRegister::CTableRegister(QObject *parent) : QObject(parent)
 {

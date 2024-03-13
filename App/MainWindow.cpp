@@ -38,7 +38,7 @@
 #include <QScreen>
 #include <QLoggingCategory>
 
-static Q_LOGGING_CATEGORY(log, "main")
+static Q_LOGGING_CATEGORY(log, "App.MainWindow")
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

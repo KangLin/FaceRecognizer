@@ -4,7 +4,7 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(log)
+static Q_LOGGING_CATEGORY(log, "Plugin.Seeta.Landmarker")
 
 CLandmarkerSeeta::CLandmarkerSeeta(CFace *pFace, QObject *parent)
     : CLandmarker(pFace, parent)

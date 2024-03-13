@@ -4,7 +4,8 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(log)
+static Q_LOGGING_CATEGORY(log, "Plugin.Seeta.Detector")
+
 
 CDetectorSeeta::CDetectorSeeta(CFace *pFace, QObject *parent) 
     : CDetector(pFace, parent)
@@ -62,7 +63,7 @@ int CDetectorSeeta::Detect(const QImage &image,  QVector<QRect> &faces)
 
 int CDetectorSeeta::UpdateParameter()
 {
-    //qDebug() << "CDetectorSeeta::UpdateParameter()";
+    //qDebug(log) << "CDetectorSeeta::UpdateParameter()";
     m_bInit = false;
     seeta::ModelSetting::Device device = seeta::ModelSetting::CPU;
     switch (getDevice()) {

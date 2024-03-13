@@ -3,7 +3,9 @@
   */
 
 #include "ParameterRegisterImage.h"
+#include <QLoggingCategory>
 
+static Q_LOGGING_CATEGORY(log, "App.Manage.Recognizer.Image")
 CParameterRegisterImage::CParameterRegisterImage(QObject *parent) : QObject(parent)
 {}
 

@@ -2,7 +2,7 @@
 
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(logFace, "Face")
+static Q_LOGGING_CATEGORY(log, "Face")
 
 CFace::CFace(QObject *parent) : QObject(parent),
     m_pDetector(nullptr),
@@ -15,7 +15,7 @@ CFace::CFace(QObject *parent) : QObject(parent),
     try {
         m_pDatabase = new CDatabase();
     } catch (...) {
-        qCritical(logFace) << "new CDatabase fail";
+        qCritical(log) << "new CDatabase fail";
     }
 }
 
@@ -34,7 +34,7 @@ int CFace::Initialize()
 
 int CFace::Clean()
 {
-    qDebug(logFace) << "Clean" << this->metaObject()->className();
+    qDebug(log) << "Clean" << this->metaObject()->className();
 
     if(m_pDetector)
     {   
@@ -84,32 +84,32 @@ bool CFace::IsValid()
 {
     if(!GetDector())
     {
-        qCritical(logFace) << "CFace::GetDector is null";
+        qCritical(log) << "CFace::GetDector is null";
         return false;
     }
     if(!GetTracker())
     {
-        qCritical(logFace) << "CFace::GetTracker is null";
+        qCritical(log) << "CFace::GetTracker is null";
         return false;
     }
     if(!GetLandmarker())
     {
-        qCritical(logFace) << "CFace::GetLandmarker is null";
+        qCritical(log) << "CFace::GetLandmarker is null";
         return false;
     }
     if(!GetRecognizer())
     {
-        qCritical(logFace) << "CFace::GetRecognizer is null";
+        qCritical(log) << "CFace::GetRecognizer is null";
         return false;
     }
     if(!GetFaceTools())
     {
-        qCritical(logFace) << "CFace::GetFaceTools is null";
+        qCritical(log) << "CFace::GetFaceTools is null";
         return false;
     }
     if(!GetDatabase())
     {
-        qCritical(logFace) << "CFace::GetDatabase is null";
+        qCritical(log) << "CFace::GetDatabase is null";
         return false;
     }
     return true;

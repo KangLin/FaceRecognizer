@@ -14,7 +14,7 @@
 
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(logDB, "DB")
+static Q_LOGGING_CATEGORY(logDB, "DB")
 
 CDatabase::CDatabase(QObject *parent)
     : QObject(parent)

@@ -8,7 +8,7 @@
 #include <QThread>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(logVideo)
+static Q_LOGGING_CATEGORY(log, "App.Recognizer.Video")
 
 static int gIdQMapIntQString = qRegisterMetaType<QMap<int,QString> >();
 CRecognizerVideo::CRecognizerVideo(QObject *parent) : QObject(parent)
@@ -30,14 +30,14 @@ void CRecognizerVideo::slotRecognize(const QImage &image, const QVector<CTracker
                              "Mark points:" + QString::number(points.size()))
         if(points.isEmpty())
         {
-            qCritical(logVideo) << "points is empty";
+            qCritical(log) << "points is empty";
             continue;
         }
         qint64 index = pFace->GetRecognizer()->Query(image, face.rect);
         PERFORMANCE_ADD_TIME(CRecognizerVideo, "Query")
         if(-1 == index)
         {
-            qCritical(logVideo) << "pid[" << face.pid << "] don't query";
+            qCritical(log) << "pid[" << face.pid << "] don't query";
             continue;
         }
         CDataRegister data;

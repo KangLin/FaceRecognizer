@@ -8,9 +8,11 @@
 
 #include <QMessageBox>
 #include <QPainter>
-#include <QDebug>
 #include <QPalette>
 #include <stdexcept>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "App.Register.Image")
 
 CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
     QWidget(parent),
@@ -30,7 +32,7 @@ CFrmRegisterImage::CFrmRegisterImage(QWidget *parent) :
 
 CFrmRegisterImage::~CFrmRegisterImage()
 {
-    qDebug() << "CFrmRegisterImage::~CFrmRegisterImage()";
+    qDebug(log) << "CFrmRegisterImage::~CFrmRegisterImage()";
     if(m_bRegister && m_pFace && m_pFace->GetRecognizer())
         m_pFace->GetRecognizer()->Save();
     delete ui;

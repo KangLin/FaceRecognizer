@@ -7,7 +7,7 @@
 
 #include <QLoggingCategory>
 
-static Q_LOGGING_CATEGORY(log, "Thread")
+static Q_LOGGING_CATEGORY(log, "App.Thread")
 
 CRecognizerThread::CRecognizerThread(CManageRecognizerVideo *parent) : QThread()
 {

@@ -12,7 +12,9 @@
 #include <QStandardItem>
 #include <QPen>
 #include <stdexcept>
-#include <QDebug>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "App.Recognizer.Image")
 
 CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
     QWidget(parent),
@@ -48,7 +50,7 @@ CFrmRecognizerImage::CFrmRecognizerImage(QWidget *parent) :
 
 CFrmRecognizerImage::~CFrmRecognizerImage()
 {
-    qDebug() << "CFrmRecognizerImage::~CFrmRecognizerImage()";
+    qDebug(log) << "CFrmRecognizerImage::~CFrmRecognizerImage()";
     delete ui;
 }
 

@@ -1,6 +1,9 @@
 #include "FaceToolsSeeta.h"
 #include "Performance.h"
 #include "Face.h"
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "Plugin.Seeta.Tools")
 
 CFaceToolsSeeta::CFaceToolsSeeta(CFace *pFace, QObject *parent)
     : CFaceTools(pFace, parent)

@@ -7,6 +7,9 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "App.Display")
 
 CFrmDisplay::CFrmDisplay(QWidget *parent) :
     QWidget(parent),
@@ -18,7 +21,7 @@ CFrmDisplay::CFrmDisplay(QWidget *parent) :
 
 CFrmDisplay::~CFrmDisplay()
 {
-    qDebug() << "CFrmDisplay::~CFrmDisplay()";
+    qDebug(log) << "CFrmDisplay::~CFrmDisplay()";
     delete ui;
 }
 

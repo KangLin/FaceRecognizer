@@ -9,7 +9,7 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(log, "Seeta2")
+static Q_LOGGING_CATEGORY(log, "Plugin.Seeta.Face")
 
 CFaceSeeta2::CFaceSeeta2(QObject *parent) : CFace(parent)
 {}

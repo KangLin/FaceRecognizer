@@ -6,7 +6,7 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(log)
+static Q_LOGGING_CATEGORY(log, "Plugin.Seeta.Recognizer")
 
 CRecognizerSeeta::CRecognizerSeeta(CFace *pFace, QObject *parent)
     : CRecognizer(pFace, parent)

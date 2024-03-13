@@ -6,7 +6,9 @@
 #include <QTime>
 #include <QVideoFrame>
 #include <QImage>
-#include <QDebug>
+#include <QLoggingCategory>
+
+static Q_LOGGING_CATEGORY(log, "Camera")
 
 CCameraQtCaptureVideoFrame::CCameraQtCaptureVideoFrame(QObject *parent) :
 #if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)

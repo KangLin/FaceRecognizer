@@ -3,14 +3,14 @@
 #include "RabbitCommonDir.h"
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(logFace)
+static Q_LOGGING_CATEGORY(log, "Face.Base")
 
 CFaceBase::CFaceBase(QObject *parent) : QObject(parent),
     m_Device(CPU)
 {
     m_szModelPath = RabbitCommon::CDir::Instance()->GetDirData(false)
             + QDir::separator() + "model";
-    qDebug(logFace) << "szPath:" << m_szModelPath;
+    qDebug(log) << "szPath:" << m_szModelPath;
 #if defined(Q_OS_ANDROID)
     QDir d;
     if(!d.exists(m_szModelPath))

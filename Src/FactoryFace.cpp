@@ -8,7 +8,8 @@
 #include <QPluginLoader>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(logFace)
+static Q_LOGGING_CATEGORY(log, "Face.Factory")
+
 CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
     m_CurrentLib(-1),
     m_bOnlyUserCurrent(true)
@@ -163,37 +164,37 @@ bool CFactoryFace::bIsValid(const QString &szName)
 {
     if(!GetFace(szName))
     {
-        qCritical(logFace) << "CFactory::GetFace is null";
+        qCritical(log) << "CFactory::GetFace is null";
         return false;
     }
     if(!GetDector(szName))
     {
-        qCritical(logFace) << "CFactory::GetDector is null";
+        qCritical(log) << "CFactory::GetDector is null";
         return false;
     }
     if(!GetTracker(szName))
     {
-        qCritical(logFace) << "CFactory::GetTracker is null";
+        qCritical(log) << "CFactory::GetTracker is null";
         return false;
     }
     if(!GetLandmarker(szName))
     {
-        qCritical(logFace) << "CFactory::GetLandmarker is null";
+        qCritical(log) << "CFactory::GetLandmarker is null";
         return false;
     }
     if(!GetRecognizer(szName))
     {
-        qCritical(logFace) << "CFactory::GetRecognizer is null";
+        qCritical(log) << "CFactory::GetRecognizer is null";
         return false;
     }
     if(!GetFaceTools(szName))
     {
-        qCritical(logFace) << "CFactory::GetFaceTools is null";
+        qCritical(log) << "CFactory::GetFaceTools is null";
         return false;
     }
     if(!GetDatabase(szName))
     {
-        qCritical(logFace) << "CFactory::GetDatabase is null";
+        qCritical(log) << "CFactory::GetDatabase is null";
         return false;
     }
     return true;
@@ -401,7 +402,7 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
     }
     QStringList files = dir.entryList(filters, QDir::Files | QDir::CaseSensitive);
     if(files.isEmpty())
-        qDebug(logFace) << "Plugin folder is empty:" << dir.absolutePath() << filters;
+        qDebug(log) << "Plugin folder is empty:" << dir.absolutePath() << filters;
     else
     {
         //This method is invalid
@@ -418,7 +419,7 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
         //#endif
     }
     foreach (fileName, files) {
-        //qDebug(logFace) << "file name:" << fileName;
+        //qDebug(log) << "file name:" << fileName;
         QString szPlugins = dir.absoluteFilePath(fileName);
         QPluginLoader loader(szPlugins);
         QObject *plugin = loader.instance();
@@ -427,13 +428,13 @@ int CFactoryFace::FindPlugins(QDir dir, QStringList filters)
             if(pPlugFace)
             {
                 RegisterFace(pPlugFace);
-                qInfo(logFace) << "Load plugin:" << pPlugFace->GetName()
+                qInfo(log) << "Load plugin:" << pPlugFace->GetName()
                                << "; Path:" << szPlugins;
                 continue;
             }
-            qDebug(logFace) << "Load plugin: it is not face plugin." << szPlugins;
+            qDebug(log) << "Load plugin: it is not face plugin." << szPlugins;
         }else{
-            qCritical(logFace) << "Load plugin error:" << loader.errorString();
+            qCritical(log) << "Load plugin error:" << loader.errorString();
         }
     }
 
