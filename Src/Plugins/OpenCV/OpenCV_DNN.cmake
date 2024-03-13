@@ -62,10 +62,10 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
     endif()
 endif()
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv")
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/deploy.prototxt
-        ${CMAKE_SOURCE_DIR}/model/Opencv/res10_300x300_ssd_iter_140000_fp16.caffemodel
-        ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector.pbtxt
-        ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector_uint8.pb
+    INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/model/Opencv/deploy.prototxt
+            ${CMAKE_SOURCE_DIR}/model/Opencv/res10_300x300_ssd_iter_140000_fp16.caffemodel
+            ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector.pbtxt
+            ${CMAKE_SOURCE_DIR}/model/Opencv/opencv_face_detector_uint8.pb
         DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
-        COMPONENT Runtime)
+            COMPONENT Runtime)
 endif()

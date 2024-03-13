@@ -21,7 +21,7 @@ endif()
 
 if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
-endif(NOT DEFINED CMAKE_BUILD_TYPE)
+endif()
 if("Debug" STREQUAL CMAKE_BUILD_TYPE)
     add_definitions(-D_DEBUG)
 endif()
@@ -60,17 +60,6 @@ if(Qt${QT_VERSION_MAJOR}_FOUND)
 endif()
 get_filename_component(QT_INSTALL_DIR "${Qt${QT_VERSION_MAJOR}_DIR}/../../.." ABSOLUTE)
 
-IF(MSVC)
-    # This option is to enable the /MP switch for Visual Studio 2005 and above compilers
-    OPTION(WIN32_USE_MP "Set to ON to build with the /MP option (Visual Studio 2005 and above)." ON)
-    MARK_AS_ADVANCED(WIN32_USE_MP)
-    IF(WIN32_USE_MP)
-        #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-        add_compile_options(/MP)
-    ENDIF(WIN32_USE_MP)
-    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-ENDIF(MSVC)
 IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
@@ -103,15 +92,6 @@ include(CheckIncludeFile)
 include(CheckIncludeFileCXX)
 include(CheckFunctionExists)
 include(${CMAKE_SOURCE_DIR}/cmake/Download.cmake)
-
-set(INSTALL_DATA_PREFIX ${CMAKE_INSTALL_DATADIR})
-# Set install data prefix
-if(ANDROID) 
-    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${CMAKE_ANDROID_ARCH_ABI}")
-else()
-    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugins)
-endif()
-set(FACE_RECOGNIZER_PLUGS_BINARY_DIR ${CMAKE_BINARY_DIR}/plugins)
 
 #CHECK_INCLUDE_FILE_CXX("string" HAVE_STRING_H)
 #check_include_file("math.h" HAVE_MATH_H)
@@ -164,6 +144,15 @@ if(NOT FaceRecognizer_VERSION)
 endif()
 message("FaceRecognizer_VERSION:${FaceRecognizer_VERSION};FaceRecognizer_REVISION:${FaceRecognizer_REVISION}")
 set(VERSION ${FaceRecognizer_VERSION})
+
+# Set install data prefix
+set(INSTALL_DATA_PREFIX ${CMAKE_INSTALL_DATADIR})
+if(ANDROID)
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR "libs/${CMAKE_ANDROID_ARCH_ABI}")
+else()
+    set(INSTALL_FACE_RECOGNIZER_PLUGS_DIR plugins)
+endif()
+set(FACE_RECOGNIZER_PLUGS_BINARY_DIR ${CMAKE_BINARY_DIR}/plugins)
 
 add_subdirectory(Src)
 option(BUILD_APP "Build applaction" ON)

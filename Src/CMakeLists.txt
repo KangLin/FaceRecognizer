@@ -107,7 +107,7 @@ ADD_TARGET(NAME ${PROJECT_NAME}
     )
 
 # Install sql file
-INSTALL(FILES ../Resource/db/database.sql
+INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/Resource/db/database.sql
     DESTINATION ${INSTALL_DATA_PREFIX}/db
         COMPONENT Runtime)
 

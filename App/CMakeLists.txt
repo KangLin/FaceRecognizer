@@ -113,24 +113,13 @@ if(UNIX AND NOT ANDROID)
             COMPONENT Runtime)
 endif()
 
-if(Log4Qt_FOUND)
-    if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_log4qt.conf)
-        configure_file(${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_log4qt.conf
-            ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_log4qt.conf
-            COPYONLY)
-    endif()
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_log4qt.conf
-        DESTINATION etc
-            COMPONENT Runtime)
-else()
-    if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
-        configure_file(${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
-            ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini
-            COPYONLY)
-    endif()
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
-        DESTINATION etc
-            COMPONENT Runtime)
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
+    configure_file(${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
+        ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini
+        COPYONLY)
 endif()
+INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
+    DESTINATION etc
+    COMPONENT Runtime)
 
 INSTALL_ICON_THEME(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/icons)

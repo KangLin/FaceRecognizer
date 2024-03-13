@@ -37,7 +37,7 @@ endif(ANDROID)
 if(EXISTS ${MODEL_FILES})
     INSTALL(DIRECTORY ${MODEL_FILES}/
         DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
-        COMPONENT Runtime)
+            COMPONENT Runtime)
 endif()
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
@@ -55,9 +55,9 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
     endif(ENABLE_DOWNLOAD_MODUEL)
 endif()
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
+    INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
         DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
-        COMPONENT Runtime)
+            COMPONENT Runtime)
 endif()
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/face_landmark_model.dat")
@@ -79,7 +79,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/face_landmark_model.dat")
     endif(ENABLE_DOWNLOAD_MODUEL)
 endif()
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml")
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
+    INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/model/Opencv/lbfmodel.yaml
         DESTINATION ${INSTALL_DATA_PREFIX}/model/Opencv
         COMPONENT Runtime)
 endif()

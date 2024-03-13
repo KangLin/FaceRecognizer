@@ -31,6 +31,18 @@ set(HEADER_FILES
     FaceToolsSeeta.h
     )
 
+# Install target
+set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})
+if(NOT ANDROID)
+    set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}/Face)
+endif()
+ADD_PLUGIN_TARGET(NAME ${PROJECT_NAME}
+    SOURCE_FILES ${SOURCES_FILES} ${HEADER_FILES}
+    PRIVATE_LIBS ${SeetaFace_LIBRARIES} FaceRecognizer
+    OUTPUT_DIR ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}/Face
+    INSTALL_DIR ${INSTALL_PATH}
+    VERSION ${FaceRecognizer_VERSION})
+
 # Install model files
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
     if(ENABLE_DOWNLOAD_MODULE)
@@ -63,22 +75,10 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
 endif()
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/model/Seeta")
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
+    INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/model/Seeta/fd_2_00.dat
             ${CMAKE_SOURCE_DIR}/model/Seeta/fr_2_10.dat
             ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts5.dat
             ${CMAKE_SOURCE_DIR}/model/Seeta/pd_2_00_pts81.dat
         DESTINATION ${INSTALL_DATA_PREFIX}/model/Seeta
             COMPONENT Runtime)
 endif()
-
-# Install target
-set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})
-if(NOT ANDROID)
-    set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR}/Face)
-endif()
-ADD_PLUGIN_TARGET(NAME ${PROJECT_NAME}
-    SOURCE_FILES ${SOURCES_FILES} ${HEADER_FILES}
-    PRIVATE_LIBS ${SeetaFace_LIBRARIES} FaceRecognizer
-    OUTPUT_DIR ${FACE_RECOGNIZER_PLUGS_BINARY_DIR}/Face
-    INSTALL_DIR ${INSTALL_PATH}
-    VERSION ${FaceRecognizer_VERSION})
