@@ -112,5 +112,4 @@ INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/Resource/db/database.sql
         COMPONENT Runtime)
 
 message(STATUS "LIBYUV:${YUV_FOUND}")
-message(STATUS "log4cplus:${log4cplus_FOUND}")
 message(STATUS "Build PERFORMANCE:${BUILD_PERFORMANCE}")

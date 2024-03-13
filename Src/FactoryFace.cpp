@@ -34,7 +34,7 @@ CFactoryFace::CFactoryFace(QObject *parent): QObject(parent),
         filters << "*PluginFace*.so";
 #endif
     FindPlugins(szPath, filters);
-    
+
     SetLibType(QString(), false);
 }
 
