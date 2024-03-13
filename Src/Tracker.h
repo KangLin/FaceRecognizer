@@ -12,6 +12,14 @@
 #include "FaceBase.h"
 
 class CFace;
+/*!
+ * \~english the class of face tracker
+ *
+ * \~chinse 人脸跟踪接口类
+ *
+ * \~
+ * \ingroup API_FACE
+ */
 class FACERECOGNIZER_EXPORT CTracker : public CFaceBase
 {
     Q_OBJECT
@@ -32,5 +40,6 @@ protected:
     CFace* m_pFace;
 };
 
-Q_DECLARE_METATYPE(CTracker::strFace);
+Q_DECLARE_METATYPE(CTracker::strFace)
+
 #endif // CTRACKER_H

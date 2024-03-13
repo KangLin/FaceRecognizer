@@ -4,8 +4,25 @@
 #include <QObject>
 #include "facerecognizer_export.h"
 
+/*!
+ * \~english  API_FACE Face interface
+ *
+ * \~chinese
+ * \defgroup API_FACE 人脸识别接口
+ *
+ * \~
+ * \ingroup API
+ */
+
 /**
- * @brief The CFaceBase class. the base class of all face interface
+ * \~english the class of face interface.
+ *   it is the base class of all face interface.
+ *
+ * \~chinese
+ * \brief 人脸识别接口类。 它是所有人脸接口的基类
+ *
+ * \~
+ * \ingroup API
  */
 class FACERECOGNIZER_EXPORT CFaceBase : public QObject
 {

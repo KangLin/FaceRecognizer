@@ -10,6 +10,11 @@ extern "C" {
 #undef PixelFormat
 }
 
+/*!
+ * \brief The CConverFormatFFmpeg class
+ * \~
+ * \ingroup API_CONVER_FORMAT
+ */
 class CConverFormatFFmpeg final: public CConverFormat
 {
     Q_OBJECT

@@ -1,7 +1,6 @@
-/**
-  @brief: 提供一此工具函数  
-  @author: Kang Lin<kl222@126.com>
-  */
+/*
+  Author: Kang Lin <kl222@126.com>
+*/
 
 #ifndef TOOL_H
 #define TOOL_H
@@ -23,8 +22,12 @@
 #include "ConverFormat.h"
 
 /**
- * @brief 工具类。提供一此工具函数  
- * @ingroup RABBITIM_TOOL
+ * \~english Manage the plugins of image tool
+ *
+ * \~chinese 管理图像转换插件工具
+ *
+ * \~
+ * \ingroup API
  */
 class FACERECOGNIZER_EXPORT CImageTool : public QObject
 {

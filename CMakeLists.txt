@@ -160,7 +160,34 @@ if(BUILD_APP)
     add_subdirectory(App)
 endif(BUILD_APP)
 
+# 产生文档
+option(BUILD_DOCS "Generating API documentation" OFF)
+if(BUILD_DOCS)
+    find_package(Doxygen)
+    if(DOXYGEN_FOUND)
+        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Doxygen)
+        file(COPY ${CMAKE_SOURCE_DIR}/docs/Doxygen/index.html
+            DESTINATION ${CMAKE_BINARY_DIR}/Doxygen)
+        foreach(OUTPUT_LANGUAGE English Chinese)
+            set(PROJECT_NAME "Face recognizer")
+            if(OUTPUT_LANGUAGE STREQUAL "Chinese")
+                set(PROJECT_NAME "人脸识别")
+            endif()
+            configure_file(${CMAKE_SOURCE_DIR}/docs/Doxygen/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile_${OUTPUT_LANGUAGE} @ONLY)
+            add_custom_target(doc_${OUTPUT_LANGUAGE} ALL
+                ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile_${OUTPUT_LANGUAGE} # &> doxygen.log
+                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                COMMENT "Generating API documentation with Doxygen" VERBATIM
+                )
+        endforeach()
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/Doxygen/
+            DESTINATION ${CMAKE_INSTALL_DOCDIR}/${OUTPUT_LANGUAGE}
+                COMPONENT Runtime)
+    endif(DOXYGEN_FOUND)
+endif(BUILD_DOCS)
+
 message(STATUS "Build shared library: ${BUILD_SHARED_LIBS}")
 message(STATUS "Build arch: ${BUILD_ARCH}")
 message(STATUS "Build application: ${BUILD_APP}")
 message(STATUS "Build automation download: ${ENABLE_DOWNLOAD_MODULE}")
+message(STATUS "Build documents: ${BUILD_DOCS}")

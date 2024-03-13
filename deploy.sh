@@ -40,6 +40,7 @@ sed -i "s/FaceRecognizer_VERSION:.*/FaceRecognizer_VERSION:\"${VERSION}\"/g" ${S
 sed -i "s/FaceRecognizer_VERSION:.*/FaceRecognizer_VERSION:\"${VERSION}\"/g" ${SOURCE_DIR}/.github/workflows/macos.yml
 sed -i "s/FaceRecognizer_VERSION:.*/FaceRecognizer_VERSION:\"${VERSION}\"/g" ${SOURCE_DIR}/.github/workflows/mingw.yml
 sed -i "s/FaceRecognizer_VERSION:.*/FaceRecognizer_VERSION:\"${VERSION}\"/g" ${SOURCE_DIR}/.github/workflows/build.yml
+sed -i "s/FaceRecognizer_VERSION:.*/FaceRecognizer_VERSION:\"${VERSION}\"/g" ${SOURCE_DIR}/.github/workflows/doxygen.yml
 
 sed -i "s/^\Standards-Version:.*/\Standards-Version:\"${VERSION}\"/g" ${SOURCE_DIR}/debian/control
 DEBIAN_VERSION=`echo ${VERSION}|cut -d "v" -f 2`

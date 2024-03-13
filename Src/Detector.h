@@ -14,6 +14,14 @@
 #include "FaceBase.h"
 
 class CFace;
+/*!
+ * \~english Face detector
+ *
+ * \~chinese 人脸检测接口类
+ *
+ * \~
+ * \ingroup API_FACE
+ */
 class FACERECOGNIZER_EXPORT CDetector : public CFaceBase
 {
     Q_OBJECT

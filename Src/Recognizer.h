@@ -6,18 +6,16 @@
 #include <QImage>
 #include <QMetaClassInfo>
 
-/**
- * @defgroup RecognizerInterface recognizer interface
- */
-
 #include "facerecognizer_export.h"
 #include "FaceBase.h"
 
 class CFace;
 
 /**
- * @brief The CRecognizer class
- * @ingroup RecognizerInterface
+ * \~english the class of face recognizer
+ * \~chinese 人脸识别接口类
+ * \~
+ * \ingroup API_FACE
  */
 class FACERECOGNIZER_EXPORT CRecognizer : public CFaceBase
 {

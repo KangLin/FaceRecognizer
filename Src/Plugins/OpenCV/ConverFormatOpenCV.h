@@ -3,6 +3,10 @@
 
 #include "ConverFormat.h"
 
+/*!
+ * \brief The CConverFormatOpenCV class
+ * \ingroup API_CONVER_FORMAT
+ */
 class CConverFormatOpenCV final: public CConverFormat
 {
     Q_OBJECT

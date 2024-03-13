@@ -9,6 +9,12 @@
 #include "FaceBase.h"
 
 class CFace;
+/*!
+ * \brief The CFaceTools class
+ *
+ * \~
+ * \ingroup API_FACE
+ */
 class FACERECOGNIZER_EXPORT CFaceTools : public CFaceBase
 {
     Q_OBJECT

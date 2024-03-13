@@ -14,6 +14,15 @@
 #include "FaceBase.h"
 
 class CFace;
+/*!
+ * \~english the class of face landmarker
+ *
+ * \~chinese
+ * \brief 人脸标记接口类
+ * 
+ * \~
+ * \ingroup API_FACE
+ */
 class FACERECOGNIZER_EXPORT CLandmarker : public CFaceBase
 {
     Q_OBJECT

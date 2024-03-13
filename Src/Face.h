@@ -14,9 +14,15 @@
 #include "FaceTools.h"
 #include "database/Database.h"
 
-/**
- * @brief The CFace class. It is a face interface of implemented by plugin
- * @see CFactoryFace
+/*!
+ * \~english Face recognition plug-in interface. Implemented by plugins.
+ *
+ * \~chinese
+ * \brief 人脸识别插件接口。由插件实现。
+ * 
+ * \~
+ * \see CFactoryFace
+ * \ingroup API_INTERNAL
  */
 class FACERECOGNIZER_EXPORT CFace : public QObject
 {
