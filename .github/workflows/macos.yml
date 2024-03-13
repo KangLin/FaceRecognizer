@@ -36,7 +36,7 @@ jobs:
       BUILD_TYPE:  ${{ matrix.BUILD_TYPE }}
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
-      INSTALL_DIR: ${{github.workspace}}/.cache/install
+      INSTALL_DIR: ${{github.workspace}}/.cache/install_2024_03_13
       qt_modules: qtwebengine ${{matrix.qt_modules}}
       VCPKGGITCOMMITID: 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}

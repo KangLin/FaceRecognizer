@@ -22,7 +22,7 @@ jobs:
       BUILD_TYPE:  ${{matrix.BUILD_TYPE}}
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
-      INSTALL_DIR: ${{github.workspace}}/.cache/install
+      INSTALL_DIR: ${{github.workspace}}/.cache/install_2024_03_13
       FaceRecognizer_VERSION: 0.0.4
       artifact_name: build_ubuntu
 
