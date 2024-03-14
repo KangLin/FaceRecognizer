@@ -1,7 +1,9 @@
 {
   "name": "facerecognizer",
   "version-string":"0.0.4",
-  
+  "license": "GPL-3",
+  "homepage": "https://github.com/KangLin/facerecognizer",
+
   "dependencies": [
     "openssl"
   ],
