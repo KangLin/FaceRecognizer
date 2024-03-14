@@ -364,13 +364,13 @@
     <string>Video</string>
    </property>
    <property name="toolTip">
-    <string>Recongnizer from video</string>
+    <string>Recognizer from video</string>
    </property>
    <property name="statusTip">
-    <string>Recongnizer from video</string>
+    <string>Recognizer from video</string>
    </property>
    <property name="whatsThis">
-    <string>Recongnizer from video</string>
+    <string>Recognizer from video</string>
    </property>
   </action>
   <action name="actionOptions_O">

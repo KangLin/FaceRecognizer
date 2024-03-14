@@ -12,7 +12,7 @@
   - Use RabbitCommon v2.0.1
     - Replace RabbitCommon::CDir::GetOpenDirectory with QFileDialog::getExistingDirectory etc
     - Use json format update
-  - Copy ChangLog etc files to ${CMAKE_INSTALL_DOCDIR}
+  - Copy ChangeLog etc files to ${CMAKE_INSTALL_DOCDIR}
   
 - v0.0.4
   - Add opencv face

@@ -12,7 +12,7 @@
 
 /*!
  * \~english
- * \defgroup API Application interace
+ * \defgroup API Application interface
  * \defgroup API_INTERNAL Internal interface
  *
  * \~chinse
