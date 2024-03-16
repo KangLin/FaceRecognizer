@@ -1,6 +1,6 @@
 # Author: Kang Lin <kl222@126.com>
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.27)
 
 project(FaceRecognizer
     HOMEPAGE_URL "https://github.com/KangLin/FaceRecognizer"
@@ -10,14 +10,6 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
-
-if(POLICY CMP0083)
-    cmake_policy(SET CMP0083 NEW)
-endif()
-
-if(POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)
-endif()
 
 if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -59,31 +51,7 @@ if(Qt${QT_VERSION_MAJOR}_FOUND)
     ENDFOREACH()
 endif()
 get_filename_component(QT_INSTALL_DIR "${Qt${QT_VERSION_MAJOR}_DIR}/../../.." ABSOLUTE)
-
-IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
-    OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-
-    add_compile_options(-Wno-sign-compare -Wno-unused-parameter)
-    
-    if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        add_compile_options(-g -ggdb)
-    else()
-        add_compile_options(-O3)
-    endif()
-ENDIF()
-SET(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libs")
-if (BUILD_SHARED_LIBS)
-    add_definitions(-DBUILD_SHARED_LIBS)
-    if (CMAKE_COMPILER_IS_GNUCXX AND NOT MINGW)
-       # Just setting CMAKE_POSITION_INDEPENDENT_CODE should be enough to set
-       # -fPIC for GCC but sometimes it still doesn't get set, so make sure it
-       # does.
-       add_definitions("-fPIC")
-    endif()
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-else(BUILD_SHARED_LIBS)
-    add_definitions(-DQT_STATICPLUGIN)
-endif(BUILD_SHARED_LIBS)
+message("QT_LIBRARIES: ${QT_LIBRARIES}")
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -97,20 +65,6 @@ include(${CMAKE_SOURCE_DIR}/cmake/Download.cmake)
 #check_include_file("math.h" HAVE_MATH_H)
 
 #check_function_exists("fabs" HAVE_FABS)
-
-set(BUILD_PLATFORM "${CMAKE_SYSTEM_NAME}")
-# ----------------------------------------------------------------------------
-# Detect compiler and target platform architecture
-# ----------------------------------------------------------------------------
-if(NOT ANDROID)
-    if(X86_64 OR CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(BUILD_ARCH x86_64)
-    elseif(X86 OR CMAKE_SIZEOF_VOID_P EQUAL 4)
-        set(BUILD_ARCH x86)
-    endif()
-else()
-    set(BUILD_ARCH ${CMAKE_SYSTEM_PROCESSOR})
-endif()
 
 if(NOT RabbitCommon_DIR)
     set(RabbitCommon_DIR $ENV{RabbitCommon_DIR})

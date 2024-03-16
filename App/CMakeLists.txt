@@ -1,12 +1,3 @@
-cmake_minimum_required(VERSION 2.8)
-
-if(POLICY CMP0083)
-    cmake_policy(SET CMP0083 NEW)
-endif()
-
-if(POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)
-endif()
 
 project(FaceRecognizerApp
     DESCRIPTION "Face recognizer"
@@ -59,11 +50,6 @@ set(SOURCE_UI_FILES
     FrmPara.ui
     FrmBrowseFile.ui
     )
-
-
-add_definitions(-DBUILD_VERSION="${FaceRecognizer_VERSION}")
-add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
-add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
 
 SET(RCC_FILES
     Resource/Resource.qrc
