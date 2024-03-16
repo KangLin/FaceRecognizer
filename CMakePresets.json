@@ -1,0 +1,274 @@
+{
+    "version": 7,
+
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 27,
+        "patch": 0
+    },
+
+    "configurePresets": [
+        {
+            "name": "vcpkg",
+            "description": "Configure with vcpkg. please set VCPKG_ROOT environment first",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": {
+                    "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                    "type": "FILEPATH"
+                },
+                "VCPKG_VERBOSE": "ON",
+                "X_VCPKG_APPLOCAL_DEPS_INSTALL": "ON"
+            }
+        },
+        {
+            "name": "base",
+            "hidden": true,
+            "inherits": "vcpkg",
+            "cacheVariables": {
+                "BUILD_FREERDP": "ON",
+                "CMARK_SHARED": "OFF",
+                "CMARK_TESTS": "OFF",
+                "CMARK_STATIC": "ON",
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "openssl1.1",
+            "description": "Versions earlier than QT6.5 use OpenSSL 1.1",
+            "hidden": true,
+            "cacheVariables": {
+                "VCPKG_OVERLAY_PORTS": {
+                    "value": "${sourceDir}/vcpkg/ports",
+                    "type": "FILEPATH"
+                }
+            }
+        },
+        
+        {
+            "name": "qt6",
+            "inherits": [
+            	"base"
+            ],
+            "cacheVariables": {
+                "QT_ROOT": {
+                    "value": "$env{Qt6_DIR}",
+                    "type": "PATH"
+                },
+                "Qt6_DIR": {
+                    "value": "$env{Qt6_DIR}",
+                    "type": "PATH"
+                }
+            }
+        },
+        {
+            "name": "qt5",
+            "description": "Versions earlier than QT6.5 use OpenSSL 1.1",
+            "inherits": [
+            	"base",
+            	"openssl1.1"
+            ],
+            "cacheVariables": {
+                "QT_ROOT": {
+                    "value": "$env{Qt5_DIR}",
+                    "type": "PATH"
+                },
+                "Qt5_DIR":  {
+                    "value": "$env{Qt5_DIR}",
+                    "type": "PATH"
+                }
+            }
+        },
+        
+        {
+            "name": "x64",
+            "hidden": true,
+            "binaryDir": "build/x64",
+            "architecture": {
+                "value": "x64"
+            }
+        },
+        {
+            "name": "x86",
+            "hidden": true,
+            "binaryDir": "build/x86",
+            "architecture": {
+                "value": "Win32"
+            }
+        },
+        
+        {
+            "name": "msvc",
+            "hidden": true,
+            "generator": "Visual Studio 17 2022",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },        
+        {
+            "name": "msvc-x64-qt6",
+            "inherits": [
+                "msvc",
+                "qt6",
+                "x64"
+            ]
+        },
+        {
+            "name": "msvc-x86-qt6",
+            "inherits": [
+                "msvc",
+                "qt6",
+                "x86"
+            ]
+        },
+        {
+            "name": "msvc-x64-qt5",
+            "inherits": [
+                "msvc",
+                "qt5",
+                "x64"
+            ]
+        },
+        {
+            "name": "msvc-x86-qt5",
+            "inherits": [
+                "msvc",
+                "qt5",
+                "x86"
+            ]
+        },
+
+        {
+            "name": "ninja",
+            "hidden": true,
+            "generator": "Ninja"
+        },
+        {
+            "name": "ninja-x64-qt6",
+            "inherits": [
+                "ninja",
+                "qt6",
+                "x64"
+            ]
+        },
+        {
+            "name": "ninja-x86-qt6",
+            "inherits": [
+                "ninja",
+                "qt6",
+                "x86"
+            ]
+        },
+        {
+            "name": "ninja-x64-qt5",
+            "inherits": [
+                "ninja",
+                "qt5",
+                "x64"
+            ]
+        },
+        {
+            "name": "ninja-x86-qt5",
+            "inherits": [
+                "ninja",
+                "qt5",
+                "x86"
+            ]
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "msvc-x64-qt6",
+            "configurePreset": "msvc-x64-qt6",
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "msvc-x86-qt6",
+            "configurePreset": "msvc-x86-qt6",
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "msvc-x64-qt5",
+            "configurePreset": "msvc-x64-qt5",
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "msvc-x86-qt5",
+            "configurePreset": "msvc-x86-qt5",
+            "configuration": "Release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        
+        {
+            "name": "ninja-x64-qt6",
+            "configurePreset": "ninja-x64-qt6",
+            "configuration": "Release"
+        },
+        {
+            "name": "ninja-x86-qt6",
+            "configurePreset": "ninja-x86-qt6",
+            "configuration": "Release"
+        },
+        {
+            "name": "ninja-x64-qt5",
+            "configurePreset": "ninja-x64-qt5",
+            "configuration": "Release"
+        },
+        {
+            "name": "ninja-x86-qt5",
+            "configurePreset": "ninja-x86-qt5",
+            "configuration": "Release"
+        }
+    ],
+
+    "workflowPresets": [
+        {
+            "name": "msvc-x64-qt6",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "msvc-x64-qt6"
+                },
+                {
+                    "type": "build",
+                    "name": "msvc-x64-qt6"
+                }
+            ]
+        },
+        {
+            "name": "msvc-x86-qt6",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "msvc-x86-qt6"
+                },
+                {
+                    "type": "build",
+                    "name": "msvc-x86-qt6"
+                }
+            ]
+        }
+    ]
+}

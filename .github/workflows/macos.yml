@@ -175,7 +175,7 @@ jobs:
           7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip ./install/*
 
       - name: Update artifact
-        if: ${{ matrix.BUILD_TYPE == 'Release' }} 
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.6.2' }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
