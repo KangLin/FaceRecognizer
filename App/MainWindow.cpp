@@ -600,7 +600,7 @@ void MainWindow::on_actionUpdate_U_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    qApp->quit();
+    QCoreApplication::quit();
 }
 
 void MainWindow::on_actionAiLibraries_triggered(QAction* a)
