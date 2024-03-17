@@ -44,11 +44,11 @@
                 }
             }
         },
-        
+
         {
             "name": "qt6",
             "inherits": [
-            	"base"
+                "base"
             ],
             "cacheVariables": {
                 "QT_ROOT": {
@@ -65,8 +65,8 @@
             "name": "qt5",
             "description": "Versions earlier than QT6.5 use OpenSSL 1.1",
             "inherits": [
-            	"base",
-            	"openssl1.1"
+                "base",
+                "openssl1.1"
             ],
             "cacheVariables": {
                 "QT_ROOT": {
@@ -79,7 +79,7 @@
                 }
             }
         },
-        
+
         {
             "name": "x64",
             "hidden": true,
@@ -96,7 +96,7 @@
                 "value": "Win32"
             }
         },
-        
+
         {
             "name": "msvc",
             "hidden": true,
@@ -106,7 +106,7 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
-        },        
+        },
         {
             "name": "msvc-x64-qt6",
             "inherits": [
@@ -146,35 +146,17 @@
             "generator": "Ninja"
         },
         {
-            "name": "ninja-x64-qt6",
+            "name": "ninja-qt6",
             "inherits": [
                 "ninja",
-                "qt6",
-                "x64"
+                "qt6"
             ]
         },
         {
-            "name": "ninja-x86-qt6",
+            "name": "ninja-qt5",
             "inherits": [
                 "ninja",
-                "qt6",
-                "x86"
-            ]
-        },
-        {
-            "name": "ninja-x64-qt5",
-            "inherits": [
-                "ninja",
-                "qt5",
-                "x64"
-            ]
-        },
-        {
-            "name": "ninja-x86-qt5",
-            "inherits": [
-                "ninja",
-                "qt5",
-                "x86"
+                "qt5"
             ]
         }
     ],
@@ -220,25 +202,15 @@
                 "rhs": "Windows"
             }
         },
-        
+
         {
-            "name": "ninja-x64-qt6",
-            "configurePreset": "ninja-x64-qt6",
+            "name": "ninja-qt6",
+            "configurePreset": "ninja-qt6",
             "configuration": "Release"
         },
         {
-            "name": "ninja-x86-qt6",
-            "configurePreset": "ninja-x86-qt6",
-            "configuration": "Release"
-        },
-        {
-            "name": "ninja-x64-qt5",
-            "configurePreset": "ninja-x64-qt5",
-            "configuration": "Release"
-        },
-        {
-            "name": "ninja-x86-qt5",
-            "configurePreset": "ninja-x86-qt5",
+            "name": "ninja4-qt5",
+            "configurePreset": "ninja-qt5",
             "configuration": "Release"
         }
     ],
