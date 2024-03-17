@@ -116,7 +116,7 @@ jobs:
                 -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON \
                 -DVCPKG_VERBOSE=ON \
                 -DVCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} \
-                -DBUILD_EXAMPLE=OFF
+                -DUSE_OPENMP=OFF
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           fi

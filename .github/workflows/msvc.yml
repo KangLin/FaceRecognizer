@@ -107,7 +107,7 @@ jobs:
                 -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
                 -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/SeetaFace2/vcpkg_installed ^
                 -DVCPKG_TRACE_FIND_PACKAGE=ON ^
-                -DBUILD_EXAMPLE=OFF
+                -DUSE_OPENMP=OFF
             cmake --build . --config ${{matrix.BUILD_TYPE}}
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           )

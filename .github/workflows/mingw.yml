@@ -118,7 +118,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}} ^
             -DCMAKE_INSTALL_PREFIX=${{github.workspace}}\build\install ^
             -DCMAKE_PREFIX_PATH=${{env.INSTALL_DIR}} ^
-            -DSeetaFace_DIR=${{env.INSTALL_DIR}}\lib\cmake\SeetaFace2
+            -DSeetaFace_DIR=${{env.INSTALL_DIR}}\lib\cmake\SeetaFace2 ^
+            -DUSE_OPENMP=OFF
           cmake --build . --config ${{ matrix.BUILD_TYPE }}
           cmake --build . --config ${{ matrix.BUILD_TYPE }} --target install
 

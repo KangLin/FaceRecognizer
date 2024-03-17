@@ -167,7 +167,8 @@ jobs:
                 -DVCPKG_TRACE_FIND_PACKAGE=ON \
                 -DVCPKG_VERBOSE=ON \
                 -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/libvncserver/vcpkg_installed \
-                -DANDROID_ABI=${{env.ANDROID_ABI}}
+                -DANDROID_ABI=${{env.ANDROID_ABI}} \
+                -DUSE_OPENMP=OFF
             cmake --build . --verbose --config ${{matrix.BUILD_TYPE}}
             cmake --build . --verbose --config ${{matrix.BUILD_TYPE}} --target install
           fi

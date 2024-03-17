@@ -104,7 +104,8 @@ before_build:
              -DCMAKE_BUILD_TYPE=Release `
              -DCMAKE_INSTALL_PREFIX="${env:INSTALL_DIR}" `
              -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake" `
-             -DBUILD_SHARED_LIBS=ON
+             -DBUILD_SHARED_LIBS=ON `
+             -DUSE_OPENMP=OFF
           cmake --build . --config Release
           cmake --build . --config Release --target install
        }
