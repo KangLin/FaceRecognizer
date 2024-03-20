@@ -78,8 +78,8 @@ override_dh_auto_install:
 	cmake --install $(BUILD_DIR) --config Release \
 		--prefix $(PACKAGE_DIR)/opt/FaceRecognizer
 
-#override_dh_shlibdeps:
-#	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/$(PACKAGE_DIR)/opt/FaceRecognizer/lib:`pwd`/$(PACKAGE_DIR)/opt/FaceRecognizer/lib/`uname -m`-linux-gnu:$(LIB_PARAS)
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info -l`pwd`/$(PACKAGE_DIR)/opt/FaceRecognizer/lib:`pwd`/$(PACKAGE_DIR)/opt/FaceRecognizer/lib/`uname -m`-linux-gnu:$(LIB_PARAS)
 
 override_dh_builddeb:
 	dh_builddeb --package=facerecognizer -P$(PACKAGE_DIR)

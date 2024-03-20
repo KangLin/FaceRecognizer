@@ -24,20 +24,7 @@ int main(int argc, char *argv[])
 
 #ifdef RABBITCOMMON
     RabbitCommon::CTools::Instance()->Init();
-
-    QString szTranslator = RabbitCommon::CDir::Instance()->GetDirTranslations()
-            + "/" + QCoreApplication::applicationName()
-            + "App_" + QLocale::system().name() + ".qm";
-    qDebug(log) << "Translator:" << szTranslator;
-    QTranslator translator;
-    bool bRet = translator.load(szTranslator);
-    if(bRet){
-        bRet = app.installTranslator(&translator);
-        if(!bRet)
-            qCritical(log) << "Install translator fail." << szTranslator;
-    }
-    else
-        qCritical(log) << "Load translator fail." << szTranslator;
+    RabbitCommon::CTools::Instance()->InstallTranslator("FaceRecognizerApp");
 #endif
 
     app.setApplicationDisplayName(QObject::tr("Face recognizer"));
