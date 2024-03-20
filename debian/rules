@@ -66,6 +66,9 @@ PACKAGE_DIR = "debian/facerecognizer"
 override_dh_auto_configure:
 	dh_auto_configure -B$(BUILD_DIR) -- \
 	    -DCMAKE_BUILD_TYPE=Release \
+	    -DCMARK_SHARED=OFF \
+            -DCMARK_TESTS=OFF \
+            -DCMARK_STATIC=ON \
         -DENABLE_DOWNLOAD_MODUEL=${ENABLE_DOWNLOAD_MODULE} \
         ${PARAS}
 
@@ -76,6 +79,13 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	cmake --install $(BUILD_DIR) --config Release \
+		--component Runtime \
+		--prefix $(PACKAGE_DIR)/opt/FaceRecognizer
+	cmake --install $(BUILD_DIR) --config Release \
+		--component Application \
+		--prefix $(PACKAGE_DIR)/opt/FaceRecognizer
+	cmake --install $(BUILD_DIR) --config Release \
+		--component Plugin \
 		--prefix $(PACKAGE_DIR)/opt/FaceRecognizer
 
 override_dh_shlibdeps:
