@@ -9,9 +9,7 @@
     See RabbitCommon: 7ed300a206d8a36c30003b6c19ad181682d0ff5f
   - FFmpeg: update API avpicture_* to av_image_*
   - Support Qt6
-  - Use RabbitCommon v2.0.1
-    - Replace RabbitCommon::CDir::GetOpenDirectory with QFileDialog::getExistingDirectory etc
-    - Use json format update
+  - Use [RabbitCommon v2.2.0](https://github.com/KangLin/RabbitCommon/releases/tag/v2.2.0)
   - Copy ChangeLog etc files to ${CMAKE_INSTALL_DOCDIR}
   
 - v0.0.4

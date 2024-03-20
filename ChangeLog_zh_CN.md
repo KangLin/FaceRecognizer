@@ -9,9 +9,7 @@
     详见：RabbitCommon: 7ed300a206d8a36c30003b6c19ad181682d0ff5f
   - FFmpeg: 兼容 API avpicture_* to av_image_*
   - 支持 Qt6
-  - 使用 RabbitCommon v2.0.1
-    - 使用 json 格式更新
-    - 用 QFileDialog::getExistingDirectory 替换 RabbitCommon::CDir::GetOpenDirectory
+  - 使用 [RabbitCommon v2.2.0](https://github.com/KangLin/RabbitCommon/releases/tag/v2.2.0)
   - 复制日志等文件到 ${CMAKE_INSTALL_DOCDIR}
 
 - v0.0.4
