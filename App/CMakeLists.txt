@@ -82,9 +82,9 @@ IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.ico
         DESTINATION .
             COMPONENT Application)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/Install/Install.nsi
-        DESTINATION "${CMAKE_BINARY_DIR}"
-            COMPONENT Application)
+    # 替换 Install.nsi 中的 CMAKE_INSTALL_PREFIX 等
+    configure_file(${CMAKE_SOURCE_DIR}/Install/Install.nsi
+        ${CMAKE_BINARY_DIR}/Install.nsi @ONLY)
 ENDIF()
 
 if(UNIX AND NOT ANDROID)

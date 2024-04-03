@@ -22,8 +22,8 @@ SetCompressor lzma
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON "install\FaceRecognizer.ico"
-!define MUI_UNICON "install\FaceRecognizer.ico"
+!define MUI_ICON "@CMAKE_INSTALL_PREFIX@\FaceRecognizer.ico"
+!define MUI_UNICON "@CMAKE_INSTALL_PREFIX@\FaceRecognizer.ico"
 
 ; Language Selection Dialog Settings
 !define MUI_LANGDLL_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
@@ -33,7 +33,7 @@ SetCompressor lzma
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "install\share\doc\FaceRecognizer\License.md"
+!insertmacro MUI_PAGE_LICENSE "@CMAKE_INSTALL_PREFIX@\share\doc\FaceRecognizer\License.md"
 ; Components page
 !insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
