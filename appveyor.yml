@@ -121,7 +121,9 @@ build_script:
           -DCMARK_STATIC=ON ^
           -DQT_DIR=%QT_ROOT%/lib/cmake/Qt5 ^
           -DQt5_DIR=%QT_ROOT%/lib/cmake/Qt5 ^
-          -DINSTALL_QT=ON ^
+          -DRABBIT_ENABLE_INSTALL_DEPENDENT=ON ^
+          -DRABBIT_ENABLE_INSTALL_QT=ON ^
+          -DRABBIT_ENABLE_INSTALL_TO_BUILD_PATH=OFF ^
           -DCMAKE_BUILD_TYPE=Release ^
           -DCMAKE_INSTALL_PREFIX="%cd%/install" ^
           -DCMAKE_PREFIX_PATH="%INSTALL_DIR%" ^

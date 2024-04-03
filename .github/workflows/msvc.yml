@@ -176,7 +176,9 @@ jobs:
             -DVCPKG_APPLOCAL_DEPS=ON ^
             -DVCPKG_TRACE_FIND_PACKAGE=ON ^
             -DVCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} ^
-            -DINSTALL_QT=ON ^
+            -DRABBIT_ENABLE_INSTALL_DEPENDENT=ON ^
+            -DRABBIT_ENABLE_INSTALL_QT=ON ^
+            -DRABBIT_ENABLE_INSTALL_TO_BUILD_PATH=OFF ^
             -DSeetaFace_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaNet_DIR=${{env.INSTALL_DIR}}/lib/cmake ^
             -DSeetaFaceDetector_DIR=${{env.INSTALL_DIR}}/lib/cmake ^

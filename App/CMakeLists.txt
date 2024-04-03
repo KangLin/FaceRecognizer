@@ -76,27 +76,27 @@ set(OTHER_FILES
     ${CMAKE_SOURCE_DIR}/ChangeLog_zh_CN.md)
 INSTALL_FILE(SOURCES ${OTHER_FILES}
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
-        COMPONENT Runtime)
+        COMPONENT Application)
 
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.ico
         DESTINATION .
-            COMPONENT Runtime)
+            COMPONENT Application)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/Install/Install.nsi
         DESTINATION "${CMAKE_BINARY_DIR}"
-            COMPONENT Runtime)
+            COMPONENT Application)
 ENDIF()
 
 if(UNIX AND NOT ANDROID)
     INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.desktop
         DESTINATION "share/applications"
-            COMPONENT Runtime)
+            COMPONENT Application)
     INSTALL(PROGRAMS ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.sh
         DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            COMPONENT Runtime)
+            COMPONENT Application)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.png
         DESTINATION "share/pixmaps"
-            COMPONENT Runtime)
+            COMPONENT Application)
 endif()
 
 if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
@@ -106,6 +106,6 @@ if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
 endif()
 INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
     DESTINATION etc
-    COMPONENT Runtime)
+    COMPONENT Application)
 
 INSTALL_ICON_THEME(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/icons)
