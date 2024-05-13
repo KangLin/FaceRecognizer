@@ -30,7 +30,9 @@ jobs:
           - qt_version: 5.12.12
             ENABLE_DOWNLOAD_MODULE: OFF
 
-    runs-on: macos-latest
+    # See: https://docs.github.com/zh/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
+    # See: https://github.com/actions/runner-images/tree/main
+    runs-on: macos-13
 
     env:
       BUILD_TYPE:  ${{ matrix.BUILD_TYPE }}
@@ -38,7 +40,7 @@ jobs:
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_2024_03_13
       qt_modules: qtwebengine ${{matrix.qt_modules}}
-      VCPKGGITCOMMITID: 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
+      VCPKGGITCOMMITID: 007aaced1a9d3245e28a2ba9395dca88ea890db1
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       artifact_name: build_macos
       FaceRecognizer_VERSION: v0.0.4

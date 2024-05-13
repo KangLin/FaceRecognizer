@@ -19,21 +19,21 @@ jobs:
             qt_arch: win64_msvc2019_64
             qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview qtmultimedia qt5compat
             VCPKG_TARGET_TRIPLET: x64-windows
-            VCPKG_PLATFORM_TOOLSET: v142
+            VCPKG_PLATFORM_TOOLSET: v143
             CMAKE_GENERATOR_PLATFORM: x64
             ENABLE_DOWNLOAD_MODULE: ON
 
           - qt_version: 5.15.2
             qt_arch: win64_msvc2019_64
             VCPKG_TARGET_TRIPLET: x64-windows
-            VCPKG_PLATFORM_TOOLSET: v142
+            VCPKG_PLATFORM_TOOLSET: v143
             CMAKE_GENERATOR_PLATFORM: x64
             ENABLE_DOWNLOAD_MODULE: OFF
 
           - qt_version: 5.12.12
             qt_arch: win32_msvc2017
             VCPKG_TARGET_TRIPLET: x86-windows
-            VCPKG_PLATFORM_TOOLSET: v141
+            VCPKG_PLATFORM_TOOLSET: v143
             CMAKE_GENERATOR_PLATFORM: Win32
             ENABLE_DOWNLOAD_MODULE: OFF
 
@@ -45,7 +45,7 @@ jobs:
       INSTALL_DIR: ${{github.workspace}}\.cache\install_msvc_${{matrix.CMAKE_GENERATOR_PLATFORM}}_${{matrix.BUILD_TYPE}}
       CMAKE_GENERATOR: "Visual Studio 17 2022"
       CMAKE_GENERATOR_PLATFORM: ${{matrix.CMAKE_GENERATOR_PLATFORM}}
-      VCPKGGITCOMMITID: 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
+      VCPKGGITCOMMITID: 007aaced1a9d3245e28a2ba9395dca88ea890db1
       VCPKG_PLATFORM_TOOLSET: ${{matrix.VCPKG_PLATFORM_TOOLSET}}
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       qt_modules: qtwebengine ${{matrix.qt_modules}}
