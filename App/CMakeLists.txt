@@ -88,7 +88,7 @@ IF(WIN32)
 ENDIF()
 
 if(UNIX AND NOT ANDROID)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.desktop
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/org.Rabbit.FaceRecognizer.desktop
         DESTINATION "share/applications"
             COMPONENT Application)
     INSTALL(PROGRAMS ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.sh

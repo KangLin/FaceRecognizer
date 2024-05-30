@@ -6,11 +6,11 @@ Section: main
 Priority: optional
 Maintainer: Kang Lin <kl222@126.com>
 Build-Depends: debhelper (>=13~), debhelper-compat (=13), fakeroot, cmake,
- libssl-dev, rabbitcommon-dev (>=2),
+ libssl-dev, rabbitcommon-dev (>=2.2.4),
  qt6-tools-dev, qt6-tools-dev-tools, qt6-base-dev, qt6-base-dev-tools,
  qt6-l10n-tools, qt6-translations-l10n, qt6-scxml-dev,
  qt6-webengine-dev, qt6-webengine-dev-tools
-Standards-Version:"v0.0.4"
+Standards-Version: 4.6.2
 Homepage: https://github.com/KangLin/FaceRecognizer
 Vcs-Git: https://github.com/KangLin/FaceRecognizer.git
 #Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/FaceRecognizer.git

@@ -27,14 +27,14 @@ case "$1" in
             ln -s $INSTALL_ROOT/log $INSTALL_ROOT/bin/log
         fi
 
-        if [ ! -f /usr/share/applications/FaceRecognizer.desktop ]; then
-            ln -s $INSTALL_ROOT/share/applications/FaceRecognizer.desktop /usr/share/applications/FaceRecognizer.desktop
+        if [ ! -f /usr/share/applications/org.Rabbit.FaceRecognizer.desktop ]; then
+            ln -s $INSTALL_ROOT/share/applications/org.Rabbit.FaceRecognizer.desktop /usr/share/applications/org.Rabbit.FaceRecognizer.desktop
         fi
-        if [ ! -f /usr/share/pixmaps/FaceRecognizer.png ]; then
+        if [ ! -f /usr/share/pixmaps/org.Rabbit.FaceRecognizer.png ]; then
             if [ ! -d /usr/share/pixmaps ]; then
                 mkdir -p /usr/share/pixmaps
             fi
-            ln -s $INSTALL_ROOT/share/pixmaps/FaceRecognizer.png /usr/share/pixmaps/FaceRecognizer.png
+            ln -s $INSTALL_ROOT/share/pixmaps/FaceRecognizer.png /usr/share/pixmaps/org.Rabbit.FaceRecognizer.png
         fi
         #echo "/$INSTALL_ROOT/lib" > /etc/ld.so.conf.d/FaceRecognizer.conf
         #echo "$INSTALL_ROOT/bin" >> /etc/ld.so.conf.d/FaceRecognizer.conf
@@ -46,9 +46,9 @@ case "$1" in
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-        rm -fr /usr/share/applications/FaceRecognizer.desktop
-        rm -fr /etc/ld.so.conf.d/FaceRecognizer.conf
-        rm -fr /usr/share/pixmaps/FaceRecognizer.png
+        rm -fr /usr/share/applications/org.Rabbit.FaceRecognizer.desktop
+        #rm -fr /etc/ld.so.conf.d/FaceRecognizer.conf
+        rm -fr /usr/share/pixmaps/org.Rabbit.FaceRecognizer.png
         ldconfig
     ;;
 
