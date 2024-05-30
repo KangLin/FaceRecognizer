@@ -14,7 +14,7 @@ jobs:
       matrix:
         BUILD_TYPE: [Release]
         qt_arch: [android_arm64_v8a, android_x86_64]
-        qt_version: [6.6.2]
+        qt_version: [6.7.1]
         include:
           - qt_arch: android_arm64_v8a
             VCPKG_TARGET_TRIPLET: arm64-android

@@ -13,9 +13,9 @@ jobs:
     strategy:
       matrix:
         BUILD_TYPE: [Release, Debug]
-        qt_version: [6.6.2, 5.15.2, 5.12.12]
+        qt_version: [6.7.1, 5.15.2, 5.12.12]
         include:
-          - qt_version: 6.6.2
+          - qt_version: 6.7.1
             qt_arch: win64_msvc2019_64
             qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview qtmultimedia qt5compat
             VCPKG_TARGET_TRIPLET: x64-windows
@@ -172,10 +172,10 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install ^
             -DCMAKE_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake ^
             -DVCPKG_VERBOSE=ON ^
-            -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
-            -DVCPKG_APPLOCAL_DEPS=ON ^
-            -DVCPKG_TRACE_FIND_PACKAGE=ON ^
             -DVCPKG_TARGET_TRIPLET=${{matrix.VCPKG_TARGET_TRIPLET}} ^
+            -DX_VCPKG_APPLOCAL_DEPS_INSTALL=OFF ^
+            -DVCPKG_APPLOCAL_DEPS=OFF ^
+            -DVCPKG_TRACE_FIND_PACKAGE=ON ^
             -DRABBIT_ENABLE_INSTALL_DEPENDENT=ON ^
             -DRABBIT_ENABLE_INSTALL_QT=ON ^
             -DRABBIT_ENABLE_INSTALL_TO_BUILD_PATH=OFF ^
@@ -203,7 +203,7 @@ jobs:
           copy /Y FaceRecognizer_${{env.FaceRecognizer_VERSION}}_Setup.exe FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
 
       - name: Update configure file
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.6.2' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.7.1' }}
         working-directory: ${{github.workspace}}\build
         run: |
           ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^
@@ -215,7 +215,7 @@ jobs:
               -m "${{env.FaceRecognizer_VERSION}}"
 
       - name: Update artifact
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.6.2' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.7.1' }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.artifact_name }}
