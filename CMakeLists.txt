@@ -94,7 +94,7 @@ endif()
 GET_VERSION(OUT_VERSION FaceRecognizer_VERSION
     OUT_REVISION FaceRecognizer_REVISION)
 if(NOT FaceRecognizer_VERSION)
-    SET(FaceRecognizer_VERSION "v0.0.4")
+    SET(FaceRecognizer_VERSION "0.0.4")
 endif()
 message("FaceRecognizer_VERSION:${FaceRecognizer_VERSION};FaceRecognizer_REVISION:${FaceRecognizer_REVISION}")
 set(VERSION ${FaceRecognizer_VERSION})
