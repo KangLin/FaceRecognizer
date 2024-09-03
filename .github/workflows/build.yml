@@ -44,31 +44,31 @@ jobs:
           submodules: false
 
       - name: Download ubuntu
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ needs.ubuntu.outputs.name }}
           path: ${{ env.artifact_path }}
 
       - name: Download msvc
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ needs.msvc.outputs.name }}
           path: ${{ env.artifact_path }}
 
       - name: Download mingw
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ needs.mingw.outputs.name }}
           path: ${{ env.artifact_path }}
 
       - name: Download macos
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ needs.macos.outputs.name }}
           path: ${{ env.artifact_path }}
 
       - name: Download doxygen
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: ${{ needs.doxygen.outputs.name }}
           path: ${{ env.artifact_path }}
