@@ -1,3 +1,5 @@
+# Author: Kang Lin <kl222@126.com>
+
 name: android
 
 on:
@@ -14,7 +16,7 @@ jobs:
       matrix:
         BUILD_TYPE: [Release]
         qt_arch: [android_arm64_v8a, android_x86_64]
-        qt_version: [6.7.1]
+        qt_version: [6.6.3]
         include:
           - qt_arch: android_arm64_v8a
             VCPKG_TARGET_TRIPLET: arm64-android
@@ -26,6 +28,8 @@ jobs:
             ANDROID_ABI: x86_64
             ENABLE_DOWNLOAD_MODULE: ON
 
+    # See: https://docs.github.com/zh/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
+    # See: https://github.com/actions/runner-images/
     runs-on: ubuntu-latest
 
     env:
@@ -33,14 +37,14 @@ jobs:
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
-      VCPKGGITCOMMITID: 007aaced1a9d3245e28a2ba9395dca88ea890db1
+      VCPKGGITCOMMITID: 110c50d4700794d87d95138cd8c1b3bbfee9bab5
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       VCPKG_DEFAULT_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       VCPKG_DEFAULT_HOST_TRIPLET: x64-linux
       ANDROID_PLATFORM: android-23
       ANDROID_NATIVE_API_LEVEL: 23
       ANDROID_ABI: ${{matrix.ANDROID_ABI}}
-      qt_modules: 'qtwebchannel qtwebsockets qtwebview qtimageformats qtmultimedia qtscxml qt5compat'
+      qt_modules: 'qtimageformats qtmultimedia qtscxml qt5compat qtwebchannel qtpositioning'
       FaceRecognizer_VERSION: v0.0.4
       ENABLE_DOWNLOAD_MODULE: ${{matrix.ENABLE_DOWNLOAD_MODULE}}
 
@@ -73,6 +77,12 @@ jobs:
           path: |
             ${{env.INSTALL_DIR}}
           key: install_android_qt${{matrix.qt_version}}_${{matrix.qt_arch}}_${{matrix.BUILD_TYPE}}
+
+      - name: Install apt packages
+        run: |
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
+          sudo apt install -y -q ninja-build nasm
 
       - name: run-vcpkg
         uses: lukka/run-vcpkg@v11
@@ -129,10 +139,7 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
                 -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
                 -DCMAKE_VERBOSE_MAKEFILE=ON \
-                -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
-                -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
                 -DBUILD_SHARED_LIBS=OFF \
-                -DCMAKE_VERBOSE_MAKEFILE=ON \
                 -DQT_HOST_PATH=${Qt6_DIR}/../gcc_64 \
                 -DQT_CHAINLOAD_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
                 -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake \
@@ -159,6 +166,7 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} \
                 -DCMAKE_INSTALL_PREFIX=${{ env.INSTALL_DIR }} \
                 -DCMAKE_VERBOSE_MAKEFILE=ON \
+                -DBUILD_SHARED_LIBS=OFF \
                 -DQT_HOST_PATH=${Qt6_DIR}/../gcc_64 \
                 -DQT_CHAINLOAD_TOOLCHAIN_FILE=${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake \
                 -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake \
@@ -201,11 +209,13 @@ jobs:
               -DVCPKG_TRACE_FIND_PACKAGE=ON \
               -DVCPKG_VERBOSE=ON \
               -DVCPKG_INSTALLED_DIR=${{env.INSTALL_DIR}}/libvncserver/vcpkg_installed \
-              -DANDROID_ABI=${{env.ANDROID_ABI}} \
-              -DINSTALL_QT=ON \
+              -DRABBIT_ENABLE_INSTALL_DEPENDENT=ON \
+              -DRABBIT_ENABLE_INSTALL_QT=ON \
+              -DRABBIT_ENABLE_INSTALL_TO_BUILD_PATH=ON \
               -DQT_HOST_PATH=${Qt6_DIR}/../gcc_64 \
               -DQT_ANDROID_SIGN_APK=ON \
               -DQT_ENABLE_VERBOSE_DEPLOYMENT=ON \
+              -DANDROID_ABI=${{env.ANDROID_ABI}} \
               -DQt6LinguistTools_DIR=${Qt6_DIR}/../gcc_64/lib/cmake/Qt6LinguistTools \
               -DCMAKE_INSTALL_PREFIX=`pwd`/install
           cmake --build . --verbose --config ${{matrix.BUILD_TYPE}} --target all
@@ -231,9 +241,9 @@ jobs:
 
       - name: Update artifact
         if: ${{ matrix.BUILD_TYPE == 'Release' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.artifact_name }}
+          name: ${{ env.artifact_name }}_${{matrix.qt_version}}_${{matrix.qt_arch}}
           path: |
             ${{github.workspace}}/build/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_${{matrix.BUILD_TYPE}}.apk
             ${{github.workspace}}/build/update_android.xml

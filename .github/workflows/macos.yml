@@ -21,7 +21,7 @@ jobs:
         VCPKG_TARGET_TRIPLET: [x64-osx]
         include:
           - qt_version: 6.7.1
-            qt_modules: qtscxml qtpositioning qt5compat qtwebchannel qtwebsockets qtmultimedia
+            qt_modules: qtscxml qtpositioning qt5compat qtwebchannel qtpositioning qtmultimedia
             ENABLE_DOWNLOAD_MODULE: ON
 
           - qt_version: 5.15.2
@@ -40,7 +40,7 @@ jobs:
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_2024_03_13
       qt_modules: qtwebengine ${{matrix.qt_modules}}
-      VCPKGGITCOMMITID: 007aaced1a9d3245e28a2ba9395dca88ea890db1
+      VCPKGGITCOMMITID: 110c50d4700794d87d95138cd8c1b3bbfee9bab5
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       artifact_name: build_macos
       FaceRecognizer_VERSION: v0.0.4
@@ -85,13 +85,6 @@ jobs:
         run: |
           brew install nasm
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1  # not v2!
-        with:
-          path: ${{env.TOOSL_DIR}}/qt
-          key: qt${{matrix.qt_version}}-${{matrix.qt_arch}}
-        
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
@@ -178,8 +171,8 @@ jobs:
 
       - name: Update artifact
         if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.7.1' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.artifact_name }}
+          name: ${{ env.artifact_name }}_${{matrix.qt_version}}_${{matrix.qt_arch}}
           path: |
             ${{github.workspace}}/build/FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip
