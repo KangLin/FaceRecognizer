@@ -68,7 +68,7 @@ install:
       {
           git clone -q "https://github.com/microsoft/vcpkg.git"
           cd ${env:VCPKG_DIR}
-          git checkout -q -b 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f 2ac6ba173be85207a7bac4f0f02f5486f9fd4c0f
+          git checkout -q -b 898b728edc5e0d12b50015f9cd18247c4257a3eb 898b728edc5e0d12b50015f9cd18247c4257a3eb
           bootstrap-vcpkg.bat
       }
 
@@ -104,7 +104,8 @@ before_build:
              -DCMAKE_BUILD_TYPE=Release `
              -DCMAKE_INSTALL_PREFIX="${env:INSTALL_DIR}" `
              -DCMAKE_TOOLCHAIN_FILE="${env:VCPKG_DIR}/scripts/buildsystems/vcpkg.cmake" `
-             -DBUILD_SHARED_LIBS=ON
+             -DBUILD_SHARED_LIBS=ON `
+             -DUSE_OPENMP=OFF
           cmake --build . --config Release
           cmake --build . --config Release --target install
        }
@@ -120,11 +121,14 @@ build_script:
           -DCMARK_STATIC=ON ^
           -DQT_DIR=%QT_ROOT%/lib/cmake/Qt5 ^
           -DQt5_DIR=%QT_ROOT%/lib/cmake/Qt5 ^
-          -DINSTALL_QT=ON ^
+          -DRABBIT_ENABLE_INSTALL_DEPENDENT=ON ^
+          -DRABBIT_ENABLE_INSTALL_QT=ON ^
+          -DRABBIT_ENABLE_INSTALL_TO_BUILD_PATH=OFF ^
           -DCMAKE_BUILD_TYPE=Release ^
           -DCMAKE_INSTALL_PREFIX="%cd%/install" ^
           -DCMAKE_PREFIX_PATH="%INSTALL_DIR%" ^
           -DCMAKE_TOOLCHAIN_FILE="%VCPKG_DIR%/scripts/buildsystems/vcpkg.cmake" ^
+          -DVCPKG_OVERLAY_PORTS="%APPVEYOR_BUILD_FOLDER%/vcpkg/ports" ^
           -DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON ^
           -DVCPKG_APPLOCAL_DEPS=ON ^
           -DSeetaFace_DIR=%INSTALL_DIR%/lib/cmake ^

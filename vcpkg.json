@@ -1,7 +1,9 @@
 {
   "name": "facerecognizer",
   "version-string":"0.0.4",
-  
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/KangLin/facerecognizer",
+
   "dependencies": [
     "openssl"
   ],
@@ -37,10 +39,5 @@
               "dlib"
           ]
       }
-  },
-
-  "builtin-baseline":"9259a0719d94c402aae2ab7975bc096afdec15df",
-  "overrides": [
-      { "name": "openssl", "version-string": "1.1.1n" }
-  ]
+  }
 }

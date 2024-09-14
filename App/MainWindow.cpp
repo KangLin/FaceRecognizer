@@ -115,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 QCameraInfo::availableCameras();
 #endif
             foreach (auto cameraInfo, cameras) {
-                //qDebug(log) << "Camer name:" << cameraInfo.deviceName();
+                qDebug(log) << "Camer name:" << cameraInfo.description();
                 cmbCameras->addItem(cameraInfo.description());
             }
 
@@ -133,8 +133,10 @@ MainWindow::MainWindow(QWidget *parent) :
             InitCamerOrientation();
         }
         
-    } else 
+    } else {
+        qWarning(log) << "No cameras devices";
         ui->actionFile->setChecked(true);
+    }
 
 #ifdef RABBITCOMMON  
     CFrmUpdater updater;
@@ -598,7 +600,7 @@ void MainWindow::on_actionUpdate_U_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    qApp->quit();
+    QCoreApplication::quit();
 }
 
 void MainWindow::on_actionAiLibraries_triggered(QAction* a)

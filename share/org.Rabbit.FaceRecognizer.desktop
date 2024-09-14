@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Icon=FaceRecognizer
+Icon=org.Rabbit.FaceRecognizer
 
 Exec=/opt/FaceRecognizer/bin/FaceRecognizer.sh
 Path=/opt/FaceRecognizer

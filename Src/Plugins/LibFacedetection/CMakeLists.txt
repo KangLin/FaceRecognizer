@@ -19,7 +19,7 @@ set(HEADER_FILES
     FaceLibfacedetection.h
     DetectorLibfacedetection.h)
 
-INSTALL_TARGETS(TARGETS facedetection)
+#INSTALL_TARGETS(TARGETS facedetection)
 
 # Install target
 set(INSTALL_PATH ${INSTALL_FACE_RECOGNIZER_PLUGS_DIR})

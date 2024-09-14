@@ -1,12 +1,3 @@
-cmake_minimum_required(VERSION 2.8)
-
-if(POLICY CMP0083)
-    cmake_policy(SET CMP0083 NEW)
-endif()
-
-if(POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)
-endif()
 
 project(FaceRecognizerApp
     DESCRIPTION "Face recognizer"
@@ -60,11 +51,6 @@ set(SOURCE_UI_FILES
     FrmBrowseFile.ui
     )
 
-
-add_definitions(-DBUILD_VERSION="${FaceRecognizer_VERSION}")
-add_definitions(-DBUILD_ARCH="${BUILD_ARCH}")
-add_definitions(-DBUILD_PLATFORM="${BUILD_PLATFORM}")
-
 SET(RCC_FILES
     Resource/Resource.qrc
     ${TRANSLATIONS_QRC_FILES})
@@ -90,27 +76,27 @@ set(OTHER_FILES
     ${CMAKE_SOURCE_DIR}/ChangeLog_zh_CN.md)
 INSTALL_FILE(SOURCES ${OTHER_FILES}
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
-        COMPONENT Runtime)
+        COMPONENT Application)
 
 IF(WIN32)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.ico
         DESTINATION .
-            COMPONENT Runtime)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/Install/Install.nsi
-        DESTINATION "${CMAKE_BINARY_DIR}"
-            COMPONENT Runtime)
+            COMPONENT Application)
+    # 替换 Install.nsi 中的 CMAKE_INSTALL_PREFIX 等
+    configure_file(${CMAKE_SOURCE_DIR}/Install/Install.nsi
+        ${CMAKE_BINARY_DIR}/Install.nsi @ONLY)
 ENDIF()
 
 if(UNIX AND NOT ANDROID)
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.desktop
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/share/org.Rabbit.FaceRecognizer.desktop
         DESTINATION "share/applications"
-            COMPONENT Runtime)
+            COMPONENT Application)
     INSTALL(PROGRAMS ${CMAKE_SOURCE_DIR}/share/FaceRecognizer.sh
         DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            COMPONENT Runtime)
+            COMPONENT Application)
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/image/FaceRecognizer.png
         DESTINATION "share/pixmaps"
-            COMPONENT Runtime)
+            COMPONENT Application)
 endif()
 
 if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
@@ -120,6 +106,6 @@ if(NOT EXISTS ${CMAKE_BINARY_DIR}/etc/FaceRecognizer_logqt.ini)
 endif()
 INSTALL_FILE(SOURCES ${CMAKE_SOURCE_DIR}/etc/FaceRecognizer_logqt.ini
     DESTINATION etc
-    COMPONENT Runtime)
+    COMPONENT Application)
 
 INSTALL_ICON_THEME(SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resource/icons)
