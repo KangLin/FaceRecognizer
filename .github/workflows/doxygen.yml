@@ -42,7 +42,7 @@ jobs:
           cmake -E make_directory ${{github.workspace}}/build
 
       - name: Cache installed
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-installed
         with:
           path: |

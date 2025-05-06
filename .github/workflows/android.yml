@@ -16,7 +16,7 @@ jobs:
       matrix:
         BUILD_TYPE: [Release]
         qt_arch: [android_arm64_v8a, android_x86_64]
-        qt_version: [6.6.3]
+        qt_version: [6.9.0]
         include:
           - qt_arch: android_arm64_v8a
             VCPKG_TARGET_TRIPLET: arm64-android
@@ -34,17 +34,19 @@ jobs:
 
     env:
       artifact_name: build_android
+      BUILD_DIR:     ${{github.workspace}}/build
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
       INSTALL_DIR: ${{github.workspace}}/.cache/install_${{matrix.BUILD_TYPE}}
-      VCPKGGITCOMMITID: 110c50d4700794d87d95138cd8c1b3bbfee9bab5
+      VCPKGGITCOMMITID: d8ad13c401b30c2836d00b8923c9127f05f591c7
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       VCPKG_DEFAULT_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       VCPKG_DEFAULT_HOST_TRIPLET: x64-linux
-      ANDROID_PLATFORM: android-23
-      ANDROID_NATIVE_API_LEVEL: 23
+      ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/26.3.11579264
+      ANDROID_PLATFORM: android-34
+      ANDROID_NATIVE_API_LEVEL: 34
       ANDROID_ABI: ${{matrix.ANDROID_ABI}}
-      qt_modules: 'qtimageformats qtmultimedia qtscxml qt5compat qtwebchannel qtpositioning'
+      qt_modules: 'qtimageformats qtmultimedia qtscxml qt5compat'
       FaceRecognizer_VERSION: v0.0.4
       ENABLE_DOWNLOAD_MODULE: ${{matrix.ENABLE_DOWNLOAD_MODULE}}
 
@@ -61,42 +63,54 @@ jobs:
       - name: make directory
         run: |
           cmake -E make_directory ${{env.SOURCE_DIR}}
-          cmake -E make_directory ${{env.TOOSL_DIR}}
+          cmake -E make_directory ${{env.TOOLS_DIR}}
           cmake -E make_directory ${{env.INSTALL_DIR}}
-          cmake -E make_directory ${{github.workspace}}/build
-          echo "ANDROID_NDK_ROOT:${ANDROID_NDK_ROOT}"
-          echo "ANDROID_NDK_HOME:${ANDROID_NDK_HOME}"
-          echo "ANDROID_NDK_LATEST_HOME:${ANDROID_NDK_LATEST_HOME}"
-          echo "ANDROID_HOME:${ANDROID_HOME}"
-          echo "ANDROID_NDK:${ANDROID_NDK}"
+          cmake -E make_directory ${{env.BUILD_DIR}}
+
+      - name: Install apt packages
+        run: |
+          #sudo apt-get update -y
+          #sudo apt-get upgrade -y
+          sudo apt install -y -q ninja-build nasm
 
       - name: Cache installed
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-installed
         with:
           path: |
             ${{env.INSTALL_DIR}}
           key: install_android_qt${{matrix.qt_version}}_${{matrix.qt_arch}}_${{matrix.BUILD_TYPE}}
 
-      - name: Install apt packages
-        run: |
-          sudo apt-get update -y
-          sudo apt-get upgrade -y
-          sudo apt install -y -q ninja-build nasm
-
       - name: run-vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          # Indicates whether to only setup vcpkg (i.e. installing it and setting the environment variables VCPKG_ROOT, RUNVCPK_VCPKG_ROOT), without installing any port.
-          #setupOnly: # optional
-          #vcpkgGitURL: https://github.com/KangLin/vcpkg.git
           vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
-          vcpkgDirectory: '${{env.SOURCE_DIR}}/vcpkg'
+          vcpkgDirectory: ${{env.SOURCE_DIR}}/vcpkg
+
+      - name: run vcpkg
+        if: false
+        working-directory: ${{github.workspace}}
+        run: |
+          vcpkg install --triplet ${{matrix.VCPKG_TARGET_TRIPLET}} --x-feature=vnc
+
+      - name: Install Qt of linux_gcc_64
+        uses: jurplel/install-qt-action@v4
+        if: ${{ matrix.qt_version == '6.9.0' }}
+        with:
+          dir: '${{env.TOOLS_DIR}}/qt' # optional
+          version: '${{matrix.qt_version}}'
+          #host: 'linux'
+          target: 'desktop'
+          arch: 'linux_gcc_64'
+          set-env: false
+          cache: true
+          cache-key-prefix: cached_qt
 
       - name: Install Qt of gcc_64
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
+        if: ${{  matrix.qt_version == '6.6.3' }}
         with:
-          dir: '${{env.TOOSL_DIR}}/qt' # optional
+          dir: '${{env.TOOLS_DIR}}/qt' # optional
           version: '${{matrix.qt_version}}'
           #host: 'linux'
           target: 'desktop'
@@ -109,7 +123,7 @@ jobs:
         uses: jurplel/install-qt-action@v3
         with:
           # Directory to install Qt
-          dir: '${{env.TOOSL_DIR}}/qt' # optional
+          dir: '${{env.TOOLS_DIR}}/qt' # optional
           # Version of Qt to install
           version: '${{matrix.qt_version}}'
           # Host platform
@@ -126,7 +140,7 @@ jobs:
       - name: chmod qt-cmake
         run: |
           sudo chmod 777 ${Qt6_DIR}/bin/qt-cmake
-
+      
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
         run: |

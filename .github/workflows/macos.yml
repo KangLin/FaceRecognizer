@@ -1,4 +1,6 @@
-name: build_macos
+# Author: Kang Lin <kl222@126.com>
+
+name: macos
 
 on:
   workflow_call:
@@ -16,12 +18,12 @@ jobs:
       matrix:
         # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
         BUILD_TYPE: [Release, Debug]
-        qt_version: [6.7.1, 5.15.2, 5.12.12]
+        qt_version: [6.9.0, 5.15.2, 5.12.12]
         qt_arch: [clang_64]
         VCPKG_TARGET_TRIPLET: [x64-osx]
         include:
-          - qt_version: 6.7.1
-            qt_modules: qtscxml qtpositioning qt5compat qtwebchannel qtpositioning qtmultimedia
+          - qt_version: 6.9.0
+            qt_modules: qtscxml qt5compat qtmultimedia
             ENABLE_DOWNLOAD_MODULE: ON
 
           - qt_version: 5.15.2
@@ -36,11 +38,12 @@ jobs:
 
     env:
       BUILD_TYPE:  ${{ matrix.BUILD_TYPE }}
+      BUILD_DIR:   ${{github.workspace}}/build
       SOURCE_DIR:  ${{github.workspace}}/.cache/source
       TOOSL_DIR:   ${{github.workspace}}/.cache/tools
-      INSTALL_DIR: ${{github.workspace}}/.cache/install_2024_03_13
+      INSTALL_DIR: ${{github.workspace}}/.cache/install
       qt_modules: qtwebengine ${{matrix.qt_modules}}
-      VCPKGGITCOMMITID: 110c50d4700794d87d95138cd8c1b3bbfee9bab5
+      VCPKGGITCOMMITID: d8ad13c401b30c2836d00b8923c9127f05f591c7
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
       artifact_name: build_macos
       FaceRecognizer_VERSION: v0.0.4
@@ -61,10 +64,10 @@ jobs:
           cmake -E make_directory ${{env.SOURCE_DIR}}
           cmake -E make_directory ${{env.TOOSL_DIR}}
           cmake -E make_directory ${{env.INSTALL_DIR}}
-          cmake -E make_directory ${{github.workspace}}/build
+          cmake -E make_directory ${{env.BUILD_DIR}}
 
       - name: Cache installed
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-installed
         with:
           path: |
@@ -81,19 +84,15 @@ jobs:
           vcpkgGitCommitId: ${{env.VCPKGGITCOMMITID}}
           vcpkgDirectory: ${{runner.workspace}}/vcpkg/
 
-      - name: run vcpkg
-        run: |
-          brew install nasm
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          dir: '${{env.TOOSL_DIR}}/qt' # optional
+          dir: '${{env.TOOLS_DIR}}/qt' # optional
           version: '${{matrix.qt_version}}' # optional, default is 5.15.2
           arch: '${{matrix.qt_arch}}' # optional
-          modules: '${{env.qt_modules}}' # optional
+          modules: '${{env.qt_modules}}' # optional. See: https://ddalcino.github.io/aqt-list-server/
           cache: true
-          cache-key-prefix: cached_qt
+          cache-key-prefix: cached_qt_${{matrix.qt_version}}_macos
 
       - name: build SeetaFace2
         working-directory: ${{env.SOURCE_DIR}}
@@ -170,7 +169,7 @@ jobs:
           7z a FaceRecognizer_${{env.FaceRecognizer_VERSION}}_macos_qt${{matrix.qt_version}}.zip ./install/*
 
       - name: Update artifact
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.7.1' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.9.0' }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name }}_${{matrix.qt_version}}_${{matrix.qt_arch}}

@@ -1,4 +1,6 @@
-name: build_msvc
+# Author: Kang Lin <kl222@126.com>
+
+name: msvc
 
 on:
   workflow_call:
@@ -13,11 +15,11 @@ jobs:
     strategy:
       matrix:
         BUILD_TYPE: [Release, Debug]
-        qt_version: [6.7.1, 5.15.2, 5.12.12]
+        qt_version: [6.9.0, 5.15.2, 5.12.12]
         include:
-          - qt_version: 6.7.1
-            qt_arch: win64_msvc2019_64
-            qt_modules: qtscxml qtpositioning qtwebchannel qtwebsockets qtwebview qtmultimedia qt5compat
+          - qt_version: 6.9.0
+            qt_arch: win64_msvc2022_64
+            qt_modules: qtscxml qtmultimedia qt5compat
             VCPKG_TARGET_TRIPLET: x64-windows
             VCPKG_PLATFORM_TOOLSET: v143
             CMAKE_GENERATOR_PLATFORM: x64
@@ -29,6 +31,7 @@ jobs:
             VCPKG_PLATFORM_TOOLSET: v143
             CMAKE_GENERATOR_PLATFORM: x64
             ENABLE_DOWNLOAD_MODULE: OFF
+            VCPKG_OVERLAY_PORTS: "vcpkg/ports"
 
           - qt_version: 5.12.12
             qt_arch: win32_msvc2017
@@ -36,18 +39,21 @@ jobs:
             VCPKG_PLATFORM_TOOLSET: v143
             CMAKE_GENERATOR_PLATFORM: Win32
             ENABLE_DOWNLOAD_MODULE: OFF
+            VCPKG_OVERLAY_PORTS: "vcpkg/ports"
 
     runs-on: windows-latest
 
     env:
+      BUILD_DIR:   ${{github.workspace}}\build
       SOURCE_DIR:  ${{github.workspace}}\.cache\source
       TOOSL_DIR:   ${{github.workspace}}\.cache\tools
-      INSTALL_DIR: ${{github.workspace}}\.cache\install_msvc_${{matrix.CMAKE_GENERATOR_PLATFORM}}_${{matrix.BUILD_TYPE}}
+      INSTALL_DIR: ${{github.workspace}}\.cache\install
       CMAKE_GENERATOR: "Visual Studio 17 2022"
       CMAKE_GENERATOR_PLATFORM: ${{matrix.CMAKE_GENERATOR_PLATFORM}}
-      VCPKGGITCOMMITID: 110c50d4700794d87d95138cd8c1b3bbfee9bab5
+      VCPKGGITCOMMITID: d8ad13c401b30c2836d00b8923c9127f05f591c7
       VCPKG_PLATFORM_TOOLSET: ${{matrix.VCPKG_PLATFORM_TOOLSET}}
       VCPKG_TARGET_TRIPLET: ${{matrix.VCPKG_TARGET_TRIPLET}}
+      VCPKG_OVERLAY_PORTS: "${{github.workspace}}/${{matrix.VCPKG_OVERLAY_PORTS}}"
       qt_modules: qtwebengine ${{matrix.qt_modules}}
       artifact_name: build_msvc
       FaceRecognizer_VERSION: v0.0.4
@@ -69,13 +75,13 @@ jobs:
 
       - name: Make directories
         run: |
-          cmake -E make_directory ${{github.workspace}}/build
+          cmake -E make_directory ${{env.BUILD_DIR}}
           cmake -E make_directory ${{env.SOURCE_DIR}}
           cmake -E make_directory ${{env.TOOSL_DIR}}
           cmake -E make_directory ${{env.INSTALL_DIR}}
 
       - name: Cache installed
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-installed
         with:
           path: |
@@ -136,21 +142,15 @@ jobs:
             cmake --build . --config ${{matrix.BUILD_TYPE}} --target install
           )
 
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1  # not v2!
-        with:
-          path: ${{env.TOOSL_DIR}}/qt
-          key: qt_${{matrix.qt_version}}_${{matrix.qt_arch}}
-
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
-          dir: '${{env.TOOSL_DIR}}/qt' # optional
+          dir: '${{env.TOOLS_DIR}}/qt' # optional
           version: '${{matrix.qt_version}}' # optional, default is 5.15.2
           arch: '${{matrix.qt_arch}}' # optional
-          modules: '${{env.qt_modules}}' # optional. See: https://ddalcino.github.io/aqt-list-server/
-          cached: '${{steps.cache-qt.outputs.cache-hit}}' # optional, default is false
+          modules: '${{env.qt_modules}}' # optional.  see: https://ddalcino.github.io/aqt-list-server/
+          cache: true
+          cache-key-prefix: cached-qt_${{matrix.qt_version}}_${{matrix.qt_arch}}
 
       - name: git clone RabbitCommon
         working-directory: ${{env.SOURCE_DIR}}
@@ -203,7 +203,7 @@ jobs:
           copy /Y FaceRecognizer_${{env.FaceRecognizer_VERSION}}_Setup.exe FaceRecognizer_${{env.FaceRecognizer_VERSION}}_${{matrix.qt_arch}}_qt${{matrix.qt_version}}_Setup.exe
 
       - name: Update configure file
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.7.1' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.9.0' }}
         working-directory: ${{github.workspace}}\build
         run: |
           ${{github.workspace}}\build\install\bin\FaceRecognizerApp.exe ^
@@ -215,7 +215,7 @@ jobs:
               -m "${{env.FaceRecognizer_VERSION}}"
 
       - name: Update artifact
-        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.7.1' }}
+        if: ${{ matrix.BUILD_TYPE == 'Release' && matrix.qt_version == '6.9.0' }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.artifact_name }}_${{matrix.qt_version}}_${{matrix.qt_arch}}
