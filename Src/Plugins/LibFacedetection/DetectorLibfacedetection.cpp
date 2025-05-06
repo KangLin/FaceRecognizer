@@ -37,8 +37,7 @@ int CDetectorLibfacedetection::Detect(const QImage &image, QVector<QRect> &faces
     PERFORMANCE_START(Libfacedetection)
     int *pResults  = facedetect_cnn(pBuffer,
                                     (unsigned char*)img.bits(), img.width(),
-                                    img.height(),
-                                    img.width() * 3);
+                                    img.height(), img.bytesPerLine());
     PERFORMANCE_ADD_TIME(Libfacedetection, "detect:image width:"
                          + QString::number(image.width())
                          + ";Height:"
